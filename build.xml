@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Standard.makejar" default="makejar" basedir=".">
+	<target name ="makejar" description="Create a JAR output file">
+		<jar destfile="${basedir}\Standard.jar">
+			<fileset dir="bin" includes="**/*.class"/>
+			<fileset dir="src" includes="plugin.yml"/>
+		</jar>
+	</target>
+</project>
+

@@ -1,0 +1,5 @@
+debug: false
+server-id: 1
+secret-key: aaaa
+muted-forum-users: []
+endpoint: http://standardsurvival.com/api/v1/

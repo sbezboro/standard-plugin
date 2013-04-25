@@ -1,0 +1,75 @@
+package com.sbezboro.standardplugin.commands;
+
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import com.sbezboro.http.HttpResponse;
+import com.sbezboro.http.listeners.HttpRequestListener;
+import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.net.LinkHttpRequest;
+
+public class RegisterCommand extends BaseCommand {
+	
+	public RegisterCommand(StandardPlugin plugin) {
+		super(plugin);
+	}
+
+	@Override
+	public boolean handle(CommandSender sender, Command command, String label, String[] args) {
+		final Player player = (Player) sender;
+
+		if (args.length != 1 || args[0].equals("help")) {
+			showUsageInfo(player);
+			return false;
+		}
+
+		final String username = player.getName();
+		final String password = args[0];
+
+		player.sendMessage("Registering...");
+		
+		LinkHttpRequest request = new LinkHttpRequest(username, password);
+		request.start(new HttpRequestListener() {
+			
+			@Override
+			public void requestSuccess(HttpResponse response) {
+				String result = response.getStringResponse();
+				
+				player.sendMessage(result);
+				player.sendMessage(ChatColor.GREEN + "Website username: " + ChatColor.AQUA + username + ChatColor.GREEN + ", password: " + ChatColor.AQUA + password);
+				player.sendMessage(ChatColor.GREEN + "Visit standardsurvival.com/login");
+				plugin.getLogger().info(username + ": " + result);
+			}
+			
+			@Override
+			public void requestFailure(HttpResponse response) {
+				player.sendMessage("There was an error registering your account!");
+				
+				String result = response.getStringResponse();
+				plugin.getLogger().severe(result);
+			}
+		});
+		
+		return true;
+	}
+
+	@Override
+	public void showUsageInfo(CommandSender sender) {
+		sender.sendMessage("Usage: /" + getName() + " <password>");
+		sender.sendMessage(ChatColor.GREEN + "This command will create an account on the website using");
+		sender.sendMessage(ChatColor.GREEN + "your Minecraft username and a password you specify. ");
+		sender.sendMessage(ChatColor.RED + "WARNING! DO NOT use your Minecraft password!");
+	}
+
+	@Override
+	public String getName() {
+		return "register";
+	}
+
+	@Override
+	public boolean isPlayerOnly(int numArgs) {
+		return true;
+	}
+}
