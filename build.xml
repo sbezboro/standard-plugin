@@ -5,6 +5,7 @@
 		<jar destfile="${basedir}\Standard.jar">
 			<fileset dir="bin" includes="**/*.class"/>
 			<fileset dir="src" includes="plugin.yml"/>
+			<fileset dir="src" includes="config.yml"/>
 		</jar>
 	</target>
 </project>
