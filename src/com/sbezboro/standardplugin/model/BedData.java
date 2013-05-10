@@ -1,4 +1,4 @@
-package com.sbezboro.standardplugin.storage;
+package com.sbezboro.standardplugin.model;
 
 
 import java.util.HashMap;

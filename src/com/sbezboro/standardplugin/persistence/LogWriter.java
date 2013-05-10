@@ -1,4 +1,4 @@
-package com.sbezboro.standardplugin.storage;
+package com.sbezboro.standardplugin.persistence;
 
 import java.io.BufferedWriter;
 import java.io.File;

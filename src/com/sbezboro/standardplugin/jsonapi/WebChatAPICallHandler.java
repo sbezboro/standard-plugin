@@ -2,9 +2,9 @@ package com.sbezboro.standardplugin.jsonapi;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class WebChatAPICallHandler extends APICallHandler {
 
@@ -32,7 +32,7 @@ public class WebChatAPICallHandler extends APICallHandler {
 	}
 	
 	private String getDisplayName(String username) {
-		Player player = Bukkit.getPlayerExact(username);
+		StandardPlayer player = plugin.getPlayerExact(username);
 		
 		if (player == null) {
 			return username;

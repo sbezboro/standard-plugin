@@ -2,9 +2,9 @@ package com.sbezboro.standardplugin.jsonapi;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class ForumPostAPICallHandler extends APICallHandler {
 
@@ -23,7 +23,7 @@ public class ForumPostAPICallHandler extends APICallHandler {
 		String topic = (String) args[2];
 		String url = (String) args[3];
 		
-		Player player = Bukkit.getPlayerExact(username);
+		StandardPlayer player = plugin.getPlayerExact(username);
 		
 		if (plugin.isForumMuted(username)) {
 			if (player != null) {

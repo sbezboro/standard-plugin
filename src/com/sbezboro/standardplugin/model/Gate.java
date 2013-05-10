@@ -1,4 +1,4 @@
-package com.sbezboro.standardplugin;
+package com.sbezboro.standardplugin.model;
 
 import org.bukkit.Location;
 

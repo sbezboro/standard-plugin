@@ -9,8 +9,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import com.sbezboro.standardplugin.Gate;
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.Gate;
 
 public class SpawnCommand extends BaseCommand {
 

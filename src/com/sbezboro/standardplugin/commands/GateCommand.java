@@ -7,8 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import com.sbezboro.standardplugin.Gate;
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.Gate;
 
 public class GateCommand extends BaseCommand {
 

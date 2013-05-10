@@ -2,9 +2,9 @@ package com.sbezboro.standardplugin.jsonapi;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class PlayerTimeAPICallHandler extends APICallHandler {
 
@@ -21,7 +21,7 @@ public class PlayerTimeAPICallHandler extends APICallHandler {
 		String username = (String) args[0];
 		Long minutes = (Long) args[1];
 		
-		Player player = Bukkit.getPlayerExact(username);
+		StandardPlayer player = plugin.getPlayerExact(username);
 		if (player != null) {
 			username = ChatColor.stripColor(player.getDisplayName());
 		}

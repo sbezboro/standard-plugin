@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import com.sbezboro.http.HttpResponse;
 import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.net.RankHttpRequest;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
@@ -24,7 +25,7 @@ public class PlayerJoinListener extends EventListener implements Listener {
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-    	Player player = event.getPlayer();
+    	StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
     	
     	if (player.hasPlayedBefore()) {
         	if (!SimplyVanish.isVanished(player)) {

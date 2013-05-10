@@ -29,10 +29,12 @@ import com.sbezboro.standardplugin.listeners.PlayerJoinListener;
 import com.sbezboro.standardplugin.listeners.PlayerMoveListener;
 import com.sbezboro.standardplugin.listeners.PlayerQuitListener;
 import com.sbezboro.standardplugin.listeners.RespawnListener;
-import com.sbezboro.standardplugin.storage.BedData;
-import com.sbezboro.standardplugin.storage.ConfigStorage;
-import com.sbezboro.standardplugin.storage.GateStorage;
-import com.sbezboro.standardplugin.storage.LogWriter;
+import com.sbezboro.standardplugin.model.BedData;
+import com.sbezboro.standardplugin.model.StandardPlayer;
+import com.sbezboro.standardplugin.persistence.ConfigStorage;
+import com.sbezboro.standardplugin.persistence.GateStorage;
+import com.sbezboro.standardplugin.persistence.LogWriter;
+import com.sbezboro.standardplugin.persistence.PlayerStorage;
 import com.sbezboro.standardplugin.util.PlayerSaver;
 
 public class StandardPlugin extends JavaPlugin {
@@ -44,6 +46,7 @@ public class StandardPlugin extends JavaPlugin {
 	
 	private BedData bedData;
 	private GateStorage gateStorage;
+	private PlayerStorage playerStorage;
 	
 	private int serverId = 0;
 	private String secretKey = "";
@@ -78,7 +81,10 @@ public class StandardPlugin extends JavaPlugin {
 		
 		storages = new ArrayList<ConfigStorage>();
 		gateStorage = new GateStorage(this);
+		playerStorage = new PlayerStorage(this);
 		storages.add(gateStorage);
+		
+		logs = new ArrayList<LogWriter>();
 		
 		reloadPlugin();
 		
@@ -112,6 +118,8 @@ public class StandardPlugin extends JavaPlugin {
 		for (LogWriter writer : logs) {
 			writer.unload();
 		}
+		
+		playerStorage.unload();
 
 		Bukkit.getScheduler().cancelTasks(this);
 	}
@@ -149,7 +157,6 @@ public class StandardPlugin extends JavaPlugin {
 		}
 	}
 	
-	
 	public static void playerBroadcast(Player sender, final String message) {
 		final Player[] players = Bukkit.getServer().getOnlinePlayers();
 
@@ -162,6 +169,10 @@ public class StandardPlugin extends JavaPlugin {
 	
 	public static void playerBroadcast(final String message) {
 		playerBroadcast(null, message);
+	}
+	
+	public StandardPlayer getPlayerExact(String username) {
+		return getStandardPlayer(Bukkit.getPlayerExact(username));
 	}
 
 	public int getServerId() {
@@ -207,5 +218,13 @@ public class StandardPlugin extends JavaPlugin {
 	
 	public GateStorage getGateStorage() {
 		return gateStorage;
+	}
+	
+	public StandardPlayer getStandardPlayer(String username) {
+		return playerStorage.getPlayer(username);
+	}
+	
+	public StandardPlayer getStandardPlayer(Player player) {
+		return playerStorage.getPlayer(player.getName());
 	}
 }

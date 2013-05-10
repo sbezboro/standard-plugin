@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class UnfreezeCommand extends BaseCommand {
 
@@ -14,7 +15,7 @@ public class UnfreezeCommand extends BaseCommand {
 
 	@Override
 	public boolean handle(CommandSender sender, Command command, String label, String[] args) {
-		final Player player = (Player) sender;
+		final StandardPlayer player = plugin.getStandardPlayer((Player) sender);
 		player.teleport(player);
 		player.sendMessage("You should be unfrozen!");
 		return true;

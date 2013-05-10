@@ -9,8 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.sbezboro.standardplugin.Gate;
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.Gate;
 
 public class PlayerMoveListener extends EventListener implements Listener {
 

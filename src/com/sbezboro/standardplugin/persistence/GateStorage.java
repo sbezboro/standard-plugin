@@ -1,4 +1,4 @@
-package com.sbezboro.standardplugin.storage;
+package com.sbezboro.standardplugin.persistence;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,8 +10,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.sbezboro.standardplugin.Gate;
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.Gate;
 
 public class GateStorage extends ConfigStorage {
 	private Map<String, Gate> gates;
@@ -22,13 +22,9 @@ public class GateStorage extends ConfigStorage {
 	}
 	
 	@Override
-	public void reload() {
-		super.reload();
-		
+	public void loadData(Set<String> keys) {
 		gates = new HashMap<String, Gate>();
 		locationMap = new HashMap<String,Gate>();
-		
-		Set<String> keys = config.getKeys(false);
 		
 		for (String key : keys) {
 			ConfigurationSection section = config.getConfigurationSection(key);

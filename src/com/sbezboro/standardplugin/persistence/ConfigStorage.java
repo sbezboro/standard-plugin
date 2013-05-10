@@ -1,8 +1,9 @@
-package com.sbezboro.standardplugin.storage;
+package com.sbezboro.standardplugin.persistence;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Set;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,7 +22,7 @@ public abstract class ConfigStorage {
 		this.plugin = plugin;
 	}
 	
-	public void reload() {
+	public final void reload() {
 		if (file == null) {
 			file = new File(plugin.getDataFolder(), getFilename());
 	    }
@@ -32,9 +33,11 @@ public abstract class ConfigStorage {
 	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
 	        config.setDefaults(defConfig);
 	    }
+	    
+	    loadData(config.getKeys(false));
 	}
 	
-	public void save() {
+	public final void save() {
 		if (config == null || file == null) {
 		    return;
 	    }
@@ -44,6 +47,12 @@ public abstract class ConfigStorage {
 	    	plugin.getLogger().severe("Error saving config storage to file!");
 	    }
 	}
+	
+	public FileConfiguration getConfig() {
+		return config;
+	}
+	
+	public abstract void loadData(Set<String> keys);
 	
 	public abstract String getFilename();
 	
