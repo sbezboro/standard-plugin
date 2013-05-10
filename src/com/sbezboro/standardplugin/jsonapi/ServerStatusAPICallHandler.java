@@ -9,9 +9,9 @@ import me.asofold.bpl.simplyvanish.SimplyVanish;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class ServerStatusAPICallHandler extends APICallHandler {
 
@@ -25,7 +25,7 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 		
 		ArrayList<Object> playerList = new ArrayList<Object>();
 		
-		for (Player player : Bukkit.getOnlinePlayers()) {
+		for (StandardPlayer player : plugin.getOnlinePlayers()) {
 			if (!SimplyVanish.isVanished(player)) {
 				HashMap<String, String> playerInfo = new HashMap<String, String>();
 				playerInfo.put("username", player.getName());

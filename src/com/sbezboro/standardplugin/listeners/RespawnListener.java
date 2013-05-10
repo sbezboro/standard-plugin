@@ -4,13 +4,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class RespawnListener extends EventListener implements Listener {
 	
@@ -20,7 +20,7 @@ public class RespawnListener extends EventListener implements Listener {
 
 	@EventHandler(priority=EventPriority.HIGHEST)
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
-		Player player = event.getPlayer();
+		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 		
 		Location actualBed = plugin.getBedData().getLocation(player);
 		Location eventBed = player.getBedSpawnLocation();

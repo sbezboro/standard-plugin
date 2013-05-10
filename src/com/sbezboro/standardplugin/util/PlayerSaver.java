@@ -1,14 +1,13 @@
 package com.sbezboro.standardplugin.util;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class PlayerSaver implements Runnable {
 
 	@Override
 	public void run() {
-		Player[] players = Bukkit.getOnlinePlayers();
-		for (Player player : players) {
+		for (StandardPlayer player : StandardPlugin.getPlugin().getOnlinePlayers()) {
 			player.saveData();
 		}
 	}

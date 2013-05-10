@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import com.sbezboro.http.HttpResponse;
 import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.net.LinkHttpRequest;
 
 public class RegisterCommand extends BaseCommand {
@@ -18,7 +19,7 @@ public class RegisterCommand extends BaseCommand {
 
 	@Override
 	public boolean handle(CommandSender sender, Command command, String label, String[] args) {
-		final Player player = (Player) sender;
+		final StandardPlayer player = plugin.getStandardPlayer((Player) sender);
 
 		if (args.length != 1 || args[0].equals("help")) {
 			showUsageInfo(player);

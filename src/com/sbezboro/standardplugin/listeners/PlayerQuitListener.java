@@ -1,13 +1,13 @@
 package com.sbezboro.standardplugin.listeners;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class PlayerQuitListener extends EventListener implements Listener {
 	
@@ -17,7 +17,8 @@ public class PlayerQuitListener extends EventListener implements Listener {
 
 	@EventHandler(priority=EventPriority.LOWEST)
 	public void onPlayerQuit(PlayerQuitEvent event) {
-    	Player player = event.getPlayer();
+		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
+		
     	String quitMessage = ChatColor.DARK_GRAY + ChatColor.stripColor(event.getQuitMessage());
     	
     	if (player != null) {

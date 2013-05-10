@@ -158,9 +158,7 @@ public class StandardPlugin extends JavaPlugin {
 	}
 	
 	public static void playerBroadcast(Player sender, final String message) {
-		final Player[] players = Bukkit.getServer().getOnlinePlayers();
-
-		for (Player player : players) {
+		for (StandardPlayer player : instance.getOnlinePlayers()) {
 			if (player != sender) {
 				player.sendMessage(message);
 			}
@@ -173,6 +171,17 @@ public class StandardPlugin extends JavaPlugin {
 	
 	public StandardPlayer getPlayerExact(String username) {
 		return getStandardPlayer(Bukkit.getPlayerExact(username));
+	}
+	
+	public StandardPlayer[] getOnlinePlayers() {
+		Player[] onlinePlayers = Bukkit.getOnlinePlayers();
+		StandardPlayer[] result = new StandardPlayer[onlinePlayers.length];
+		
+		for (int i = 0; i < onlinePlayers.length; ++i) {
+			result[i] = getStandardPlayer(onlinePlayers[i]);
+		}
+		
+		return result;
 	}
 
 	public int getServerId() {

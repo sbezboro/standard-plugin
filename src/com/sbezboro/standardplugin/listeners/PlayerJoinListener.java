@@ -2,10 +2,8 @@ package com.sbezboro.standardplugin.listeners;
 
 import me.asofold.bpl.simplyvanish.SimplyVanish;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -48,7 +46,7 @@ public class PlayerJoinListener extends EventListener implements Listener {
     	}
 	}
 	
-	private void broadcastRank(final Player player) {
+	private void broadcastRank(final StandardPlayer player) {
     	RankHttpRequest request = new RankHttpRequest(player.getName(), true);
     	request.start(new HttpRequestListener() {
 			
@@ -59,7 +57,7 @@ public class PlayerJoinListener extends EventListener implements Listener {
 					int rank = response.getInt("rank");
 					
 					String name = player.getDisplayName();
-					for (Player other : Bukkit.getOnlinePlayers()) {
+					for (StandardPlayer other : plugin.getOnlinePlayers()) {
 						if (player == other) {
 							player.sendMessage("You are ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!");
 						} else {

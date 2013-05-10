@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.Gate;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class PlayerMoveListener extends EventListener implements Listener {
 
@@ -20,7 +21,7 @@ public class PlayerMoveListener extends EventListener implements Listener {
 
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
-		Player player = event.getPlayer();
+		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 		Location from = event.getFrom();
 		Location to = event.getTo();
 		

@@ -4,7 +4,6 @@ package com.sbezboro.standardplugin.model;
 import java.util.HashMap;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 
 public class BedData {
@@ -14,15 +13,15 @@ public class BedData {
 		beds = new HashMap<String, Location>();
 	}
 	
-	public void setLocation(Player player, Location location) {
+	public void setLocation(StandardPlayer player, Location location) {
 		beds.put(player.getName(), location);
 	}
 	
-	public void removeBed(Player player) {
+	public void removeBed(StandardPlayer player) {
 		beds.remove(player.getName());
 	}
 	
-	public Location getLocation(Player player) {
+	public Location getLocation(StandardPlayer player) {
 		return beds.get(player.getName());
 	}
 

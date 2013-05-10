@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class SetSpawnCommand extends BaseCommand {
 
@@ -15,7 +16,7 @@ public class SetSpawnCommand extends BaseCommand {
 
 	@Override
 	public boolean handle(CommandSender sender, Command command, String label, String[] args) {
-		Player player = (Player) sender;
+		StandardPlayer player = plugin.getStandardPlayer((Player) sender);
 		Location location = player.getLocation();
 		player.getWorld().setSpawnLocation(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 		player.sendMessage("Spawn set!");

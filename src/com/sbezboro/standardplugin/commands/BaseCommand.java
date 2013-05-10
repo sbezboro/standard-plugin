@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public abstract class BaseCommand implements CommandExecutor {
 	protected StandardPlugin plugin;
@@ -17,9 +18,9 @@ public abstract class BaseCommand implements CommandExecutor {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		Player player = null;
+		StandardPlayer player = null;
 		if (sender instanceof Player) {
-			player = (Player) sender;
+			player = plugin.getStandardPlayer((Player) sender);
 		}
 		
 		if (player == null && isPlayerOnly(args.length)) {

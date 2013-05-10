@@ -1,5 +1,6 @@
 package com.sbezboro.standardplugin.persistence;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
@@ -14,7 +15,7 @@ public class PlayerStorage extends ObjectStorage<StandardPlayer> {
 		StandardPlayer standardPlayer = getObject(username);
 		
 		if (standardPlayer == null) {
-			Player player = plugin.getServer().getPlayer(username);
+			Player player = Bukkit.getPlayer(username);
 			standardPlayer = new StandardPlayer(player, this);
 			
 			cacheObject(username, standardPlayer);

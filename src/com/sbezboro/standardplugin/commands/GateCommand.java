@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.Gate;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class GateCommand extends BaseCommand {
 
@@ -28,8 +29,8 @@ public class GateCommand extends BaseCommand {
 				showPlayerOnlyMessage(sender);
 				return false;
 			}
-			
-			Player player = (Player) sender;
+
+			StandardPlayer player = plugin.getStandardPlayer((Player) sender);
 			if (args.length == 1) {
 				sender.sendMessage("Usage: /" + getName() + " create <name> [displayName]");
 				return false;
@@ -110,8 +111,8 @@ public class GateCommand extends BaseCommand {
 				showPlayerOnlyMessage(sender);
 				return false;
 			}
-			
-			Player player = (Player) sender;
+
+			StandardPlayer player = plugin.getStandardPlayer((Player) sender);
 			if (args.length == 2) {
 				Gate gate = plugin.getGateStorage().getGate(args[1]);
 				if (gate == null) {
