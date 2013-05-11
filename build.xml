@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Standard.makejar" default="makejar" basedir=".">
-	<target name ="makejar" description="Create a JAR output file">
-		<jar destfile="${basedir}\Standard.jar">
+<project name="StandardPlugin" default="test" basedir=".">
+	<taskdef resource="net/sf/antcontrib/antlib.xml" >
+		<classpath>
+			<pathelement location="lib/ant-contrib.jar" />
+		</classpath>
+	</taskdef>
+	
+	<property name="jarfile" value="${basedir}/dist/Standard.jar"/>
+	
+	<target name ="build" description="Build jar file">
+	    <delete file="${jarfile}"/>
+		<jar destfile="${jarfile}">
 			<fileset dir="bin" includes="**/*.class"/>
 			<fileset dir="src" includes="plugin.yml"/>
 			<fileset dir="src" includes="config.yml"/>
 		</jar>
+	</target>
+	
+	<loadfile property="serverfile" srcfile="servers.txt"/>
+	<target name="deploy" depends="build" description="Deploy plugin to production servers">
+	    <for param="path" list="${serverfile}" delimiter="${path.separator}">
+			<sequential>
+				<exec executable="scp">
+					<arg value="${jarfile}"/>
+					<arg value="@{path}"/>
+				</exec>
+			</sequential>
+		</for>
+	</target>
+    
+	<target name="test" depends="build" description="Copy plugin to test environment">
+	    <copy file="${jarfile}" todir="../../../craftbukkit/plugins/"/>
 	</target>
 </project>
 
