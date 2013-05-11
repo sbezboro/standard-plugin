@@ -36,7 +36,7 @@ public class PlayerMoveListener extends EventListener implements Listener {
 					
 					for (Entity entity : player.getNearbyEntities(20, 10, 20)) {
 						if (entity instanceof Player) {
-							Player other = (Player) entity;
+							StandardPlayer other = plugin.getStandardPlayer(entity);
 							if (other.canSee(player)) {
 								other.playEffect(blockLocation, Effect.ENDER_SIGNAL, 0);
 								other.playEffect(blockLocation, Effect.EXTINGUISH, 0);

@@ -10,7 +10,7 @@
 	<property name="jarfile" value="${basedir}/dist/Standard.jar"/>
 	
 	<target name ="build" description="Build jar file">
-	    <delete file="${jarfile}"/>
+		<delete file="${jarfile}"/>
 		<jar destfile="${jarfile}">
 			<fileset dir="bin" includes="**/*.class"/>
 			<fileset dir="src" includes="plugin.yml"/>
@@ -31,7 +31,7 @@
 	</target>
     
 	<target name="test" depends="build" description="Copy plugin to test environment">
-	    <copy file="${jarfile}" todir="../../../craftbukkit/plugins/"/>
+		<copy file="${jarfile}" todir="../../../craftbukkit/plugins/"/>
 	</target>
 </project>
 

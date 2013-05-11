@@ -1,10 +1,8 @@
 package com.sbezboro.standardplugin.persistence;
 
-import org.bukkit.configuration.file.FileConfiguration;
 
 public abstract class PersistedObject {
 	protected ObjectStorage<?> storage;
-	private FileConfiguration config;
 	private String identifier;
 	
 	private boolean toCommit;
@@ -14,7 +12,7 @@ public abstract class PersistedObject {
 		this.identifier = identifier;
 		toCommit = false;
 		
-		this.config = storage.load(identifier);
+		storage.load(identifier);
 		
 		loadProperties();
 	}
@@ -22,8 +20,9 @@ public abstract class PersistedObject {
 	protected abstract void loadProperties();
 	
 	public final Object loadProperty(String key, Object def) {
-		if (config.contains(key)) {
-			return config.get(key);
+		Object value = storage.loadProperty(identifier, key);
+		if (value != null) {
+			return value;
 		}
 		
 		if (def != null) {
@@ -38,7 +37,7 @@ public abstract class PersistedObject {
 	}
 	
 	public final void saveProperty(String key, Object value, boolean commit) {
-		config.set(key, value);
+		storage.saveProperty(identifier, key, value);
 		
 		toCommit = !commit;
 		if (commit) {

@@ -22,7 +22,7 @@ public class RespawnListener extends EventListener implements Listener {
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 		
-		Location actualBed = plugin.getBedData().getLocation(player);
+		Location actualBed = player.getBedLocation();
 		Location eventBed = player.getBedSpawnLocation();
 		
 		boolean bedSpawn = false;
@@ -45,7 +45,7 @@ public class RespawnListener extends EventListener implements Listener {
 					event.setRespawnLocation(bedBlock.getLocation());
 				}
 			} else {
-				plugin.getBedData().removeBed(player);
+				player.saveBedLocation(null);
 
 				plugin.getLogger().info("Bed was actually missing for " + player.getName());
 			}

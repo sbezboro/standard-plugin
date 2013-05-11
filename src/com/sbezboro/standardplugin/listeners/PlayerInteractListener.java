@@ -26,7 +26,7 @@ public class PlayerInteractListener extends EventListener implements Listener {
 			
 			if (block.getTypeId() == Material.BED_BLOCK.getId()) {
 				Location location = block.getLocation();
-				plugin.getBedData().setLocation(player, location);
+				player.saveBedLocation(location);
 			}
 			break;
 		}

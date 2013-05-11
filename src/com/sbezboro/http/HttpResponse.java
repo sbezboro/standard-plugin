@@ -30,6 +30,14 @@ public class HttpResponse {
 		return null;
 	}
 	
+	public boolean getBoolean(String key) {
+		if (jsonResponse.containsKey(key) && jsonResponse.get(key) instanceof Boolean) {
+			return ((Boolean) jsonResponse.get(key)).booleanValue();
+		}
+		
+		return false;
+	}
+	
 	public String getStringResponse() {
 		return stringResponse;
 	}

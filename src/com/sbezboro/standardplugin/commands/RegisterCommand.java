@@ -3,7 +3,6 @@ package com.sbezboro.standardplugin.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com.sbezboro.http.HttpResponse;
 import com.sbezboro.http.listeners.HttpRequestListener;
@@ -19,7 +18,7 @@ public class RegisterCommand extends BaseCommand {
 
 	@Override
 	public boolean handle(CommandSender sender, Command command, String label, String[] args) {
-		final StandardPlayer player = plugin.getStandardPlayer((Player) sender);
+		final StandardPlayer player = plugin.getStandardPlayer(sender);
 
 		if (args.length != 1 || args[0].equals("help")) {
 			showUsageInfo(player);

@@ -29,10 +29,9 @@ import com.sbezboro.standardplugin.listeners.PlayerJoinListener;
 import com.sbezboro.standardplugin.listeners.PlayerMoveListener;
 import com.sbezboro.standardplugin.listeners.PlayerQuitListener;
 import com.sbezboro.standardplugin.listeners.RespawnListener;
-import com.sbezboro.standardplugin.model.BedData;
 import com.sbezboro.standardplugin.model.StandardPlayer;
-import com.sbezboro.standardplugin.persistence.ConfigStorage;
 import com.sbezboro.standardplugin.persistence.GateStorage;
+import com.sbezboro.standardplugin.persistence.IStorage;
 import com.sbezboro.standardplugin.persistence.LogWriter;
 import com.sbezboro.standardplugin.persistence.PlayerStorage;
 import com.sbezboro.standardplugin.util.PlayerSaver;
@@ -41,10 +40,9 @@ public class StandardPlugin extends JavaPlugin {
 	private static StandardPlugin instance;
 	
 	private List<BaseCommand> commands;
-	private List<ConfigStorage> storages;
+	private List<IStorage> storages;
 	private List<LogWriter> logs;
 	
-	private BedData bedData;
 	private GateStorage gateStorage;
 	private PlayerStorage playerStorage;
 	
@@ -77,12 +75,11 @@ public class StandardPlugin extends JavaPlugin {
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		
-		bedData = new BedData();
-		
-		storages = new ArrayList<ConfigStorage>();
+		storages = new ArrayList<IStorage>();
 		gateStorage = new GateStorage(this);
 		playerStorage = new PlayerStorage(this);
 		storages.add(gateStorage);
+		storages.add(playerStorage);
 		
 		logs = new ArrayList<LogWriter>();
 		
@@ -140,7 +137,7 @@ public class StandardPlugin extends JavaPlugin {
 		mutedForumUsers = getConfig().getStringList("muted-forum-users");
 		endpoint = getConfig().getString("endpoint");
 		
-		for (ConfigStorage storage : storages) {
+		for (IStorage storage : storages) {
 			storage.reload();
 		}
 	}
@@ -221,10 +218,6 @@ public class StandardPlugin extends JavaPlugin {
 		return muted;
 	}
 	
-	public BedData getBedData() {
-		return bedData;
-	}
-	
 	public GateStorage getGateStorage() {
 		return gateStorage;
 	}
@@ -233,7 +226,11 @@ public class StandardPlugin extends JavaPlugin {
 		return playerStorage.getPlayer(username);
 	}
 	
-	public StandardPlayer getStandardPlayer(Player player) {
-		return playerStorage.getPlayer(player.getName());
+	public StandardPlayer getStandardPlayer(Object object) {
+		if (!(object instanceof Player)) {
+			return null;
+		}
+		
+		return playerStorage.getPlayer(((Player) object).getName());
 	}
 }

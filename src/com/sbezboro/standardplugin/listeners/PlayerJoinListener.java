@@ -2,6 +2,7 @@ package com.sbezboro.standardplugin.listeners;
 
 import me.asofold.bpl.simplyvanish.SimplyVanish;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -37,7 +38,7 @@ public class PlayerJoinListener extends EventListener implements Listener {
     	}
     	
     	if (player.getBedSpawnLocation() != null) {
-    		plugin.getBedData().setLocation(player, player.getBedSpawnLocation());
+    		player.saveBedLocation(player.getBedSpawnLocation());
     	}
     	
     	if (!player.getName().equals(ChatColor.stripColor(player.getDisplayName()))) {
@@ -55,13 +56,21 @@ public class PlayerJoinListener extends EventListener implements Listener {
 				int result = response.getInt("result");
 				if (result == 1) {
 					int rank = response.getInt("rank");
+					boolean veteran = response.getBoolean("veteran");
 					
 					String name = player.getDisplayName();
 					for (StandardPlayer other : plugin.getOnlinePlayers()) {
 						if (player == other) {
+							Bukkit.broadcastMessage("You are ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!");
 							player.sendMessage("You are ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!");
 						} else {
-							other.sendMessage(ChatColor.AQUA + name + ChatColor.WHITE + " is ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!");
+							String message = "";
+							if (veteran) {
+								message += "" + ChatColor.GOLD + ChatColor.BOLD + "Veteran ";
+							}
+							
+							message += ChatColor.AQUA + name + ChatColor.WHITE + " is ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!";
+							other.sendMessage(message);
 						}
 					}
 				}

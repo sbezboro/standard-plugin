@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 
-public abstract class ObjectStorage<T extends PersistedObject> {
+public abstract class ObjectStorage<T extends PersistedObject> implements IStorage {
 	protected StandardPlugin plugin;
 	private String dataFolder;
 	
@@ -28,22 +28,33 @@ public abstract class ObjectStorage<T extends PersistedObject> {
 		
 		idToObject = new HashMap<String, T>();
 	}
+
+	@Override
+	public void reload() {
+		for (String identifier : idToFile.keySet()) {
+			load(identifier);
+			idToObject.get(identifier).loadProperties();
+		}
+	}
+
+	@Override
+	public void unload() {
+		for (T object : idToObject.values()) {
+			if (object.toCommit()) {
+				object.save();
+			}
+		}
+	}
 	
 	public FileConfiguration load(String identifier) {
 		File file = idToFile.get(identifier);
-		FileConfiguration config = null;
-		
 		if (file == null) {
 			file = new File(plugin.getDataFolder(), dataFolder + "/" + identifier + ".yml");
-	    } else {
-	    	config = idToConfig.get(identifier);
+			idToFile.put(identifier, file);
 	    }
 		
-		if (config == null) {
-			config = YamlConfiguration.loadConfiguration(file);
-		}
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		
-		idToFile.put(identifier, file);
 		idToConfig.put(identifier, config);
 		
 		return config;
@@ -63,6 +74,15 @@ public abstract class ObjectStorage<T extends PersistedObject> {
 	    }
 	}
 	
+	public final Object loadProperty(String identifier, String key) {
+		FileConfiguration config = idToConfig.get(identifier);
+		return config.get(identifier, key);
+	}
+	
+	public final void saveProperty(String identifier, String key, Object value) {
+		idToConfig.get(identifier).set(key, value);
+	}
+	
 	protected T getObject(String identifier) {
 		return idToObject.get(identifier);
 	}
@@ -71,11 +91,7 @@ public abstract class ObjectStorage<T extends PersistedObject> {
 		idToObject.put(identifier, object);
 	}
 	
-	public void unload() {
-		for (T object : idToObject.values()) {
-			if (object.toCommit()) {
-				object.save();
-			}
-		}
+	public void uncacheObject(String identifer) {
+		idToObject.remove(identifer);
 	}
 }

@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.Gate;
@@ -30,7 +29,7 @@ public class GateCommand extends BaseCommand {
 				return false;
 			}
 
-			StandardPlayer player = plugin.getStandardPlayer((Player) sender);
+			StandardPlayer player = plugin.getStandardPlayer(sender);
 			if (args.length == 1) {
 				sender.sendMessage("Usage: /" + getName() + " create <name> [displayName]");
 				return false;
@@ -112,7 +111,7 @@ public class GateCommand extends BaseCommand {
 				return false;
 			}
 
-			StandardPlayer player = plugin.getStandardPlayer((Player) sender);
+			StandardPlayer player = plugin.getStandardPlayer(sender);
 			if (args.length == 2) {
 				Gate gate = plugin.getGateStorage().getGate(args[1]);
 				if (gate == null) {
