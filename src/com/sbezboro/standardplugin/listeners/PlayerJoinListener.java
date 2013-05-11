@@ -61,7 +61,6 @@ public class PlayerJoinListener extends EventListener implements Listener {
 					String name = player.getDisplayName();
 					for (StandardPlayer other : plugin.getOnlinePlayers()) {
 						if (player == other) {
-							Bukkit.broadcastMessage("You are ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!");
 							player.sendMessage("You are ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!");
 						} else {
 							String message = "";
