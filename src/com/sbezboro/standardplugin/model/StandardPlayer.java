@@ -52,6 +52,10 @@ public class StandardPlayer extends PlayerDelegate {
 		return !getName().equals(getDisplayName(false));
 	}
 	
+	public void leftServer() {
+		player = null;
+	}
+	
 	public String getDisplayName(boolean colored) {
 		if (isOnline()) {
 			String name = super.getDisplayName();

@@ -25,13 +25,10 @@ public class PlayerStorage extends ObjectStorage<StandardPlayer> {
 			}
 			
 			cacheObject(username, standardPlayer);
+		} else if (standardPlayer.isOnline() && standardPlayer.getBasePlayer() == null) {
+			standardPlayer.setPlayer(Bukkit.getPlayer(username));
 		}
 		
 		return standardPlayer;
-	}
-
-	@Override
-	public void save(String identifer) {
-		super.save(identifer);
 	}
 }

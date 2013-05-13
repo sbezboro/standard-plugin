@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Achievement;
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.EntityEffect;
 import org.bukkit.GameMode;
@@ -55,14 +56,14 @@ import com.sbezboro.standardplugin.persistence.PlayerStorage;
 
 @SuppressWarnings("deprecation")
 public abstract class PlayerDelegate extends PersistedObject implements Player {
-	protected final Player player;
-	protected final OfflinePlayer offlinePlayer;
+	protected Player player;
+	protected OfflinePlayer offlinePlayer;
 
-	public PlayerDelegate(final Player player, final PlayerStorage storage) {
+	public PlayerDelegate(Player player, PlayerStorage storage) {
 		super(storage, player.getName());
 		
 		this.player = player;
-		this.offlinePlayer = player;
+		this.offlinePlayer = Bukkit.getOfflinePlayer(player.getName());
 	}
 
 	public PlayerDelegate(final OfflinePlayer offlinePlayer, final PlayerStorage storage) {
@@ -78,6 +79,14 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	
 	public OfflinePlayer getBaseOfflinePlayer() {
 		return offlinePlayer;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public void setOfflinePlayer(OfflinePlayer offlinePlayer) {
+		this.offlinePlayer = offlinePlayer;
 	}
 
 	public Location getBedSpawnLocation() {

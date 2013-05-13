@@ -24,6 +24,8 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 				.replaceAll(player.getName(), player.getDisplayName(false));
 		
     	event.setQuitMessage(quitMessage);
+    	
+    	player.leftServer();
 	}
 
 	@EventHandler(priority=EventPriority.LOWEST)
@@ -33,5 +35,7 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 		String quitMessage = ChatColor.DARK_GRAY + player.getDisplayName(false) + " was kicked!";
 		
     	event.setLeaveMessage(quitMessage);
+    	
+    	player.leftServer();
 	}
 }

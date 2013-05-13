@@ -33,7 +33,7 @@ public abstract class PersistedObject {
 	}
 	
 	public boolean loadBoolean(String key, boolean def) {
-		Object property = loadProperty(key, def);
+		Object property = loadProperty(key, def ? def : null);
 		
 		if (property != null && property instanceof Boolean) {
 			return (Boolean) property;
