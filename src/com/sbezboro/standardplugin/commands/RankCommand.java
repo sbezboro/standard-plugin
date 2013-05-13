@@ -9,7 +9,6 @@ import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.net.RankHttpRequest;
-import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class RankCommand extends BaseCommand {
 
@@ -26,14 +25,14 @@ public class RankCommand extends BaseCommand {
 			return false;
 		}
 
-		final String username;
 		final StandardPlayer rankPlayer;
 		if (args.length == 1) {
 			rankPlayer = plugin.getStandardPlayer(args[0]);
 		} else {
 			rankPlayer = senderPlayer;
 		}
-		
+
+		final String username;
 		if (rankPlayer == null) {
 			username = args[0];
 		} else {
@@ -51,14 +50,12 @@ public class RankCommand extends BaseCommand {
 					int rank = response.getInt("rank");
 					String time = response.getString("time");
 					String actualUsername = response.getString("username");
+					boolean veteran = response.getBoolean("veteran");
 					
-					if (senderPlayer != null && rankPlayer == senderPlayer) {
-						sender.sendMessage("You are ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!");
-						sender.sendMessage("You have played here " + ChatColor.AQUA + time + ChatColor.WHITE + ".");
-					} else {
-						sender.sendMessage(actualUsername + " is ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!");
-						sender.sendMessage(actualUsername + " has played here " + ChatColor.AQUA + time + ChatColor.WHITE + ".");
-					}
+					StandardPlayer actualPlayer = plugin.getStandardPlayer(actualUsername);
+					
+					sender.sendMessage(actualPlayer.getRankDescription(actualPlayer == senderPlayer, rank, veteran));
+					sender.sendMessage(actualPlayer.getTimePlayedDescription(actualPlayer == senderPlayer, time));
 				} else {
 					sender.sendMessage("The player \"" + username + "\" doesn't exist on the server.");
 				}

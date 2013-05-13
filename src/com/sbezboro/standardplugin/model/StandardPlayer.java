@@ -6,6 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.persistence.PlayerStorage;
+import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class StandardPlayer extends PlayerDelegate {
 	private static final String FORUM_MUTED_PROPERTY = "forum-muted";
@@ -54,6 +55,34 @@ public class StandardPlayer extends PlayerDelegate {
 	
 	public void leftServer() {
 		player = null;
+	}
+	
+	public String getRankDescription(boolean self, int rank, boolean veteran) {
+		String message = "";
+		if (self) {
+			if (veteran) {
+				message += "You are a " + ChatColor.GOLD + ChatColor.BOLD + "veteran" + ChatColor.WHITE + " and ";
+			} else {
+				message = "You ";
+			}
+			
+			message += "are ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!";
+		} else {
+			if (veteran) {
+				message += "" + ChatColor.GOLD + ChatColor.BOLD + "Veteran ";
+			}
+			
+			message += ChatColor.AQUA + getDisplayName() + ChatColor.WHITE + " is ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!";
+		}
+		return message;
+	}
+	
+	public String getTimePlayedDescription(boolean self, String time) {
+		if (self) {
+			return "You have played here " + ChatColor.AQUA + time + ChatColor.WHITE + ".";
+		} else {
+			return getName() + " has played here " + ChatColor.AQUA + time + ChatColor.WHITE + ".";
+		}
 	}
 	
 	public String getDisplayName(boolean colored) {

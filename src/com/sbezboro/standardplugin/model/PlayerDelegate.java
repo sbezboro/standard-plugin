@@ -66,7 +66,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		this.offlinePlayer = Bukkit.getOfflinePlayer(player.getName());
 	}
 
-	public PlayerDelegate(final OfflinePlayer offlinePlayer, final PlayerStorage storage) {
+	public PlayerDelegate(OfflinePlayer offlinePlayer, PlayerStorage storage) {
 		super(storage, offlinePlayer.getName());
 		
 		this.player = null;

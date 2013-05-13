@@ -20,11 +20,11 @@
 	
 	<loadfile property="serverfile" srcfile="servers.txt"/>
 	<target name="deploy" depends="build" description="Deploy plugin to production servers">
-	    <for param="path" list="${serverfile}" delimiter="${path.separator}">
+	    <for param="path" list="${serverfile}" delimiter="${line.separator}">
 			<sequential>
 				<exec executable="scp">
 					<arg value="${jarfile}"/>
-					<arg value="@{path}"/>
+					<arg value="@{path}:craftbukkit/plugins"/>
 				</exec>
 			</sequential>
 		</for>

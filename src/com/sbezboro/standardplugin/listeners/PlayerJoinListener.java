@@ -13,7 +13,6 @@ import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.net.RankHttpRequest;
-import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class PlayerJoinListener extends EventListener implements Listener {
 	
@@ -57,19 +56,8 @@ public class PlayerJoinListener extends EventListener implements Listener {
 					int rank = response.getInt("rank");
 					boolean veteran = response.getBoolean("veteran");
 					
-					String name = player.getDisplayName();
 					for (StandardPlayer other : plugin.getOnlinePlayers()) {
-						if (player == other) {
-							player.sendMessage("You are ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!");
-						} else {
-							String message = "";
-							if (veteran) {
-								message += "" + ChatColor.GOLD + ChatColor.BOLD + "Veteran ";
-							}
-							
-							message += ChatColor.AQUA + name + ChatColor.WHITE + " is ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!";
-							other.sendMessage(message);
-						}
+						other.sendMessage(player.getRankDescription(player == other, rank, veteran));
 					}
 				}
 			}
