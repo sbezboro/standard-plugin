@@ -23,19 +23,17 @@ public class ForumPostAPICallHandler extends APICallHandler {
 		String topic = (String) args[2];
 		String url = (String) args[3];
 		
-		StandardPlayer player = plugin.getPlayerExact(username);
+		StandardPlayer player = plugin.getStandardPlayer(username);
 		
-		if (plugin.isForumMuted(username)) {
-			if (player != null) {
-				username = ChatColor.stripColor(player.getDisplayName());
+		if (player.isForumMuted()) {
+			if (player.isOnline()) {
+				username = player.getDisplayName(false);
 				player.sendMessage(ChatColor.RED + "The notification for your forum post has been hidden due to abuse!");
 			}
 			
 			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + username + ChatColor.DARK_AQUA + " posted in " + ChatColor.YELLOW + forumName);
 		} else {
-			if (player != null) {
-				username = ChatColor.stripColor(player.getDisplayName());
-			}
+			username = player.getDisplayName(false);
 	
 			Bukkit.getServer().broadcastMessage(ChatColor.DARK_AQUA + "[Forum] " + ChatColor.YELLOW + username + ChatColor.DARK_AQUA + " just posted in " + ChatColor.YELLOW + forumName + ChatColor.DARK_AQUA + "!");
 			Bukkit.getServer().broadcastMessage(ChatColor.DARK_AQUA + "[Forum] Topic: " + ChatColor.YELLOW + topic);

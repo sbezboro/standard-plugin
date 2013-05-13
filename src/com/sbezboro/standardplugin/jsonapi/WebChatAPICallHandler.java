@@ -31,16 +31,6 @@ public class WebChatAPICallHandler extends APICallHandler {
 		return false;
 	}
 	
-	private String getDisplayName(String username) {
-		StandardPlayer player = plugin.getPlayerExact(username);
-		
-		if (player == null) {
-			return username;
-		} else {
-			return player.getDisplayName();
-		}
-	}
-	
 	private boolean handleMessage(Object[] args) {
 		if (args.length != 3) {
 			return false;
@@ -49,14 +39,14 @@ public class WebChatAPICallHandler extends APICallHandler {
 		String username = (String) args[1];
 		String message = (String) args[2];
 		
-		if (Bukkit.getOfflinePlayer(username).isBanned()) {
+		StandardPlayer player = plugin.getStandardPlayer(username);
+		
+		if (player.isBanned()) {
 			plugin.getLogger().warning(username + " has been blocked from web chat because they are banned.");
 			return true;
 		}
-
-		String displayName = getDisplayName(username);
 		
-		Bukkit.getServer().broadcastMessage(ChatColor.BLUE + "[Web Chat] " + ChatColor.AQUA + displayName + ChatColor.RESET + ": " + message);
+		Bukkit.getServer().broadcastMessage(ChatColor.BLUE + "[Web Chat] " + ChatColor.AQUA + player.getDisplayName(false) + ChatColor.RESET + ": " + message);
 		
 		return true;
 	}
@@ -69,19 +59,19 @@ public class WebChatAPICallHandler extends APICallHandler {
 		String type = (String) args[0];
 		String username = (String) args[1];
 		
-		if (Bukkit.getOfflinePlayer(username).isBanned()) {
+		StandardPlayer player = plugin.getStandardPlayer(username);
+		
+		if (player.isBanned()) {
 			plugin.getLogger().warning(username + " has been blocked from web chat because they are banned.");
 			return true;
 		}
 		
 		String message;
-
-		String displayName = getDisplayName(username);
 		
 		if (type.equals("enter")) {
-			message = ChatColor.BLUE + "[Web Chat] " + ChatColor.YELLOW + ChatColor.stripColor(displayName) + " has entered web chat";
+			message = ChatColor.BLUE + "[Web Chat] " + ChatColor.YELLOW + player.getDisplayName(false) + " has entered web chat";
 		} else if (type.equals("exit")) {
-			message = ChatColor.BLUE + "[Web Chat] " + ChatColor.YELLOW + ChatColor.stripColor(displayName) + " has left web chat";
+			message = ChatColor.BLUE + "[Web Chat] " + ChatColor.YELLOW + player.getDisplayName(false) + " has left web chat";
 		} else {
 			return false;
 		}

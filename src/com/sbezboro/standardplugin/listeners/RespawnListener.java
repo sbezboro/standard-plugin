@@ -44,6 +44,8 @@ public class RespawnListener extends EventListener implements Listener {
 				} else {
 					event.setRespawnLocation(bedBlock.getLocation());
 				}
+				
+				plugin.getLogger().info("Bukkit said bed was missing, but it was actually there for " + player.getName());
 			} else {
 				player.saveBedLocation(null);
 

@@ -2,7 +2,6 @@ package com.sbezboro.standardplugin.listeners;
 
 import me.asofold.bpl.simplyvanish.SimplyVanish;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -41,8 +40,8 @@ public class PlayerJoinListener extends EventListener implements Listener {
     		player.saveBedLocation(player.getBedSpawnLocation());
     	}
     	
-    	if (!player.getName().equals(ChatColor.stripColor(player.getDisplayName()))) {
-        	String joinMessage = event.getJoinMessage().replace(player.getName(), ChatColor.stripColor(player.getDisplayName()) + " (" + player.getName() + ")");
+    	if (player.hasNickname()) {
+        	String joinMessage = event.getJoinMessage().replace(player.getName(), player.getDisplayName(false) + " (" + player.getName() + ")");
         	event.setJoinMessage(joinMessage);
     	}
 	}

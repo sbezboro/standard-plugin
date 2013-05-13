@@ -27,7 +27,7 @@ import com.sbezboro.standardplugin.listeners.DeathListener;
 import com.sbezboro.standardplugin.listeners.PlayerInteractListener;
 import com.sbezboro.standardplugin.listeners.PlayerJoinListener;
 import com.sbezboro.standardplugin.listeners.PlayerMoveListener;
-import com.sbezboro.standardplugin.listeners.PlayerQuitListener;
+import com.sbezboro.standardplugin.listeners.PlayerLeaveListener;
 import com.sbezboro.standardplugin.listeners.RespawnListener;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.persistence.GateStorage;
@@ -49,7 +49,6 @@ public class StandardPlugin extends JavaPlugin {
 	private int serverId = 0;
 	private String secretKey = "";
 	private boolean debug = false;
-	private List<String> mutedForumUsers;
 	
 	private String endpoint;
 	
@@ -97,7 +96,7 @@ public class StandardPlugin extends JavaPlugin {
 
 		getServer().getPluginManager().registerEvents(new DeathListener(this), this);
 		getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
-		getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
+		getServer().getPluginManager().registerEvents(new PlayerLeaveListener(this), this);
 		getServer().getPluginManager().registerEvents(new PlayerInteractListener(this), this);
 		getServer().getPluginManager().registerEvents(new RespawnListener(this), this);
 		getServer().getPluginManager().registerEvents(new PlayerMoveListener(this), this);
@@ -125,7 +124,7 @@ public class StandardPlugin extends JavaPlugin {
 		reloadConfig();
 		
 		serverId = getConfig().getInt("server-id");
-		getLogger().info("Server starting with id " + serverId);
+		getLogger().info("Server starting with server id " + serverId);
 		
 		secretKey = getConfig().getString("secret-key");
 		
@@ -134,7 +133,6 @@ public class StandardPlugin extends JavaPlugin {
 			getLogger().info("Debug mode enabled!");
 		}
 		
-		mutedForumUsers = getConfig().getStringList("muted-forum-users");
 		endpoint = getConfig().getString("endpoint");
 		
 		for (IStorage storage : storages) {
@@ -166,10 +164,6 @@ public class StandardPlugin extends JavaPlugin {
 		playerBroadcast(null, message);
 	}
 	
-	public StandardPlayer getPlayerExact(String username) {
-		return getStandardPlayer(Bukkit.getPlayerExact(username));
-	}
-	
 	public StandardPlayer[] getOnlinePlayers() {
 		Player[] onlinePlayers = Bukkit.getOnlinePlayers();
 		StandardPlayer[] result = new StandardPlayer[onlinePlayers.length];
@@ -193,29 +187,8 @@ public class StandardPlugin extends JavaPlugin {
 		return debug;
 	}
 	
-	public boolean isForumMuted(String username) {
-		return mutedForumUsers.contains(username);
-	}
-	
 	public String getEndpoint() {
 		return endpoint;
-	}
-	
-	public boolean toggleForumMute(String username) {
-		boolean muted;
-		
-		if (mutedForumUsers.contains(username)) {
-			mutedForumUsers.remove(username);
-			muted = false;
-		} else {
-			mutedForumUsers.add(username);
-			muted = true;
-		}
-		
-		getConfig().set("muted-forum-users", mutedForumUsers);
-		saveConfig();
-		
-		return muted;
 	}
 	
 	public GateStorage getGateStorage() {
@@ -231,6 +204,6 @@ public class StandardPlugin extends JavaPlugin {
 			return null;
 		}
 		
-		return playerStorage.getPlayer(((Player) object).getName());
+		return getStandardPlayer(((Player) object).getName());
 	}
 }

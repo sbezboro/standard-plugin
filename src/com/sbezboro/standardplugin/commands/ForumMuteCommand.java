@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class ForumMuteCommand extends BaseCommand {
 
@@ -27,7 +28,8 @@ public class ForumMuteCommand extends BaseCommand {
 				username = players.get(0).getName();
 			}
 			
-			boolean muted = plugin.toggleForumMute(username);
+			StandardPlayer player = plugin.getStandardPlayer(username);
+			boolean muted = player.toggleForumMute();
 			
 			if (muted) {
 				sender.sendMessage(username + " forum muted!");

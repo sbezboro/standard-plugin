@@ -70,13 +70,13 @@ public abstract class ObjectStorage<T extends PersistedObject> implements IStora
 	    try {
 	        config.save(file);
 	    } catch (IOException e) {
-	    	plugin.getLogger().severe("Error saving object storage to file!");
+	    	plugin.getLogger().severe("Error saving object to file!");
 	    }
 	}
 	
 	public final Object loadProperty(String identifier, String key) {
 		FileConfiguration config = idToConfig.get(identifier);
-		return config.get(identifier, key);
+		return config.get(key);
 	}
 	
 	public final void saveProperty(String identifier, String key, Object value) {

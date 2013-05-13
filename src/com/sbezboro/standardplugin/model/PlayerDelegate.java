@@ -16,6 +16,7 @@ import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Note;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.Sound;
 import org.bukkit.Statistic;
@@ -54,844 +55,862 @@ import com.sbezboro.standardplugin.persistence.PlayerStorage;
 
 @SuppressWarnings("deprecation")
 public abstract class PlayerDelegate extends PersistedObject implements Player {
-	protected final Player base;
+	protected final Player player;
+	protected final OfflinePlayer offlinePlayer;
 
 	public PlayerDelegate(final Player player, final PlayerStorage storage) {
 		super(storage, player.getName());
 		
-		this.base = player;
+		this.player = player;
+		this.offlinePlayer = player;
+	}
+
+	public PlayerDelegate(final OfflinePlayer offlinePlayer, final PlayerStorage storage) {
+		super(storage, offlinePlayer.getName());
+		
+		this.player = null;
+		this.offlinePlayer = offlinePlayer;
+	}
+	
+	public Player getBasePlayer() {
+		return player;
+	}
+	
+	public OfflinePlayer getBaseOfflinePlayer() {
+		return offlinePlayer;
+	}
+
+	public Location getBedSpawnLocation() {
+		return offlinePlayer.getBedSpawnLocation();
+	}
+
+	public long getFirstPlayed() {
+		return offlinePlayer.getFirstPlayed();
+	}
+
+	public long getLastPlayed() {
+		return offlinePlayer.getLastPlayed();
+	}
+
+	public String getName() {
+		return offlinePlayer.getName();
+	}
+
+	public Player getPlayer() {
+		return offlinePlayer.getPlayer();
+	}
+
+	public boolean hasPlayedBefore() {
+		return offlinePlayer.hasPlayedBefore();
+	}
+
+	public boolean isBanned() {
+		return offlinePlayer.isBanned();
+	}
+
+	public boolean isOnline() {
+		return offlinePlayer.isOnline();
+	}
+
+	public boolean isOp() {
+		return offlinePlayer.isOp();
+	}
+
+	public boolean isWhitelisted() {
+		return offlinePlayer.isWhitelisted();
+	}
+
+	public Map<String, Object> serialize() {
+		return offlinePlayer.serialize();
+	}
+
+	public void setBanned(boolean banned) {
+		offlinePlayer.setBanned(banned);
+	}
+
+	public void setOp(boolean value) {
+		offlinePlayer.setOp(value);
+	}
+
+	public void setWhitelisted(boolean value) {
+		offlinePlayer.setWhitelisted(value);
 	}
 
 	public void abandonConversation(Conversation conversation,
 			ConversationAbandonedEvent details) {
-		base.abandonConversation(conversation, details);
+		player.abandonConversation(conversation, details);
 	}
 
 	public void abandonConversation(Conversation conversation) {
-		base.abandonConversation(conversation);
+		player.abandonConversation(conversation);
 	}
 
 	public void acceptConversationInput(String input) {
-		base.acceptConversationInput(input);
+		player.acceptConversationInput(input);
 	}
 
-	public PermissionAttachment addAttachment(Plugin plugin, int ticks) {
-		return base.addAttachment(plugin, ticks);
+	public PermissionAttachment addAttachment(Plugin arg0, int arg1) {
+		return player.addAttachment(arg0, arg1);
 	}
 
-	public PermissionAttachment addAttachment(Plugin plugin, String name,
-			boolean value, int ticks) {
-		return base.addAttachment(plugin, name, value, ticks);
+	public PermissionAttachment addAttachment(Plugin arg0, String arg1,
+			boolean arg2, int arg3) {
+		return player.addAttachment(arg0, arg1, arg2, arg3);
 	}
 
-	public PermissionAttachment addAttachment(Plugin plugin, String name,
-			boolean value) {
-		return base.addAttachment(plugin, name, value);
+	public PermissionAttachment addAttachment(Plugin arg0, String arg1,
+			boolean arg2) {
+		return player.addAttachment(arg0, arg1, arg2);
 	}
 
-	public PermissionAttachment addAttachment(Plugin plugin) {
-		return base.addAttachment(plugin);
+	public PermissionAttachment addAttachment(Plugin arg0) {
+		return player.addAttachment(arg0);
 	}
 
 	public boolean addPotionEffect(PotionEffect effect, boolean force) {
-		return base.addPotionEffect(effect, force);
+		return player.addPotionEffect(effect, force);
 	}
 
 	public boolean addPotionEffect(PotionEffect effect) {
-		return base.addPotionEffect(effect);
+		return player.addPotionEffect(effect);
 	}
 
 	public boolean addPotionEffects(Collection<PotionEffect> effects) {
-		return base.addPotionEffects(effects);
+		return player.addPotionEffects(effects);
 	}
 
 	public void awardAchievement(Achievement achievement) {
-		base.awardAchievement(achievement);
+		player.awardAchievement(achievement);
 	}
 
 	public boolean beginConversation(Conversation conversation) {
-		return base.beginConversation(conversation);
+		return player.beginConversation(conversation);
 	}
 
 	public boolean canSee(Player player) {
-		return base.canSee(player);
+		return player.canSee(player);
 	}
 
 	public void chat(String msg) {
-		base.chat(msg);
+		player.chat(msg);
 	}
 
 	public void closeInventory() {
-		base.closeInventory();
+		player.closeInventory();
 	}
 
 	public void damage(int arg0, Entity arg1) {
-		base.damage(arg0, arg1);
+		player.damage(arg0, arg1);
 	}
 
 	public void damage(int arg0) {
-		base.damage(arg0);
+		player.damage(arg0);
 	}
 
 	public boolean eject() {
-		return base.eject();
+		return player.eject();
 	}
 
 	public Collection<PotionEffect> getActivePotionEffects() {
-		return base.getActivePotionEffects();
+		return player.getActivePotionEffects();
 	}
 
 	public InetSocketAddress getAddress() {
-		return base.getAddress();
+		return player.getAddress();
 	}
 
 	public boolean getAllowFlight() {
-		return base.getAllowFlight();
-	}
-
-	public Location getBedSpawnLocation() {
-		return base.getBedSpawnLocation();
+		return player.getAllowFlight();
 	}
 
 	public boolean getCanPickupItems() {
-		return base.getCanPickupItems();
+		return player.getCanPickupItems();
 	}
 
 	public Location getCompassTarget() {
-		return base.getCompassTarget();
+		return player.getCompassTarget();
 	}
 
 	public String getCustomName() {
-		return base.getCustomName();
+		return player.getCustomName();
 	}
 
 	public String getDisplayName() {
-		return base.getDisplayName();
+		return player.getDisplayName();
 	}
 
 	public Set<PermissionAttachmentInfo> getEffectivePermissions() {
-		return base.getEffectivePermissions();
+		return player.getEffectivePermissions();
 	}
 
 	public Inventory getEnderChest() {
-		return base.getEnderChest();
+		return player.getEnderChest();
 	}
 
 	public int getEntityId() {
-		return base.getEntityId();
+		return player.getEntityId();
 	}
 
 	public EntityEquipment getEquipment() {
-		return base.getEquipment();
+		return player.getEquipment();
 	}
 
 	public float getExhaustion() {
-		return base.getExhaustion();
+		return player.getExhaustion();
 	}
 
 	public float getExp() {
-		return base.getExp();
+		return player.getExp();
 	}
 
 	public int getExpToLevel() {
-		return base.getExpToLevel();
+		return player.getExpToLevel();
 	}
 
 	public double getEyeHeight() {
-		return base.getEyeHeight();
+		return player.getEyeHeight();
 	}
 
 	public double getEyeHeight(boolean ignoreSneaking) {
-		return base.getEyeHeight(ignoreSneaking);
+		return player.getEyeHeight(ignoreSneaking);
 	}
 
 	public Location getEyeLocation() {
-		return base.getEyeLocation();
+		return player.getEyeLocation();
 	}
 
 	public float getFallDistance() {
-		return base.getFallDistance();
+		return player.getFallDistance();
 	}
 
 	public int getFireTicks() {
-		return base.getFireTicks();
-	}
-
-	public long getFirstPlayed() {
-		return base.getFirstPlayed();
+		return player.getFireTicks();
 	}
 
 	public float getFlySpeed() {
-		return base.getFlySpeed();
+		return player.getFlySpeed();
 	}
 
 	public int getFoodLevel() {
-		return base.getFoodLevel();
+		return player.getFoodLevel();
 	}
 
 	public GameMode getGameMode() {
-		return base.getGameMode();
+		return player.getGameMode();
 	}
 
 	public int getHealth() {
-		return base.getHealth();
+		return player.getHealth();
 	}
 
 	public PlayerInventory getInventory() {
-		return base.getInventory();
+		return player.getInventory();
 	}
 
 	public ItemStack getItemInHand() {
-		return base.getItemInHand();
+		return player.getItemInHand();
 	}
 
 	public ItemStack getItemOnCursor() {
-		return base.getItemOnCursor();
+		return player.getItemOnCursor();
 	}
 
 	public Player getKiller() {
-		return base.getKiller();
+		return player.getKiller();
 	}
 
 	public int getLastDamage() {
-		return base.getLastDamage();
+		return player.getLastDamage();
 	}
 
 	public EntityDamageEvent getLastDamageCause() {
-		return base.getLastDamageCause();
-	}
-
-	public long getLastPlayed() {
-		return base.getLastPlayed();
+		return player.getLastDamageCause();
 	}
 
 	public List<Block> getLastTwoTargetBlocks(HashSet<Byte> transparent,
 			int maxDistance) {
-		return base.getLastTwoTargetBlocks(transparent, maxDistance);
+		return player.getLastTwoTargetBlocks(transparent, maxDistance);
 	}
 
 	public int getLevel() {
-		return base.getLevel();
+		return player.getLevel();
 	}
 
 	public List<Block> getLineOfSight(HashSet<Byte> transparent, int maxDistance) {
-		return base.getLineOfSight(transparent, maxDistance);
+		return player.getLineOfSight(transparent, maxDistance);
 	}
 
 	public Set<String> getListeningPluginChannels() {
-		return base.getListeningPluginChannels();
+		return player.getListeningPluginChannels();
 	}
 
 	public Location getLocation() {
-		return base.getLocation();
+		return player.getLocation();
 	}
 
-	public Location getLocation(Location arg0) {
-		return base.getLocation(arg0);
+	public Location getLocation(Location loc) {
+		return player.getLocation(loc);
 	}
 
 	public int getMaxFireTicks() {
-		return base.getMaxFireTicks();
+		return player.getMaxFireTicks();
 	}
 
 	public int getMaxHealth() {
-		return base.getMaxHealth();
+		return player.getMaxHealth();
 	}
 
 	public int getMaximumAir() {
-		return base.getMaximumAir();
+		return player.getMaximumAir();
 	}
 
 	public int getMaximumNoDamageTicks() {
-		return base.getMaximumNoDamageTicks();
+		return player.getMaximumNoDamageTicks();
 	}
 
 	public List<MetadataValue> getMetadata(String arg0) {
-		return base.getMetadata(arg0);
+		return player.getMetadata(arg0);
 	}
 
-	public String getName() {
-		return base.getName();
-	}
-
-	public List<Entity> getNearbyEntities(double arg0, double arg1, double arg2) {
-		return base.getNearbyEntities(arg0, arg1, arg2);
+	public List<Entity> getNearbyEntities(double x, double y, double z) {
+		return player.getNearbyEntities(x, y, z);
 	}
 
 	public int getNoDamageTicks() {
-		return base.getNoDamageTicks();
+		return player.getNoDamageTicks();
 	}
 
 	public InventoryView getOpenInventory() {
-		return base.getOpenInventory();
+		return player.getOpenInventory();
 	}
 
 	public Entity getPassenger() {
-		return base.getPassenger();
-	}
-
-	public Player getPlayer() {
-		return base.getPlayer();
+		return player.getPassenger();
 	}
 
 	public String getPlayerListName() {
-		return base.getPlayerListName();
+		return player.getPlayerListName();
 	}
 
 	public long getPlayerTime() {
-		return base.getPlayerTime();
+		return player.getPlayerTime();
 	}
 
 	public long getPlayerTimeOffset() {
-		return base.getPlayerTimeOffset();
+		return player.getPlayerTimeOffset();
 	}
 
 	public WeatherType getPlayerWeather() {
-		return base.getPlayerWeather();
+		return player.getPlayerWeather();
 	}
 
 	public int getRemainingAir() {
-		return base.getRemainingAir();
+		return player.getRemainingAir();
 	}
 
 	public boolean getRemoveWhenFarAway() {
-		return base.getRemoveWhenFarAway();
+		return player.getRemoveWhenFarAway();
 	}
 
 	public float getSaturation() {
-		return base.getSaturation();
+		return player.getSaturation();
 	}
 
 	public Server getServer() {
-		return base.getServer();
+		return player.getServer();
 	}
 
 	public int getSleepTicks() {
-		return base.getSleepTicks();
+		return player.getSleepTicks();
 	}
 
 	public Block getTargetBlock(HashSet<Byte> transparent, int maxDistance) {
-		return base.getTargetBlock(transparent, maxDistance);
+		return player.getTargetBlock(transparent, maxDistance);
 	}
 
 	public int getTicksLived() {
-		return base.getTicksLived();
+		return player.getTicksLived();
 	}
 
 	public int getTotalExperience() {
-		return base.getTotalExperience();
+		return player.getTotalExperience();
 	}
 
 	public EntityType getType() {
-		return base.getType();
+		return player.getType();
 	}
 
 	public UUID getUniqueId() {
-		return base.getUniqueId();
+		return player.getUniqueId();
 	}
 
 	public Entity getVehicle() {
-		return base.getVehicle();
+		return player.getVehicle();
 	}
 
 	public Vector getVelocity() {
-		return base.getVelocity();
+		return player.getVelocity();
 	}
 
 	public float getWalkSpeed() {
-		return base.getWalkSpeed();
+		return player.getWalkSpeed();
 	}
 
 	public World getWorld() {
-		return base.getWorld();
+		return player.getWorld();
 	}
 
 	public void giveExp(int amount) {
-		base.giveExp(amount);
+		player.giveExp(amount);
 	}
 
 	public void giveExpLevels(int amount) {
-		base.giveExpLevels(amount);
+		player.giveExpLevels(amount);
 	}
 
 	public boolean hasLineOfSight(Entity other) {
-		return base.hasLineOfSight(other);
+		return player.hasLineOfSight(other);
 	}
 
 	public boolean hasMetadata(String arg0) {
-		return base.hasMetadata(arg0);
+		return player.hasMetadata(arg0);
 	}
 
-	public boolean hasPermission(Permission perm) {
-		return base.hasPermission(perm);
+	public boolean hasPermission(Permission arg0) {
+		return player.hasPermission(arg0);
 	}
 
-	public boolean hasPermission(String name) {
-		return base.hasPermission(name);
-	}
-
-	public boolean hasPlayedBefore() {
-		return base.hasPlayedBefore();
+	public boolean hasPermission(String arg0) {
+		return player.hasPermission(arg0);
 	}
 
 	public boolean hasPotionEffect(PotionEffectType type) {
-		return base.hasPotionEffect(type);
+		return player.hasPotionEffect(type);
 	}
 
 	public void hidePlayer(Player player) {
-		base.hidePlayer(player);
+		player.hidePlayer(player);
 	}
 
 	public void incrementStatistic(Statistic statistic, int amount) {
-		base.incrementStatistic(statistic, amount);
+		player.incrementStatistic(statistic, amount);
 	}
 
 	public void incrementStatistic(Statistic statistic, Material material,
 			int amount) {
-		base.incrementStatistic(statistic, material, amount);
+		player.incrementStatistic(statistic, material, amount);
 	}
 
 	public void incrementStatistic(Statistic statistic, Material material) {
-		base.incrementStatistic(statistic, material);
+		player.incrementStatistic(statistic, material);
 	}
 
 	public void incrementStatistic(Statistic statistic) {
-		base.incrementStatistic(statistic);
-	}
-
-	public boolean isBanned() {
-		return base.isBanned();
+		player.incrementStatistic(statistic);
 	}
 
 	public boolean isBlocking() {
-		return base.isBlocking();
+		return player.isBlocking();
 	}
 
 	public boolean isConversing() {
-		return base.isConversing();
+		return player.isConversing();
 	}
 
 	public boolean isCustomNameVisible() {
-		return base.isCustomNameVisible();
+		return player.isCustomNameVisible();
 	}
 
 	public boolean isDead() {
-		return base.isDead();
+		return player.isDead();
 	}
 
 	public boolean isEmpty() {
-		return base.isEmpty();
+		return player.isEmpty();
 	}
 
 	public boolean isFlying() {
-		return base.isFlying();
+		return player.isFlying();
 	}
 
 	public boolean isInsideVehicle() {
-		return base.isInsideVehicle();
+		return player.isInsideVehicle();
 	}
 
 	public boolean isOnGround() {
-		return base.isOnGround();
+		return player.isOnGround();
 	}
 
-	public boolean isOnline() {
-		return base.isOnline();
+	public boolean isPermissionSet(Permission arg0) {
+		return player.isPermissionSet(arg0);
 	}
 
-	public boolean isOp() {
-		return base.isOp();
-	}
-
-	public boolean isPermissionSet(Permission perm) {
-		return base.isPermissionSet(perm);
-	}
-
-	public boolean isPermissionSet(String name) {
-		return base.isPermissionSet(name);
+	public boolean isPermissionSet(String arg0) {
+		return player.isPermissionSet(arg0);
 	}
 
 	public boolean isPlayerTimeRelative() {
-		return base.isPlayerTimeRelative();
+		return player.isPlayerTimeRelative();
 	}
 
 	public boolean isSleeping() {
-		return base.isSleeping();
+		return player.isSleeping();
 	}
 
 	public boolean isSleepingIgnored() {
-		return base.isSleepingIgnored();
+		return player.isSleepingIgnored();
 	}
 
 	public boolean isSneaking() {
-		return base.isSneaking();
+		return player.isSneaking();
 	}
 
 	public boolean isSprinting() {
-		return base.isSprinting();
+		return player.isSprinting();
 	}
 
 	public boolean isValid() {
-		return base.isValid();
-	}
-
-	public boolean isWhitelisted() {
-		return base.isWhitelisted();
+		return player.isValid();
 	}
 
 	public void kickPlayer(String message) {
-		base.kickPlayer(message);
+		player.kickPlayer(message);
 	}
 
 	public <T extends Projectile> T launchProjectile(
 			Class<? extends T> projectile) {
-		return base.launchProjectile(projectile);
+		return player.launchProjectile(projectile);
 	}
 
 	public boolean leaveVehicle() {
-		return base.leaveVehicle();
+		return player.leaveVehicle();
 	}
 
 	public void loadData() {
-		base.loadData();
+		player.loadData();
 	}
 
 	public InventoryView openEnchanting(Location arg0, boolean arg1) {
-		return base.openEnchanting(arg0, arg1);
+		return player.openEnchanting(arg0, arg1);
 	}
 
 	public InventoryView openInventory(Inventory arg0) {
-		return base.openInventory(arg0);
+		return player.openInventory(arg0);
 	}
 
 	public void openInventory(InventoryView arg0) {
-		base.openInventory(arg0);
+		player.openInventory(arg0);
 	}
 
 	public InventoryView openWorkbench(Location arg0, boolean arg1) {
-		return base.openWorkbench(arg0, arg1);
+		return player.openWorkbench(arg0, arg1);
 	}
 
 	public boolean performCommand(String command) {
-		return base.performCommand(command);
+		return player.performCommand(command);
 	}
 
-	public void playEffect(EntityEffect arg0) {
-		base.playEffect(arg0);
+	public void playEffect(EntityEffect type) {
+		player.playEffect(type);
 	}
 
 	public void playEffect(Location loc, Effect effect, int data) {
-		base.playEffect(loc, effect, data);
+		player.playEffect(loc, effect, data);
 	}
 
 	public <T> void playEffect(Location loc, Effect effect, T data) {
-		base.playEffect(loc, effect, data);
+		player.playEffect(loc, effect, data);
 	}
 
 	public void playNote(Location loc, byte instrument, byte note) {
-		base.playNote(loc, instrument, note);
+		player.playNote(loc, instrument, note);
 	}
 
 	public void playNote(Location loc, Instrument instrument, Note note) {
-		base.playNote(loc, instrument, note);
+		player.playNote(loc, instrument, note);
 	}
 
 	public void playSound(Location location, Sound sound, float volume,
 			float pitch) {
-		base.playSound(location, sound, volume, pitch);
+		player.playSound(location, sound, volume, pitch);
 	}
 
 	public void recalculatePermissions() {
-		base.recalculatePermissions();
+		player.recalculatePermissions();
 	}
 
 	public void remove() {
-		base.remove();
+		player.remove();
 	}
 
-	public void removeAttachment(PermissionAttachment attachment) {
-		base.removeAttachment(attachment);
+	public void removeAttachment(PermissionAttachment arg0) {
+		player.removeAttachment(arg0);
 	}
 
 	public void removeMetadata(String arg0, Plugin arg1) {
-		base.removeMetadata(arg0, arg1);
+		player.removeMetadata(arg0, arg1);
 	}
 
 	public void removePotionEffect(PotionEffectType type) {
-		base.removePotionEffect(type);
+		player.removePotionEffect(type);
 	}
 
 	public void resetMaxHealth() {
-		base.resetMaxHealth();
+		player.resetMaxHealth();
 	}
 
 	public void resetPlayerTime() {
-		base.resetPlayerTime();
+		player.resetPlayerTime();
 	}
 
 	public void resetPlayerWeather() {
-		base.resetPlayerWeather();
+		player.resetPlayerWeather();
 	}
 
 	public void saveData() {
-		base.saveData();
+		player.saveData();
 	}
 
 	public void sendBlockChange(Location loc, int material, byte data) {
-		base.sendBlockChange(loc, material, data);
+		player.sendBlockChange(loc, material, data);
 	}
 
 	public void sendBlockChange(Location loc, Material material, byte data) {
-		base.sendBlockChange(loc, material, data);
+		player.sendBlockChange(loc, material, data);
 	}
 
 	public boolean sendChunkChange(Location loc, int sx, int sy, int sz,
 			byte[] data) {
-		return base.sendChunkChange(loc, sx, sy, sz, data);
+		return player.sendChunkChange(loc, sx, sy, sz, data);
 	}
 
 	public void sendMap(MapView map) {
-		base.sendMap(map);
+		player.sendMap(map);
 	}
 
 	public void sendMessage(String arg0) {
-		base.sendMessage(arg0);
+		player.sendMessage(arg0);
 	}
 
 	public void sendMessage(String[] arg0) {
-		base.sendMessage(arg0);
+		player.sendMessage(arg0);
 	}
 
 	public void sendPluginMessage(Plugin arg0, String arg1, byte[] arg2) {
-		base.sendPluginMessage(arg0, arg1, arg2);
+		player.sendPluginMessage(arg0, arg1, arg2);
 	}
 
 	public void sendRawMessage(String message) {
-		base.sendRawMessage(message);
-	}
-
-	public Map<String, Object> serialize() {
-		return base.serialize();
+		player.sendRawMessage(message);
 	}
 
 	public void setAllowFlight(boolean flight) {
-		base.setAllowFlight(flight);
-	}
-
-	public void setBanned(boolean arg0) {
-		base.setBanned(arg0);
+		player.setAllowFlight(flight);
 	}
 
 	public void setBedSpawnLocation(Location location, boolean force) {
-		base.setBedSpawnLocation(location, force);
+		player.setBedSpawnLocation(location, force);
 	}
 
 	public void setBedSpawnLocation(Location location) {
-		base.setBedSpawnLocation(location);
+		player.setBedSpawnLocation(location);
 	}
 
 	public void setCanPickupItems(boolean pickup) {
-		base.setCanPickupItems(pickup);
+		player.setCanPickupItems(pickup);
 	}
 
 	public void setCompassTarget(Location loc) {
-		base.setCompassTarget(loc);
+		player.setCompassTarget(loc);
 	}
 
 	public void setCustomName(String arg0) {
-		base.setCustomName(arg0);
+		player.setCustomName(arg0);
 	}
 
 	public void setCustomNameVisible(boolean arg0) {
-		base.setCustomNameVisible(arg0);
+		player.setCustomNameVisible(arg0);
 	}
 
 	public void setDisplayName(String name) {
-		base.setDisplayName(name);
+		player.setDisplayName(name);
 	}
 
 	public void setExhaustion(float value) {
-		base.setExhaustion(value);
+		player.setExhaustion(value);
 	}
 
 	public void setExp(float exp) {
-		base.setExp(exp);
+		player.setExp(exp);
 	}
 
-	public void setFallDistance(float arg0) {
-		base.setFallDistance(arg0);
+	public void setFallDistance(float distance) {
+		player.setFallDistance(distance);
 	}
 
-	public void setFireTicks(int arg0) {
-		base.setFireTicks(arg0);
+	public void setFireTicks(int ticks) {
+		player.setFireTicks(ticks);
 	}
 
 	public void setFlySpeed(float value) throws IllegalArgumentException {
-		base.setFlySpeed(value);
+		player.setFlySpeed(value);
 	}
 
 	public void setFlying(boolean value) {
-		base.setFlying(value);
+		player.setFlying(value);
 	}
 
 	public void setFoodLevel(int value) {
-		base.setFoodLevel(value);
+		player.setFoodLevel(value);
 	}
 
 	public void setGameMode(GameMode arg0) {
-		base.setGameMode(arg0);
+		player.setGameMode(arg0);
 	}
 
 	public void setHealth(int arg0) {
-		base.setHealth(arg0);
+		player.setHealth(arg0);
 	}
 
 	public void setItemInHand(ItemStack arg0) {
-		base.setItemInHand(arg0);
+		player.setItemInHand(arg0);
 	}
 
 	public void setItemOnCursor(ItemStack arg0) {
-		base.setItemOnCursor(arg0);
+		player.setItemOnCursor(arg0);
 	}
 
 	public void setLastDamage(int damage) {
-		base.setLastDamage(damage);
+		player.setLastDamage(damage);
 	}
 
-	public void setLastDamageCause(EntityDamageEvent arg0) {
-		base.setLastDamageCause(arg0);
+	public void setLastDamageCause(EntityDamageEvent event) {
+		player.setLastDamageCause(event);
 	}
 
 	public void setLevel(int level) {
-		base.setLevel(level);
+		player.setLevel(level);
 	}
 
 	public void setMaxHealth(int arg0) {
-		base.setMaxHealth(arg0);
+		player.setMaxHealth(arg0);
 	}
 
 	public void setMaximumAir(int ticks) {
-		base.setMaximumAir(ticks);
+		player.setMaximumAir(ticks);
 	}
 
 	public void setMaximumNoDamageTicks(int ticks) {
-		base.setMaximumNoDamageTicks(ticks);
+		player.setMaximumNoDamageTicks(ticks);
 	}
 
 	public void setMetadata(String arg0, MetadataValue arg1) {
-		base.setMetadata(arg0, arg1);
+		player.setMetadata(arg0, arg1);
 	}
 
 	public void setNoDamageTicks(int ticks) {
-		base.setNoDamageTicks(ticks);
+		player.setNoDamageTicks(ticks);
 	}
 
-	public void setOp(boolean arg0) {
-		base.setOp(arg0);
-	}
-
-	public boolean setPassenger(Entity arg0) {
-		return base.setPassenger(arg0);
+	public boolean setPassenger(Entity passenger) {
+		return player.setPassenger(passenger);
 	}
 
 	public void setPlayerListName(String name) {
-		base.setPlayerListName(name);
+		player.setPlayerListName(name);
 	}
 
 	public void setPlayerTime(long time, boolean relative) {
-		base.setPlayerTime(time, relative);
+		player.setPlayerTime(time, relative);
 	}
 
 	public void setPlayerWeather(WeatherType arg0) {
-		base.setPlayerWeather(arg0);
+		player.setPlayerWeather(arg0);
 	}
 
 	public void setRemainingAir(int ticks) {
-		base.setRemainingAir(ticks);
+		player.setRemainingAir(ticks);
 	}
 
 	public void setRemoveWhenFarAway(boolean remove) {
-		base.setRemoveWhenFarAway(remove);
+		player.setRemoveWhenFarAway(remove);
 	}
 
 	public void setSaturation(float value) {
-		base.setSaturation(value);
+		player.setSaturation(value);
 	}
 
 	public void setSleepingIgnored(boolean isSleeping) {
-		base.setSleepingIgnored(isSleeping);
+		player.setSleepingIgnored(isSleeping);
 	}
 
 	public void setSneaking(boolean sneak) {
-		base.setSneaking(sneak);
+		player.setSneaking(sneak);
 	}
 
 	public void setSprinting(boolean sprinting) {
-		base.setSprinting(sprinting);
+		player.setSprinting(sprinting);
 	}
 
 	public void setTexturePack(String url) {
-		base.setTexturePack(url);
+		player.setTexturePack(url);
 	}
 
-	public void setTicksLived(int arg0) {
-		base.setTicksLived(arg0);
+	public void setTicksLived(int value) {
+		player.setTicksLived(value);
 	}
 
 	public void setTotalExperience(int exp) {
-		base.setTotalExperience(exp);
+		player.setTotalExperience(exp);
 	}
 
-	public void setVelocity(Vector arg0) {
-		base.setVelocity(arg0);
+	public void setVelocity(Vector velocity) {
+		player.setVelocity(velocity);
 	}
 
 	public void setWalkSpeed(float value) throws IllegalArgumentException {
-		base.setWalkSpeed(value);
-	}
-
-	public void setWhitelisted(boolean arg0) {
-		base.setWhitelisted(arg0);
+		player.setWalkSpeed(value);
 	}
 
 	public boolean setWindowProperty(Property arg0, int arg1) {
-		return base.setWindowProperty(arg0, arg1);
+		return player.setWindowProperty(arg0, arg1);
 	}
 
 	public Arrow shootArrow() {
-		return base.shootArrow();
+		return player.shootArrow();
 	}
 
 	public void showPlayer(Player player) {
-		base.showPlayer(player);
+		player.showPlayer(player);
 	}
 
-	public boolean teleport(Entity arg0, TeleportCause arg1) {
-		return base.teleport(arg0, arg1);
+	public boolean teleport(Entity destination, TeleportCause cause) {
+		return player.teleport(destination, cause);
 	}
 
-	public boolean teleport(Entity arg0) {
-		return base.teleport(arg0);
+	public boolean teleport(Entity destination) {
+		return player.teleport(destination);
 	}
 
-	public boolean teleport(Location arg0, TeleportCause arg1) {
-		return base.teleport(arg0, arg1);
+	public boolean teleport(Location location, TeleportCause cause) {
+		return player.teleport(location, cause);
 	}
 
-	public boolean teleport(Location arg0) {
-		return base.teleport(arg0);
+	public boolean teleport(Location location) {
+		return player.teleport(location);
 	}
 
 	public Egg throwEgg() {
-		return base.throwEgg();
+		return player.throwEgg();
 	}
 
 	public Snowball throwSnowball() {
-		return base.throwSnowball();
+		return player.throwSnowball();
 	}
 
 	public void updateInventory() {
-		base.updateInventory();
+		player.updateInventory();
 	}
+	
 	
 }

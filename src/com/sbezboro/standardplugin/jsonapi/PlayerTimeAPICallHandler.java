@@ -21,14 +21,11 @@ public class PlayerTimeAPICallHandler extends APICallHandler {
 		String username = (String) args[0];
 		Long minutes = (Long) args[1];
 		
-		StandardPlayer player = plugin.getPlayerExact(username);
-		if (player != null) {
-			username = ChatColor.stripColor(player.getDisplayName());
-		}
+		StandardPlayer player = plugin.getStandardPlayer(username);
 		
 		String time = String.valueOf(minutes / 60) + " hours";
 		
-		Bukkit.getServer().broadcastMessage(ChatColor.AQUA + username + ChatColor.BLUE + " has just reached " + ChatColor.AQUA + time + ChatColor.BLUE + " on the server! Congrats!");
+		Bukkit.getServer().broadcastMessage(ChatColor.AQUA + player.getDisplayName(false) + ChatColor.BLUE + " has just reached " + ChatColor.AQUA + time + ChatColor.BLUE + " on the server! Congrats!");
 		
 		return true;
 	}

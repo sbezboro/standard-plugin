@@ -1,6 +1,7 @@
 package com.sbezboro.standardplugin.persistence;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
@@ -16,11 +17,21 @@ public class PlayerStorage extends ObjectStorage<StandardPlayer> {
 		
 		if (standardPlayer == null) {
 			Player player = Bukkit.getPlayer(username);
-			standardPlayer = new StandardPlayer(player, this);
+			if (player == null) {
+				OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(username);
+				standardPlayer = new StandardPlayer(offlinePlayer, this);
+			} else {
+				standardPlayer = new StandardPlayer(player, this);
+			}
 			
 			cacheObject(username, standardPlayer);
 		}
 		
 		return standardPlayer;
+	}
+
+	@Override
+	public void save(String identifer) {
+		super.save(identifer);
 	}
 }

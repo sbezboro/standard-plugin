@@ -1,14 +1,13 @@
 package com.sbezboro.standardplugin.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com.sbezboro.http.HttpResponse;
 import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.net.RankHttpRequest;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
@@ -20,13 +19,7 @@ public class RankCommand extends BaseCommand {
 
 	@Override
 	public boolean handle(final CommandSender sender, Command command, String label, final String[] args) {
-		final Player senderPlayer;
-		
-		if (sender instanceof Player) {
-			senderPlayer = (Player) sender;
-		} else {
-			senderPlayer = null;
-		}
+		final StandardPlayer senderPlayer = plugin.getStandardPlayer(sender);
 
 		if (args.length > 1) {
 			showUsageInfo(sender);
@@ -34,9 +27,9 @@ public class RankCommand extends BaseCommand {
 		}
 
 		final String username;
-		final Player rankPlayer;
+		final StandardPlayer rankPlayer;
 		if (args.length == 1) {
-			rankPlayer = Bukkit.getPlayer(args[0]);
+			rankPlayer = plugin.getStandardPlayer(args[0]);
 		} else {
 			rankPlayer = senderPlayer;
 		}

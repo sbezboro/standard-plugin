@@ -7,7 +7,6 @@ import java.util.HashMap;
 import me.asofold.bpl.simplyvanish.SimplyVanish;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
 import com.sbezboro.standardplugin.StandardPlugin;
@@ -31,8 +30,8 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 				playerInfo.put("username", player.getName());
 				playerInfo.put("address", player.getAddress().getAddress().getHostAddress());
 				
-				if (!ChatColor.stripColor(player.getDisplayName()).equals(player.getName())) {
-					playerInfo.put("nickname", ChatColor.stripColor(player.getDisplayName()));
+				if (player.getDisplayName(false).equals(player.getName())) {
+					playerInfo.put("nickname", player.getDisplayName(false));
 				}
 				
 				playerList.add(playerInfo);
