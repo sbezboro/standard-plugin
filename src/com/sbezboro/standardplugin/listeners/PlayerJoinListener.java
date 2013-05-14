@@ -1,7 +1,5 @@
 package com.sbezboro.standardplugin.listeners;
 
-import me.asofold.bpl.simplyvanish.SimplyVanish;
-
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -11,6 +9,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import com.sbezboro.http.HttpResponse;
 import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.net.RankHttpRequest;
 
@@ -25,7 +24,7 @@ public class PlayerJoinListener extends EventListener implements Listener {
     	StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
     	
     	if (player.hasPlayedBefore()) {
-        	if (!SimplyVanish.isVanished(player)) {
+        	if (!SimplyVanishIntegration.isVanished(player)) {
         		broadcastRank(player);
         	}
     	} else {

@@ -4,12 +4,11 @@ import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import me.asofold.bpl.simplyvanish.SimplyVanish;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class ServerStatusAPICallHandler extends APICallHandler {
@@ -25,7 +24,7 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 		ArrayList<Object> playerList = new ArrayList<Object>();
 		
 		for (StandardPlayer player : plugin.getOnlinePlayers()) {
-			if (!SimplyVanish.isVanished(player)) {
+			if (!SimplyVanishIntegration.isVanished(player)) {
 				HashMap<String, String> playerInfo = new HashMap<String, String>();
 				playerInfo.put("username", player.getName());
 				playerInfo.put("address", player.getAddress().getAddress().getHostAddress());
