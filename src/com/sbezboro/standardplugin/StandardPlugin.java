@@ -122,7 +122,9 @@ public class StandardPlugin extends JavaPlugin {
 			writer.unload();
 		}
 		
-		playerStorage.unload();
+		for (IStorage storage : storages) {
+			storage.unload();
+		}
 
 		Bukkit.getScheduler().cancelTasks(this);
 	}
