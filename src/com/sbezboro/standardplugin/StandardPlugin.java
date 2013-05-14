@@ -20,6 +20,7 @@ import com.sbezboro.standardplugin.commands.SpawnCommand;
 import com.sbezboro.standardplugin.commands.StandardCommand;
 import com.sbezboro.standardplugin.commands.UnfreezeCommand;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
+import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.jsonapi.ForumPostAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.PlayerTimeAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.ServerStatusAPICallHandler;
@@ -106,6 +107,7 @@ public class StandardPlugin extends JavaPlugin {
 		pluginManager.registerEvents(new CreatureSpawnListener(this), this);
 
 		EssentialsIntegration.init(this);
+		SimplyVanishIntegration.init(this);
 		
 		registerJSONAPIHandlers();
 		
