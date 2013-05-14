@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.alecgorge.minecraft.jsonapi.JSONAPI;
@@ -18,6 +19,7 @@ import com.sbezboro.standardplugin.commands.SetSpawnCommand;
 import com.sbezboro.standardplugin.commands.SpawnCommand;
 import com.sbezboro.standardplugin.commands.StandardCommand;
 import com.sbezboro.standardplugin.commands.UnfreezeCommand;
+import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.jsonapi.ForumPostAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.PlayerTimeAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.ServerStatusAPICallHandler;
@@ -26,8 +28,8 @@ import com.sbezboro.standardplugin.listeners.CreatureSpawnListener;
 import com.sbezboro.standardplugin.listeners.DeathListener;
 import com.sbezboro.standardplugin.listeners.PlayerInteractListener;
 import com.sbezboro.standardplugin.listeners.PlayerJoinListener;
-import com.sbezboro.standardplugin.listeners.PlayerMoveListener;
 import com.sbezboro.standardplugin.listeners.PlayerLeaveListener;
+import com.sbezboro.standardplugin.listeners.PlayerMoveListener;
 import com.sbezboro.standardplugin.listeners.RespawnListener;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.persistence.GateStorage;
@@ -93,14 +95,17 @@ public class StandardPlugin extends JavaPlugin {
 		commands.add(new SpawnCommand(this));
 		commands.add(new ForumMuteCommand(this));
 		commands.add(new StandardCommand(this));
+		
+		PluginManager pluginManager = getServer().getPluginManager();
+		pluginManager.registerEvents(new DeathListener(this), this);
+		pluginManager.registerEvents(new PlayerJoinListener(this), this);
+		pluginManager.registerEvents(new PlayerLeaveListener(this), this);
+		pluginManager.registerEvents(new PlayerInteractListener(this), this);
+		pluginManager.registerEvents(new RespawnListener(this), this);
+		pluginManager.registerEvents(new PlayerMoveListener(this), this);
+		pluginManager.registerEvents(new CreatureSpawnListener(this), this);
 
-		getServer().getPluginManager().registerEvents(new DeathListener(this), this);
-		getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
-		getServer().getPluginManager().registerEvents(new PlayerLeaveListener(this), this);
-		getServer().getPluginManager().registerEvents(new PlayerInteractListener(this), this);
-		getServer().getPluginManager().registerEvents(new RespawnListener(this), this);
-		getServer().getPluginManager().registerEvents(new PlayerMoveListener(this), this);
-		getServer().getPluginManager().registerEvents(new CreatureSpawnListener(this), this);
+		EssentialsIntegration.init(this);
 		
 		registerJSONAPIHandlers();
 		

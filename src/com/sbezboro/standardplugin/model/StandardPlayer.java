@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.persistence.PersistedProperty;
 import com.sbezboro.standardplugin.persistence.PlayerStorage;
 import com.sbezboro.standardplugin.util.MiscUtil;
@@ -87,8 +88,8 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 	
 	public String getDisplayName(boolean colored) {
-		if (isOnline()) {
-			String name = super.getDisplayName();
+		if (EssentialsIntegration.hasNickname(getName())) {
+			String name = EssentialsIntegration.getNickname(getName());
 			
 			if (!colored) {
 				return ChatColor.stripColor(name);
