@@ -20,7 +20,11 @@ public abstract class PersistedObject {
 	protected abstract void loadProperties();
 	
 	protected final <T> PersistedProperty<T> loadProperty(Class<T> cls, String name) {
-		return new PersistedProperty<T>(this, cls, name);
+		return new PersistedProperty<T>(this, cls, name, null);
+	}
+	
+	protected final <T> PersistedProperty<T> loadProperty(Class<T> cls, String name, Object def) {
+		return new PersistedProperty<T>(this, cls, name, def);
 	}
 	
 	public final Object loadProperty(String key, Object def) {

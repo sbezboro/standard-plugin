@@ -19,7 +19,7 @@ public class PersistedProperty<T> {
 	};
 	
 	@SuppressWarnings("unchecked")
-	public PersistedProperty(PersistedObject object, Class<T> cls, String name) {
+	public PersistedProperty(PersistedObject object, Class<T> cls, String name, Object def) {
 		this.cls = cls;
 		this.name = name;
 		this.object = object;
