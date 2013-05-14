@@ -24,7 +24,7 @@
 			<sequential>
 				<exec executable="scp">
 					<arg value="${jarfile}"/>
-					<arg value="@{path}:craftbukkit/plugins"/>
+					<arg value="@{path}:craftbukkit/plugins/Standard.jar.new"/>
 				</exec>
 			</sequential>
 		</for>
