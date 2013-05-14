@@ -30,7 +30,7 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 				playerInfo.put("username", player.getName());
 				playerInfo.put("address", player.getAddress().getAddress().getHostAddress());
 				
-				if (player.getDisplayName(false).equals(player.getName())) {
+				if (player.hasNickname()) {
 					playerInfo.put("nickname", player.getDisplayName(false));
 				}
 				
