@@ -19,7 +19,11 @@ public abstract class PersistedObject {
 	
 	protected abstract void loadProperties();
 	
-	private final Object loadProperty(String key, Object def) {
+	protected final <T> PersistedProperty<T> loadProperty(Class<T> cls, String name) {
+		return new PersistedProperty<T>(this, cls, name);
+	}
+	
+	public final Object loadProperty(String key, Object def) {
 		Object value = storage.loadProperty(identifier, key);
 		if (value != null) {
 			return value;
@@ -30,20 +34,6 @@ public abstract class PersistedObject {
 		}
 		
 		return def;
-	}
-	
-	public boolean loadBoolean(String key, boolean def) {
-		Object property = loadProperty(key, def ? def : null);
-		
-		if (property != null && property instanceof Boolean) {
-			return (Boolean) property;
-		}
-		
-		return def;
-	}
-	
-	public boolean loadBoolean(String key) {
-		return loadBoolean(key, false);
 	}
 	
 	public final void saveProperty(String key, Object value, boolean commit) {

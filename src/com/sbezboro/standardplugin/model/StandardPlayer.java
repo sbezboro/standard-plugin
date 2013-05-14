@@ -5,13 +5,15 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import com.sbezboro.standardplugin.persistence.PersistedProperty;
 import com.sbezboro.standardplugin.persistence.PlayerStorage;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class StandardPlayer extends PlayerDelegate {
 	private static final String FORUM_MUTED_PROPERTY = "forum-muted";
 	
-	private boolean forumMuted;
+	private PersistedProperty<Boolean> forumMuted;
+	
 	private Location bedLocation;
 	
 	public StandardPlayer(final Player player, final PlayerStorage storage) {
@@ -24,16 +26,15 @@ public class StandardPlayer extends PlayerDelegate {
 	
 	@Override
 	public void loadProperties() {
-		forumMuted = loadBoolean(FORUM_MUTED_PROPERTY);
+		forumMuted = loadProperty(Boolean.class, FORUM_MUTED_PROPERTY);
 	}
 	
 	public Boolean isForumMuted() {
-		return forumMuted;
+		return forumMuted.getValue();
 	}
 
 	public void setForumMuted(boolean forumMuted) {
-		this.forumMuted = forumMuted;
-		saveProperty(FORUM_MUTED_PROPERTY, forumMuted);
+		this.forumMuted.setValue(forumMuted);
 	}
 
 	public boolean toggleForumMute() {
