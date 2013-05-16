@@ -25,7 +25,7 @@ public class PlayerTimeAPICallHandler extends APICallHandler {
 		
 		String time = String.valueOf(minutes / 60) + " hours";
 		
-		Bukkit.getServer().broadcastMessage(ChatColor.AQUA + player.getDisplayName(false) + ChatColor.BLUE + " has just reached " + ChatColor.AQUA + time + ChatColor.BLUE + " on the server! Congrats!");
+		Bukkit.getServer().broadcastMessage(ChatColor.AQUA + player.getDisplayName() + ChatColor.BLUE + " has just reached " + ChatColor.AQUA + time + ChatColor.BLUE + " on the server! Congrats!");
 		
 		return true;
 	}

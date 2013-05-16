@@ -46,7 +46,7 @@ public class WebChatAPICallHandler extends APICallHandler {
 			return true;
 		}
 		
-		Bukkit.getServer().broadcastMessage(ChatColor.BLUE + "[Web Chat] " + ChatColor.AQUA + player.getDisplayName(false) + ChatColor.RESET + ": " + message);
+		Bukkit.getServer().broadcastMessage(ChatColor.BLUE + "[Web Chat] " + ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + ": " + message);
 		
 		return true;
 	}
