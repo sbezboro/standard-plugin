@@ -10,6 +10,7 @@ import org.bukkit.OfflinePlayer;
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.model.StandardPlayer;
+import com.sbezboro.standardplugin.util.AnsiConverter;
 
 public class ServerStatusAPICallHandler extends APICallHandler {
 
@@ -30,7 +31,8 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 				playerInfo.put("address", player.getAddress().getAddress().getHostAddress());
 				
 				if (player.hasNickname()) {
-					playerInfo.put("nickname", player.getDisplayName(false));
+					String nickname = AnsiConverter.toAnsi(player.getDisplayName());
+					playerInfo.put("nickname", nickname);
 				}
 				
 				playerList.add(playerInfo);
