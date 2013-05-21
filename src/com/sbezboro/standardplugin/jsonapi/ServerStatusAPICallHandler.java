@@ -31,7 +31,9 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 				playerInfo.put("address", player.getAddress().getAddress().getHostAddress());
 				
 				if (player.hasNickname()) {
-					String nickname = AnsiConverter.toAnsi(player.getDisplayName());
+					String nicknameAnsi = AnsiConverter.toAnsi(player.getDisplayName());
+					String nickname = player.getDisplayName(false);
+					playerInfo.put("nickname_ansi", nicknameAnsi);
 					playerInfo.put("nickname", nickname);
 				}
 				
