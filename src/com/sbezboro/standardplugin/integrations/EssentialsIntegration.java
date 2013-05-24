@@ -35,4 +35,8 @@ public class EssentialsIntegration extends PluginIntegration {
 		
 		return null;
 	}
+	
+	public static float getTPS() {
+		return essentials.getTimer().getAverageTPS();
+	}
 }

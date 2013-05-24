@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.util.AnsiConverter;
@@ -53,6 +54,7 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 		status.put("maxplayers", Bukkit.getMaxPlayers());
 		status.put("banned_players", bannedPlayers);
 		status.put("cpu_load", cpuLoad);
+		status.put("tps", EssentialsIntegration.getTPS());
 		
 		return status;
 	}
