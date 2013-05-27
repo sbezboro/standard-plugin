@@ -49,6 +49,7 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 
 import com.sbezboro.standardplugin.persistence.PersistedObject;
@@ -920,6 +921,14 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public void updateInventory() {
 		player.updateInventory();
 	}
-	
+
+	public Scoreboard getScoreboard() {
+		return player.getScoreboard();
+	}
+
+	public void setScoreboard(Scoreboard scoreboard) throws IllegalArgumentException,
+			IllegalStateException {
+		player.setScoreboard(scoreboard);
+	}
 	
 }

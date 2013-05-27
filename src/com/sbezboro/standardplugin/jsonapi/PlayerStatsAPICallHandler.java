@@ -34,7 +34,6 @@ public class PlayerStatsAPICallHandler extends APICallHandler {
 			}
 		}
 		
-		
 		return true;
 	}
 }
