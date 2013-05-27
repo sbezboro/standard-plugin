@@ -1,5 +1,7 @@
 package com.sbezboro.standardplugin.jsonapi;
 
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -9,19 +11,15 @@ import com.sbezboro.standardplugin.model.StandardPlayer;
 public class ForumPostAPICallHandler extends APICallHandler {
 
 	public ForumPostAPICallHandler(StandardPlugin plugin) {
-		super(plugin);
+		super(plugin, "forum_post");
 	}
 
 	@Override
-	public Object handle(Object[] args) {
-		if (args.length != 4) {
-			return false;
-		}
-
-		String username = (String) args[0];
-		String forumName = (String) args[1];
-		String topic = (String) args[2];
-		String url = (String) args[3];
+	public Object handle(HashMap<String, Object> payload) {
+		String username = (String) payload.get("username");
+		String forumName = (String) payload.get("forum_name");
+		String topic = (String) payload.get("topic_name");
+		String url = (String) payload.get("path");
 		
 		StandardPlayer player = plugin.getStandardPlayer(username);
 		
@@ -41,10 +39,5 @@ public class ForumPostAPICallHandler extends APICallHandler {
 		}
 		
 		return true;
-	}
-
-	@Override
-	public String getName() {
-		return "forum_post";
 	}
 }

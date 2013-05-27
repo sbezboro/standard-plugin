@@ -1,5 +1,6 @@
 package com.sbezboro.standardplugin.jsonapi;
 
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
@@ -10,19 +11,30 @@ import com.sbezboro.standardplugin.StandardPlugin;
 
 public abstract class APICallHandler implements JSONAPICallHandler {
 	protected StandardPlugin plugin;
+	protected String name;
+	
 	protected Logger logger;
 	
-	public APICallHandler(StandardPlugin plugin) {
+	public APICallHandler(StandardPlugin plugin, String name) {
 		this.plugin = plugin;
+		this.name = name;
+
 		logger = plugin.getLogger();
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public Object handle(APIMethodName methodName, Object[] args) {
-		if (methodName.matches(getName())) {
-			Object result = handle(args);
+		if (methodName.matches(name)) {
+			HashMap<String, Object> payload = null;
+
+			if (args.length == 1) {
+				payload = (HashMap<String, Object>) args[0];
+			}
+
+			Object result = handle(payload);
 			if (result == Boolean.FALSE) {
-				logger.warning("API Call \"" + getName() + "\" not handled properly with args \"" + StringUtils.join(args) + "\"");
+				logger.warning("API Call \"" + name + "\" not handled properly with args \"" + StringUtils.join(args) + "\"");
 			}
 			
 			return result;
@@ -33,9 +45,8 @@ public abstract class APICallHandler implements JSONAPICallHandler {
 		
 	@Override
 	public boolean willHandle(APIMethodName methodName) {
-		return methodName.matches(getName());
+		return methodName.matches(name);
 	}
 	
-	public abstract Object handle(Object[] args);
-	public abstract String getName();
+	public abstract Object handle(HashMap<String, Object> payload);
 }

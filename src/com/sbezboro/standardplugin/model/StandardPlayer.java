@@ -51,10 +51,6 @@ public class StandardPlayer extends PlayerDelegate {
 		return bedLocation;
 	}
 	
-	public boolean hasNickname() {
-		return !getName().equals(getDisplayName(false));
-	}
-	
 	public void leftServer() {
 		player = null;
 	}
@@ -87,8 +83,12 @@ public class StandardPlayer extends PlayerDelegate {
 		}
 	}
 	
+	public boolean hasNickname() {
+		return EssentialsIntegration.hasNickname(getName());
+	}
+	
 	public String getDisplayName(boolean colored) {
-		if (EssentialsIntegration.hasNickname(getName())) {
+		if (hasNickname()) {
 			String name = EssentialsIntegration.getNickname(getName());
 			
 			if (!colored) {

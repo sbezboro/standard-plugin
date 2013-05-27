@@ -1,5 +1,7 @@
 package com.sbezboro.standardplugin.jsonapi;
 
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -9,36 +11,27 @@ import com.sbezboro.standardplugin.model.StandardPlayer;
 public class WebChatAPICallHandler extends APICallHandler {
 
 	public WebChatAPICallHandler(StandardPlugin plugin) {
-		super(plugin);
+		super(plugin, "web_chat");
 	}
 
 	@Override
-	public Object handle(Object[] args) {
-		if (args.length == 0) {
-			return false;
-		}
-
-		String type = (String) args[0];
+	public Object handle(HashMap<String, Object> payload) {
+		String type = (String) payload.get("type");
+		String username = (String) payload.get("username");
 		
 		if (type.equals("message")) {
-			return handleMessage(args);
+			String message = (String) payload.get("message");
+			return handleMessage(username, message);
 		} else if (type.equals("enter")) {
-			return handleStatus(args);
+			return handleStatus(type, username);
 		} else if (type.equals("exit")) {
-			return handleStatus(args);
+			return handleStatus(type, username);
 		}
 		
 		return false;
 	}
 	
-	private boolean handleMessage(Object[] args) {
-		if (args.length != 3) {
-			return false;
-		}
-		
-		String username = (String) args[1];
-		String message = (String) args[2];
-		
+	private boolean handleMessage(String username, String message) {
 		StandardPlayer player = plugin.getStandardPlayer(username);
 		
 		if (player.isBanned()) {
@@ -51,14 +44,7 @@ public class WebChatAPICallHandler extends APICallHandler {
 		return true;
 	}
 	
-	private boolean handleStatus(Object[] args) {
-		if (args.length != 2) {
-			return false;
-		}
-		
-		String type = (String) args[0];
-		String username = (String) args[1];
-		
+	private boolean handleStatus(String type, String username) {
 		StandardPlayer player = plugin.getStandardPlayer(username);
 		
 		if (player.isBanned()) {
@@ -80,10 +66,4 @@ public class WebChatAPICallHandler extends APICallHandler {
 		
 		return true;
 	}
-
-	@Override
-	public String getName() {
-		return "web_chat";
-	}
-
 }

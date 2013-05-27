@@ -16,11 +16,11 @@ import com.sbezboro.standardplugin.util.AnsiConverter;
 public class ServerStatusAPICallHandler extends APICallHandler {
 
 	public ServerStatusAPICallHandler(StandardPlugin plugin) {
-		super(plugin);
+		super(plugin, "server_status");
 	}
 
 	@Override
-	public Object handle(Object[] args) {
+	public Object handle(HashMap<String, Object> payload) {
 		HashMap<String, Object> status = new HashMap<String, Object>();
 		
 		ArrayList<Object> playerList = new ArrayList<Object>();
@@ -58,10 +58,4 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 		
 		return status;
 	}
-
-	@Override
-	public String getName() {
-		return "server_status";
-	}
-
 }
