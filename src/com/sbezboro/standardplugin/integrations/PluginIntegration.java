@@ -10,31 +10,22 @@ public abstract class PluginIntegration {
 	@SuppressWarnings("unchecked")
 	protected static <T> T init(StandardPlugin standardPlugin, String className, String pluginName) {
 		Plugin plugin = standardPlugin.getServer().getPluginManager().getPlugin(pluginName);
-		Class<T> cls;
+		Class<T> cls = null;
 		
 		try {
 			cls = (Class<T>) Class.forName(className);
 		} catch (ClassNotFoundException e) {
-			pluginHookFailure(standardPlugin, pluginName);
-			return null;
+			plugin = null;
 		}
 		
 		if (plugin == null || !cls.isInstance(plugin)) {
-			pluginHookFailure(standardPlugin, pluginName);
+			standardPlugin.getLogger().warning("Could not hook into " + pluginName + "!");
+			enabled = false;
 		} else {
-			pluginHookSuccess(standardPlugin, pluginName);
+			standardPlugin.getLogger().info("Successfully hooked into " + pluginName);
+			enabled = true;
 		}
 		
 		return (T) plugin;
-	}
-	
-	private static void pluginHookSuccess(StandardPlugin standardPlugin, String name) {
-		standardPlugin.getLogger().info("Successfully hooked into " + name);
-		enabled = true;
-	}
-	
-	private static void pluginHookFailure(StandardPlugin standardPlugin, String name) {
-		standardPlugin.getLogger().warning("Could not hook into " + name + "!");
-		enabled = false;
 	}
 }
