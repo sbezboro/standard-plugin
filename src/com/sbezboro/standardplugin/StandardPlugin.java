@@ -22,7 +22,7 @@ import com.sbezboro.standardplugin.commands.UnfreezeCommand;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.jsonapi.ForumPostAPICallHandler;
-import com.sbezboro.standardplugin.jsonapi.PlayerTimeAPICallHandler;
+import com.sbezboro.standardplugin.jsonapi.PlayerStatsAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.ServerStatusAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.WebChatAPICallHandler;
 import com.sbezboro.standardplugin.listeners.CreatureSpawnListener;
@@ -156,7 +156,7 @@ public class StandardPlugin extends JavaPlugin {
 			
 			jsonapi.registerAPICallHandler(new ForumPostAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new ServerStatusAPICallHandler(this));
-			jsonapi.registerAPICallHandler(new PlayerTimeAPICallHandler(this));
+			jsonapi.registerAPICallHandler(new PlayerStatsAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new WebChatAPICallHandler(this));
 		}
 	}

@@ -12,8 +12,10 @@ import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class StandardPlayer extends PlayerDelegate {
 	private static final String FORUM_MUTED_PROPERTY = "forum-muted";
+	private static final String TIME_SPENT_PROPERTY = "time-spent";
 	
 	private PersistedProperty<Boolean> forumMuted;
+	private PersistedProperty<Integer> timeSpent;
 	
 	private Location bedLocation;
 	
@@ -28,6 +30,7 @@ public class StandardPlayer extends PlayerDelegate {
 	@Override
 	public void loadProperties() {
 		forumMuted = loadProperty(Boolean.class, FORUM_MUTED_PROPERTY);
+		timeSpent = loadProperty(Integer.class, TIME_SPENT_PROPERTY);
 	}
 	
 	public Boolean isForumMuted() {
@@ -41,6 +44,14 @@ public class StandardPlayer extends PlayerDelegate {
 	public boolean toggleForumMute() {
 		setForumMuted(!isForumMuted());
 		return isForumMuted();
+	}
+	
+	public int getTimeSpent() {
+		return timeSpent.getValue();
+	}
+	
+	public void setTimeSpent(int timeSpent) {
+		this.timeSpent.setValue(timeSpent);
 	}
 	
 	public void saveBedLocation(Location location) {
