@@ -13,6 +13,7 @@ import com.alecgorge.minecraft.jsonapi.JSONAPI;
 import com.sbezboro.standardplugin.commands.BaseCommand;
 import com.sbezboro.standardplugin.commands.ForumMuteCommand;
 import com.sbezboro.standardplugin.commands.GateCommand;
+import com.sbezboro.standardplugin.commands.PvpProtectionCommand;
 import com.sbezboro.standardplugin.commands.RankCommand;
 import com.sbezboro.standardplugin.commands.RegisterCommand;
 import com.sbezboro.standardplugin.commands.SetSpawnCommand;
@@ -27,6 +28,7 @@ import com.sbezboro.standardplugin.jsonapi.ServerStatusAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.WebChatAPICallHandler;
 import com.sbezboro.standardplugin.listeners.CreatureSpawnListener;
 import com.sbezboro.standardplugin.listeners.DeathListener;
+import com.sbezboro.standardplugin.listeners.EntityDamageListener;
 import com.sbezboro.standardplugin.listeners.PlayerInteractListener;
 import com.sbezboro.standardplugin.listeners.PlayerJoinListener;
 import com.sbezboro.standardplugin.listeners.PlayerLeaveListener;
@@ -54,6 +56,7 @@ public class StandardPlugin extends JavaPlugin {
 	private boolean debug = false;
 	
 	private String endpoint;
+	private int pvpProtectionTime;
 	
 	public StandardPlugin() {
 		instance = this;
@@ -96,12 +99,14 @@ public class StandardPlugin extends JavaPlugin {
 		commands.add(new SpawnCommand(this));
 		commands.add(new ForumMuteCommand(this));
 		commands.add(new StandardCommand(this));
+		commands.add(new PvpProtectionCommand(this));
 		
 		PluginManager pluginManager = getServer().getPluginManager();
 		pluginManager.registerEvents(new DeathListener(this), this);
 		pluginManager.registerEvents(new PlayerJoinListener(this), this);
 		pluginManager.registerEvents(new PlayerLeaveListener(this), this);
 		pluginManager.registerEvents(new PlayerInteractListener(this), this);
+		pluginManager.registerEvents(new EntityDamageListener(this), this);
 		pluginManager.registerEvents(new RespawnListener(this), this);
 		pluginManager.registerEvents(new PlayerMoveListener(this), this);
 		pluginManager.registerEvents(new CreatureSpawnListener(this), this);
@@ -143,6 +148,7 @@ public class StandardPlugin extends JavaPlugin {
 		}
 		
 		endpoint = getConfig().getString("endpoint");
+		pvpProtectionTime = getConfig().getInt("pvp-protection-time");
 		
 		for (IStorage storage : storages) {
 			storage.reload();
@@ -198,6 +204,14 @@ public class StandardPlugin extends JavaPlugin {
 	
 	public String getEndpoint() {
 		return endpoint;
+	}
+	
+	public int getPvpProtectionTime() {
+		return pvpProtectionTime;
+	}
+
+	public boolean isPvpProtectionEnabled() {
+		return pvpProtectionTime > 0;
 	}
 	
 	public GateStorage getGateStorage() {

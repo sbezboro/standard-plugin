@@ -32,6 +32,10 @@ public class PlayerJoinListener extends EventListener implements Listener {
     		
     		World world = player.getLocation().getWorld();
     		player.teleport(world.getSpawnLocation());
+    		
+    		if (plugin.isPvpProtectionEnabled()) {
+    			player.setPvpProtection(true);
+    		}
     	}
     	
     	if (player.getBedSpawnLocation() != null) {
@@ -54,6 +58,9 @@ public class PlayerJoinListener extends EventListener implements Listener {
 				if (result == 1) {
 					int rank = response.getInt("rank");
 					boolean veteran = response.getBoolean("veteran");
+					int timeSpent = response.getInt("minutes");
+					
+					player.setTimeSpent(timeSpent);
 					
 					for (StandardPlayer other : plugin.getOnlinePlayers()) {
 						other.sendMessage(player.getRankDescription(player == other, rank, veteran));

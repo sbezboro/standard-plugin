@@ -1,14 +1,16 @@
 package com.sbezboro.standardplugin.listeners;
 
-import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
+import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class EntityDamageListener extends EventListener implements Listener {
 
@@ -18,25 +20,35 @@ public class EntityDamageListener extends EventListener implements Listener {
 	
 	@EventHandler(priority=EventPriority.MONITOR)
 	public void onEntityDamage(EntityDamageByEntityEvent event) {
-		Entity entity = event.getEntity();
+		if (event.isCancelled() || !plugin.isPvpProtectionEnabled()) {
+			return;
+		}
 		
-		if (entity instanceof Player) {
-			final Player victim = (Player) entity;
+		Entity damagerEntity = event.getDamager();
+		StandardPlayer damager = plugin.getStandardPlayer(damagerEntity);
+		if (damager == null && damagerEntity instanceof Arrow) {
+			damager = plugin.getStandardPlayer(((Arrow) damagerEntity).getShooter());
+		}
+
+		// Player attacking
+		if (damager != null) {
+			StandardPlayer victim = plugin.getStandardPlayer(event.getEntity());
 			
-			final int initialHealth = victim.getHealth();
-			final int initialDamage = event.getDamage();
-			
-			//Bukkit.broadcastMessage("Damage: " + event.getDamage());
-			//Bukkit.broadcastMessage("Last Damage: " + victim.getLastDamage());
-			//Bukkit.broadcastMessage("No Damage Ticks: " + victim.getNoDamageTicks());
-			
-			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-				@Override
-				public void run() {
-					Bukkit.broadcastMessage("Damage dealt: " + (initialHealth - victim.getHealth()));
-					Bukkit.broadcastMessage("Armor blocked: " + (initialDamage - (initialHealth - victim.getHealth())));
+			if (victim != null) {
+				// Victim protected
+				if (victim.isPvpProtected()) {
+					int remainingTime = victim.getPvpProtectionTimeRemaining();
+					damager.sendMessage(ChatColor.RED + "This player is protected from PVP!");
+					victim.sendMessage(ChatColor.RED + "You are immune to PVP damage for " + ChatColor.AQUA + remainingTime
+						+ ChatColor.RED + " more " + MiscUtil.pluralize("minute", remainingTime) + "!");
+					
+					event.setCancelled(true);
+				// Attacker protected but victim not so turn off attacker's protection
+				} else if (damager.isPvpProtected()) {
+					damager.sendMessage("" + ChatColor.RED + ChatColor.BOLD + "Your PVP protection has been disabled!");
+					damager.setPvpProtection(false);
 				}
-			}, 1);
+			}
 		}
 	}
 

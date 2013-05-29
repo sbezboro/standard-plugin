@@ -35,4 +35,12 @@ public class MiscUtil {
             return livingEntity.toString().substring(5);
         }
     }
+    
+    public static String pluralize(String string, int count) {
+    	return count != 1 ? string + "s" : string;
+    }
+    
+    public static String pluralize(String string, long count) {
+    	return count != 1 ? string + "s" : string;
+    }
 }

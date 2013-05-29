@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.persistence.PersistedProperty;
 import com.sbezboro.standardplugin.persistence.PlayerStorage;
@@ -12,12 +13,13 @@ import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class StandardPlayer extends PlayerDelegate {
 	private static final String FORUM_MUTED_PROPERTY = "forum-muted";
-	private static final String TIME_SPENT_PROPERTY = "time-spent";
+	private static final String PVP_PROTECTION_PROPERTY = "pvp-protection";
 	
 	private PersistedProperty<Boolean> forumMuted;
-	private PersistedProperty<Integer> timeSpent;
+	private PersistedProperty<Boolean> pvpProtection;
 	
 	private Location bedLocation;
+	private int timeSpent;
 	
 	public StandardPlayer(final Player player, final PlayerStorage storage) {
 		super(player, storage);
@@ -30,7 +32,7 @@ public class StandardPlayer extends PlayerDelegate {
 	@Override
 	public void loadProperties() {
 		forumMuted = loadProperty(Boolean.class, FORUM_MUTED_PROPERTY);
-		timeSpent = loadProperty(Integer.class, TIME_SPENT_PROPERTY);
+		pvpProtection = loadProperty(Boolean.class, PVP_PROTECTION_PROPERTY);
 	}
 	
 	public Boolean isForumMuted() {
@@ -47,11 +49,23 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 	
 	public int getTimeSpent() {
-		return timeSpent.getValue();
+		return timeSpent;
 	}
 	
 	public void setTimeSpent(int timeSpent) {
-		this.timeSpent.setValue(timeSpent);
+		this.timeSpent = timeSpent;
+	}
+	
+	public Boolean isPvpProtected() {
+		return pvpProtection.getValue();
+	}
+
+	public void setPvpProtection(boolean pvpProtection) {
+		this.pvpProtection.setValue(pvpProtection);
+	}
+	
+	public int getPvpProtectionTimeRemaining() {
+		return Math.max(StandardPlugin.getPlugin().getPvpProtectionTime() - timeSpent, 0);
 	}
 	
 	public void saveBedLocation(Location location) {
