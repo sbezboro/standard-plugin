@@ -1,5 +1,6 @@
 package com.sbezboro.standardplugin.jsonapi;
 
+import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +49,13 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 		}
 		
 		double cpuLoad = ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage();
+		long maxMemory = Runtime.getRuntime().maxMemory() / 1024 / 1024;
+		long totalMemory = Runtime.getRuntime().totalMemory() / 1024 / 1024;
+		long freeMemory = Runtime.getRuntime().freeMemory() / 1024 / 1024;
+		
+		File serverRoot = new File(plugin.getServer().getWorldContainer().getAbsolutePath());
+		long totalSpace = serverRoot.getTotalSpace() / 1024 / 1024;
+		long freeSpace = serverRoot.getFreeSpace() / 1024 / 1024;
 		
 		status.put("players", playerList);
 		status.put("numplayers", playerList.size());
@@ -55,6 +63,11 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 		status.put("banned_players", bannedPlayers);
 		status.put("cpu_load", cpuLoad);
 		status.put("tps", EssentialsIntegration.getTPS());
+		status.put("max_memory", maxMemory);
+		status.put("total_memory", totalMemory);
+		status.put("free_memory", freeMemory);
+		status.put("total_space", totalSpace);
+		status.put("free_space", freeSpace);
 		
 		return status;
 	}

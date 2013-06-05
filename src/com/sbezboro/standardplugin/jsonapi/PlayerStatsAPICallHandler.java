@@ -45,6 +45,7 @@ public class PlayerStatsAPICallHandler extends APICallHandler {
 						+ " your PVP protection has been disabled! Stay safe out there!");
 					
 					player.setPvpProtection(false);
+					logger.info("Disabling PVP protection for " + player.getName());
 				// Show warning a few times before the PVP protection wears off
 				} else if (timeSpent % (plugin.getPvpProtectionTime() / 4) == 0 || remainingTime == 5) {
 					player.sendMessage(ChatColor.RED + "Warning! You have " + ChatColor.AQUA + remainingTime 
