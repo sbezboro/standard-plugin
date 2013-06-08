@@ -26,7 +26,6 @@ import com.sbezboro.standardplugin.jsonapi.ForumPostAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.PlayerStatsAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.ServerStatusAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.WebChatAPICallHandler;
-import com.sbezboro.standardplugin.listeners.ChunkLoadListener;
 import com.sbezboro.standardplugin.listeners.CreatureSpawnListener;
 import com.sbezboro.standardplugin.listeners.DeathListener;
 import com.sbezboro.standardplugin.listeners.EntityDamageListener;
@@ -111,7 +110,7 @@ public class StandardPlugin extends JavaPlugin {
 		pluginManager.registerEvents(new RespawnListener(this), this);
 		pluginManager.registerEvents(new PlayerMoveListener(this), this);
 		pluginManager.registerEvents(new CreatureSpawnListener(this), this);
-		pluginManager.registerEvents(new ChunkLoadListener(this), this);
+		//pluginManager.registerEvents(new ChunkLoadListener(this), this);
 
 		EssentialsIntegration.init(this);
 		SimplyVanishIntegration.init(this);

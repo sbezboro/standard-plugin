@@ -27,6 +27,7 @@ public class PlayerStorage extends ObjectStorage<StandardPlayer> {
 			cacheObject(username, standardPlayer);
 		} else if (standardPlayer.isOnline() && standardPlayer.getBasePlayer() == null) {
 			standardPlayer.setPlayer(Bukkit.getPlayer(username));
+			standardPlayer.setOfflinePlayer(Bukkit.getOfflinePlayer(username));
 		}
 		
 		return standardPlayer;
