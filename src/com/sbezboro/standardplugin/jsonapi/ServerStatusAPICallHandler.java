@@ -15,9 +15,12 @@ import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.util.AnsiConverter;
 
 public class ServerStatusAPICallHandler extends APICallHandler {
+	private File serverRoot;
 
 	public ServerStatusAPICallHandler(StandardPlugin plugin) {
 		super(plugin, "server_status");
+		
+		serverRoot = new File(plugin.getServer().getWorldContainer().getAbsolutePath());
 	}
 
 	@Override
@@ -48,12 +51,14 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 			bannedPlayers.add(player.getName());
 		}
 		
-		double cpuLoad = ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage();
-		long maxMemory = Runtime.getRuntime().maxMemory() / 1024 / 1024;
-		long totalMemory = Runtime.getRuntime().totalMemory() / 1024 / 1024;
-		long freeMemory = Runtime.getRuntime().freeMemory() / 1024 / 1024;
+		Runtime runtime = Runtime.getRuntime();
 		
-		File serverRoot = new File(plugin.getServer().getWorldContainer().getAbsolutePath());
+		double cpuLoad = ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage();
+		
+		long maxMemory = runtime.maxMemory() / 1024 / 1024;
+		long totalMemory = runtime.totalMemory() / 1024 / 1024;
+		long freeMemory = runtime.freeMemory() / 1024 / 1024;
+		
 		long totalSpace = serverRoot.getTotalSpace() / 1024 / 1024;
 		long freeSpace = serverRoot.getFreeSpace() / 1024 / 1024;
 		
@@ -61,8 +66,9 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 		status.put("numplayers", playerList.size());
 		status.put("maxplayers", Bukkit.getMaxPlayers());
 		status.put("banned_players", bannedPlayers);
-		status.put("cpu_load", cpuLoad);
 		status.put("tps", EssentialsIntegration.getTPS());
+		
+		status.put("cpu_load", cpuLoad);
 		status.put("max_memory", maxMemory);
 		status.put("total_memory", totalMemory);
 		status.put("free_memory", freeMemory);
