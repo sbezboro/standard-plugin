@@ -1,6 +1,5 @@
 package com.sbezboro.standardplugin.jsonapi;
 
-import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,12 +14,9 @@ import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.util.AnsiConverter;
 
 public class ServerStatusAPICallHandler extends APICallHandler {
-	private File serverRoot;
 
 	public ServerStatusAPICallHandler(StandardPlugin plugin) {
 		super(plugin, "server_status");
-		
-		serverRoot = new File(plugin.getServer().getWorldContainer().getAbsolutePath());
 	}
 
 	@Override
@@ -51,29 +47,14 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 			bannedPlayers.add(player.getName());
 		}
 		
-		Runtime runtime = Runtime.getRuntime();
-		
 		double cpuLoad = ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage();
-		
-		long maxMemory = runtime.maxMemory() / 1024 / 1024;
-		long totalMemory = runtime.totalMemory() / 1024 / 1024;
-		long freeMemory = runtime.freeMemory() / 1024 / 1024;
-		
-		long totalSpace = serverRoot.getTotalSpace() / 1024 / 1024;
-		long freeSpace = serverRoot.getFreeSpace() / 1024 / 1024;
 		
 		status.put("players", playerList);
 		status.put("numplayers", playerList.size());
 		status.put("maxplayers", Bukkit.getMaxPlayers());
 		status.put("banned_players", bannedPlayers);
 		status.put("tps", EssentialsIntegration.getTPS());
-		
 		status.put("cpu_load", cpuLoad);
-		status.put("max_memory", maxMemory);
-		status.put("total_memory", totalMemory);
-		status.put("free_memory", freeMemory);
-		status.put("total_space", totalSpace);
-		status.put("free_space", freeSpace);
 		
 		return status;
 	}
