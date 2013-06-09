@@ -14,11 +14,12 @@ import com.sbezboro.standardplugin.util.MiscUtil;
 public class StandardPlayer extends PlayerDelegate {
 	private static final String FORUM_MUTED_PROPERTY = "forum-muted";
 	private static final String PVP_PROTECTION_PROPERTY = "pvp-protection";
+	private static final String BED_LOCATION_PROPERTY = "bed";
 	
 	private PersistedProperty<Boolean> forumMuted;
 	private PersistedProperty<Boolean> pvpProtection;
+	private PersistedProperty<Location> bedLocation;
 	
-	private Location bedLocation;
 	private int timeSpent;
 	
 	public StandardPlayer(final Player player, final PlayerStorage storage) {
@@ -33,6 +34,7 @@ public class StandardPlayer extends PlayerDelegate {
 	public void loadProperties() {
 		forumMuted = loadProperty(Boolean.class, FORUM_MUTED_PROPERTY);
 		pvpProtection = loadProperty(Boolean.class, PVP_PROTECTION_PROPERTY);
+		bedLocation = loadProperty(Location.class, BED_LOCATION_PROPERTY);
 	}
 	
 	public Boolean isForumMuted() {
@@ -69,11 +71,11 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 	
 	public void saveBedLocation(Location location) {
-		bedLocation = location;
+		bedLocation.setValue(location);
 	}
 	
 	public Location getBedLocation() {
-		return bedLocation;
+		return bedLocation.getValue();
 	}
 	
 	public void leftServer() {

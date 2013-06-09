@@ -38,10 +38,6 @@ public class PlayerJoinListener extends EventListener implements Listener {
     		}
     	}
     	
-    	if (player.getBedSpawnLocation() != null) {
-    		player.saveBedLocation(player.getBedSpawnLocation());
-    	}
-    	
     	if (player.hasNickname()) {
         	String joinMessage = event.getJoinMessage().replace(player.getName(), player.getDisplayName(false) + " (" + player.getName() + ")");
         	event.setJoinMessage(joinMessage);
