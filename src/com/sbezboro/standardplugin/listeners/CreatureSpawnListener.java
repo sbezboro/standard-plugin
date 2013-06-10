@@ -14,7 +14,7 @@ public class CreatureSpawnListener extends EventListener implements Listener {
 	}
 
 	@EventHandler
-	public void WitherSpawnEvent(CreatureSpawnEvent event) {
+	public void onCreatureSpawn(CreatureSpawnEvent event) {
 		EntityType type = event.getEntity().getType();
 		if (type == EntityType.WITHER) {
 			event.setCancelled(true);

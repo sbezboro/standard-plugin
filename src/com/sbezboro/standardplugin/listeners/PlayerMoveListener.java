@@ -21,7 +21,6 @@ public class PlayerMoveListener extends EventListener implements Listener {
 
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
-		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 		Location from = event.getFrom();
 		Location to = event.getTo();
 		
@@ -30,6 +29,8 @@ public class PlayerMoveListener extends EventListener implements Listener {
 			if (source != null) {
 				Gate target = source.getTarget();
 				if (target != null) {
+					StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
+					
 					event.setTo(target.getLocation());
 					
 					Location blockLocation = new Location(to.getWorld(), to.getBlockX(), to.getBlockY() + 1, to.getBlockZ());

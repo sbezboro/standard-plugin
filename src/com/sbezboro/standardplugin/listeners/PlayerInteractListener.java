@@ -18,12 +18,11 @@ public class PlayerInteractListener extends EventListener implements Listener {
 
 	@EventHandler(ignoreCancelled=true)
 	public void onPlayerInteract(final PlayerInteractEvent event) {
-		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
-		
 		switch (event.getAction()) {
 		case RIGHT_CLICK_BLOCK:
 			Block block = event.getClickedBlock();
-			
+
+			StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 			if (block.getTypeId() == Material.BED_BLOCK.getId()) {
 				Location location = block.getLocation();
 				player.saveBedLocation(location);

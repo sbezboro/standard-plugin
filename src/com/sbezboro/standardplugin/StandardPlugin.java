@@ -29,6 +29,7 @@ import com.sbezboro.standardplugin.jsonapi.WebChatAPICallHandler;
 import com.sbezboro.standardplugin.listeners.CreatureSpawnListener;
 import com.sbezboro.standardplugin.listeners.DeathListener;
 import com.sbezboro.standardplugin.listeners.EntityDamageListener;
+import com.sbezboro.standardplugin.listeners.HungerListener;
 import com.sbezboro.standardplugin.listeners.PlayerInteractListener;
 import com.sbezboro.standardplugin.listeners.PlayerJoinListener;
 import com.sbezboro.standardplugin.listeners.PlayerLeaveListener;
@@ -57,6 +58,7 @@ public class StandardPlugin extends JavaPlugin {
 	
 	private String endpoint;
 	private int pvpProtectionTime;
+	private int hungerProtectionTime;
 	
 	public StandardPlugin() {
 		instance = this;
@@ -110,6 +112,7 @@ public class StandardPlugin extends JavaPlugin {
 		pluginManager.registerEvents(new RespawnListener(this), this);
 		pluginManager.registerEvents(new PlayerMoveListener(this), this);
 		pluginManager.registerEvents(new CreatureSpawnListener(this), this);
+		pluginManager.registerEvents(new HungerListener(this), this);
 		//pluginManager.registerEvents(new ChunkLoadListener(this), this);
 
 		EssentialsIntegration.init(this);
@@ -150,6 +153,7 @@ public class StandardPlugin extends JavaPlugin {
 		
 		endpoint = getConfig().getString("endpoint");
 		pvpProtectionTime = getConfig().getInt("pvp-protection-time");
+		hungerProtectionTime = getConfig().getInt("hunger-protection-time");
 		
 		for (IStorage storage : storages) {
 			storage.reload();
@@ -213,6 +217,14 @@ public class StandardPlugin extends JavaPlugin {
 
 	public boolean isPvpProtectionEnabled() {
 		return pvpProtectionTime > 0;
+	}
+	
+	public int getHungerProtectionTime() {
+		return hungerProtectionTime;
+	}
+
+	public boolean isHungerProtectionEnabled() {
+		return hungerProtectionTime > 0;
 	}
 	
 	public GateStorage getGateStorage() {

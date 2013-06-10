@@ -58,6 +58,10 @@ public class StandardPlayer extends PlayerDelegate {
 		this.timeSpent = timeSpent;
 	}
 	
+	public boolean isHungerProtected() {
+		return timeSpent <= StandardPlugin.getPlugin().getHungerProtectionTime();
+	}
+	
 	public Boolean isPvpProtected() {
 		return pvpProtection.getValue();
 	}
