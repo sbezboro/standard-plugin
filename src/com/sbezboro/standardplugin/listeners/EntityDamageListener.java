@@ -1,5 +1,6 @@
 package com.sbezboro.standardplugin.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -10,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
+import com.sbezboro.standardplugin.model.Title;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class EntityDamageListener extends EventListener implements Listener {
@@ -41,6 +43,13 @@ public class EntityDamageListener extends EventListener implements Listener {
 					damager.sendMessage(ChatColor.RED + "This player is protected from PVP!");
 					victim.sendMessage(ChatColor.RED + "You are immune to PVP damage for " + ChatColor.AQUA + remainingTime
 						+ ChatColor.RED + " more " + MiscUtil.pluralize("minute", remainingTime) + "!");
+					
+					if (damager.incrementNewbieAttacks() == plugin.getNewbieStalkerThreshold()) {
+						Title title = damager.addTitle(Title.newbieStalker);
+						
+						Bukkit.broadcastMessage("" + ChatColor.AQUA + ChatColor.BOLD + damager.getDisplayName(false) + ChatColor.AQUA 
+								+ " has been designated as a " + ChatColor.BOLD + title.getDisplayName());
+					}
 					
 					event.setCancelled(true);
 				// Attacker protected but victim isn't so turn off attacker's protection

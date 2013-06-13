@@ -24,10 +24,12 @@ public class PlayerStatsAPICallHandler extends APICallHandler {
 		for (HashMap<String, Object> playerData : players) {
 			String username = (String) playerData.get("username");
 			Long timeSpent = (Long) playerData.get("minutes");
+			Long rank = (Long) playerData.get("rank");
 			
 			StandardPlayer player = plugin.getStandardPlayer(username);
 			
 			player.setTimeSpent(timeSpent.intValue());
+			player.setRank(rank.intValue());
 
 			long hours = timeSpent / 60;
 			String hoursString = String.valueOf(hours) + MiscUtil.pluralize(" hour", hours);

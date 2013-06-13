@@ -1,6 +1,8 @@
 package com.sbezboro.standardplugin.persistence;
 
 
+
+
 public abstract class PersistedObject {
 	protected ObjectStorage<?> storage;
 	private String identifier;
@@ -27,6 +29,10 @@ public abstract class PersistedObject {
 		return new PersistedProperty<T>(this, cls, name, def);
 	}
 	
+	protected final <T> PersistedList<T> loadList(Class<T> cls, String name) {
+		return new PersistedList<T>(this, cls, name);
+	}
+	
 	public final Object loadProperty(String key, Object def) {
 		Object value = storage.loadProperty(identifier, key);
 		if (value != null) {
@@ -41,7 +47,12 @@ public abstract class PersistedObject {
 	}
 	
 	public final void saveProperty(String key, Object value, boolean commit) {
-		storage.saveProperty(identifier, key, value);
+		if (value instanceof Persistable) {
+			Persistable persistable = (Persistable) value;
+			storage.saveProperty(identifier, key, persistable.persistableRepresentation());
+		} else {
+			storage.saveProperty(identifier, key, value);
+		}
 		
 		toCommit = !commit;
 		if (commit) {

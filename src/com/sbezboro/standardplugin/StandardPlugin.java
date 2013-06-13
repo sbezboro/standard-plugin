@@ -49,16 +49,10 @@ public class StandardPlugin extends JavaPlugin {
 	private List<IStorage> storages;
 	private List<LogWriter> logs;
 	
+	private StandardConfig config;
+	
 	private GateStorage gateStorage;
 	private PlayerStorage playerStorage;
-	
-	private int serverId = 0;
-	private String secretKey = "";
-	private boolean debug = false;
-	
-	private String endpoint;
-	private int pvpProtectionTime;
-	private int hungerProtectionTime;
 	
 	public StandardPlugin() {
 		instance = this;
@@ -89,6 +83,8 @@ public class StandardPlugin extends JavaPlugin {
 		storages.add(playerStorage);
 		
 		logs = new ArrayList<LogWriter>();
+		
+		config = new StandardConfig(this);
 		
 		reloadPlugin();
 		
@@ -141,19 +137,7 @@ public class StandardPlugin extends JavaPlugin {
 	public void reloadPlugin() {
 		reloadConfig();
 		
-		serverId = getConfig().getInt("server-id");
-		getLogger().info("Server starting with server id " + serverId);
-		
-		secretKey = getConfig().getString("secret-key");
-		
-		debug = getConfig().getBoolean("debug");
-		if (debug) {
-			getLogger().info("Debug mode enabled!");
-		}
-		
-		endpoint = getConfig().getString("endpoint");
-		pvpProtectionTime = getConfig().getInt("pvp-protection-time");
-		hungerProtectionTime = getConfig().getInt("hunger-protection-time");
+		config.reload();
 		
 		for (IStorage storage : storages) {
 			storage.reload();
@@ -196,35 +180,39 @@ public class StandardPlugin extends JavaPlugin {
 	}
 
 	public int getServerId() {
-		return serverId;
+		return config.getServerId();
 	}
 
 	public String getSecretKey() {
-		return secretKey;
+		return config.getSecretKey();
 	}
 
 	public boolean isDebug() {
-		return debug;
+		return config.isDebug();
 	}
 	
 	public String getEndpoint() {
-		return endpoint;
+		return config.getEndpoint();
 	}
 	
 	public int getPvpProtectionTime() {
-		return pvpProtectionTime;
+		return config.getPvpProtectionTime();
 	}
 
 	public boolean isPvpProtectionEnabled() {
-		return pvpProtectionTime > 0;
+		return config.getPvpProtectionTime() > 0;
 	}
 	
 	public int getHungerProtectionTime() {
-		return hungerProtectionTime;
+		return config.getHungerProtectionTime();
 	}
 
 	public boolean isHungerProtectionEnabled() {
-		return hungerProtectionTime > 0;
+		return config.getHungerProtectionTime() > 0;
+	}
+	
+	public int getNewbieStalkerThreshold() {
+		return config.getNewbieStalkerThreshold();
 	}
 	
 	public GateStorage getGateStorage() {

@@ -1,5 +1,7 @@
 package com.sbezboro.standardplugin.model;
 
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -7,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
+import com.sbezboro.standardplugin.persistence.PersistedList;
 import com.sbezboro.standardplugin.persistence.PersistedProperty;
 import com.sbezboro.standardplugin.persistence.PlayerStorage;
 import com.sbezboro.standardplugin.util.MiscUtil;
@@ -15,12 +18,19 @@ public class StandardPlayer extends PlayerDelegate {
 	private static final String FORUM_MUTED_PROPERTY = "forum-muted";
 	private static final String PVP_PROTECTION_PROPERTY = "pvp-protection";
 	private static final String BED_LOCATION_PROPERTY = "bed";
+	private static final String TITLES_PROPERTY = "titles";
 	
 	private PersistedProperty<Boolean> forumMuted;
 	private PersistedProperty<Boolean> pvpProtection;
 	private PersistedProperty<Location> bedLocation;
+	private PersistedList<String> titleNames;
+	
+	private ArrayList<Title> titles;
 	
 	private int timeSpent;
+	private int rank;
+	
+	private int newbieAttacks;
 	
 	public StandardPlayer(final Player player, final PlayerStorage storage) {
 		super(player, storage);
@@ -32,11 +42,22 @@ public class StandardPlayer extends PlayerDelegate {
 	
 	@Override
 	public void loadProperties() {
+		titles = new ArrayList<Title>();
+		
 		forumMuted = loadProperty(Boolean.class, FORUM_MUTED_PROPERTY);
 		pvpProtection = loadProperty(Boolean.class, PVP_PROTECTION_PROPERTY);
 		bedLocation = loadProperty(Location.class, BED_LOCATION_PROPERTY);
+		titleNames = loadList(String.class, TITLES_PROPERTY);
+
+		for (String name : titleNames) {
+			Title title = Title.getTitle(name);
+			titles.add(title);
+		}
 	}
 	
+	// ------
+	// Persisted property mutators
+	// ------
 	public Boolean isForumMuted() {
 		return forumMuted.getValue();
 	}
@@ -49,15 +70,7 @@ public class StandardPlayer extends PlayerDelegate {
 		setForumMuted(!isForumMuted());
 		return isForumMuted();
 	}
-	
-	public int getTimeSpent() {
-		return timeSpent;
-	}
-	
-	public void setTimeSpent(int timeSpent) {
-		this.timeSpent = timeSpent;
-	}
-	
+
 	public boolean isHungerProtected() {
 		return timeSpent <= StandardPlugin.getPlugin().getHungerProtectionTime();
 	}
@@ -81,6 +94,60 @@ public class StandardPlayer extends PlayerDelegate {
 	public Location getBedLocation() {
 		return bedLocation.getValue();
 	}
+	
+	public Title addTitle(String name) {
+		Title title = Title.getTitle(name);
+		
+		if (!titles.contains(title)) {
+			titles.add(title);
+			titleNames.add(name);
+		}
+		
+		return title;
+	}
+	
+	public void removeTitle(String name) {
+		Title title = Title.getTitle(name);
+		
+		titles.remove(title);
+		titleNames.remove(name);
+	}
+
+	// ------
+	// Non-persisted property mutators
+	// ------
+	public int getTimeSpent() {
+		return timeSpent;
+	}
+	
+	public void setTimeSpent(int timeSpent) {
+		this.timeSpent = timeSpent;
+	}
+	
+	public int getRank() {
+		return rank;
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
+
+	public int getNewbieAttacks() {
+		return newbieAttacks;
+	}
+
+	public int incrementNewbieAttacks() {
+		return newbieAttacks++;
+	}
+	
+	public ArrayList<Title> getTitles() {
+		return titles;
+	}
+	
+	public boolean isNewbieStalker() {
+		return titles.contains(Title.getTitle(Title.newbieStalker));
+	}
+	
 	
 	public void leftServer() {
 		player = null;

@@ -1,5 +1,7 @@
 package com.sbezboro.standardplugin.util;
 
+import java.util.HashSet;
+
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
@@ -42,5 +44,24 @@ public class MiscUtil {
     
     public static String pluralize(String string, long count) {
     	return count != 1 ? string + "s" : string;
+    }
+    
+    public static boolean isWrapperType(Class<?> cls) {
+        return getWrapperTypes().contains(cls);
+    }
+    
+    private static HashSet<Class<?>> getWrapperTypes() {
+        HashSet<Class<?>> ret = new HashSet<Class<?>>();
+        ret.add(Boolean.class);
+        ret.add(Character.class);
+        ret.add(Byte.class);
+        ret.add(Short.class);
+        ret.add(Integer.class);
+        ret.add(Long.class);
+        ret.add(Float.class);
+        ret.add(Double.class);
+        ret.add(Void.class);
+        ret.add(String.class);
+        return ret;
     }
 }
