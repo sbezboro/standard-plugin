@@ -3,10 +3,7 @@ package com.sbezboro.standardplugin.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sbezboro.standardplugin.persistence.Persistable;
-import com.sbezboro.standardplugin.persistence.PersistableImpl;
-
-public class Title extends PersistableImpl implements Persistable {
+public class Title {
 	public static final String newbieStalker = "newbie-stalker";
 	@SuppressWarnings("serial")
 	private static final Map<String, Title> allTitles = new HashMap<String, Title>() { { 
@@ -26,20 +23,11 @@ public class Title extends PersistableImpl implements Persistable {
 		return allTitles.get(name);
 	}
 
-	public String getDisplayName() {
-		return displayName;
+	public String getName() {
+		return name;
 	}
 
-	@Override
-	public void loadFromPersistance(Object object) {
-		name = (String) object;
-		
-		Title validTitle = allTitles.get(name);
-		displayName = validTitle.displayName;
-	}
-	
-	@Override
-	public String stringRepresentation() {
-		return name;
+	public String getDisplayName() {
+		return displayName;
 	}
 }
