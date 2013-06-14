@@ -9,7 +9,7 @@ import com.sbezboro.standardplugin.model.StandardPlayer;
 public class UnfreezeCommand extends BaseCommand {
 
 	public UnfreezeCommand(StandardPlugin plugin) {
-		super(plugin);
+		super(plugin, "unfreeze");
 	}
 
 	@Override
@@ -22,12 +22,7 @@ public class UnfreezeCommand extends BaseCommand {
 
 	@Override
 	public void showUsageInfo(CommandSender sender) {
-		sender.sendMessage("Usage: /" + getName());
-	}
-
-	@Override
-	public String getName() {
-		return "unfreeze";
+		sender.sendMessage("Usage: /" + name);
 	}
 
 	@Override

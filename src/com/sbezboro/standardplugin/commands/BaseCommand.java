@@ -9,10 +9,13 @@ import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public abstract class BaseCommand implements CommandExecutor {
 	protected StandardPlugin plugin;
+	protected String name;
 	
-	public BaseCommand(StandardPlugin plugin) {
+	public BaseCommand(StandardPlugin plugin, String name) {
 		this.plugin = plugin;
-		StandardPlugin.getPlugin().getCommand(getName()).setExecutor(this);
+		this.name = name;
+		
+		plugin.getCommand(name).setExecutor(this);
 	}
 	
 	@Override
@@ -34,6 +37,5 @@ public abstract class BaseCommand implements CommandExecutor {
 	
 	public abstract boolean handle(CommandSender sender, Command command, String label, String[] args);
 	public abstract void showUsageInfo(CommandSender sender);
-	public abstract String getName();
 	public abstract boolean isPlayerOnly(int numArgs);
 }

@@ -10,7 +10,7 @@ import com.sbezboro.standardplugin.model.StandardPlayer;
 public class SetSpawnCommand extends BaseCommand {
 
 	public SetSpawnCommand(StandardPlugin plugin) {
-		super(plugin);
+		super(plugin, "setspawn");
 	}
 
 	@Override
@@ -24,12 +24,7 @@ public class SetSpawnCommand extends BaseCommand {
 
 	@Override
 	public void showUsageInfo(CommandSender sender) {
-		sender.sendMessage("Usage: /" + getName());
-	}
-
-	@Override
-	public String getName() {
-		return "setspawn";
+		sender.sendMessage("Usage: /" + name);
 	}
 
 	@Override

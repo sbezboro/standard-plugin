@@ -13,18 +13,17 @@ import com.sbezboro.standardplugin.net.RankHttpRequest;
 public class RankCommand extends BaseCommand {
 
 	public RankCommand(StandardPlugin plugin) {
-		super(plugin);
+		super(plugin, "rank");
 	}
 
 	@Override
 	public boolean handle(final CommandSender sender, Command command, String label, final String[] args) {
-		final StandardPlayer senderPlayer = plugin.getStandardPlayer(sender);
-
 		if (args.length > 1) {
 			showUsageInfo(sender);
 			return false;
 		}
-
+		
+		final StandardPlayer senderPlayer = plugin.getStandardPlayer(sender);
 		final StandardPlayer rankPlayer;
 		if (args.length == 1) {
 			rankPlayer = plugin.getStandardPlayer(args[0]);
@@ -75,14 +74,9 @@ public class RankCommand extends BaseCommand {
 
 	@Override
 	public void showUsageInfo(CommandSender sender) {
-		sender.sendMessage("Usage: /" + getName() + " [username]");
+		sender.sendMessage("Usage: /" + name + " [username]");
 		sender.sendMessage(ChatColor.GREEN + "This command will tell you the rank of either yourself");
 		sender.sendMessage(ChatColor.GREEN + "or a player you specify. ");
-	}
-
-	@Override
-	public String getName() {
-		return "rank";
 	}
 
 	@Override

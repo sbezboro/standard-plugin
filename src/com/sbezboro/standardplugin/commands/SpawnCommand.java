@@ -15,7 +15,7 @@ import com.sbezboro.standardplugin.model.Gate;
 public class SpawnCommand extends BaseCommand {
 
 	public SpawnCommand(StandardPlugin plugin) {
-		super(plugin);
+		super(plugin, "spawn");
 	}
 
 	@Override
@@ -50,12 +50,7 @@ public class SpawnCommand extends BaseCommand {
 
 	@Override
 	public void showUsageInfo(CommandSender sender) {
-		sender.sendMessage("Usage: /" + getName());
-	}
-
-	@Override
-	public String getName() {
-		return "spawn";
+		sender.sendMessage("Usage: /" + name);
 	}
 
 	@Override

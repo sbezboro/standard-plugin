@@ -13,7 +13,7 @@ import com.sbezboro.standardplugin.model.StandardPlayer;
 public class GateCommand extends BaseCommand {
 
 	public GateCommand(StandardPlugin plugin) {
-		super(plugin);
+		super(plugin, "gate");
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class GateCommand extends BaseCommand {
 
 			StandardPlayer player = plugin.getStandardPlayer(sender);
 			if (args.length == 1) {
-				sender.sendMessage("Usage: /" + getName() + " create <name> [displayName]");
+				sender.sendMessage("Usage: /" + name + " create <name> [displayName]");
 				return false;
 			} else if (args.length == 2) {
 				Gate warp = new Gate(args[1], null, player.getLocation());
@@ -47,7 +47,7 @@ public class GateCommand extends BaseCommand {
 			}
 		} else if (args[0].equalsIgnoreCase("delete")) {
 			if (args.length == 1) {
-				sender.sendMessage("Usage: /" + getName() + " delete <name>");
+				sender.sendMessage("Usage: /" + name + " delete <name>");
 				return false;
 			}
 			
@@ -60,12 +60,12 @@ public class GateCommand extends BaseCommand {
 					sender.sendMessage("Gate \"" + args[1] + "\" removed!");
 				}
 			} else {
-				sender.sendMessage("Usage: /" + getName() + " delete <name>");
+				sender.sendMessage("Usage: /" + name + " delete <name>");
 				return false;
 			}
 		} else if (args[0].equalsIgnoreCase("link")) {
 			if (args.length == 1) {
-				sender.sendMessage("Usage: /" + getName() + " link <gate1> <gate2>");
+				sender.sendMessage("Usage: /" + name + " link <gate1> <gate2>");
 				return false;
 			}
 			
@@ -82,7 +82,7 @@ public class GateCommand extends BaseCommand {
 					sender.sendMessage("Gate \"" + args[1] + "\" linked to \"" + args[2] + "\"");
 				}
 			} else {
-				sender.sendMessage("Usage: /" + getName() + " link <gate1> <gate2>");
+				sender.sendMessage("Usage: /" + name + " link <gate1> <gate2>");
 				return false;
 			}
 		} else if (args[0].equalsIgnoreCase("list")) {
@@ -102,7 +102,7 @@ public class GateCommand extends BaseCommand {
 					sender.sendMessage(gateInfo);
 				}
 			} else {
-				sender.sendMessage("Usage: /" + getName() + " list");
+				sender.sendMessage("Usage: /" + name + " list");
 				return false;
 			}
 		} else if (args[0].equalsIgnoreCase("tp")) {
@@ -121,7 +121,7 @@ public class GateCommand extends BaseCommand {
 					sender.sendMessage("TPed to \"" + args[1] + "\"");
 				}
 			} else {
-				sender.sendMessage("Usage: /" + getName() + " tp <name>");
+				sender.sendMessage("Usage: /" + name + " tp <name>");
 				return false;
 			}
 		}
@@ -131,16 +131,11 @@ public class GateCommand extends BaseCommand {
 
 	@Override
 	public void showUsageInfo(CommandSender sender) {
-		sender.sendMessage("Usage: /" + getName() + " create <name> [displayName]");
-		sender.sendMessage("Usage: /" + getName() + " delete <name>");
-		sender.sendMessage("Usage: /" + getName() + " link <gate1> <gate2>");
-		sender.sendMessage("Usage: /" + getName() + " list");
-		sender.sendMessage("Usage: /" + getName() + " tp <gate>");
-	}
-
-	@Override
-	public String getName() {
-		return "gate";
+		sender.sendMessage("Usage: /" + name + " create <name> [displayName]");
+		sender.sendMessage("Usage: /" + name + " delete <name>");
+		sender.sendMessage("Usage: /" + name + " link <gate1> <gate2>");
+		sender.sendMessage("Usage: /" + name + " list");
+		sender.sendMessage("Usage: /" + name + " tp <gate>");
 	}
 
 	@Override

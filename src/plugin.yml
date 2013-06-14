@@ -43,6 +43,14 @@ commands:
         description: Query/enable/disable pvp protection for players
         permission: standardplugin.pvp
         permission-message: You don't have permission
+    title:
+        description: Administrate player titles
+        permission: standardplugin.title
+        permission-message: You don't have permission
+    titles:
+        description: Check out titles for a player
+        permission: standardplugin.titles
+        permission-message: You don't have permission
 
 permissions:
     standardplugin.standard:
@@ -62,4 +70,8 @@ permissions:
     standardplugin.forummute:
         default: op
     standardplugin.pvp:
+        default: op
+    standardplugin.title:
+        default: op
+    standardplugin.titles:
         default: op

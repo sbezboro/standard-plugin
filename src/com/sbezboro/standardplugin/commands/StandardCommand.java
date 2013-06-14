@@ -8,7 +8,7 @@ import com.sbezboro.standardplugin.StandardPlugin;
 public class StandardCommand extends BaseCommand {
 
 	public StandardCommand(StandardPlugin plugin) {
-		super(plugin);
+		super(plugin, "standard");
 	}
 
 	@Override
@@ -30,12 +30,7 @@ public class StandardCommand extends BaseCommand {
 
 	@Override
 	public void showUsageInfo(CommandSender sender) {
-		sender.sendMessage("Usage: /" + getName() + " reload");
-	}
-
-	@Override
-	public String getName() {
-		return "standard";
+		sender.sendMessage("Usage: /" + name + " reload");
 	}
 
 	@Override

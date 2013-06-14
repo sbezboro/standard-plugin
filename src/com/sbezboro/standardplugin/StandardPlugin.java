@@ -19,6 +19,8 @@ import com.sbezboro.standardplugin.commands.RegisterCommand;
 import com.sbezboro.standardplugin.commands.SetSpawnCommand;
 import com.sbezboro.standardplugin.commands.SpawnCommand;
 import com.sbezboro.standardplugin.commands.StandardCommand;
+import com.sbezboro.standardplugin.commands.TitleCommand;
+import com.sbezboro.standardplugin.commands.TitlesCommand;
 import com.sbezboro.standardplugin.commands.UnfreezeCommand;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
@@ -98,6 +100,8 @@ public class StandardPlugin extends JavaPlugin {
 		commands.add(new ForumMuteCommand(this));
 		commands.add(new StandardCommand(this));
 		commands.add(new PvpProtectionCommand(this));
+		commands.add(new TitleCommand(this));
+		commands.add(new TitlesCommand(this));
 		
 		PluginManager pluginManager = getServer().getPluginManager();
 		pluginManager.registerEvents(new DeathListener(this), this);
@@ -177,6 +181,16 @@ public class StandardPlugin extends JavaPlugin {
 		}
 		
 		return result;
+	}
+	
+	public StandardPlayer matchPlayer(String username) {
+		List<Player> players = Bukkit.matchPlayer(username);
+		
+		if (players.size() > 0) {
+			username = players.get(0).getName();
+		}
+		
+		return getStandardPlayer(username);
 	}
 
 	public int getServerId() {

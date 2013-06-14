@@ -95,13 +95,17 @@ public class StandardPlayer extends PlayerDelegate {
 		return bedLocation.getValue();
 	}
 	
+	public void addTitle(Title title) {
+		if (!titles.contains(title)) {
+			titles.add(title);
+			titleNames.add(title.getName());
+		}
+	}
+	
 	public Title addTitle(String name) {
 		Title title = Title.getTitle(name);
 		
-		if (!titles.contains(title)) {
-			titles.add(title);
-			titleNames.add(name);
-		}
+		addTitle(title);
 		
 		return title;
 	}
@@ -179,6 +183,23 @@ public class StandardPlayer extends PlayerDelegate {
 		} else {
 			return getName() + " has played here " + ChatColor.AQUA + time + ChatColor.WHITE + ".";
 		}
+	}
+	
+	public String[] getTitleDescription(boolean self) {
+		ArrayList<String> messages = new ArrayList<String>();
+		
+		String name = self ? "You" : getDisplayName(false);
+		
+		if (titles.size() == 0) {
+			messages.add(ChatColor.AQUA + name + ChatColor.RESET + " has no titles.");
+		} else {
+			messages.add(ChatColor.AQUA + name + ChatColor.RESET + " has the following titles:");
+			for (Title title : titles) {
+				messages.add(ChatColor.DARK_AQUA + title.getDisplayName());
+			}
+		}
+		
+		return messages.toArray(new String[messages.size()]);
 	}
 	
 	public boolean hasNickname() {

@@ -1,11 +1,7 @@
 package com.sbezboro.standardplugin.commands;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
@@ -13,7 +9,7 @@ import com.sbezboro.standardplugin.model.StandardPlayer;
 public class PvpProtectionCommand extends BaseCommand {
 
 	public PvpProtectionCommand(StandardPlugin plugin) {
-		super(plugin);
+		super(plugin, "pvp");
 	}
 
 	@Override
@@ -22,20 +18,10 @@ public class PvpProtectionCommand extends BaseCommand {
 			showUsageInfo(sender);
 			return false;
 		}
-
-		List<Player> players = Bukkit.matchPlayer(args[0]);
 		
-		String username;
-		
-		if (players.size() == 0) {
-			username = args[0];
-		} else {
-			username = players.get(0).getName();
-		}
-		
-		StandardPlayer player = plugin.getStandardPlayer(username);
+		StandardPlayer player = plugin.matchPlayer(args[0]);
 		if (args.length == 1) {
-			sender.sendMessage("PVP protection is " + (player.isPvpProtected() ? "enabled" : "disabled") + " for " + username);
+			sender.sendMessage("PVP protection is " + (player.isPvpProtected() ? "enabled" : "disabled") + " for " + player.getDisplayName(false));
 		} else if (args.length == 2) {
 			if (!args[1].equals("on") && !args[1].equals("off")) {
 				showUsageInfo(sender);
@@ -46,9 +32,9 @@ public class PvpProtectionCommand extends BaseCommand {
 			player.setPvpProtection(enabled);
 			
 			if (enabled) {
-				sender.sendMessage("Enabled PVP protection for " + username + "!");
+				sender.sendMessage("Enabled PVP protection for " + player.getDisplayName(false) + "!");
 			} else {
-				sender.sendMessage("Disabled PVP protection for " + username + "!");
+				sender.sendMessage("Disabled PVP protection for " + player.getDisplayName(false) + "!");
 			}
 		}
 		
@@ -57,12 +43,7 @@ public class PvpProtectionCommand extends BaseCommand {
 
 	@Override
 	public void showUsageInfo(CommandSender sender) {
-		sender.sendMessage("Usage: /" + getName() + " <name> <on/off>");
-	}
-
-	@Override
-	public String getName() {
-		return "pvp";
+		sender.sendMessage("Usage: /" + name + " <name> <on/off>");
 	}
 
 	@Override
