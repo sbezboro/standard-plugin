@@ -44,11 +44,10 @@ public class EntityDamageListener extends EventListener implements Listener {
 					victim.sendMessage(ChatColor.RED + "You are immune to PVP damage for " + ChatColor.AQUA + remainingTime
 						+ ChatColor.RED + " more " + MiscUtil.pluralize("minute", remainingTime) + "!");
 					
-					if (damager.incrementNewbieAttacks() == plugin.getNewbieStalkerThreshold()) {
+					if (!damager.isNewbieStalker() && damager.incrementNewbieAttacks() >= plugin.getNewbieStalkerThreshold()) {
 						Title title = damager.addTitle(Title.newbieStalker);
-						
 						Bukkit.broadcastMessage("" + ChatColor.AQUA + ChatColor.BOLD + damager.getDisplayName(false) + ChatColor.AQUA 
-								+ " has been designated as a " + ChatColor.BOLD + title.getDisplayName());
+								+ " has been designated as a " + ChatColor.BOLD + title.getDisplayName() + ChatColor.AQUA + "! FOR SHAME");
 					}
 					
 					event.setCancelled(true);
