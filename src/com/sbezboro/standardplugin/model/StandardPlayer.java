@@ -188,12 +188,12 @@ public class StandardPlayer extends PlayerDelegate {
 	public String[] getTitleDescription(boolean self) {
 		ArrayList<String> messages = new ArrayList<String>();
 		
-		String name = self ? "You" : getDisplayName(false);
+		String name = self ? "You" + ChatColor.RESET + " have" : getDisplayName(false) + ChatColor.RESET + " has";
 		
 		if (titles.size() == 0) {
-			messages.add(ChatColor.AQUA + name + ChatColor.RESET + " has no titles.");
+			messages.add(ChatColor.AQUA + name + " no titles.");
 		} else {
-			messages.add(ChatColor.AQUA + name + ChatColor.RESET + " has the following titles:");
+			messages.add(ChatColor.AQUA + name + " the following titles:");
 			for (Title title : titles) {
 				messages.add(ChatColor.DARK_AQUA + title.getDisplayName());
 			}
