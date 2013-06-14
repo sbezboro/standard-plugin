@@ -74,4 +74,4 @@ permissions:
     standardplugin.title:
         default: op
     standardplugin.titles:
-        default: op
+        default: true
