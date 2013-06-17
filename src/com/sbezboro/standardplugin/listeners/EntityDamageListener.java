@@ -44,7 +44,8 @@ public class EntityDamageListener extends EventListener implements Listener {
 					victim.sendMessage(ChatColor.RED + "You are immune to PVP damage for " + ChatColor.AQUA + remainingTime
 						+ ChatColor.RED + " more " + MiscUtil.pluralize("minute", remainingTime) + "!");
 					
-					if (!damager.isNewbieStalker() && damager.incrementNewbieAttacks() >= plugin.getNewbieStalkerThreshold()) {
+					if (!damager.isPvpProtected() && !damager.isNewbieStalker() 
+							&& damager.incrementNewbieAttacks() >= plugin.getNewbieStalkerThreshold()) {
 						Title title = damager.addTitle(Title.newbieStalker);
 						Bukkit.broadcastMessage("" + ChatColor.AQUA + ChatColor.BOLD + damager.getDisplayName(false) + ChatColor.AQUA 
 								+ " has been designated as a " + ChatColor.BOLD + title.getDisplayName() + ChatColor.AQUA + "! FOR SHAME");
@@ -56,7 +57,7 @@ public class EntityDamageListener extends EventListener implements Listener {
 					damager.sendMessage("" + ChatColor.RED + ChatColor.BOLD + "Your PVP protection has been disabled!");
 					damager.setPvpProtection(false);
 					
-					plugin.getLogger().info("Disabling PVP protection for " + damager.getName() + " due to an attack on a vulnerable player.");
+					plugin.getLogger().info("Disabling PVP protection for " + damager.getName() + " due to an attack on " + victim.getName());
 				}
 			}
 		}
