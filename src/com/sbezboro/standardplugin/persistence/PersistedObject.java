@@ -1,6 +1,6 @@
 package com.sbezboro.standardplugin.persistence;
 
-
+import com.sbezboro.standardplugin.persistence.persistables.Persistable;
 
 
 public abstract class PersistedObject {
@@ -49,10 +49,10 @@ public abstract class PersistedObject {
 	public final void saveProperty(String key, Object value, boolean commit) {
 		if (value instanceof Persistable) {
 			Persistable persistable = (Persistable) value;
-			storage.saveProperty(identifier, key, persistable.persistableRepresentation());
-		} else {
-			storage.saveProperty(identifier, key, value);
+			value = persistable.persistableRepresentation();
 		}
+		
+		storage.saveProperty(identifier, key, value);
 		
 		toCommit = !commit;
 		if (commit) {

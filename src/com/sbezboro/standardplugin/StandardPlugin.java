@@ -10,9 +10,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.alecgorge.minecraft.jsonapi.JSONAPI;
-import com.sbezboro.standardplugin.commands.BaseCommand;
 import com.sbezboro.standardplugin.commands.ForumMuteCommand;
 import com.sbezboro.standardplugin.commands.GateCommand;
+import com.sbezboro.standardplugin.commands.ICommand;
 import com.sbezboro.standardplugin.commands.PvpProtectionCommand;
 import com.sbezboro.standardplugin.commands.RankCommand;
 import com.sbezboro.standardplugin.commands.RegisterCommand;
@@ -47,7 +47,6 @@ import com.sbezboro.standardplugin.util.PlayerSaver;
 public class StandardPlugin extends JavaPlugin {
 	private static StandardPlugin instance;
 	
-	private List<BaseCommand> commands;
 	private List<IStorage> storages;
 	private List<LogWriter> logs;
 	
@@ -77,7 +76,7 @@ public class StandardPlugin extends JavaPlugin {
 
 		getConfig().options().copyDefaults(true);
 		saveConfig();
-		
+
 		storages = new ArrayList<IStorage>();
 		gateStorage = new GateStorage(this);
 		playerStorage = new PlayerStorage(this);
@@ -90,31 +89,9 @@ public class StandardPlugin extends JavaPlugin {
 		
 		reloadPlugin();
 		
-		commands = new ArrayList<BaseCommand>();
-		commands.add(new RegisterCommand(this));
-		commands.add(new RankCommand(this));
-		commands.add(new UnfreezeCommand(this));
-		commands.add(new GateCommand(this));
-		commands.add(new SetSpawnCommand(this));
-		commands.add(new SpawnCommand(this));
-		commands.add(new ForumMuteCommand(this));
-		commands.add(new StandardCommand(this));
-		commands.add(new PvpProtectionCommand(this));
-		commands.add(new TitleCommand(this));
-		commands.add(new TitlesCommand(this));
+		registerCommands();
+		registerEvents();
 		
-		PluginManager pluginManager = getServer().getPluginManager();
-		pluginManager.registerEvents(new DeathListener(this), this);
-		pluginManager.registerEvents(new PlayerJoinListener(this), this);
-		pluginManager.registerEvents(new PlayerLeaveListener(this), this);
-		pluginManager.registerEvents(new PlayerInteractListener(this), this);
-		pluginManager.registerEvents(new EntityDamageListener(this), this);
-		pluginManager.registerEvents(new RespawnListener(this), this);
-		pluginManager.registerEvents(new PlayerMoveListener(this), this);
-		pluginManager.registerEvents(new CreatureSpawnListener(this), this);
-		pluginManager.registerEvents(new HungerListener(this), this);
-		//pluginManager.registerEvents(new ChunkLoadListener(this), this);
-
 		EssentialsIntegration.init(this);
 		SimplyVanishIntegration.init(this);
 		
@@ -148,6 +125,38 @@ public class StandardPlugin extends JavaPlugin {
 		}
 	}
 	
+	private void registerCommands() {
+		List<ICommand> commands = new ArrayList<ICommand>();
+		commands.add(new RegisterCommand(this));
+		commands.add(new RankCommand(this));
+		commands.add(new UnfreezeCommand(this));
+		commands.add(new GateCommand(this));
+		commands.add(new SetSpawnCommand(this));
+		commands.add(new SpawnCommand(this));
+		commands.add(new ForumMuteCommand(this));
+		commands.add(new StandardCommand(this));
+		commands.add(new PvpProtectionCommand(this));
+		commands.add(new TitleCommand(this));
+		commands.add(new TitlesCommand(this));
+		
+		for (ICommand command : commands) {
+			command.register();
+		}
+	}
+	
+	private void registerEvents() {
+		PluginManager pluginManager = getServer().getPluginManager();
+		pluginManager.registerEvents(new DeathListener(this), this);
+		pluginManager.registerEvents(new PlayerJoinListener(this), this);
+		pluginManager.registerEvents(new PlayerLeaveListener(this), this);
+		pluginManager.registerEvents(new PlayerInteractListener(this), this);
+		pluginManager.registerEvents(new EntityDamageListener(this), this);
+		pluginManager.registerEvents(new RespawnListener(this), this);
+		pluginManager.registerEvents(new PlayerMoveListener(this), this);
+		pluginManager.registerEvents(new CreatureSpawnListener(this), this);
+		pluginManager.registerEvents(new HungerListener(this), this);
+	}
+	
 	private void registerJSONAPIHandlers() {
 		Plugin plugin = this.getServer().getPluginManager().getPlugin("JSONAPI");
 		if (plugin != null) {
@@ -159,7 +168,11 @@ public class StandardPlugin extends JavaPlugin {
 			jsonapi.registerAPICallHandler(new WebChatAPICallHandler(this));
 		}
 	}
-	
+
+	// ------
+	// Miscellaneous Player related utilty funcitions mirroring the respective
+	// Bukkit versions with a StandardPlayer wrapper
+	// ------
 	public static void playerBroadcast(Player sender, final String message) {
 		for (StandardPlayer player : instance.getOnlinePlayers()) {
 			if (player != sender) {
@@ -193,6 +206,9 @@ public class StandardPlugin extends JavaPlugin {
 		return getStandardPlayer(username);
 	}
 
+	// ------
+	// Configuration getters
+	// ------
 	public int getServerId() {
 		return config.getServerId();
 	}

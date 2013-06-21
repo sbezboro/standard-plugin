@@ -3,10 +3,10 @@ package com.sbezboro.standardplugin.persistence;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
+import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.exceptions.NotPersistableException;
+import com.sbezboro.standardplugin.persistence.persistables.Persistable;
+import com.sbezboro.standardplugin.util.MiscUtil;
 
 
 public class PersistedProperty<T> {
@@ -30,9 +30,20 @@ public class PersistedProperty<T> {
 		this.object = object;
 		
 		try {
-			value = (T) loaded(object.loadProperty(name, null));
+			Object obj = object.loadProperty(name, null);
+			
+			if (Persistable.class.isAssignableFrom(cls)) {
+				Persistable persistable = (Persistable) cls.newInstance();
+				persistable.loadFromPersistance(obj);
+				
+				value = (T) persistable;
+			} else if (MiscUtil.isWrapperType(cls)){
+				value = (T) obj;
+			} else {
+				throw new NotPersistableException("Class " + cls.getName() + " does not implement Persistable nor is a primative wrapper.");
+			}
 		} catch (Exception e) {
-			value = (T) defaultValueMap.get(cls);
+			StandardPlugin.getPlugin().getLogger().severe(e.toString());
 		}
 	}
 	
@@ -43,53 +54,10 @@ public class PersistedProperty<T> {
 		}
 		return value;
 	}
-	
-	// If required, loads the key value pairs representing this object from disk
-	// and transforms them into object properties inside a newly instantiated object
-	private Object loaded(Object value) {
-		if (value != null) {
-			if (this.cls == Location.class) {
-				ConfigurationSection section = (ConfigurationSection) value;
-				
-				String worldName = section.getString("world");
-				double x = section.getDouble("x");
-				double y = section.getDouble("y");
-				double z = section.getDouble("z");
-				float yaw = (float) section.getDouble("yaw");
-				float pitch = (float) section.getDouble("pitch");
-				
-				World world = Bukkit.getWorld(worldName);
-				return new Location(world, x, y, z, yaw, pitch);
-			}
-		}
-		
-		return value;
-	}
-	
-	// If required, transforms the object to be saved into a persistable version
-	private Object savable(T value) {
-		if (value != null) {
-			if (this.cls == Location.class) {
-				HashMap<String, Object> map = new HashMap<String, Object>();
-				
-				Location location = (Location) value;
-				
-				map.put("world", location.getWorld().getName());
-				map.put("x", location.getX());
-				map.put("y", location.getY());
-				map.put("z", location.getZ());
-				map.put("yaw", location.getYaw());
-				map.put("pitch", location.getPitch());
-				return map;
-			}
-		}
-		
-		return value;
-	}
 
 	public void setValue(T value) {
 		this.value = value;
 		
-		object.saveProperty(name, savable(value));
+		object.saveProperty(name, value);
 	}
 }

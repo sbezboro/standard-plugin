@@ -7,14 +7,16 @@ import org.bukkit.command.CommandSender;
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 
-public abstract class BaseCommand implements CommandExecutor {
+public abstract class BaseCommand implements ICommand, CommandExecutor {
 	protected StandardPlugin plugin;
 	protected String name;
 	
 	public BaseCommand(StandardPlugin plugin, String name) {
 		this.plugin = plugin;
 		this.name = name;
-		
+	}
+	
+	public void register() {
 		plugin.getCommand(name).setExecutor(this);
 	}
 	

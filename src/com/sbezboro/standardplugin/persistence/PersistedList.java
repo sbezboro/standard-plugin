@@ -2,12 +2,14 @@ package com.sbezboro.standardplugin.persistence;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.exceptions.NotPersistableException;
+import com.sbezboro.standardplugin.persistence.persistables.Persistable;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
-public class PersistedList<T> implements Persistable, Iterable<T> {
+public class PersistedList<T> implements Iterable<T> {
 	private PersistedObject object;
 	private String name;
 	
@@ -30,7 +32,7 @@ public class PersistedList<T> implements Persistable, Iterable<T> {
 					} else if (MiscUtil.isWrapperType(cls)){
 						this.list.add((T) obj);
 					} else {
-						throw new NotPersistableException("Class " + cls.getName() + " does implement Persistable nor is a primative wrapper.");
+						throw new NotPersistableException("Class " + cls.getName() + " does not implement Persistable nor is a primative wrapper.");
 					}
 				} catch (Exception e) {
 					StandardPlugin.getPlugin().getLogger().severe(e.toString());
@@ -42,13 +44,13 @@ public class PersistedList<T> implements Persistable, Iterable<T> {
 	public void add(T obj) {
 		this.list.add(obj);
 		
-		object.saveProperty(name, this);
+		object.saveProperty(name, listRepresentation());
 	}
 	
 	public void remove(T obj) {
 		this.list.remove(obj);
 		
-		object.saveProperty(name, this);
+		object.saveProperty(name, listRepresentation());
 	}
 	
 	public boolean contains(T obj) {
@@ -58,20 +60,14 @@ public class PersistedList<T> implements Persistable, Iterable<T> {
 	public T get(int index) {
 		return this.list.get(index);
 	}
-
-	@Override
-	public void loadFromPersistance(Object object) {
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public Object persistableRepresentation() {
-		ArrayList<T> copy = new ArrayList<T>();
+	
+	private List<Object> listRepresentation() {
+		ArrayList<Object> copy = new ArrayList<Object>();
 		
 		for (T obj : this.list) {
 			if (obj instanceof Persistable) {
 				Persistable persistable = (Persistable) obj;
-				copy.add((T) persistable.persistableRepresentation());
+				copy.add(persistable.persistableRepresentation());
 			} else {
 				copy.add(obj);
 			}

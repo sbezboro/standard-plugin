@@ -12,6 +12,7 @@ import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.persistence.PersistedList;
 import com.sbezboro.standardplugin.persistence.PersistedProperty;
 import com.sbezboro.standardplugin.persistence.PlayerStorage;
+import com.sbezboro.standardplugin.persistence.persistables.PersistableLocation;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class StandardPlayer extends PlayerDelegate {
@@ -22,7 +23,7 @@ public class StandardPlayer extends PlayerDelegate {
 	
 	private PersistedProperty<Boolean> forumMuted;
 	private PersistedProperty<Boolean> pvpProtection;
-	private PersistedProperty<Location> bedLocation;
+	private PersistedProperty<PersistableLocation> bedLocation;
 	private PersistedList<String> titleNames;
 	
 	private ArrayList<Title> titles;
@@ -46,7 +47,7 @@ public class StandardPlayer extends PlayerDelegate {
 		
 		forumMuted = loadProperty(Boolean.class, FORUM_MUTED_PROPERTY);
 		pvpProtection = loadProperty(Boolean.class, PVP_PROTECTION_PROPERTY);
-		bedLocation = loadProperty(Location.class, BED_LOCATION_PROPERTY);
+		bedLocation = loadProperty(PersistableLocation.class, BED_LOCATION_PROPERTY);
 		titleNames = loadList(String.class, TITLES_PROPERTY);
 
 		for (String name : titleNames) {
@@ -88,11 +89,11 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 	
 	public void saveBedLocation(Location location) {
-		bedLocation.setValue(location);
+		bedLocation.setValue(new PersistableLocation(location));
 	}
 	
 	public Location getBedLocation() {
-		return bedLocation.getValue();
+		return bedLocation.getValue().getLocation();
 	}
 	
 	public void addTitle(Title title) {
