@@ -46,7 +46,7 @@ public class EntityDamageListener extends EventListener implements Listener {
 					
 					if (!damager.isPvpProtected() && !damager.isNewbieStalker() 
 							&& damager.incrementNewbieAttacks() >= plugin.getNewbieStalkerThreshold()) {
-						Title title = damager.addTitle(Title.newbieStalker);
+						Title title = damager.addTitle(Title.NEWBIE_STALKER);
 						Bukkit.broadcastMessage("" + ChatColor.AQUA + ChatColor.BOLD + damager.getDisplayName(false) + ChatColor.AQUA 
 								+ " has been designated as a " + ChatColor.BOLD + title.getDisplayName() + ChatColor.AQUA + "! FOR SHAME");
 					}

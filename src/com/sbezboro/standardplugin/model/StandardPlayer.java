@@ -150,7 +150,19 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 	
 	public boolean isNewbieStalker() {
-		return titles.contains(Title.getTitle(Title.newbieStalker));
+		return titles.contains(Title.getTitle(Title.NEWBIE_STALKER));
+	}
+	
+	public boolean isTop10Veteran() {
+		return titles.contains(Title.getTitle(Title.TOP10_VETERAN));
+	}
+	
+	public boolean isTop40Veteran() {
+		return titles.contains(Title.getTitle(Title.TOP40_VETERAN));
+	}
+	
+	public boolean isVeteran() {
+		return titles.contains(Title.getTitle(Title.VETERAN));
 	}
 	
 	
@@ -158,19 +170,27 @@ public class StandardPlayer extends PlayerDelegate {
 		player = null;
 	}
 	
-	public String getRankDescription(boolean self, int rank, boolean veteran) {
+	public String getRankDescription(boolean self, int rank) {
 		String message = "";
 		if (self) {
-			if (veteran) {
-				message += "You are a " + ChatColor.GOLD + ChatColor.BOLD + "veteran" + ChatColor.WHITE + " and ";
-			} else {
-				message = "You ";
+			message = "You ";
+			
+			if (isTop10Veteran()) {
+				message += "are a " + ChatColor.GOLD + "top 10 veteran" + ChatColor.WHITE + " and ";
+			} else if (isTop40Veteran()) {
+				message += "are a " + ChatColor.GOLD + "top 40 veteran" + ChatColor.WHITE + " and ";
+			} else if (isVeteran()) {
+				message += "are a " + ChatColor.GOLD + "veteran" + ChatColor.WHITE + " and ";
 			}
 			
 			message += "are ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!";
 		} else {
-			if (veteran) {
-				message += "" + ChatColor.GOLD + ChatColor.BOLD + "Veteran ";
+			if (isTop10Veteran()) {
+				message += ChatColor.GOLD + "Top 10 veteran ";
+			} else if (isTop40Veteran()) {
+				message += ChatColor.GOLD + "Top 40 veteran ";
+			} else if (isVeteran()) {
+				message += ChatColor.GOLD + "Veteran ";
 			}
 			
 			message += ChatColor.AQUA + getDisplayName() + ChatColor.WHITE + " is ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!";

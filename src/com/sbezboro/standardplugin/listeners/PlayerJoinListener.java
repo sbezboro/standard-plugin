@@ -11,6 +11,7 @@ import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.model.StandardPlayer;
+import com.sbezboro.standardplugin.model.Title;
 import com.sbezboro.standardplugin.net.RankHttpRequest;
 
 public class PlayerJoinListener extends EventListener implements Listener {
@@ -53,13 +54,23 @@ public class PlayerJoinListener extends EventListener implements Listener {
 				int result = response.getInt("result");
 				if (result == 1) {
 					int rank = response.getInt("rank");
-					boolean veteran = response.getBoolean("veteran");
+					int veteranRank = response.getInt("veteran_rank");
 					int timeSpent = response.getInt("minutes");
 					
 					player.setTimeSpent(timeSpent);
 					
+					if (veteranRank > 0) {
+						if (veteranRank <= 10 && !player.isTop10Veteran()) {
+							player.addTitle(Title.TOP10_VETERAN);
+						} else if (veteranRank <= 40 && !player.isTop40Veteran()) {
+							player.addTitle(Title.TOP40_VETERAN);
+						} else if (!player.isVeteran()) {
+							player.addTitle(Title.VETERAN);
+						}
+					}
+					
 					for (StandardPlayer other : plugin.getOnlinePlayers()) {
-						other.sendMessage(player.getRankDescription(player == other, rank, veteran));
+						other.sendMessage(player.getRankDescription(player == other, rank));
 					}
 				}
 			}

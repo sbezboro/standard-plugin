@@ -49,11 +49,10 @@ public class RankCommand extends BaseCommand {
 					int rank = response.getInt("rank");
 					String time = response.getString("time");
 					String actualUsername = response.getString("username");
-					boolean veteran = response.getBoolean("veteran");
 					
 					StandardPlayer actualPlayer = plugin.getStandardPlayer(actualUsername);
 					
-					sender.sendMessage(actualPlayer.getRankDescription(actualPlayer == senderPlayer, rank, veteran));
+					sender.sendMessage(actualPlayer.getRankDescription(actualPlayer == senderPlayer, rank));
 					sender.sendMessage(actualPlayer.getTimePlayedDescription(actualPlayer == senderPlayer, time));
 				} else {
 					sender.sendMessage("The player \"" + username + "\" doesn't exist on the server.");
