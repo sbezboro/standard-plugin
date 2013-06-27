@@ -30,6 +30,7 @@ import com.sbezboro.standardplugin.jsonapi.ServerStatusAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.WebChatAPICallHandler;
 import com.sbezboro.standardplugin.listeners.CreatureSpawnListener;
 import com.sbezboro.standardplugin.listeners.DeathListener;
+import com.sbezboro.standardplugin.listeners.DispenseListener;
 import com.sbezboro.standardplugin.listeners.EntityDamageListener;
 import com.sbezboro.standardplugin.listeners.HungerListener;
 import com.sbezboro.standardplugin.listeners.PlayerInteractListener;
@@ -155,6 +156,7 @@ public class StandardPlugin extends JavaPlugin {
 		pluginManager.registerEvents(new PlayerMoveListener(this), this);
 		pluginManager.registerEvents(new CreatureSpawnListener(this), this);
 		pluginManager.registerEvents(new HungerListener(this), this);
+		pluginManager.registerEvents(new DispenseListener(this), this);
 	}
 	
 	private void registerJSONAPIHandlers() {
