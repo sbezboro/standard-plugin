@@ -31,7 +31,7 @@
 	</target>
     
 	<target name="test" depends="build" description="Copy plugin to test environment">
-		<copy file="${jarfile}" todir="../../../craftbukkit/plugins/"/>
+		<copy file="${jarfile}" todir="../craftbukkit/plugins/"/>
 	</target>
 </project>
 

@@ -28,6 +28,8 @@ public class PlayerInteractListener extends EventListener implements Listener {
 				player.saveBedLocation(location);
 			}
 			break;
+		default:
+			break;
 		}
 	}
 }

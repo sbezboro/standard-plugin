@@ -82,6 +82,9 @@ public class DeathEvent {
 		case OTHER:
 			typeString = "other";
 			break;
+		default:
+			typeString = "other";
+			break;
 		}
 
 		DeathHttpRequest request = new DeathHttpRequest(player.getName(), typeString);

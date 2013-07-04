@@ -198,7 +198,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	}
 
 	public boolean canSee(Player player) {
-		return player.canSee(player);
+		return this.player.canSee(player);
 	}
 
 	public void chat(String msg) {
@@ -499,7 +499,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	}
 
 	public void hidePlayer(Player player) {
-		player.hidePlayer(player);
+		this.player.hidePlayer(player);
 	}
 
 	public void incrementStatistic(Statistic statistic, int amount) {
@@ -891,7 +891,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	}
 
 	public void showPlayer(Player player) {
-		player.showPlayer(player);
+		this.player.showPlayer(player);
 	}
 
 	public boolean teleport(Entity destination, TeleportCause cause) {
