@@ -60,10 +60,14 @@ public class PlayerJoinListener extends EventListener implements Listener {
 					player.setTimeSpent(timeSpent);
 					
 					if (veteranRank > 0) {
-						if (veteranRank <= 10 && !player.isTop10Veteran()) {
-							player.addTitle(Title.TOP10_VETERAN);
-						} else if (veteranRank <= 40 && !player.isTop40Veteran()) {
-							player.addTitle(Title.TOP40_VETERAN);
+						if (veteranRank <= 10) {
+							if (!player.isTop10Veteran()) {
+								player.addTitle(Title.TOP10_VETERAN);
+							}
+						} else if (veteranRank <= 40) {
+							if (!player.isTop40Veteran()) {
+								player.addTitle(Title.TOP40_VETERAN);
+							}
 						} else if (!player.isVeteran()) {
 							player.addTitle(Title.VETERAN);
 						}
