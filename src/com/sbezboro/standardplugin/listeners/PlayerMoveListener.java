@@ -1,9 +1,11 @@
 package com.sbezboro.standardplugin.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,19 +23,23 @@ public class PlayerMoveListener extends EventListener implements Listener {
 
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+		
 		Location from = event.getFrom();
 		Location to = event.getTo();
 		
 		if (from.getBlockX() != to.getBlockX() || from.getBlockY() != to.getBlockY() || from.getBlockZ() != to.getBlockZ()) {
 			Gate source = plugin.getGateStorage().getGate(to);
+			
 			if (source != null) {
 				Gate target = source.getTarget();
+				
 				if (target != null) {
-					StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
+					final StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 					
-					event.setTo(target.getLocation());
-					
-					Location blockLocation = new Location(to.getWorld(), to.getBlockX(), to.getBlockY() + 1, to.getBlockZ());
+					Location blockLocation = new Location(to.getWorld(), to.getBlockX(), to.getBlockY() + 2, to.getBlockZ());
 					
 					for (Entity entity : player.getNearbyEntities(20, 10, 20)) {
 						if (entity instanceof Player) {
@@ -45,11 +51,42 @@ public class PlayerMoveListener extends EventListener implements Listener {
 						}
 					}
 
+					boolean withHorse = false;
+					if (player.isInsideVehicle()) {
+						Entity vehicle = player.getVehicle();
+						
+						if (vehicle instanceof Horse) {
+							withHorse = true;
+							
+							final Horse horse = (Horse) vehicle;
+							horse.eject();
+							
+							horse.teleport(target.getLocation());
+							
+							Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+								
+								@Override
+								public void run() {
+									horse.setPassenger(player);
+								}
+							}, 20);
+						} else {
+							return;
+						}
+					}
+					
+					event.setTo(target.getLocation());
+
 					if (target.getDisplayName() != null) {
 						player.sendMessage("You are now at " + ChatColor.AQUA + target.getDisplayName());
 					}
 					
-					plugin.getLogger().info(player.getName() + " went from " + source.getName() + " to " + target.getName());
+					String message = player.getName() + " went from " + source.getName() + " to " + target.getName();
+					if (withHorse) {
+						message += " on a horse";
+					}
+					
+					plugin.getLogger().info(message);
 				}
 			}
 		}

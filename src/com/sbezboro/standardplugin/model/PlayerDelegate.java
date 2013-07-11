@@ -309,10 +309,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getGameMode();
 	}
 
-	public int getHealth() {
-		return player.getHealth();
-	}
-
 	public PlayerInventory getInventory() {
 		return player.getInventory();
 	}
@@ -327,10 +323,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 
 	public Player getKiller() {
 		return player.getKiller();
-	}
-
-	public int getLastDamage() {
-		return player.getLastDamage();
 	}
 
 	public EntityDamageEvent getLastDamageCause() {
@@ -364,10 +356,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 
 	public int getMaxFireTicks() {
 		return player.getMaxFireTicks();
-	}
-
-	public int getMaxHealth() {
-		return player.getMaxHealth();
 	}
 
 	public int getMaximumAir() {
@@ -929,6 +917,78 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public void setScoreboard(Scoreboard scoreboard) throws IllegalArgumentException,
 			IllegalStateException {
 		player.setScoreboard(scoreboard);
+	}
+
+	public void damage(double arg0, Entity arg1) {
+		player.damage(arg0, arg1);
+	}
+
+	public void damage(double arg0) {
+		player.damage(arg0);
+	}
+
+	public double getHealth() {
+		return player.getHealth();
+	}
+
+	public double getLastDamage() {
+		return player.getLastDamage();
+	}
+
+	public double getMaxHealth() {
+		return player.getMaxHealth();
+	}
+
+	public boolean isScaledHealth() {
+		return player.isScaledHealth();
+	}
+
+	public void setHealth(double arg0) {
+		player.setHealth(arg0);
+	}
+
+	public void setLastDamage(double arg0) {
+		player.setLastDamage(arg0);
+	}
+
+	public void setMaxHealth(double arg0) {
+		player.setMaxHealth(arg0);
+	}
+
+	public void setScaleHealth(boolean arg0) {
+		player.setScaleHealth(arg0);
+	}
+
+	public void _INVALID_damage(int arg0, Entity arg1) {
+		player._INVALID_damage(arg0, arg1);
+	}
+
+	public void _INVALID_damage(int arg0) {
+		player._INVALID_damage(arg0);
+	}
+
+	public int _INVALID_getHealth() {
+		return player._INVALID_getHealth();
+	}
+
+	public int _INVALID_getLastDamage() {
+		return player._INVALID_getLastDamage();
+	}
+
+	public int _INVALID_getMaxHealth() {
+		return player._INVALID_getMaxHealth();
+	}
+
+	public void _INVALID_setHealth(int arg0) {
+		player._INVALID_setHealth(arg0);
+	}
+
+	public void _INVALID_setLastDamage(int arg0) {
+		player._INVALID_setLastDamage(arg0);
+	}
+
+	public void _INVALID_setMaxHealth(int arg0) {
+		player._INVALID_setMaxHealth(arg0);
 	}
 	
 }
