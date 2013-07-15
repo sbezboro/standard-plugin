@@ -52,8 +52,7 @@ public class PlayerMoveListener extends EventListener implements Listener {
 						}
 					}
 					
-					Location destination = new Location(target.getLocation().getWorld(), target.getLocation().getX(),
-							target.getLocation().getY() + 1, target.getLocation().getZ());
+					Location destination = target.getLocation();
 
 					boolean withHorse = false;
 					if (player.isInsideVehicle()) {
