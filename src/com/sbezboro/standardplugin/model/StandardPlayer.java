@@ -1,6 +1,7 @@
 package com.sbezboro.standardplugin.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -13,6 +14,7 @@ import com.sbezboro.standardplugin.persistence.PersistedList;
 import com.sbezboro.standardplugin.persistence.PersistedProperty;
 import com.sbezboro.standardplugin.persistence.PlayerStorage;
 import com.sbezboro.standardplugin.persistence.persistables.PersistableLocation;
+import com.sbezboro.standardplugin.util.AnsiConverter;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class StandardPlayer extends PlayerDelegate {
@@ -221,6 +223,35 @@ public class StandardPlayer extends PlayerDelegate {
 		}
 		
 		return messages.toArray(new String[messages.size()]);
+	}
+	
+	public HashMap<String, Object> getInfo() {
+		HashMap<String, Object> info = new HashMap<String, Object>();
+
+		info.put("username", getName());
+		info.put("address", getAddress().getAddress().getHostAddress());
+		
+		if (hasNickname()) {
+			String nicknameAnsi = AnsiConverter.toAnsi(player.getDisplayName());
+			String nickname = getDisplayName(false);
+			
+			info.put("nickname_ansi", nicknameAnsi);
+			info.put("nickname", nickname);
+		}
+		
+		info.put("rank", getRank());
+		info.put("time_spent", getTimeSpent());
+
+		info.put("is_pvp_protected", isPvpProtected());
+		info.put("is_hunger_protected", isHungerProtected());
+		
+		info.put("x", getLocation().getBlockX());
+		info.put("y", getLocation().getBlockY());
+		info.put("z", getLocation().getBlockZ());
+		
+		info.put("heath", getHealth());
+		
+		return info;
 	}
 	
 	public boolean hasNickname() {

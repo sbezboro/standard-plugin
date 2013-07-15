@@ -2,6 +2,7 @@ package com.sbezboro.standardplugin.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -39,17 +40,20 @@ public class PlayerMoveListener extends EventListener implements Listener {
 				if (target != null) {
 					final StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 					
-					Location blockLocation = new Location(to.getWorld(), to.getBlockX(), to.getBlockY() + 2, to.getBlockZ());
-					
+					// Play effect at the source portal to other players
+					Location effectLocation = new Location(to.getWorld(), to.getBlockX(), to.getBlockY() + 1, to.getBlockZ());
 					for (Entity entity : player.getNearbyEntities(20, 10, 20)) {
 						if (entity instanceof Player) {
 							StandardPlayer other = plugin.getStandardPlayer(entity);
 							if (other.canSee(player)) {
-								other.playEffect(blockLocation, Effect.ENDER_SIGNAL, 0);
-								other.playEffect(blockLocation, Effect.EXTINGUISH, 0);
+								other.playEffect(effectLocation, Effect.ENDER_SIGNAL, 0);
+								other.playEffect(effectLocation, Effect.EXTINGUISH, 0);
 							}
 						}
 					}
+					
+					Location destination = new Location(target.getLocation().getWorld(), target.getLocation().getX(),
+							target.getLocation().getY() + 1, target.getLocation().getZ());
 
 					boolean withHorse = false;
 					if (player.isInsideVehicle()) {
@@ -61,7 +65,7 @@ public class PlayerMoveListener extends EventListener implements Listener {
 							final Horse horse = (Horse) vehicle;
 							horse.eject();
 							
-							horse.teleport(target.getLocation());
+							horse.teleport(destination);
 							
 							Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 								
@@ -75,7 +79,7 @@ public class PlayerMoveListener extends EventListener implements Listener {
 						}
 					}
 					
-					event.setTo(target.getLocation());
+					event.setTo(destination);
 
 					if (target.getDisplayName() != null) {
 						player.sendMessage("You are now at " + ChatColor.AQUA + target.getDisplayName());
@@ -87,6 +91,11 @@ public class PlayerMoveListener extends EventListener implements Listener {
 					}
 					
 					plugin.getLogger().info(message);
+					
+					Chunk chunk = destination.getChunk();
+					if (!chunk.isLoaded()) {
+						chunk.load();
+					}
 				}
 			}
 		}
