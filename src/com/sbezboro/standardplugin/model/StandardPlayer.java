@@ -249,7 +249,7 @@ public class StandardPlayer extends PlayerDelegate {
 		info.put("y", getLocation().getBlockY());
 		info.put("z", getLocation().getBlockZ());
 		
-		info.put("heath", getHealth());
+		info.put("health", getHealth());
 		
 		ArrayList<HashMap<String, String>> titleInfos = new ArrayList<HashMap<String, String>>();
 		for (Title title : titles) {
