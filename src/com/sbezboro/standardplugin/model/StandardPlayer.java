@@ -251,6 +251,16 @@ public class StandardPlayer extends PlayerDelegate {
 		
 		info.put("heath", getHealth());
 		
+		ArrayList<HashMap<String, String>> titleInfos = new ArrayList<HashMap<String, String>>();
+		for (Title title : titles) {
+			HashMap<String, String> titleInfo = new HashMap<String, String>();
+			titleInfo.put("name", title.getName());
+			titleInfo.put("display_name", title.getDisplayName());
+			titleInfos.add(titleInfo);
+		}
+		
+		info.put("titles", titleInfos);
+		
 		return info;
 	}
 	
