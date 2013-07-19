@@ -40,8 +40,6 @@ public class MiscUtil {
         	Horse horse = (Horse) livingEntity;
         	Variant variant = horse.getVariant();
         	
-        	Bukkit.broadcastMessage(variant.name());
-        	
             return variant.name().toLowerCase();
 		} else {
             return livingEntity.toString().substring(5);
