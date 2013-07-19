@@ -43,6 +43,7 @@ import com.sbezboro.standardplugin.persistence.GateStorage;
 import com.sbezboro.standardplugin.persistence.IStorage;
 import com.sbezboro.standardplugin.persistence.LogWriter;
 import com.sbezboro.standardplugin.persistence.PlayerStorage;
+import com.sbezboro.standardplugin.persistence.TitleStorage;
 import com.sbezboro.standardplugin.util.PlayerSaver;
 
 public class StandardPlugin extends JavaPlugin {
@@ -54,6 +55,7 @@ public class StandardPlugin extends JavaPlugin {
 	private StandardConfig config;
 	
 	private GateStorage gateStorage;
+	private TitleStorage titleStorage;
 	private PlayerStorage playerStorage;
 	
 	public StandardPlugin() {
@@ -80,8 +82,10 @@ public class StandardPlugin extends JavaPlugin {
 
 		storages = new ArrayList<IStorage>();
 		gateStorage = new GateStorage(this);
+		titleStorage = new TitleStorage(this);
 		playerStorage = new PlayerStorage(this);
 		storages.add(gateStorage);
+		storages.add(titleStorage);
 		storages.add(playerStorage);
 		
 		logs = new ArrayList<LogWriter>();
@@ -249,6 +253,10 @@ public class StandardPlugin extends JavaPlugin {
 	
 	public GateStorage getGateStorage() {
 		return gateStorage;
+	}
+	
+	public TitleStorage getTitleStorage() {
+		return titleStorage;
 	}
 	
 	public StandardPlayer getStandardPlayer(String username) {

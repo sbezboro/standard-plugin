@@ -12,23 +12,25 @@ import com.sbezboro.standardplugin.StandardPlugin;
 
 public abstract class ConfigStorage implements IStorage {
 	protected StandardPlugin plugin;
+	private String filename;
 	
 	protected FileConfiguration config = null;
 	private File file = null;
 
 
-	public ConfigStorage(StandardPlugin plugin) {
+	public ConfigStorage(StandardPlugin plugin, String type) {
 		this.plugin = plugin;
+		this.filename = type + ".yml";
 	}
 
 	@Override
 	public final void reload() {
 		if (file == null) {
-			file = new File(plugin.getDataFolder(), getFilename());
+			file = new File(plugin.getDataFolder(), filename);
 	    }
 	    config = YamlConfiguration.loadConfiguration(file);
 	 
-	    InputStream defConfigStream = plugin.getResource(getFilename());
+	    InputStream defConfigStream = plugin.getResource(filename);
 	    if (defConfigStream != null) {
 	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
 	        config.setDefaults(defConfig);
@@ -57,6 +59,4 @@ public abstract class ConfigStorage implements IStorage {
 	}
 	
 	public abstract void loadData(Set<String> keys);
-	
-	public abstract String getFilename();
 }

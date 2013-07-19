@@ -13,6 +13,7 @@ import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.persistence.PersistedList;
 import com.sbezboro.standardplugin.persistence.PersistedProperty;
 import com.sbezboro.standardplugin.persistence.PlayerStorage;
+import com.sbezboro.standardplugin.persistence.TitleStorage;
 import com.sbezboro.standardplugin.persistence.persistables.PersistableLocation;
 import com.sbezboro.standardplugin.util.AnsiConverter;
 import com.sbezboro.standardplugin.util.MiscUtil;
@@ -52,9 +53,15 @@ public class StandardPlayer extends PlayerDelegate {
 		bedLocation = loadProperty(PersistableLocation.class, BED_LOCATION_PROPERTY);
 		titleNames = loadList(String.class, TITLES_PROPERTY);
 
+		TitleStorage titleStorage = StandardPlugin.getPlugin().getTitleStorage();
 		for (String name : titleNames) {
-			Title title = Title.getTitle(name);
-			titles.add(title);
+			Title title = titleStorage.getTitle(name);
+			
+			if (title == null) {
+				StandardPlugin.getPlugin().getLogger().severe("Player has title non-existant title \"" + name + "\"!");
+			} else {
+				titles.add(title);
+			}
 		}
 	}
 	
@@ -106,7 +113,7 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 	
 	public Title addTitle(String name) {
-		Title title = Title.getTitle(name);
+		Title title = StandardPlugin.getPlugin().getTitleStorage().getTitle(name);
 		
 		addTitle(title);
 		
@@ -114,7 +121,7 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 	
 	public void removeTitle(String name) {
-		Title title = Title.getTitle(name);
+		Title title = StandardPlugin.getPlugin().getTitleStorage().getTitle(name);
 		
 		titles.remove(title);
 		titleNames.remove(name);
@@ -151,24 +158,34 @@ public class StandardPlayer extends PlayerDelegate {
 		return titles;
 	}
 	
+	public boolean hasTitle(String name) {
+		for (Title title : titles) {
+			if (title.getName() == name) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public boolean isNewbieStalker() {
-		return titles.contains(Title.getTitle(Title.NEWBIE_STALKER));
+		return hasTitle(Title.NEWBIE_STALKER);
 	}
 	
 	public boolean isTop10Veteran() {
-		return titles.contains(Title.getTitle(Title.TOP10_VETERAN));
+		return hasTitle(Title.TOP10_VETERAN);
 	}
 	
 	public boolean isTop40Veteran() {
-		return titles.contains(Title.getTitle(Title.TOP40_VETERAN));
+		return hasTitle(Title.TOP40_VETERAN);
 	}
 	
 	public boolean isVeteran() {
-		return titles.contains(Title.getTitle(Title.VETERAN));
+		return hasTitle(Title.VETERAN);
 	}
 	
 	
-	public void leftServer() {
+	public void onLeaveServer() {
 		player = null;
 	}
 	
@@ -245,6 +262,7 @@ public class StandardPlayer extends PlayerDelegate {
 		info.put("is_pvp_protected", isPvpProtected());
 		info.put("is_hunger_protected", isHungerProtected());
 		
+		info.put("world", getLocation().getWorld().getName());
 		info.put("x", getLocation().getBlockX());
 		info.put("y", getLocation().getBlockY());
 		info.put("z", getLocation().getBlockZ());

@@ -25,7 +25,7 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 		
     	event.setQuitMessage(quitMessage);
     	
-    	player.leftServer();
+    	player.onLeaveServer();
 	}
 
 	@EventHandler(priority=EventPriority.LOWEST)
@@ -36,6 +36,6 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 		
     	event.setLeaveMessage(quitMessage);
     	
-    	player.leftServer();
+    	player.onLeaveServer();
 	}
 }

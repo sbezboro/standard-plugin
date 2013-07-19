@@ -18,7 +18,7 @@ public class GateStorage extends ConfigStorage {
 	private Map<String, Gate> locationMap;
 
 	public GateStorage(StandardPlugin plugin) {
-		super(plugin);
+		super(plugin, "gates");
 	}
 	
 	@Override
@@ -115,12 +115,7 @@ public class GateStorage extends ConfigStorage {
 	}
 
 	private String getLocationKey(Location location) {
-		return location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ();
-	}
-
-	@Override
-	public String getFilename() {
-		return "gates.yml";
+		return location.getWorld().getName() + ";" + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ();
 	}
 
 }
