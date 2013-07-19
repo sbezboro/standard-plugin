@@ -2,6 +2,7 @@ package com.sbezboro.standardplugin.util;
 
 import java.util.HashSet;
 
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
@@ -31,7 +32,7 @@ public class MiscUtil {
         	return "dispenser";
         } else if (livingEntity instanceof Player) {
             return ((Player) livingEntity).getName();
-        } else if (livingEntity instanceof Wolf || livingEntity instanceof Ocelot) {
+        } else if (livingEntity instanceof Wolf || livingEntity instanceof Ocelot || livingEntity instanceof Horse) {
             return livingEntity.toString().substring(5, livingEntity.toString().indexOf("{"));
 		} else {
             return livingEntity.toString().substring(5);
