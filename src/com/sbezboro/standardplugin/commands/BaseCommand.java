@@ -1,5 +1,7 @@
 package com.sbezboro.standardplugin.commands;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -40,4 +42,8 @@ public abstract class BaseCommand implements ICommand, CommandExecutor {
 	public abstract boolean handle(CommandSender sender, Command command, String label, String[] args);
 	public abstract void showUsageInfo(CommandSender sender);
 	public abstract boolean isPlayerOnly(int numArgs);
+	
+	public String getRemainingString(String[] args, int index) {
+		return StringUtils.join(ArrayUtils.subarray(args, index, args.length), ' ');
+	}
 }

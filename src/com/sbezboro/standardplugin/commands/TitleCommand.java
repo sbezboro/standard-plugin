@@ -20,9 +20,22 @@ public class TitleCommand extends BaseCommand {
 			return false;
 		}
 		
-		if (args.length == 1) {
+		if (args[0].equalsIgnoreCase("create")) {
+			if (args.length <= 2) {
+				showUsageInfo(sender);
+				return false;
+			}
+			
+			String displayName = getRemainingString(args, 2);
+			
+			Title title = new Title(args[1], displayName);
+			plugin.getTitleStorage().saveTitle(title);
+			
+			sender.sendMessage("Title " + args[1] + " created!");
+		} else if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("list")) {
 				sender.sendMessage("The following titles exist:");
+				
 				for (Title title : plugin.getTitleStorage().getTitles()) {
 					sender.sendMessage(title.getDescription());
 				}
@@ -31,12 +44,7 @@ public class TitleCommand extends BaseCommand {
 				return false;
 			}
 		} else if (args.length == 3) {
-			if (args[0].equalsIgnoreCase("create")) {
-				Title title = new Title(args[1], args[2]);
-				plugin.getTitleStorage().saveTitle(title);
-				
-				sender.sendMessage("Title " + args[1] + " created!");
-			} else if (args[0].equalsIgnoreCase("add")) {
+			if (args[0].equalsIgnoreCase("add")) {
 				StandardPlayer player = plugin.matchPlayer(args[1]);
 				String titleName = args[2];
 				
@@ -82,6 +90,7 @@ public class TitleCommand extends BaseCommand {
 
 	@Override
 	public void showUsageInfo(CommandSender sender) {
+		sender.sendMessage("Usage: /" + name + " list");
 		sender.sendMessage("Usage: /" + name + " create <name> <displayName>");
 		sender.sendMessage("Usage: /" + name + " add <player> <title>");
 		sender.sendMessage("Usage: /" + name + " remove <player> <title>");

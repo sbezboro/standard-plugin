@@ -9,12 +9,14 @@ public class Title {
 	
 	private String name;
 	private String displayName;
+	private boolean hidden;
 	
 	public Title(String name, String displayName) {
 		this.name = name;
 		this.displayName = displayName;
+		this.hidden = false;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -25,5 +27,13 @@ public class Title {
 	
 	public String getDescription() {
 		return name + " - " + displayName;
+	}
+	
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
 	}
 }

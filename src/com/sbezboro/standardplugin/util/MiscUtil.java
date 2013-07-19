@@ -2,7 +2,6 @@ package com.sbezboro.standardplugin.util;
 
 import java.util.HashSet;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Horse.Variant;
 import org.bukkit.entity.LivingEntity;
