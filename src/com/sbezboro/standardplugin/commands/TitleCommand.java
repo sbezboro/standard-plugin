@@ -1,5 +1,7 @@
 package com.sbezboro.standardplugin.commands;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -59,7 +61,7 @@ public class TitleCommand extends BaseCommand {
 				} else {
 					player.addTitle(title);
 					
-					sender.sendMessage(player.getDisplayName(false) + " now has the title " + title.getDisplayName());
+					Bukkit.broadcastMessage(ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + " now has the title " + ChatColor.AQUA + title.getDisplayName());
 				}
 				
 				return true;
@@ -68,9 +70,11 @@ public class TitleCommand extends BaseCommand {
 				String titleName = args[2];
 				
 				if (player.hasTitle(titleName)) {
-					player.removeTitle(titleName);
+					Title title = plugin.getTitleStorage().getTitle(titleName);
 					
-					sender.sendMessage("Title " + args[2] + " removed from " + player.getDisplayName(false));
+					player.removeTitle(titleName);
+
+					Bukkit.broadcastMessage(ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + " no longer has the title " + ChatColor.AQUA + title.getDisplayName());
 				} else {
 					sender.sendMessage(player.getDisplayName(false) + " doesn't have the title " + titleName + "!");
 				}
