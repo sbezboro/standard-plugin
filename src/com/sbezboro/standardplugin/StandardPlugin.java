@@ -48,20 +48,20 @@ import com.sbezboro.standardplugin.util.PlayerSaver;
 
 public class StandardPlugin extends JavaPlugin {
 	private static StandardPlugin instance;
-	
+
 	private List<IStorage> storages;
 	private List<LogWriter> logs;
-	
+
 	private StandardConfig config;
-	
+
 	private GateStorage gateStorage;
 	private TitleStorage titleStorage;
 	private PlayerStorage playerStorage;
-	
+
 	public StandardPlugin() {
 		instance = this;
 	}
-	
+
 	public static StandardPlugin getPlugin() {
 		return instance;
 	}
@@ -87,49 +87,49 @@ public class StandardPlugin extends JavaPlugin {
 		storages.add(gateStorage);
 		storages.add(titleStorage);
 		storages.add(playerStorage);
-		
+
 		logs = new ArrayList<LogWriter>();
-		
+
 		config = new StandardConfig(this);
-		
+
 		reloadPlugin();
-		
+
 		registerCommands();
 		registerEvents();
-		
+
 		EssentialsIntegration.init(this);
 		SimplyVanishIntegration.init(this);
-		
+
 		registerJSONAPIHandlers();
-		
+
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new PlayerSaver(), 1200, 1200);
 	}
 
 	@Override
 	public void onDisable() {
 		super.onDisable();
-		
+
 		for (LogWriter writer : logs) {
 			writer.unload();
 		}
-		
+
 		for (IStorage storage : storages) {
 			storage.unload();
 		}
 
 		Bukkit.getScheduler().cancelTasks(this);
 	}
-	
+
 	public void reloadPlugin() {
 		reloadConfig();
-		
+
 		config.reload();
-		
+
 		for (IStorage storage : storages) {
 			storage.reload();
 		}
 	}
-	
+
 	private void registerCommands() {
 		List<ICommand> commands = new ArrayList<ICommand>();
 		commands.add(new RegisterCommand(this));
@@ -143,12 +143,12 @@ public class StandardPlugin extends JavaPlugin {
 		commands.add(new PvpProtectionCommand(this));
 		commands.add(new TitleCommand(this));
 		commands.add(new TitlesCommand(this));
-		
+
 		for (ICommand command : commands) {
 			command.register();
 		}
 	}
-	
+
 	private void registerEvents() {
 		PluginManager pluginManager = getServer().getPluginManager();
 		pluginManager.registerEvents(new DeathListener(this), this);
@@ -162,12 +162,12 @@ public class StandardPlugin extends JavaPlugin {
 		pluginManager.registerEvents(new HungerListener(this), this);
 		pluginManager.registerEvents(new DispenseListener(this), this);
 	}
-	
+
 	private void registerJSONAPIHandlers() {
 		Plugin plugin = this.getServer().getPluginManager().getPlugin("JSONAPI");
 		if (plugin != null) {
-			JSONAPI jsonapi = (JSONAPI)plugin;
-			
+			JSONAPI jsonapi = (JSONAPI) plugin;
+
 			jsonapi.registerAPICallHandler(new ForumPostAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new ServerStatusAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new PlayerStatsAPICallHandler(this));
@@ -186,29 +186,29 @@ public class StandardPlugin extends JavaPlugin {
 			}
 		}
 	}
-	
+
 	public static void playerBroadcast(final String message) {
 		playerBroadcast(null, message);
 	}
-	
+
 	public StandardPlayer[] getOnlinePlayers() {
 		Player[] onlinePlayers = Bukkit.getOnlinePlayers();
 		StandardPlayer[] result = new StandardPlayer[onlinePlayers.length];
-		
+
 		for (int i = 0; i < onlinePlayers.length; ++i) {
 			result[i] = getStandardPlayer(onlinePlayers[i]);
 		}
-		
+
 		return result;
 	}
-	
+
 	public StandardPlayer matchPlayer(String username) {
 		List<Player> players = Bukkit.matchPlayer(username);
-		
+
 		if (players.size() > 0) {
 			username = players.get(0).getName();
 		}
-		
+
 		return getStandardPlayer(username);
 	}
 
@@ -226,11 +226,11 @@ public class StandardPlugin extends JavaPlugin {
 	public boolean isDebug() {
 		return config.isDebug();
 	}
-	
+
 	public String getEndpoint() {
 		return config.getEndpoint();
 	}
-	
+
 	public int getPvpProtectionTime() {
 		return config.getPvpProtectionTime();
 	}
@@ -238,7 +238,7 @@ public class StandardPlugin extends JavaPlugin {
 	public boolean isPvpProtectionEnabled() {
 		return config.getPvpProtectionTime() > 0;
 	}
-	
+
 	public int getHungerProtectionTime() {
 		return config.getHungerProtectionTime();
 	}
@@ -246,28 +246,28 @@ public class StandardPlugin extends JavaPlugin {
 	public boolean isHungerProtectionEnabled() {
 		return config.getHungerProtectionTime() > 0;
 	}
-	
+
 	public int getNewbieStalkerThreshold() {
 		return config.getNewbieStalkerThreshold();
 	}
-	
+
 	public GateStorage getGateStorage() {
 		return gateStorage;
 	}
-	
+
 	public TitleStorage getTitleStorage() {
 		return titleStorage;
 	}
-	
+
 	public StandardPlayer getStandardPlayer(String username) {
 		return playerStorage.getPlayer(username);
 	}
-	
+
 	public StandardPlayer getStandardPlayer(Object object) {
 		if (!(object instanceof Player)) {
 			return null;
 		}
-		
+
 		return getStandardPlayer(((Player) object).getName());
 	}
 }

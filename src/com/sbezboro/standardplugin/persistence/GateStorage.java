@@ -16,21 +16,21 @@ public class GateStorage extends ConfigStorage<Gate> {
 
 	public GateStorage(StandardPlugin plugin) {
 		super(plugin, Gate.class, "gates");
-		
-		locationMap = new HashMap<String,Gate>();
+
+		locationMap = new HashMap<String, Gate>();
 	}
 
 	@Override
 	public void onPostLoad(Set<String> keys) {
 		locationMap.clear();
-		
+
 		for (String key : keys) {
 			Gate gate = idToObject.get(key);
 			locationMap.put(getLocationKey(gate.getLocation()), gate);
-			
+
 			ConfigurationSection section = config.getConfigurationSection(key);
 			String target = section.getString("target");
-			
+
 			Gate targetGate = idToObject.get(target);
 			if (targetGate != null) {
 				Gate sourceGate = idToObject.get(key);
@@ -38,30 +38,30 @@ public class GateStorage extends ConfigStorage<Gate> {
 			}
 		}
 	}
-	
+
 	public void addGate(Gate gate) {
 		Location location = gate.getLocation();
-		
+
 		locationMap.put(getLocationKey(location), gate);
-		
+
 		addObject(gate);
-		
+
 		save();
 	}
-	
+
 	public void removeGate(Gate gate) {
 		removeObject(gate);
 		locationMap.remove(getLocationKey(gate.getLocation()));
-		
+
 		for (Gate other : idToObject.values()) {
 			if (other.getTarget() == gate) {
 				other.setTarget(null);
-				
+
 				ConfigurationSection section = idToConfig.get(other.getName());
 				section.set("target", null);
 			}
 		}
-		
+
 		save();
 	}
 
@@ -70,14 +70,14 @@ public class GateStorage extends ConfigStorage<Gate> {
 
 		ConfigurationSection section = idToConfig.get(source.getName());
 		section.set("target", target.getName());
-		
+
 		save();
 	}
-	
+
 	public Gate getGate(String name) {
 		return idToObject.get(name);
 	}
-	
+
 	public Gate getGate(Location location) {
 		return locationMap.get(getLocationKey(location));
 	}

@@ -20,7 +20,7 @@ public class TitlesCommand extends BaseCommand {
 		}
 
 		StandardPlayer senderPlayer = plugin.getStandardPlayer(sender);
-		
+
 		if (args.length == 0) {
 			senderPlayer.sendMessage(senderPlayer.getTitleDescription(true));
 		} else {
@@ -31,7 +31,7 @@ public class TitlesCommand extends BaseCommand {
 				sender.sendMessage("The player \"" + player.getName() + "\" doesn't exist on the server.");
 			}
 		}
-		
+
 		return true;
 	}
 

@@ -62,22 +62,22 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 
 	public PlayerDelegate(Player player, PlayerStorage storage) {
 		super(storage, player.getName());
-		
+
 		this.player = player;
 		this.offlinePlayer = Bukkit.getOfflinePlayer(player.getName());
 	}
 
 	public PlayerDelegate(OfflinePlayer offlinePlayer, PlayerStorage storage) {
 		super(storage, offlinePlayer.getName());
-		
+
 		this.player = null;
 		this.offlinePlayer = offlinePlayer;
 	}
-	
+
 	public Player getBasePlayer() {
 		return player;
 	}
-	
+
 	public OfflinePlayer getBaseOfflinePlayer() {
 		return offlinePlayer;
 	}
@@ -146,8 +146,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		offlinePlayer.setWhitelisted(value);
 	}
 
-	public void abandonConversation(Conversation conversation,
-			ConversationAbandonedEvent details) {
+	public void abandonConversation(Conversation conversation, ConversationAbandonedEvent details) {
 		player.abandonConversation(conversation, details);
 	}
 
@@ -163,13 +162,11 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.addAttachment(arg0, arg1);
 	}
 
-	public PermissionAttachment addAttachment(Plugin arg0, String arg1,
-			boolean arg2, int arg3) {
+	public PermissionAttachment addAttachment(Plugin arg0, String arg1, boolean arg2, int arg3) {
 		return player.addAttachment(arg0, arg1, arg2, arg3);
 	}
 
-	public PermissionAttachment addAttachment(Plugin arg0, String arg1,
-			boolean arg2) {
+	public PermissionAttachment addAttachment(Plugin arg0, String arg1, boolean arg2) {
 		return player.addAttachment(arg0, arg1, arg2);
 	}
 
@@ -329,8 +326,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getLastDamageCause();
 	}
 
-	public List<Block> getLastTwoTargetBlocks(HashSet<Byte> transparent,
-			int maxDistance) {
+	public List<Block> getLastTwoTargetBlocks(HashSet<Byte> transparent, int maxDistance) {
 		return player.getLastTwoTargetBlocks(transparent, maxDistance);
 	}
 
@@ -494,8 +490,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.incrementStatistic(statistic, amount);
 	}
 
-	public void incrementStatistic(Statistic statistic, Material material,
-			int amount) {
+	public void incrementStatistic(Statistic statistic, Material material, int amount) {
 		player.incrementStatistic(statistic, material, amount);
 	}
 
@@ -575,8 +570,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.kickPlayer(message);
 	}
 
-	public <T extends Projectile> T launchProjectile(
-			Class<? extends T> projectile) {
+	public <T extends Projectile> T launchProjectile(Class<? extends T> projectile) {
 		return player.launchProjectile(projectile);
 	}
 
@@ -628,8 +622,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.playNote(loc, instrument, note);
 	}
 
-	public void playSound(Location location, Sound sound, float volume,
-			float pitch) {
+	public void playSound(Location location, Sound sound, float volume, float pitch) {
 		player.playSound(location, sound, volume, pitch);
 	}
 
@@ -677,8 +670,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.sendBlockChange(loc, material, data);
 	}
 
-	public boolean sendChunkChange(Location loc, int sx, int sy, int sz,
-			byte[] data) {
+	public boolean sendChunkChange(Location loc, int sx, int sy, int sz, byte[] data) {
 		return player.sendChunkChange(loc, sx, sy, sz, data);
 	}
 
@@ -914,8 +906,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getScoreboard();
 	}
 
-	public void setScoreboard(Scoreboard scoreboard) throws IllegalArgumentException,
-			IllegalStateException {
+	public void setScoreboard(Scoreboard scoreboard) throws IllegalArgumentException, IllegalStateException {
 		player.setScoreboard(scoreboard);
 	}
 
@@ -990,5 +981,5 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public void _INVALID_setMaxHealth(int arg0) {
 		player._INVALID_setMaxHealth(arg0);
 	}
-	
+
 }

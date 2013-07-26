@@ -11,10 +11,10 @@ public class PlayerStorage extends ObjectStorage<StandardPlayer> {
 	public PlayerStorage(StandardPlugin plugin) {
 		super(plugin, "players");
 	}
-	
+
 	public StandardPlayer getPlayer(String username) {
 		StandardPlayer standardPlayer = getObject(username);
-		
+
 		if (standardPlayer == null) {
 			Player player = Bukkit.getPlayer(username);
 			if (player == null) {
@@ -23,13 +23,13 @@ public class PlayerStorage extends ObjectStorage<StandardPlayer> {
 			} else {
 				standardPlayer = new StandardPlayer(player, this);
 			}
-			
+
 			cacheObject(username, standardPlayer);
 		} else if (standardPlayer.isOnline() && standardPlayer.getBasePlayer() == null) {
 			standardPlayer.setPlayer(Bukkit.getPlayer(username));
 			standardPlayer.setOfflinePlayer(Bukkit.getOfflinePlayer(username));
 		}
-		
+
 		return standardPlayer;
 	}
 }

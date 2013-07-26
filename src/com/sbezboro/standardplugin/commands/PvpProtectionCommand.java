@@ -18,7 +18,7 @@ public class PvpProtectionCommand extends BaseCommand {
 			showUsageInfo(sender);
 			return false;
 		}
-		
+
 		StandardPlayer player = plugin.matchPlayer(args[0]);
 		if (args.length == 1) {
 			sender.sendMessage("PVP protection is " + (player.isPvpProtected() ? "enabled" : "disabled") + " for " + player.getDisplayName(false));
@@ -27,17 +27,17 @@ public class PvpProtectionCommand extends BaseCommand {
 				showUsageInfo(sender);
 				return false;
 			}
-			
+
 			boolean enabled = args[1].equals("on");
 			player.setPvpProtection(enabled);
-			
+
 			if (enabled) {
 				sender.sendMessage("Enabled PVP protection for " + player.getDisplayName(false) + "!");
 			} else {
 				sender.sendMessage("Disabled PVP protection for " + player.getDisplayName(false) + "!");
 			}
 		}
-		
+
 		return true;
 	}
 

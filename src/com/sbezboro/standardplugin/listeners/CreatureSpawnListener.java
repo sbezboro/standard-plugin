@@ -20,5 +20,5 @@ public class CreatureSpawnListener extends EventListener implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 }

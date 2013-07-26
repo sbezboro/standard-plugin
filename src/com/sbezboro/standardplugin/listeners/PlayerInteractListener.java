@@ -11,12 +11,12 @@ import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class PlayerInteractListener extends EventListener implements Listener {
-	
+
 	public PlayerInteractListener(StandardPlugin plugin) {
 		super(plugin);
 	}
 
-	@EventHandler(ignoreCancelled=true)
+	@EventHandler(ignoreCancelled = true)
 	public void onPlayerInteract(final PlayerInteractEvent event) {
 		switch (event.getAction()) {
 		case RIGHT_CLICK_BLOCK:

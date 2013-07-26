@@ -21,23 +21,23 @@ public class TitleCommand extends BaseCommand {
 			showUsageInfo(sender);
 			return false;
 		}
-		
+
 		if (args[0].equalsIgnoreCase("create")) {
 			if (args.length <= 2) {
 				showUsageInfo(sender);
 				return false;
 			}
-			
+
 			String displayName = getRemainingString(args, 2);
-			
+
 			Title title = new Title(args[1], displayName);
 			plugin.getTitleStorage().saveTitle(title);
-			
+
 			sender.sendMessage("Title " + args[1] + " created!");
 		} else if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("list")) {
 				sender.sendMessage("The following titles exist:");
-				
+
 				for (Title title : plugin.getTitleStorage().getTitles()) {
 					sender.sendMessage(title.getDescription());
 				}
@@ -49,7 +49,7 @@ public class TitleCommand extends BaseCommand {
 			if (args[0].equalsIgnoreCase("add")) {
 				StandardPlayer player = plugin.matchPlayer(args[1]);
 				String titleName = args[2];
-				
+
 				Title title = plugin.getTitleStorage().getTitle(titleName);
 				if (title == null) {
 					sender.sendMessage("Title doesn't exist!");
@@ -60,25 +60,27 @@ public class TitleCommand extends BaseCommand {
 					sender.sendMessage(player.getDisplayName(false) + " already has the title " + titleName + "!");
 				} else {
 					player.addTitle(title);
-					
-					Bukkit.broadcastMessage(ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + " now has the title " + ChatColor.AQUA + title.getDisplayName());
+
+					Bukkit.broadcastMessage(ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + " now has the title " + ChatColor.AQUA
+							+ title.getDisplayName());
 				}
-				
+
 				return true;
 			} else if (args[0].equalsIgnoreCase("remove")) {
 				StandardPlayer player = plugin.matchPlayer(args[1]);
 				String titleName = args[2];
-				
+
 				if (player.hasTitle(titleName)) {
 					Title title = plugin.getTitleStorage().getTitle(titleName);
-					
+
 					player.removeTitle(titleName);
 
-					Bukkit.broadcastMessage(ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + " no longer has the title " + ChatColor.AQUA + title.getDisplayName());
+					Bukkit.broadcastMessage(ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + " no longer has the title " + ChatColor.AQUA
+							+ title.getDisplayName());
 				} else {
 					sender.sendMessage(player.getDisplayName(false) + " doesn't have the title " + titleName + "!");
 				}
-				
+
 				return true;
 			} else {
 				showUsageInfo(sender);
@@ -88,7 +90,7 @@ public class TitleCommand extends BaseCommand {
 			showUsageInfo(sender);
 			return false;
 		}
-		
+
 		return false;
 	}
 

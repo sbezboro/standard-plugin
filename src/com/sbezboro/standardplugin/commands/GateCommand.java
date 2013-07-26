@@ -22,7 +22,7 @@ public class GateCommand extends BaseCommand {
 			showUsageInfo(sender);
 			return false;
 		}
-		
+
 		if (args[0].equalsIgnoreCase("create")) {
 			if (sender instanceof ConsoleCommandSender) {
 				showPlayerOnlyMessage(sender);
@@ -36,13 +36,13 @@ public class GateCommand extends BaseCommand {
 			} else if (args.length == 2) {
 				Gate warp = new Gate(args[1], null, player.getLocation());
 				plugin.getGateStorage().addGate(warp);
-				
+
 				player.sendMessage("Gate \"" + args[1] + "\" created!");
 			} else {
 				String displayName = StringUtils.join(args, " ", 2, args.length);
 				Gate warp = new Gate(args[1], displayName, player.getLocation());
 				plugin.getGateStorage().addGate(warp);
-				
+
 				player.sendMessage("Gate \"" + args[1] + "\" (" + displayName + ") created!");
 			}
 		} else if (args[0].equalsIgnoreCase("delete")) {
@@ -50,7 +50,7 @@ public class GateCommand extends BaseCommand {
 				sender.sendMessage("Usage: /" + name + " delete <name>");
 				return false;
 			}
-			
+
 			if (args.length == 2) {
 				Gate gate = plugin.getGateStorage().getGate(args[1]);
 				if (gate == null) {
@@ -68,11 +68,11 @@ public class GateCommand extends BaseCommand {
 				sender.sendMessage("Usage: /" + name + " link <gate1> <gate2>");
 				return false;
 			}
-			
+
 			if (args.length == 3) {
 				Gate source = plugin.getGateStorage().getGate(args[1]);
 				Gate target = plugin.getGateStorage().getGate(args[2]);
-				
+
 				if (source == null) {
 					sender.sendMessage("Gate \"" + args[1] + "\" does not exist.");
 				} else if (target == null) {
@@ -92,13 +92,13 @@ public class GateCommand extends BaseCommand {
 					if (gate.getDisplayName() != null) {
 						gateInfo += " - " + ChatColor.YELLOW + gate.getDisplayName() + ChatColor.WHITE;
 					}
-					
+
 					gateInfo += " (" + gate.getLocation().getBlockX() + ", " + gate.getLocation().getBlockY() + ", " + gate.getLocation().getBlockZ() + ")";
-					
+
 					if (gate.getTarget() != null) {
 						gateInfo += " linked to " + ChatColor.AQUA + gate.getTarget().getName();
 					}
-					
+
 					sender.sendMessage(gateInfo);
 				}
 			} else {
@@ -125,7 +125,7 @@ public class GateCommand extends BaseCommand {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 

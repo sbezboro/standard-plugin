@@ -28,7 +28,7 @@ public class SpawnCommand extends BaseCommand {
 				gateList.add(gate);
 			}
 		}
-		
+
 		Collections.sort(gateList, new Comparator<Gate>() {
 
 			@Override
@@ -36,15 +36,16 @@ public class SpawnCommand extends BaseCommand {
 				return gate1.getDisplayName().compareTo(gate2.getDisplayName());
 			}
 		});
-		
+
 		for (Gate gate : gateList) {
-			sender.sendMessage(ChatColor.AQUA + gate.getDisplayName() + ChatColor.WHITE + " (" + gate.getLocation().getBlockX() + ", " + gate.getLocation().getBlockY() + ", " + gate.getLocation().getBlockZ() + ")");
+			sender.sendMessage(ChatColor.AQUA + gate.getDisplayName() + ChatColor.WHITE + " (" + gate.getLocation().getBlockX() + ", "
+					+ gate.getLocation().getBlockY() + ", " + gate.getLocation().getBlockZ() + ")");
 		}
-		
+
 		if (gateList.size() == 0) {
 			sender.sendMessage("None");
 		}
-		
+
 		return true;
 	}
 

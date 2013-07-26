@@ -12,7 +12,7 @@ import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class ServerStatusAPICallHandler extends APICallHandler {
-	
+
 	public ServerStatusAPICallHandler(StandardPlugin plugin) {
 		super(plugin, "server_status");
 	}
@@ -20,25 +20,25 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 	@Override
 	public Object handle(HashMap<String, Object> payload) {
 		HashMap<String, Object> status = new HashMap<String, Object>();
-		
+
 		ArrayList<Object> players = new ArrayList<Object>();
-		
+
 		for (StandardPlayer player : plugin.getOnlinePlayers()) {
 			if (SimplyVanishIntegration.isVanished(player)) {
 				continue;
 			}
-			
+
 			players.add(player.getInfo());
 		}
-		
+
 		double load = ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage();
-		
+
 		status.put("players", players);
 		status.put("numplayers", players.size());
 		status.put("maxplayers", Bukkit.getMaxPlayers());
 		status.put("tps", EssentialsIntegration.getTPS());
 		status.put("load", load);
-		
+
 		return status;
 	}
 }

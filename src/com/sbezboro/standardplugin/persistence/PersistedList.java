@@ -14,15 +14,15 @@ import com.sbezboro.standardplugin.util.MiscUtil;
 public class PersistedList<T> implements Iterable<T> {
 	private PersistedObject object;
 	private String name;
-	
+
 	private ArrayList<T> list;
-	
+
 	@SuppressWarnings("unchecked")
 	public PersistedList(PersistedObject object, Class<T> cls, String name) {
 		this.name = name;
 		this.object = object;
 		this.list = new ArrayList<T>();
-		
+
 		ArrayList<Object> objects = (ArrayList<Object>) object.loadProperty(name, null);
 		if (objects != null) {
 			for (Object obj : objects) {
@@ -33,9 +33,9 @@ public class PersistedList<T> implements Iterable<T> {
 							ConfigurationSection section = (ConfigurationSection) obj;
 							persistable.loadFromPersistance(section);
 						}
-						
+
 						this.list.add((T) persistable);
-					} else if (MiscUtil.isWrapperType(cls)){
+					} else if (MiscUtil.isWrapperType(cls)) {
 						this.list.add((T) obj);
 					} else {
 						throw new NotPersistableException("Class " + cls.getName() + " does not implement Persistable nor is a primative wrapper.");
@@ -46,30 +46,30 @@ public class PersistedList<T> implements Iterable<T> {
 			}
 		}
 	}
-	
+
 	public void add(T obj) {
 		this.list.add(obj);
-		
+
 		object.saveProperty(name, listRepresentation());
 	}
-	
+
 	public void remove(T obj) {
 		this.list.remove(obj);
-		
+
 		object.saveProperty(name, listRepresentation());
 	}
-	
+
 	public boolean contains(T obj) {
 		return this.list.contains(obj);
 	}
-	
+
 	public T get(int index) {
 		return this.list.get(index);
 	}
-	
+
 	private List<Object> listRepresentation() {
 		ArrayList<Object> copy = new ArrayList<Object>();
-		
+
 		for (T obj : this.list) {
 			if (obj instanceof Persistable) {
 				Persistable persistable = (Persistable) obj;
@@ -78,7 +78,7 @@ public class PersistedList<T> implements Iterable<T> {
 				copy.add(obj);
 			}
 		}
-		
+
 		return copy;
 	}
 

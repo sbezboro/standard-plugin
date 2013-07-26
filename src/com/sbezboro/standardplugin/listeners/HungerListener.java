@@ -12,15 +12,15 @@ public class HungerListener extends EventListener implements Listener {
 	public HungerListener(StandardPlugin plugin) {
 		super(plugin);
 	}
-	
+
 	@EventHandler
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
 		if (!plugin.isHungerProtectionEnabled() || event.isCancelled()) {
 			return;
 		}
-		
+
 		StandardPlayer player = plugin.getStandardPlayer(event.getEntity());
-		
+
 		if (player != null && player.isHungerProtected()) {
 			event.setCancelled(true);
 		}

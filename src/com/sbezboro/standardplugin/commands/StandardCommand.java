@@ -17,13 +17,13 @@ public class StandardCommand extends BaseCommand {
 			showUsageInfo(sender);
 			return false;
 		}
-		
+
 		if (args[0].equalsIgnoreCase("reload")) {
 			plugin.reloadPlugin();
 			sender.sendMessage("Plugin reloaded");
 			return true;
 		}
-		
+
 		showUsageInfo(sender);
 		return false;
 	}

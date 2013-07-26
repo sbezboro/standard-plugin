@@ -21,7 +21,7 @@ public abstract class PersistableImpl implements Persistable {
 		String stringRepr = stringRepresentation();
 		List<Object> listRepr = listRepresentation();
 		HashMap<String, Object> mapRepr = mapRepresentation();
-		
+
 		if (stringRepr != null) {
 			return stringRepresentation();
 		} else if (listRepr != null) {

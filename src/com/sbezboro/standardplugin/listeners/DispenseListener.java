@@ -12,7 +12,7 @@ public class DispenseListener extends EventListener implements Listener {
 	public DispenseListener(StandardPlugin plugin) {
 		super(plugin);
 	}
-	
+
 	@EventHandler
 	public void onBlockDispense(BlockDispenseEvent event) {
 		if (event.getItem().getTypeId() == Material.LAVA_BUCKET.getId()) {

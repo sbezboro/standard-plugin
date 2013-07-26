@@ -15,14 +15,15 @@ public class Gate extends PersistableImpl implements Persistable {
 	private PersistableLocation location;
 	private Gate target;
 
-	public Gate() {}
-	
+	public Gate() {
+	}
+
 	public Gate(String name, String displayName, Location location) {
 		this.name = name.replace(".", "");
 		this.displayName = displayName;
 		this.location = new PersistableLocation(location);
 	}
-	
+
 	@Override
 	public String getIdentifier() {
 		return name;
@@ -31,7 +32,7 @@ public class Gate extends PersistableImpl implements Persistable {
 	@Override
 	public void loadFromPersistance(ConfigurationSection section) {
 		name = section.getName();
-		
+
 		displayName = section.getString("displayName");
 		location = new PersistableLocation();
 		location.loadFromPersistance(section);
@@ -43,7 +44,7 @@ public class Gate extends PersistableImpl implements Persistable {
 
 		repr.putAll(location.mapRepresentation());
 		repr.put("displayName", displayName);
-		
+
 		return repr;
 	}
 

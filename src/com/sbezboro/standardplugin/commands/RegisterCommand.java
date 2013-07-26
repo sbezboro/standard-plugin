@@ -11,7 +11,7 @@ import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.net.LinkHttpRequest;
 
 public class RegisterCommand extends BaseCommand {
-	
+
 	public RegisterCommand(StandardPlugin plugin) {
 		super(plugin, "register");
 	}
@@ -29,29 +29,30 @@ public class RegisterCommand extends BaseCommand {
 		final String password = args[0];
 
 		player.sendMessage("Registering...");
-		
+
 		LinkHttpRequest request = new LinkHttpRequest(username, password);
 		request.start(new HttpRequestListener() {
-			
+
 			@Override
 			public void requestSuccess(HttpResponse response) {
 				String result = response.getStringResponse();
-				
+
 				player.sendMessage(result);
-				player.sendMessage(ChatColor.GREEN + "Website username: " + ChatColor.AQUA + username + ChatColor.GREEN + ", password: " + ChatColor.AQUA + password);
+				player.sendMessage(ChatColor.GREEN + "Website username: " + ChatColor.AQUA + username + ChatColor.GREEN + ", password: " + ChatColor.AQUA
+						+ password);
 				player.sendMessage(ChatColor.GREEN + "Visit standardsurvival.com/login");
 				plugin.getLogger().info(username + ": " + result);
 			}
-			
+
 			@Override
 			public void requestFailure(HttpResponse response) {
 				player.sendMessage("There was an error registering your account!");
-				
+
 				String result = response.getStringResponse();
 				plugin.getLogger().severe(result);
 			}
 		});
-		
+
 		return true;
 	}
 

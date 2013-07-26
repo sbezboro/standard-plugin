@@ -15,40 +15,40 @@ import com.sbezboro.standardplugin.model.Title;
 import com.sbezboro.standardplugin.net.RankHttpRequest;
 
 public class PlayerJoinListener extends EventListener implements Listener {
-	
+
 	public PlayerJoinListener(StandardPlugin plugin) {
 		super(plugin);
 	}
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-    	StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
-    	
-    	if (player.hasPlayedBefore()) {
-        	if (!SimplyVanishIntegration.isVanished(player)) {
-        		broadcastRank(player);
-        	}
-    	} else {
-    		StandardPlugin.playerBroadcast(player, ChatColor.LIGHT_PURPLE + "Welcome " + player.getName() + " to the server!");
-    		
-    		World world = player.getLocation().getWorld();
-    		player.teleport(world.getSpawnLocation());
-    		
-    		if (plugin.isPvpProtectionEnabled()) {
-    			player.setPvpProtection(true);
-    		}
-    	}
-    	
-    	if (player.hasNickname()) {
-        	String joinMessage = event.getJoinMessage().replace(player.getName(), player.getDisplayName(false) + " (" + player.getName() + ")");
-        	event.setJoinMessage(joinMessage);
-    	}
+		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
+
+		if (player.hasPlayedBefore()) {
+			if (!SimplyVanishIntegration.isVanished(player)) {
+				broadcastRank(player);
+			}
+		} else {
+			StandardPlugin.playerBroadcast(player, ChatColor.LIGHT_PURPLE + "Welcome " + player.getName() + " to the server!");
+
+			World world = player.getLocation().getWorld();
+			player.teleport(world.getSpawnLocation());
+
+			if (plugin.isPvpProtectionEnabled()) {
+				player.setPvpProtection(true);
+			}
+		}
+
+		if (player.hasNickname()) {
+			String joinMessage = event.getJoinMessage().replace(player.getName(), player.getDisplayName(false) + " (" + player.getName() + ")");
+			event.setJoinMessage(joinMessage);
+		}
 	}
-	
+
 	private void broadcastRank(final StandardPlayer player) {
-    	RankHttpRequest request = new RankHttpRequest(player.getName(), true);
-    	request.start(new HttpRequestListener() {
-			
+		RankHttpRequest request = new RankHttpRequest(player.getName(), true);
+		request.start(new HttpRequestListener() {
+
 			@Override
 			public void requestSuccess(HttpResponse response) {
 				int result = response.getInt("result");
@@ -56,9 +56,9 @@ public class PlayerJoinListener extends EventListener implements Listener {
 					int rank = response.getInt("rank");
 					int veteranRank = response.getInt("veteran_rank");
 					int timeSpent = response.getInt("minutes");
-					
+
 					player.setTimeSpent(timeSpent);
-					
+
 					if (veteranRank > 0) {
 						if (veteranRank <= 10) {
 							if (!player.isTop10Veteran()) {
@@ -72,13 +72,13 @@ public class PlayerJoinListener extends EventListener implements Listener {
 							player.addTitle(Title.VETERAN);
 						}
 					}
-					
+
 					for (StandardPlayer other : plugin.getOnlinePlayers()) {
 						other.sendMessage(player.getRankDescription(player == other, rank));
 					}
 				}
 			}
-			
+
 			@Override
 			public void requestFailure(HttpResponse response) {
 				StandardPlugin.getPlugin().getLogger().severe(response.getStringResponse());

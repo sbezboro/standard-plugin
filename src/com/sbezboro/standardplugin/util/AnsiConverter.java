@@ -9,11 +9,12 @@ import org.fusesource.jansi.Ansi.Attribute;
 
 public class AnsiConverter {
 	private static Map<ChatColor, String> replacements;
-	
+
 	public static void init() {
 		replacements = new EnumMap<ChatColor, String>(ChatColor.class);
-		
-		// From https://github.com/Bukkit/CraftBukkit/blob/master/src/main/java/org/bukkit/craftbukkit/command/ColouredConsoleSender.java
+
+		// From
+		// https://github.com/Bukkit/CraftBukkit/blob/master/src/main/java/org/bukkit/craftbukkit/command/ColouredConsoleSender.java
 		replacements.put(ChatColor.BLACK, Ansi.ansi().fg(Ansi.Color.BLACK).boldOff().toString());
 		replacements.put(ChatColor.DARK_BLUE, Ansi.ansi().fg(Ansi.Color.BLUE).boldOff().toString());
 		replacements.put(ChatColor.DARK_GREEN, Ansi.ansi().fg(Ansi.Color.GREEN).boldOff().toString());
@@ -37,20 +38,20 @@ public class AnsiConverter {
 		replacements.put(ChatColor.ITALIC, Ansi.ansi().a(Attribute.ITALIC).toString());
 		replacements.put(ChatColor.RESET, Ansi.ansi().a(Attribute.RESET).fg(Ansi.Color.DEFAULT).toString());
 	}
-	
+
 	public static String toAnsi(String text) {
 		if (replacements == null) {
 			init();
 		}
-		
+
 		for (ChatColor color : ChatColor.values()) {
 			if (replacements.containsKey(color)) {
 				text = text.replaceAll("(?i)" + color.toString(), replacements.get(color));
 			} else {
 				text = text.replaceAll("(?i)" + color.toString(), "");
 			}
-        }
-		
+		}
+
 		return text;
 	}
 }

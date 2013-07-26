@@ -27,19 +27,19 @@ public class PlayerMoveListener extends EventListener implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
-		
+
 		Location from = event.getFrom();
 		Location to = event.getTo();
-		
+
 		if (from.getBlockX() != to.getBlockX() || from.getBlockY() != to.getBlockY() || from.getBlockZ() != to.getBlockZ()) {
 			Gate source = plugin.getGateStorage().getGate(to);
-			
+
 			if (source != null) {
 				Gate target = source.getTarget();
-				
+
 				if (target != null) {
 					final StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
-					
+
 					// Play effect at the source portal to other players
 					Location effectLocation = new Location(to.getWorld(), to.getBlockX(), to.getBlockY() + 1, to.getBlockZ());
 					for (Entity entity : player.getNearbyEntities(20, 10, 20)) {
@@ -51,23 +51,23 @@ public class PlayerMoveListener extends EventListener implements Listener {
 							}
 						}
 					}
-					
+
 					Location destination = target.getLocation();
 
 					boolean withHorse = false;
 					if (player.isInsideVehicle()) {
 						Entity vehicle = player.getVehicle();
-						
+
 						if (vehicle instanceof Horse) {
 							withHorse = true;
-							
+
 							final Horse horse = (Horse) vehicle;
 							horse.eject();
-							
+
 							horse.teleport(destination);
-							
+
 							Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-								
+
 								@Override
 								public void run() {
 									horse.setPassenger(player);
@@ -77,20 +77,20 @@ public class PlayerMoveListener extends EventListener implements Listener {
 							return;
 						}
 					}
-					
+
 					event.setTo(destination);
 
 					if (target.getDisplayName() != null) {
 						player.sendMessage("You are now at " + ChatColor.AQUA + target.getDisplayName());
 					}
-					
+
 					String message = player.getName() + " went from " + source.getName() + " to " + target.getName();
 					if (withHorse) {
 						message += " on a horse";
 					}
-					
+
 					plugin.getLogger().info(message);
-					
+
 					Chunk chunk = destination.getChunk();
 					if (!chunk.isLoaded()) {
 						chunk.load();
