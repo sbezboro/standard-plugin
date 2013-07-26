@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public abstract class PersistableImpl implements Persistable {
-
 	public String stringRepresentation() {
 		return null;
 	}

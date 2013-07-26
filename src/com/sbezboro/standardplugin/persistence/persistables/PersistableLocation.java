@@ -10,8 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class PersistableLocation extends PersistableImpl implements Persistable {
 	private Location location;
-	
-	// Persistable objects must have a default constructor
+
 	public PersistableLocation() {}
 	
 	public PersistableLocation(Location location) {
@@ -19,13 +18,12 @@ public class PersistableLocation extends PersistableImpl implements Persistable 
 	}
 
 	@Override
-	public void loadFromPersistance(Object object) {
-		if (object == null) {
-			return;
-		}
-		
-		ConfigurationSection section = (ConfigurationSection) object;
-		
+	public String getIdentifier() {
+		return null;
+	}
+
+	@Override
+	public void loadFromPersistance(ConfigurationSection section) {
 		String worldName = section.getString("world");
 		double x = section.getDouble("x");
 		double y = section.getDouble("y");

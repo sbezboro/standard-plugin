@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.exceptions.NotPersistableException;
 import com.sbezboro.standardplugin.persistence.persistables.Persistable;
@@ -27,7 +29,11 @@ public class PersistedList<T> implements Iterable<T> {
 				try {
 					if (Persistable.class.isAssignableFrom(cls)) {
 						Persistable persistable = (Persistable) cls.newInstance();
-						persistable.loadFromPersistance(obj);
+						if (obj != null) {
+							ConfigurationSection section = (ConfigurationSection) obj;
+							persistable.loadFromPersistance(section);
+						}
+						
 						this.list.add((T) persistable);
 					} else if (MiscUtil.isWrapperType(cls)){
 						this.list.add((T) obj);

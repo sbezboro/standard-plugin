@@ -5,53 +5,35 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.Gate;
 
-public class GateStorage extends ConfigStorage {
-	private Map<String, Gate> gates;
+public class GateStorage extends ConfigStorage<Gate> {
 	private Map<String, Gate> locationMap;
 
 	public GateStorage(StandardPlugin plugin) {
-		super(plugin, "gates");
-	}
-	
-	@Override
-	public void loadData(Set<String> keys) {
-		gates = new HashMap<String, Gate>();
+		super(plugin, Gate.class, "gates");
+		
 		locationMap = new HashMap<String,Gate>();
+	}
+
+	@Override
+	public void onPostLoad(Set<String> keys) {
+		locationMap.clear();
 		
 		for (String key : keys) {
-			ConfigurationSection section = config.getConfigurationSection(key);
-			String displayName = section.getString("displayName");
-			String worldName = section.getString("world");
-			double x = section.getDouble("x");
-			double y = section.getDouble("y");
-			double z = section.getDouble("z");
-			float yaw = (float) section.getDouble("yaw");
-			float pitch = (float) section.getDouble("pitch");
+			Gate gate = idToObject.get(key);
+			locationMap.put(getLocationKey(gate.getLocation()), gate);
 			
-			World world = Bukkit.getWorld(worldName);
-			Location location = new Location(world, x, y, z, yaw, pitch);
-			
-			Gate gate = new Gate(key, displayName, location);
-			gates.put(key, gate);
-			
-			locationMap.put(getLocationKey(location), gate);
-		}
-		
-		for (String key : keys) {
 			ConfigurationSection section = config.getConfigurationSection(key);
 			String target = section.getString("target");
 			
-			Gate targetGate = gates.get(target);
+			Gate targetGate = idToObject.get(target);
 			if (targetGate != null) {
-				Gate sourceGate = gates.get(key);
+				Gate sourceGate = idToObject.get(key);
 				sourceGate.setTarget(targetGate);
 			}
 		}
@@ -60,35 +42,25 @@ public class GateStorage extends ConfigStorage {
 	public void addGate(Gate gate) {
 		Location location = gate.getLocation();
 		
-		gates.put(gate.getName(), gate);
 		locationMap.put(getLocationKey(location), gate);
 		
-		ConfigurationSection section = config.createSection(gate.getName());
-		section.set("displayName", gate.getDisplayName());
-		section.set("world", location.getWorld().getName());
-		section.set("x", location.getX());
-		section.set("y", location.getY());
-		section.set("z", location.getZ());
-		section.set("yaw", location.getYaw());
-		section.set("pitch", location.getPitch());
+		addObject(gate);
 		
 		save();
 	}
 	
 	public void removeGate(Gate gate) {
-		gates.remove(gate.getName());
+		removeObject(gate);
 		locationMap.remove(getLocationKey(gate.getLocation()));
 		
-		for (Gate other : gates.values()) {
+		for (Gate other : idToObject.values()) {
 			if (other.getTarget() == gate) {
 				other.setTarget(null);
 				
-				ConfigurationSection section = config.getConfigurationSection(other.getName());
+				ConfigurationSection section = idToConfig.get(other.getName());
 				section.set("target", null);
 			}
 		}
-		
-		config.set(gate.getName(), null);
 		
 		save();
 	}
@@ -96,14 +68,14 @@ public class GateStorage extends ConfigStorage {
 	public void linkGates(Gate source, Gate target) {
 		source.setTarget(target);
 
-		ConfigurationSection section = config.getConfigurationSection(source.getName());
+		ConfigurationSection section = idToConfig.get(source.getName());
 		section.set("target", target.getName());
 		
 		save();
 	}
 	
 	public Gate getGate(String name) {
-		return gates.get(name);
+		return idToObject.get(name);
 	}
 	
 	public Gate getGate(Location location) {
@@ -111,10 +83,10 @@ public class GateStorage extends ConfigStorage {
 	}
 
 	public Collection<Gate> getGates() {
-		return gates.values();
+		return idToObject.values();
 	}
 
-	private String getLocationKey(Location location) {
+	private static String getLocationKey(Location location) {
 		return location.getWorld().getName() + ";" + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ();
 	}
 

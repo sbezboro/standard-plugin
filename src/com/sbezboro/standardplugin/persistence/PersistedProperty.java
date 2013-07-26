@@ -3,6 +3,8 @@ package com.sbezboro.standardplugin.persistence;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.exceptions.NotPersistableException;
 import com.sbezboro.standardplugin.persistence.persistables.Persistable;
@@ -34,7 +36,10 @@ public class PersistedProperty<T> {
 			
 			if (Persistable.class.isAssignableFrom(cls)) {
 				Persistable persistable = (Persistable) cls.newInstance();
-				persistable.loadFromPersistance(obj);
+				if (obj != null) {
+					ConfigurationSection section = (ConfigurationSection) obj;
+					persistable.loadFromPersistance(section);
+				}
 				
 				value = (T) persistable;
 			} else if (MiscUtil.isWrapperType(cls)){

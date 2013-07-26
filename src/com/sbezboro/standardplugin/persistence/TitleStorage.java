@@ -5,14 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.bukkit.configuration.ConfigurationSection;
-
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.Title;
 
-public class TitleStorage extends ConfigStorage {
-	private Map<String, Title> titles;
-	
+public class TitleStorage extends ConfigStorage<Title> {
 	@SuppressWarnings("serial")
 	private static final Map<String, Title> defaults = new HashMap<String, Title>() { { 
 			put(Title.NEWBIE_STALKER, new Title(Title.NEWBIE_STALKER, "Newbie Stalker"));
@@ -23,21 +19,11 @@ public class TitleStorage extends ConfigStorage {
 	};
 
 	public TitleStorage(StandardPlugin plugin) {
-		super(plugin, "titles");
+		super(plugin, Title.class, "titles");
 	}
 
 	@Override
-	public void loadData(Set<String> keys) {
-		titles = new HashMap<String, Title>();
-		
-		for (String key : keys) {
-			ConfigurationSection section = config.getConfigurationSection(key);
-			String displayName = section.getString("displayName");
-			
-			Title title = new Title(key, displayName);
-			titles.put(key, title);
-		}
-		
+	public void onPostLoad(Set<String> keys) {
 		for (Title title : defaults.values()) {
 			if (!keys.contains(title.getName())) {
 				saveTitle(title);
@@ -46,20 +32,17 @@ public class TitleStorage extends ConfigStorage {
 	}
 	
 	public void saveTitle(Title title) {
-		titles.put(title.getName(), title);
-		
-		ConfigurationSection section = config.createSection(title.getName());
-		section.set("displayName", title.getDisplayName());
+		addObject(title);
 		
 		save();
 	}
 	
 	public Collection<Title> getTitles() {
-		return titles.values();
+		return idToObject.values();
 	}
 	
 	public Title getTitle(String name) {
-		return titles.get(name);
+		return idToObject.get(name);
 	}
 
 }
