@@ -1,11 +1,12 @@
 package com.sbezboro.standardplugin.net;
 
+import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
 
 public class RankHttpRequest extends StandardHttpRequest {
 
-	public RankHttpRequest(String username, boolean exact) {
-		super(StandardPlugin.getPlugin(), HTTPMethod.GET);
+	public RankHttpRequest(String username, boolean exact, HttpRequestListener listener) {
+		super(StandardPlugin.getPlugin(), HTTPMethod.GET, listener);
 
 		addProperty("username", username);
 		if (exact) {

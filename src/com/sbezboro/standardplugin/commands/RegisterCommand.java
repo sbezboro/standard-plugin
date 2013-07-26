@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import com.sbezboro.http.HttpRequestManager;
 import com.sbezboro.http.HttpResponse;
 import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
@@ -30,8 +31,8 @@ public class RegisterCommand extends BaseCommand {
 
 		player.sendMessage("Registering...");
 
-		LinkHttpRequest request = new LinkHttpRequest(username, password);
-		request.start(new HttpRequestListener() {
+		HttpRequestManager.getInstance().startRequest(
+				new LinkHttpRequest(username, password, new HttpRequestListener() {
 
 			@Override
 			public void requestSuccess(HttpResponse response) {
@@ -47,11 +48,8 @@ public class RegisterCommand extends BaseCommand {
 			@Override
 			public void requestFailure(HttpResponse response) {
 				player.sendMessage("There was an error registering your account!");
-
-				String result = response.getStringResponse();
-				plugin.getLogger().severe(result);
 			}
-		});
+		}));
 
 		return true;
 	}

@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import com.sbezboro.http.HttpRequestManager;
 import com.sbezboro.http.HttpResponse;
 import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
@@ -38,8 +39,8 @@ public class RankCommand extends BaseCommand {
 			username = rankPlayer.getName();
 		}
 
-		RankHttpRequest request = new RankHttpRequest(username, false);
-		request.start(new HttpRequestListener() {
+		HttpRequestManager.getInstance().startRequest(
+				new RankHttpRequest(username, false, new HttpRequestListener() {
 
 			@Override
 			public void requestSuccess(HttpResponse response) {
@@ -62,11 +63,8 @@ public class RankCommand extends BaseCommand {
 			@Override
 			public void requestFailure(HttpResponse response) {
 				sender.sendMessage("There was a problem getting the rank!");
-
-				String result = response.getStringResponse();
-				plugin.getLogger().severe(result);
 			}
-		});
+		}));
 
 		return true;
 	}

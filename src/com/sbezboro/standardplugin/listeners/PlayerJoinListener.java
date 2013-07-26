@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import com.sbezboro.http.HttpRequestManager;
 import com.sbezboro.http.HttpResponse;
 import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
@@ -46,8 +47,8 @@ public class PlayerJoinListener extends EventListener implements Listener {
 	}
 
 	private void broadcastRank(final StandardPlayer player) {
-		RankHttpRequest request = new RankHttpRequest(player.getName(), true);
-		request.start(new HttpRequestListener() {
+		HttpRequestManager.getInstance().startRequest(
+				new RankHttpRequest(player.getName(), true, new HttpRequestListener() {
 
 			@Override
 			public void requestSuccess(HttpResponse response) {
@@ -83,6 +84,6 @@ public class PlayerJoinListener extends EventListener implements Listener {
 			public void requestFailure(HttpResponse response) {
 				StandardPlugin.getPlugin().getLogger().severe(response.getStringResponse());
 			}
-		});
+		}));
 	}
 }

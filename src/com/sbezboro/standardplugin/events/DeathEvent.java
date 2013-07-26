@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
+import com.sbezboro.http.HttpRequestManager;
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.net.DeathHttpRequest;
 import com.sbezboro.standardplugin.util.MiscUtil;
@@ -75,18 +76,18 @@ public class DeathEvent {
 			break;
 		}
 
-		DeathHttpRequest request = new DeathHttpRequest(player.getName(), typeString);
-		request.start();
+		HttpRequestManager.getInstance().startRequest(
+				new DeathHttpRequest(player.getName(), typeString, null));
 	}
 
 	private void log(LivingEntity killer) {
 		if (killer instanceof Player) {
 			Player playerKiller = (Player) killer;
-			DeathHttpRequest request = new DeathHttpRequest(player.getName(), "player", playerKiller.getName());
-			request.start();
+			HttpRequestManager.getInstance().startRequest(
+					new DeathHttpRequest(player.getName(), "player", playerKiller.getName(), null));
 		} else {
-			DeathHttpRequest request = new DeathHttpRequest(player.getName(), MiscUtil.getNameFromLivingEntity(killer).toLowerCase());
-			request.start();
+			HttpRequestManager.getInstance().startRequest(
+					new DeathHttpRequest(player.getName(), MiscUtil.getNameFromLivingEntity(killer).toLowerCase(), null));
 		}
 	}
 

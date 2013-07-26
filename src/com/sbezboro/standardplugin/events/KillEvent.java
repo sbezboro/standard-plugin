@@ -5,6 +5,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import com.sbezboro.http.HttpRequestManager;
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.net.KillHttpRequest;
 import com.sbezboro.standardplugin.util.MiscUtil;
@@ -29,14 +30,14 @@ public class KillEvent {
 			if (arrow.getShooter() instanceof Player) {
 				Player player = (Player) arrow.getShooter();
 
-				KillHttpRequest request = new KillHttpRequest(player.getName(), MiscUtil.getNameFromLivingEntity(victim).toLowerCase());
-				request.start();
+				HttpRequestManager.getInstance().startRequest(
+						new KillHttpRequest(player.getName(), MiscUtil.getNameFromLivingEntity(victim).toLowerCase(), null));
 			}
 		} else if (killer instanceof Player) {
 			Player player = (Player) killer;
 
-			KillHttpRequest request = new KillHttpRequest(player.getName(), MiscUtil.getNameFromLivingEntity(victim).toLowerCase());
-			request.start();
+			HttpRequestManager.getInstance().startRequest(
+					new KillHttpRequest(player.getName(), MiscUtil.getNameFromLivingEntity(victim).toLowerCase(), null));
 		}
 	}
 }
