@@ -201,15 +201,32 @@ public class StandardPlugin extends JavaPlugin {
 
 		return result;
 	}
-
+	
+	/**
+	 * Matches the given username to a currently online player's display name
+	 * or an offline player's username that has played before
+	 * @param username The username to query
+	 * @return StandardPlayer instance if online or has played before, null otherwise
+	 */
 	public StandardPlayer matchPlayer(String username) {
-		List<Player> players = Bukkit.matchPlayer(username);
-
-		if (players.size() > 0) {
-			username = players.get(0).getName();
+		StandardPlayer player = null;
+		
+		StandardPlayer[] onlinePlayers = getOnlinePlayers();
+		for (StandardPlayer onlinePlayer : onlinePlayers) {
+			if (onlinePlayer.getDisplayName(false).toLowerCase().startsWith(username.toLowerCase())) {
+				player = onlinePlayer;
+				break;
+			}
+		}
+		
+		if (player == null) {
+			player = getStandardPlayer(username);
+			if (!player.hasPlayedBefore()) {
+				player = null;
+			}
 		}
 
-		return getStandardPlayer(username);
+		return player;
 	}
 
 	// ------

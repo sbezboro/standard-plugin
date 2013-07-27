@@ -25,11 +25,12 @@ public class TitlesCommand extends BaseCommand {
 			senderPlayer.sendMessage(senderPlayer.getTitleDescription(true));
 		} else {
 			StandardPlayer player = plugin.matchPlayer(args[0]);
-			if (player.hasPlayedBefore()) {
-				sender.sendMessage(player.getTitleDescription(senderPlayer == player));
-			} else {
-				sender.sendMessage("The player \"" + player.getName() + "\" doesn't exist on the server.");
+			if (player == null) {
+				sender.sendMessage("Player " + args[0] + " not found!");
+				return true;
 			}
+
+			sender.sendMessage(player.getTitleDescription(senderPlayer == player));
 		}
 
 		return true;

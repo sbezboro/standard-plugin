@@ -6,20 +6,15 @@ import com.sbezboro.standardplugin.StandardPlugin;
 public class DeathHttpRequest extends StandardHttpRequest {
 
 	public DeathHttpRequest(String victim, String type, HttpRequestListener listener) {
-		super(StandardPlugin.getPlugin(), HTTPMethod.POST, listener);
+		super(StandardPlugin.getPlugin(), "log_death", HTTPMethod.POST, listener);
 		addProperty("victim", victim);
 		addProperty("type", type);
 	}
 
 	public DeathHttpRequest(String victim, String type, String killer, HttpRequestListener listener) {
-		super(StandardPlugin.getPlugin(), HTTPMethod.POST, listener);
+		super(StandardPlugin.getPlugin(), "log_death", HTTPMethod.POST, listener);
 		addProperty("victim", victim);
 		addProperty("killer", killer);
 		addProperty("type", type);
-	}
-
-	@Override
-	public String apiType() {
-		return "log_death";
 	}
 }

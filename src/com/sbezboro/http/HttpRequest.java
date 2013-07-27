@@ -18,7 +18,7 @@ import org.json.simple.JSONValue;
 import com.sbezboro.http.listeners.HttpRequestListener;
 
 public abstract class HttpRequest implements Runnable {
-	private static final int MAX_ATTEMPTS = 5;
+	private static final int DEFAULT_MAX_ATTEMPTS = 5;
 	
 	protected enum HTTPMethod {
 		GET, POST
@@ -28,20 +28,23 @@ public abstract class HttpRequest implements Runnable {
 	private HashMap<String, String> properties;
 	private HTTPMethod method;
 	private HttpRequestListener listener;
-	private int attempts;
+	
+	protected int maxAttempts;
+	private int attemptNum;
 
 	public HttpRequest(Plugin plugin, HTTPMethod method, HttpRequestListener listener) {
 		this.plugin = plugin;
 		this.method = method;
 		this.listener = listener;
 		
-		this.attempts = 0;
+		this.maxAttempts = DEFAULT_MAX_ATTEMPTS;
+		this.attemptNum = 1;
 		
 		properties = new HashMap<String, String>();
 	}
 	
 	public int getAttempts() {
-		return attempts;
+		return attemptNum;
 	}
 
 	public void addProperty(String key, String value) {
@@ -128,10 +131,10 @@ public abstract class HttpRequest implements Runnable {
 				});
 			}
 		} catch (final IOException e) {
-			plugin.getLogger().severe("HTTPRequest '" + getUrl() + "' failure: " + e.toString() + ", attempt " + (attempts + 1));
+			plugin.getLogger().severe("HTTPRequest '" + getUrl() + "' failure: " + e.toString() + ", attempt " + attemptNum);
 			
-			if (attempts < MAX_ATTEMPTS - 1) {
-				attempts++;
+			if (attemptNum < maxAttempts) {
+				attemptNum++;
 				HttpRequestManager.getInstance().scheduleRetry(HttpRequest.this);
 			} else if (listener != null) {
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {

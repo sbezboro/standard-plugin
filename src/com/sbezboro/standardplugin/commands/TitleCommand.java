@@ -48,6 +48,11 @@ public class TitleCommand extends BaseCommand {
 		} else if (args.length == 3) {
 			if (args[0].equalsIgnoreCase("add")) {
 				StandardPlayer player = plugin.matchPlayer(args[1]);
+				if (player == null) {
+					sender.sendMessage("Player " + args[1] + " not found!");
+					return true;
+				}
+				
 				String titleName = args[2];
 
 				Title title = plugin.getTitleStorage().getTitle(titleName);
@@ -68,6 +73,11 @@ public class TitleCommand extends BaseCommand {
 				return true;
 			} else if (args[0].equalsIgnoreCase("remove")) {
 				StandardPlayer player = plugin.matchPlayer(args[1]);
+				if (player == null) {
+					sender.sendMessage("Player " + args[1] + " not found!");
+					return true;
+				}
+				
 				String titleName = args[2];
 
 				if (player.hasTitle(titleName)) {

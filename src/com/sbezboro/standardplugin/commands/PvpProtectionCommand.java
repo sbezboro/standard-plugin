@@ -20,6 +20,11 @@ public class PvpProtectionCommand extends BaseCommand {
 		}
 
 		StandardPlayer player = plugin.matchPlayer(args[0]);
+		if (player == null) {
+			sender.sendMessage("Player " + args[0] + " not found!");
+			return true;
+		}
+		
 		if (args.length == 1) {
 			sender.sendMessage("PVP protection is " + (player.isPvpProtected() ? "enabled" : "disabled") + " for " + player.getDisplayName(false));
 		} else if (args.length == 2) {

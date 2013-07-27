@@ -58,6 +58,7 @@ public class PlayerJoinListener extends EventListener implements Listener {
 					int veteranRank = response.getInt("veteran_rank");
 					int timeSpent = response.getInt("minutes");
 
+					player.setRank(rank);
 					player.setTimeSpent(timeSpent);
 
 					if (veteranRank > 0) {
@@ -82,7 +83,6 @@ public class PlayerJoinListener extends EventListener implements Listener {
 
 			@Override
 			public void requestFailure(HttpResponse response) {
-				StandardPlugin.getPlugin().getLogger().severe(response.getStringResponse());
 			}
 		}));
 	}

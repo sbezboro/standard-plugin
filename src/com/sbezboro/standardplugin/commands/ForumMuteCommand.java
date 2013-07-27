@@ -16,6 +16,10 @@ public class ForumMuteCommand extends BaseCommand {
 	public boolean handle(CommandSender sender, Command command, String label, String[] args) {
 		if (args.length == 1) {
 			StandardPlayer player = plugin.matchPlayer(args[0]);
+			if (player == null) {
+				sender.sendMessage("Player " + args[0] + " not found!");
+				return true;
+			}
 
 			boolean muted = player.toggleForumMute();
 

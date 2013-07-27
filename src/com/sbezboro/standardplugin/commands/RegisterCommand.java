@@ -56,7 +56,7 @@ public class RegisterCommand extends BaseCommand {
 
 	@Override
 	public void showUsageInfo(CommandSender sender) {
-		sender.sendMessage("Usage: /" + name + " <password>");
+		sender.sendMessage(ChatColor.AQUA + "Usage: /" + name + " <password>");
 		sender.sendMessage(ChatColor.GREEN + "This command will create an account on the website using");
 		sender.sendMessage(ChatColor.GREEN + "your Minecraft username and a password you specify. ");
 		sender.sendMessage(ChatColor.RED + "WARNING! DO NOT use your Minecraft password!");

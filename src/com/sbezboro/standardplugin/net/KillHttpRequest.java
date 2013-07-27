@@ -6,13 +6,8 @@ import com.sbezboro.standardplugin.StandardPlugin;
 public class KillHttpRequest extends StandardHttpRequest {
 
 	public KillHttpRequest(String killer, String type, HttpRequestListener listener) {
-		super(StandardPlugin.getPlugin(), HTTPMethod.POST, listener);
+		super(StandardPlugin.getPlugin(), "log_kill", HTTPMethod.POST, listener);
 		addProperty("killer", killer);
 		addProperty("type", type);
-	}
-
-	@Override
-	public String apiType() {
-		return "log_kill";
 	}
 }

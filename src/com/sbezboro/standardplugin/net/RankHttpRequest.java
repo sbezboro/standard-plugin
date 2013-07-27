@@ -6,16 +6,13 @@ import com.sbezboro.standardplugin.StandardPlugin;
 public class RankHttpRequest extends StandardHttpRequest {
 
 	public RankHttpRequest(String username, boolean exact, HttpRequestListener listener) {
-		super(StandardPlugin.getPlugin(), HTTPMethod.GET, listener);
+		super(StandardPlugin.getPlugin(), "rank_query", HTTPMethod.GET, listener);
 
 		addProperty("username", username);
 		if (exact) {
 			addProperty("exact", true);
+		} else {
+			maxAttempts = 1;
 		}
-	}
-
-	@Override
-	public String apiType() {
-		return "rank_query";
 	}
 }

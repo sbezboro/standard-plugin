@@ -6,14 +6,9 @@ import com.sbezboro.standardplugin.StandardPlugin;
 public class LinkHttpRequest extends StandardHttpRequest {
 
 	public LinkHttpRequest(String username, String password, HttpRequestListener listener) {
-		super(StandardPlugin.getPlugin(), HTTPMethod.POST, listener);
+		super(StandardPlugin.getPlugin(), "link", HTTPMethod.POST, listener);
 
 		addProperty("username", username);
 		addProperty("password", password);
-	}
-
-	@Override
-	public String apiType() {
-		return "link";
 	}
 }
