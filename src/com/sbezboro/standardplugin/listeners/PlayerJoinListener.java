@@ -30,7 +30,7 @@ public class PlayerJoinListener extends EventListener implements Listener {
 				broadcastRank(player);
 			}
 		} else {
-			StandardPlugin.playerBroadcast(player, ChatColor.LIGHT_PURPLE + "Welcome " + player.getName() + " to the server!");
+			StandardPlugin.playerBroadcast(player, String.format("%sWelcome %s to the server!", ChatColor.LIGHT_PURPLE, player.getName()));
 
 			World world = player.getLocation().getWorld();
 			player.teleport(world.getSpawnLocation());
@@ -40,10 +40,14 @@ public class PlayerJoinListener extends EventListener implements Listener {
 			}
 		}
 
+		String message;
 		if (player.hasNickname()) {
-			String joinMessage = event.getJoinMessage().replace(player.getName(), player.getDisplayName(false) + " (" + player.getName() + ")");
-			event.setJoinMessage(joinMessage);
+			message = String.format("%s%s (%s) has joined the server", ChatColor.GREEN, player.getDisplayName(false), player.getName());
+		} else {
+			message = String.format("%s%s has joined the server", ChatColor.GREEN, player.getDisplayName(false));
 		}
+		
+		event.setJoinMessage(message);
 	}
 
 	private void broadcastRank(final StandardPlayer player) {

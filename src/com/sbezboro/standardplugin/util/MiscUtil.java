@@ -2,6 +2,7 @@ package com.sbezboro.standardplugin.util;
 
 import java.util.HashSet;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Horse.Variant;
 import org.bukkit.entity.LivingEntity;
@@ -43,6 +44,10 @@ public class MiscUtil {
 		} else {
 			return livingEntity.toString().substring(5);
 		}
+	}
+	
+	public static String locationFormat(Location location) {
+		return String.format("([%s] %d, %d, %d)", location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
 	}
 
 	public static String pluralize(String string, int count) {
