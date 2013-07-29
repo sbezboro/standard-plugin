@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class PlayerLeaveListener extends EventListener implements Listener {
@@ -22,8 +23,10 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 
 		String message = String.format("%s%s has left the server", ChatColor.DARK_GRAY, player.getDisplayName(false));
 		event.setQuitMessage(message);
-		
-		plugin.webChatLog(message);
+
+		if (!SimplyVanishIntegration.isVanished(player)) {
+			plugin.webChatLog(message);
+		}
 
 		player.onLeaveServer();
 	}
@@ -34,8 +37,10 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 
 		String message = String.format("%s%s was kicked!", ChatColor.DARK_GRAY, player.getDisplayName(false));
 		event.setLeaveMessage(message);
-		
-		plugin.webChatLog(message);
+
+		if (!SimplyVanishIntegration.isVanished(player)) {
+			plugin.webChatLog(message);
+		}
 
 		player.onLeaveServer();
 	}
