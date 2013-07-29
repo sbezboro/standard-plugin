@@ -30,8 +30,10 @@ public class PlayerJoinListener extends EventListener implements Listener {
 				broadcastRank(player);
 			}
 		} else {
-			StandardPlugin.playerBroadcast(player, String.format("%sWelcome %s to the server!", ChatColor.LIGHT_PURPLE, player.getName()));
-
+			String welcomeMessage = String.format("%sWelcome %s to the server!", ChatColor.LIGHT_PURPLE, player.getName());
+			StandardPlugin.playerBroadcast(player, welcomeMessage);
+			plugin.webChatLog(welcomeMessage);
+			
 			World world = player.getLocation().getWorld();
 			player.teleport(world.getSpawnLocation());
 
@@ -47,7 +49,9 @@ public class PlayerJoinListener extends EventListener implements Listener {
 			message = String.format("%s%s has joined the server", ChatColor.GREEN, player.getDisplayName(false));
 		}
 		
-		plugin.webChatLog(message);
+		if (!SimplyVanishIntegration.isVanished(player)) {
+			plugin.webChatLog(message);
+		}
 		
 		event.setJoinMessage(message);
 	}
