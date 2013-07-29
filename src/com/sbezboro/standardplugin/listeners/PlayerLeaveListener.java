@@ -20,7 +20,10 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
-		event.setQuitMessage(String.format("%s%s has left the server", ChatColor.DARK_GRAY, player.getDisplayName(false)));
+		String message = String.format("%s%s has left the server", ChatColor.DARK_GRAY, player.getDisplayName(false));
+		event.setQuitMessage(message);
+		
+		plugin.webChatLog(message);
 
 		player.onLeaveServer();
 	}
@@ -29,7 +32,10 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 	public void onPlayerKick(PlayerKickEvent event) {
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
-		event.setLeaveMessage(String.format("%s%s was kicked!", ChatColor.DARK_GRAY, player.getDisplayName(false)));
+		String message = String.format("%s%s was kicked!", ChatColor.DARK_GRAY, player.getDisplayName(false));
+		event.setLeaveMessage(message);
+		
+		plugin.webChatLog(message);
 
 		player.onLeaveServer();
 	}

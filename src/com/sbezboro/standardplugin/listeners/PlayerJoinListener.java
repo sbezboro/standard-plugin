@@ -47,12 +47,13 @@ public class PlayerJoinListener extends EventListener implements Listener {
 			message = String.format("%s%s has joined the server", ChatColor.GREEN, player.getDisplayName(false));
 		}
 		
+		plugin.webChatLog(message);
+		
 		event.setJoinMessage(message);
 	}
 
 	private void broadcastRank(final StandardPlayer player) {
-		HttpRequestManager.getInstance().startRequest(
-				new RankHttpRequest(player.getName(), true, new HttpRequestListener() {
+		HttpRequestManager.getInstance().startRequest(new RankHttpRequest(player.getName(), true, new HttpRequestListener() {
 
 			@Override
 			public void requestSuccess(HttpResponse response) {

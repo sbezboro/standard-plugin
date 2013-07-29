@@ -68,6 +68,8 @@ public class DeathListener extends EventListener implements Listener {
 				deathMessage = deathMessage.replaceAll(killer.getName(), ChatColor.stripColor(killer.getDisplayName()));
 			}
 		}
+		
+		plugin.webChatLog(deathMessage);
 
 		event.setDeathMessage(deathMessage);
 

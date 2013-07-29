@@ -201,16 +201,19 @@ public class StandardPlugin extends JavaPlugin {
 
 		return result;
 	}
-	
+
 	/**
-	 * Matches the given username to a currently online player's display name
-	 * or an offline player's username that has played before
-	 * @param username The username to query
-	 * @return StandardPlayer instance if online or has played before, null otherwise
+	 * Matches the given username to a currently online player's display name or
+	 * an offline player's username that has played before
+	 * 
+	 * @param username
+	 *            The username to query
+	 * @return StandardPlayer instance if online or has played before, null
+	 *         otherwise
 	 */
 	public StandardPlayer matchPlayer(String username) {
 		StandardPlayer player = null;
-		
+
 		StandardPlayer[] onlinePlayers = getOnlinePlayers();
 		for (StandardPlayer onlinePlayer : onlinePlayers) {
 			if (onlinePlayer.getDisplayName(false).toLowerCase().startsWith(username.toLowerCase())) {
@@ -218,7 +221,7 @@ public class StandardPlugin extends JavaPlugin {
 				break;
 			}
 		}
-		
+
 		if (player == null) {
 			player = getStandardPlayer(username);
 			if (!player.hasPlayedBefore()) {
@@ -274,6 +277,10 @@ public class StandardPlugin extends JavaPlugin {
 
 	public TitleStorage getTitleStorage() {
 		return titleStorage;
+	}
+
+	public void webChatLog(String log) {
+		Bukkit.getConsoleSender().sendMessage("[/wc/] " + log);
 	}
 
 	public StandardPlayer getStandardPlayer(String username) {
