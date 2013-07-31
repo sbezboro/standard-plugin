@@ -37,6 +37,12 @@ public class TitleStorage extends ConfigStorage<Title> {
 
 		save();
 	}
+	
+	public void removeTitle(Title title) {
+		removeObject(title);
+		
+		save();
+	}
 
 	public Collection<Title> getTitles() {
 		return idToObject.values();

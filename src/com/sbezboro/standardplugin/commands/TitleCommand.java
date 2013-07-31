@@ -34,6 +34,26 @@ public class TitleCommand extends BaseCommand {
 			plugin.getTitleStorage().saveTitle(title);
 
 			sender.sendMessage("Title " + args[1] + " created!");
+		} else if (args[0].equalsIgnoreCase("rename")) {
+			if (args.length <= 2) {
+				showUsageInfo(sender);
+				return false;
+			}
+
+			String displayName = getRemainingString(args, 2);
+			
+			String titleName = args[1];
+			
+			Title title = plugin.getTitleStorage().getTitle(titleName);
+			if (title == null) {
+				sender.sendMessage("Title doesn't exist!");
+				return true;
+			}
+
+			title.setDisplayName(displayName);
+			plugin.getTitleStorage().saveTitle(title);
+
+			sender.sendMessage("Title " + args[1] + " renamed!");
 		} else if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("list")) {
 				sender.sendMessage("The following titles exist:");
@@ -44,6 +64,33 @@ public class TitleCommand extends BaseCommand {
 			} else {
 				showUsageInfo(sender);
 				return false;
+			}
+		} else if (args.length == 2) {
+			if (args[0].equalsIgnoreCase("broadcast")) {
+				String titleName = args[1];
+				Title title = plugin.getTitleStorage().getTitle(titleName);
+				if (title == null) {
+					sender.sendMessage("Title doesn't exist!");
+					return true;
+				}
+				
+				title.setBroadcast(!title.isBroadcast());
+				plugin.getTitleStorage().save();
+				
+				sender.sendMessage(String.format("%s%s%s is %s", ChatColor.AQUA, title.getDisplayName(), 
+						ChatColor.RESET, title.isBroadcast() ? "now broadcasted" : "no longer broadcasted"));
+			} else if (args[0].equalsIgnoreCase("delete")) {
+				String titleName = args[1];
+				Title title = plugin.getTitleStorage().getTitle(titleName);
+				if (title == null) {
+					sender.sendMessage("Title doesn't exist!");
+					return true;
+				}
+
+				plugin.getTitleStorage().removeTitle(title);
+				
+				sender.sendMessage(String.format("%s%s%s removed!", ChatColor.AQUA, title.getDisplayName(),
+						ChatColor.RESET));
 			}
 		} else if (args.length == 3) {
 			if (args[0].equalsIgnoreCase("add")) {
@@ -107,7 +154,9 @@ public class TitleCommand extends BaseCommand {
 	@Override
 	public void showUsageInfo(CommandSender sender) {
 		sender.sendMessage("Usage: /" + name + " list");
+		sender.sendMessage("Usage: /" + name + " broadcast <name>");
 		sender.sendMessage("Usage: /" + name + " create <name> <displayName>");
+		sender.sendMessage("Usage: /" + name + " delete <name>");
 		sender.sendMessage("Usage: /" + name + " add <player> <title>");
 		sender.sendMessage("Usage: /" + name + " remove <player> <title>");
 	}

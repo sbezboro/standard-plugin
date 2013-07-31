@@ -190,34 +190,43 @@ public class StandardPlayer extends PlayerDelegate {
 
 	public String getRankDescription(boolean self, int rank) {
 		String message = "";
+		
+		Title broadcastedTitle = null;
+		for (Title title : getTitles()) {
+			if (title.isBroadcast()) {
+				broadcastedTitle = title;
+				break;
+			}
+		}
+		
+		if (broadcastedTitle == null) {
+			for (Title title : getTitles()) {
+				if (title.getName().equals(Title.TOP10_VETERAN) ||
+						title.getName().equals(Title.TOP40_VETERAN) ||
+						title.getName().equals(Title.VETERAN)) {
+					broadcastedTitle = title;
+					break;
+				}
+			}
+		}
+		
 		if (self) {
 			message = "You ";
 
-			if (isNewbieStalker()) {
-				message += "are a " + ChatColor.RED + "Stupid Newbie Stalker" + ChatColor.WHITE + " and ";
-			} else if (isTop10Veteran()) {
-				message += "are a " + ChatColor.GOLD + "top 10 veteran" + ChatColor.WHITE + " and ";
-			} else if (isTop40Veteran()) {
-				message += "are a " + ChatColor.GOLD + "top 40 veteran" + ChatColor.WHITE + " and ";
-			} else if (isVeteran()) {
-				message += "are a " + ChatColor.GOLD + "veteran" + ChatColor.WHITE + " and ";
+			if (broadcastedTitle != null) {
+				message += "are a " + ChatColor.GOLD + broadcastedTitle.getDisplayName() + ChatColor.WHITE + " and ";
 			}
 
 			message += "are ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!";
 		} else {
-			if (isNewbieStalker()) {
-				message += ChatColor.RED + "Stupid Newbie Stalker ";
-			} else if (isTop10Veteran()) {
-				message += ChatColor.GOLD + "Top 10 veteran ";
-			} else if (isTop40Veteran()) {
-				message += ChatColor.GOLD + "Top 40 veteran ";
-			} else if (isVeteran()) {
-				message += ChatColor.GOLD + "Veteran ";
+			if (broadcastedTitle != null) {
+				message += ChatColor.GOLD + broadcastedTitle.getDisplayName() + ChatColor.WHITE + " and ";
 			}
-
-			message += ChatColor.AQUA + getDisplayName() + ChatColor.WHITE + " is ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE
-					+ " on the server!";
+			
+			message += ChatColor.AQUA + getDisplayName() + ChatColor.WHITE + " is ranked " + ChatColor.AQUA
+					+ MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!";
 		}
+		
 		return message;
 	}
 

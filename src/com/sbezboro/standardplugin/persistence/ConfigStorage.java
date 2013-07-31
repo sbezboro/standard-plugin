@@ -89,6 +89,7 @@ public abstract class ConfigStorage<T extends PersistableImpl> implements IStora
 		if (config == null || file == null) {
 			return;
 		}
+		
 		try {
 			config.save(file);
 		} catch (IOException e) {

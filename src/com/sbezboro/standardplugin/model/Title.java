@@ -25,7 +25,7 @@ public class Title extends PersistableImpl implements Persistable {
 		this.name = name;
 		this.displayName = displayName;
 		this.hidden = false;
-		this.broadcast = false;
+		this.broadcast = true;
 	}
 
 	@Override
@@ -61,6 +61,10 @@ public class Title extends PersistableImpl implements Persistable {
 		return displayName;
 	}
 
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
 	public String getDescription() {
 		return name + " - " + displayName;
 	}
@@ -71,5 +75,13 @@ public class Title extends PersistableImpl implements Persistable {
 
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
+	}
+
+	public boolean isBroadcast() {
+		return broadcast;
+	}
+
+	public void setBroadcast(boolean broadcast) {
+		this.broadcast = broadcast;
 	}
 }
