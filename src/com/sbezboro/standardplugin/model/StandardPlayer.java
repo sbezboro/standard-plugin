@@ -220,7 +220,7 @@ public class StandardPlayer extends PlayerDelegate {
 			message += "are ranked " + ChatColor.AQUA + MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!";
 		} else {
 			if (broadcastedTitle != null) {
-				message += ChatColor.GOLD + broadcastedTitle.getDisplayName() + ChatColor.WHITE + " and ";
+				message += ChatColor.GOLD + broadcastedTitle.getDisplayName() + ChatColor.WHITE;
 			}
 			
 			message += ChatColor.AQUA + getDisplayName() + ChatColor.WHITE + " is ranked " + ChatColor.AQUA
