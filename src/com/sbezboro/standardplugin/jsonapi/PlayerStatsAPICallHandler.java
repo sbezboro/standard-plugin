@@ -3,7 +3,6 @@ package com.sbezboro.standardplugin.jsonapi;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import com.sbezboro.standardplugin.StandardPlugin;
@@ -34,7 +33,7 @@ public class PlayerStatsAPICallHandler extends APICallHandler {
 			long hours = timeSpent / 60;
 			String hoursString = String.valueOf(hours) + MiscUtil.pluralize(" hour", hours);
 			if (timeSpent % 6000 == 0) {
-				Bukkit.broadcastMessage(ChatColor.AQUA + player.getDisplayName() + ChatColor.BLUE + " has just reached " + ChatColor.AQUA + hoursString
+				StandardPlugin.broadcast(ChatColor.AQUA + player.getDisplayName() + ChatColor.BLUE + " has just reached " + ChatColor.AQUA + hoursString
 						+ ChatColor.BLUE + " on the server! Congrats!");
 			}
 

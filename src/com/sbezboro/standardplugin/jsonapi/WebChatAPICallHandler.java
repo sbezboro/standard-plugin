@@ -2,7 +2,6 @@ package com.sbezboro.standardplugin.jsonapi;
 
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import com.sbezboro.standardplugin.StandardPlugin;
@@ -39,7 +38,7 @@ public class WebChatAPICallHandler extends APICallHandler {
 			return true;
 		}
 
-		Bukkit.getServer().broadcastMessage(ChatColor.BLUE + "[Web Chat] " + ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + ": " + message);
+		StandardPlugin.broadcast(ChatColor.BLUE + "[Web Chat] " + ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + ": " + message);
 
 		return true;
 	}
@@ -62,7 +61,7 @@ public class WebChatAPICallHandler extends APICallHandler {
 			return false;
 		}
 
-		Bukkit.getServer().broadcastMessage(message);
+		StandardPlugin.broadcast(message);
 
 		return true;
 	}

@@ -33,11 +33,10 @@ public class ForumPostAPICallHandler extends APICallHandler {
 		} else {
 			username = player.getDisplayName(false);
 
-			Bukkit.getServer().broadcastMessage(
-					ChatColor.DARK_AQUA + "[Forum] " + ChatColor.YELLOW + username + ChatColor.DARK_AQUA + " just posted in " + ChatColor.YELLOW + forumName
-							+ ChatColor.DARK_AQUA + "!");
-			Bukkit.getServer().broadcastMessage(ChatColor.DARK_AQUA + "[Forum] Topic: " + ChatColor.YELLOW + topic);
-			Bukkit.getServer().broadcastMessage(ChatColor.DARK_AQUA + "[Forum] " + ChatColor.YELLOW + url);
+			StandardPlugin.broadcast(ChatColor.DARK_AQUA + "[Forum] " + ChatColor.YELLOW + username + ChatColor.DARK_AQUA 
+					+ " just posted in " + ChatColor.YELLOW + forumName + ChatColor.DARK_AQUA + "!");
+			StandardPlugin.broadcast(ChatColor.DARK_AQUA + "[Forum] Topic: " + ChatColor.YELLOW + topic);
+			StandardPlugin.broadcast(ChatColor.DARK_AQUA + "[Forum] " + ChatColor.YELLOW + url);
 		}
 
 		return true;

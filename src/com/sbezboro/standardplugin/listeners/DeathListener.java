@@ -69,7 +69,7 @@ public class DeathListener extends EventListener implements Listener {
 			}
 		}
 		
-		plugin.webChatLog(deathMessage);
+		StandardPlugin.webchatMessage(deathMessage);
 
 		event.setDeathMessage(deathMessage);
 

@@ -1,6 +1,5 @@
 package com.sbezboro.standardplugin.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -46,7 +45,7 @@ public class EntityDamageListener extends EventListener implements Listener {
 
 					if (!damager.isPvpProtected() && !damager.isNewbieStalker() && damager.incrementNewbieAttacks() >= plugin.getNewbieStalkerThreshold()) {
 						Title title = damager.addTitle(Title.NEWBIE_STALKER);
-						Bukkit.broadcastMessage("" + ChatColor.AQUA + ChatColor.BOLD + damager.getDisplayName(false) + ChatColor.AQUA
+						StandardPlugin.broadcast("" + ChatColor.AQUA + ChatColor.BOLD + damager.getDisplayName(false) + ChatColor.AQUA
 								+ " has been designated as a " + ChatColor.BOLD + title.getDisplayName() + ChatColor.AQUA + "! FOR SHAME");
 					}
 

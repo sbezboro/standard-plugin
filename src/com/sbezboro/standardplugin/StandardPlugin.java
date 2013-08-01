@@ -47,6 +47,9 @@ import com.sbezboro.standardplugin.persistence.TitleStorage;
 import com.sbezboro.standardplugin.util.PlayerSaver;
 
 public class StandardPlugin extends JavaPlugin {
+	private static final String webchatPattern = "[*WC*]";
+	private static final String consoleWebchatPattern = "[*CWC*]";
+	
 	private static StandardPlugin instance;
 
 	private List<IStorage> storages;
@@ -174,21 +177,47 @@ public class StandardPlugin extends JavaPlugin {
 			jsonapi.registerAPICallHandler(new WebChatAPICallHandler(this));
 		}
 	}
+	
+	private static String webchatConsoleGate(String message, boolean webchat, boolean console) {
+		if (webchat) {
+			if (console) {
+				message = consoleWebchatPattern + message;
+			} else {
+				message = webchatPattern + message;
+			}
+		}
+		
+		return message;
+	}
 
 	// ------
 	// Miscellaneous Player related utilty funcitions mirroring the respective
 	// Bukkit versions with a StandardPlayer wrapper
 	// ------
-	public static void playerBroadcast(Player sender, final String message) {
+	public static void playerBroadcast(Player sender, final String message, boolean webchat, boolean console) {
 		for (StandardPlayer player : instance.getOnlinePlayers()) {
 			if (player != sender) {
 				player.sendMessage(message);
 			}
 		}
-	}
 
-	public static void playerBroadcast(final String message) {
-		playerBroadcast(null, message);
+		Bukkit.getConsoleSender().sendMessage(webchatConsoleGate(message, webchat, console));
+	}
+	
+	public static void playerBroadcast(Player sender, final String message) {
+		playerBroadcast(sender, message, true, true);
+	}
+	
+	public static void broadcast(String message, boolean webchat, boolean console) {
+		playerBroadcast(null, message, webchat, console);
+	}
+	
+	public static void broadcast(String message) {
+		broadcast(message, true, true);
+	}
+	
+	public static void webchatMessage(String message) {
+		Bukkit.getConsoleSender().sendMessage(webchatPattern + message);
 	}
 
 	public StandardPlayer[] getOnlinePlayers() {
@@ -277,10 +306,6 @@ public class StandardPlugin extends JavaPlugin {
 
 	public TitleStorage getTitleStorage() {
 		return titleStorage;
-	}
-
-	public void webChatLog(String log) {
-		Bukkit.getConsoleSender().sendMessage("[/wc/] " + log);
 	}
 
 	public StandardPlayer getStandardPlayer(String username) {

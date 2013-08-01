@@ -32,7 +32,6 @@ public class PlayerJoinListener extends EventListener implements Listener {
 		} else {
 			String welcomeMessage = String.format("%sWelcome %s to the server!", ChatColor.LIGHT_PURPLE, player.getName());
 			StandardPlugin.playerBroadcast(player, welcomeMessage);
-			plugin.webChatLog(welcomeMessage);
 			
 			World world = player.getLocation().getWorld();
 			player.teleport(world.getSpawnLocation());
@@ -50,7 +49,7 @@ public class PlayerJoinListener extends EventListener implements Listener {
 		}
 		
 		if (!SimplyVanishIntegration.isVanished(player)) {
-			plugin.webChatLog(message);
+			StandardPlugin.webchatMessage(message);
 		}
 		
 		event.setJoinMessage(message);
