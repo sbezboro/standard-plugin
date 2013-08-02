@@ -82,10 +82,9 @@ public class PlayerJoinListener extends EventListener implements Listener {
 							player.addTitle(Title.VETERAN);
 						}
 					}
-
-					for (StandardPlayer other : plugin.getOnlinePlayers()) {
-						other.sendMessage(player.getRankDescription(player == other, rank));
-					}
+					
+					StandardPlugin.playerBroadcast(player, player.getRankDescription(false, rank));
+					player.sendMessage(player.getRankDescription(true, rank));
 				}
 			}
 
