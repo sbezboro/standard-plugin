@@ -74,8 +74,7 @@ public abstract class ConfigStorage<T extends PersistableImpl> implements IStora
 	protected void addObject(T object) {
 		idToObject.put(object.getIdentifier(), object);
 
-		ConfigurationSection section = config.createSection(object.getIdentifier(), object.mapRepresentation());
-		idToConfig.put(object.getIdentifier(), section);
+		save();
 	}
 
 	protected void removeObject(T object) {
@@ -83,11 +82,27 @@ public abstract class ConfigStorage<T extends PersistableImpl> implements IStora
 		idToConfig.remove(object.getIdentifier());
 
 		config.set(object.getIdentifier(), null);
+		
+		save();
 	}
 
 	public final void save() {
 		if (config == null || file == null) {
 			return;
+		}
+		
+		for (T object : idToObject.values()) {
+			ConfigurationSection section = idToConfig.get(object.getIdentifier());
+			HashMap<String, Object> repr = object.mapRepresentation();
+			
+			if (section == null) {
+				section = config.createSection(object.getIdentifier(), repr);
+				idToConfig.put(object.getIdentifier(), section);
+			} else {
+				for (String key : repr.keySet()) {
+					section.set(key, repr.get(key));
+				}
+			}
 		}
 		
 		try {

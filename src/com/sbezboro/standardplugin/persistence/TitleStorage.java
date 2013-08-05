@@ -34,14 +34,10 @@ public class TitleStorage extends ConfigStorage<Title> {
 
 	public void saveTitle(Title title) {
 		addObject(title);
-
-		save();
 	}
 	
 	public void removeTitle(Title title) {
 		removeObject(title);
-		
-		save();
 	}
 
 	public Collection<Title> getTitles() {

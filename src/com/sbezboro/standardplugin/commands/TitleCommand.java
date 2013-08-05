@@ -50,7 +50,7 @@ public class TitleCommand extends BaseCommand {
 			}
 
 			title.setDisplayName(displayName);
-			plugin.getTitleStorage().saveTitle(title);
+			plugin.getTitleStorage().save();
 
 			sender.sendMessage("Title " + args[1] + " renamed!");
 		} else if (args.length == 1) {

@@ -45,12 +45,9 @@ public class GateStorage extends ConfigStorage<Gate> {
 		locationMap.put(getLocationKey(location), gate);
 
 		addObject(gate);
-
-		save();
 	}
 
 	public void removeGate(Gate gate) {
-		removeObject(gate);
 		locationMap.remove(getLocationKey(gate.getLocation()));
 
 		for (Gate other : idToObject.values()) {
@@ -62,7 +59,7 @@ public class GateStorage extends ConfigStorage<Gate> {
 			}
 		}
 
-		save();
+		removeObject(gate);
 	}
 
 	public void linkGates(Gate source, Gate target) {
