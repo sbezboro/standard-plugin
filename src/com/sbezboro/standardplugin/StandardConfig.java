@@ -11,6 +11,7 @@ public class StandardConfig {
 	private boolean debug = false;
 
 	private String endpoint;
+	private String rtsAddress;
 	private int pvpProtectionTime;
 	private int hungerProtectionTime;
 	private int newbieStalkerThreshold;
@@ -32,6 +33,7 @@ public class StandardConfig {
 		}
 
 		endpoint = config.getString("endpoint");
+		rtsAddress = config.getString("rts-address");
 		pvpProtectionTime = config.getInt("pvp-protection-time");
 		hungerProtectionTime = config.getInt("hunger-protection-time");
 		newbieStalkerThreshold = config.getInt("newbie-stalker-threshold");
@@ -51,6 +53,10 @@ public class StandardConfig {
 
 	public String getEndpoint() {
 		return endpoint;
+	}
+
+	public String getRTSAddress() {
+		return rtsAddress;
 	}
 
 	public int getPvpProtectionTime() {

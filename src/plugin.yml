@@ -1,6 +1,6 @@
 name: StandardPlugin
 main: com.sbezboro.standardplugin.StandardPlugin
-version: 1.5.7
+version: 1.5.8
 softdepend: [JSONAPI, SimplyVanish, Essentials]
 
 commands:
@@ -51,6 +51,10 @@ commands:
         description: Check out titles for a player
         permission: standardplugin.titles
         permission-message: You don't have permission
+    webchat:
+        description: See who's online on web chat
+        permission: standardplugin.webchat
+        permission-message: You don't have permission
 
 permissions:
     standardplugin.standard:
@@ -74,4 +78,6 @@ permissions:
     standardplugin.title:
         default: op
     standardplugin.titles:
+        default: true
+    standardplugin.webchat:
         default: true

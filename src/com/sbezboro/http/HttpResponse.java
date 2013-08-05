@@ -41,4 +41,8 @@ public class HttpResponse {
 	public String getStringResponse() {
 		return stringResponse;
 	}
+	
+	public JSONObject getJsonResponse() {
+		return jsonResponse;
+	}
 }

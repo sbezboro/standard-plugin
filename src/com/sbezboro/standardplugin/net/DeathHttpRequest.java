@@ -3,7 +3,7 @@ package com.sbezboro.standardplugin.net;
 import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
 
-public class DeathHttpRequest extends StandardHttpRequest {
+public class DeathHttpRequest extends ApiHttpRequest {
 
 	public DeathHttpRequest(String victim, String type, HttpRequestListener listener) {
 		super(StandardPlugin.getPlugin(), "log_death", HTTPMethod.POST, listener);

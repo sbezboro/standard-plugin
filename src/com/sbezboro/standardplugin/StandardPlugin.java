@@ -22,6 +22,7 @@ import com.sbezboro.standardplugin.commands.StandardCommand;
 import com.sbezboro.standardplugin.commands.TitleCommand;
 import com.sbezboro.standardplugin.commands.TitlesCommand;
 import com.sbezboro.standardplugin.commands.UnfreezeCommand;
+import com.sbezboro.standardplugin.commands.WebchatCommand;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.jsonapi.ForumPostAPICallHandler;
@@ -146,6 +147,7 @@ public class StandardPlugin extends JavaPlugin {
 		commands.add(new PvpProtectionCommand(this));
 		commands.add(new TitleCommand(this));
 		commands.add(new TitlesCommand(this));
+		commands.add(new WebchatCommand(this));
 
 		for (ICommand command : commands) {
 			command.register();
@@ -278,6 +280,10 @@ public class StandardPlugin extends JavaPlugin {
 
 	public String getEndpoint() {
 		return config.getEndpoint();
+	}
+
+	public String getRTSAddress() {
+		return config.getRTSAddress();
 	}
 
 	public int getPvpProtectionTime() {

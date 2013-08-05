@@ -84,7 +84,7 @@ public abstract class HttpRequest implements Runnable {
 	public void run() {
 		try {
 			String urlString = getUrl();
-			if (method == HTTPMethod.GET) {
+			if (method == HTTPMethod.GET && !properties.isEmpty()) {
 				urlString += "?" + getPropertyData();
 			}
 

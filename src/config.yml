@@ -5,3 +5,4 @@ pvp-protection-time: 60
 hunger-protection-time: 60
 newbie-stalker-threshold: 40
 endpoint: http://standardsurvival.com/api/v1/
+rts-address: http://rts.standardsurvival.com
