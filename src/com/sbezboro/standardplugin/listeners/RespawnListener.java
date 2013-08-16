@@ -30,8 +30,7 @@ public class RespawnListener extends EventListener implements Listener {
 		if (eventBed == null && actualBed != null) {
 			Block bedBlock = actualBed.getBlock();
 
-			// Bukkit tells us the bed is obstructed when in fact it's still
-			// there
+			// Bukkit tells us the bed is obstructed when in fact it's still there
 			if (bedBlock.getType() == Material.BED_BLOCK) {
 				bedSpawn = true;
 

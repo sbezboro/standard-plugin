@@ -38,6 +38,7 @@ import com.sbezboro.standardplugin.listeners.PlayerInteractListener;
 import com.sbezboro.standardplugin.listeners.PlayerJoinListener;
 import com.sbezboro.standardplugin.listeners.PlayerLeaveListener;
 import com.sbezboro.standardplugin.listeners.PlayerMoveListener;
+import com.sbezboro.standardplugin.listeners.PlayerPortalListener;
 import com.sbezboro.standardplugin.listeners.RespawnListener;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.persistence.GateStorage;
@@ -166,6 +167,7 @@ public class StandardPlugin extends JavaPlugin {
 		pluginManager.registerEvents(new CreatureSpawnListener(this), this);
 		pluginManager.registerEvents(new HungerListener(this), this);
 		pluginManager.registerEvents(new DispenseListener(this), this);
+		pluginManager.registerEvents(new PlayerPortalListener(this), this);
 	}
 
 	private void registerJSONAPIHandlers() {
