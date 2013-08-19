@@ -3,6 +3,7 @@ package com.sbezboro.standardplugin.jsonapi;
 import java.util.HashMap;
 
 import org.bukkit.ChatColor;
+import org.json.simple.JSONObject;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
@@ -14,7 +15,7 @@ public class WebChatAPICallHandler extends APICallHandler {
 	}
 
 	@Override
-	public Object handle(HashMap<String, Object> payload) {
+	public JSONObject handle(HashMap<String, Object> payload) {
 		String type = (String) payload.get("type");
 		String username = (String) payload.get("username");
 
@@ -27,42 +28,41 @@ public class WebChatAPICallHandler extends APICallHandler {
 			return handleStatus(type, username);
 		}
 
-		return false;
+		return notHandledResult();
 	}
 
-	private boolean handleMessage(String username, String message) {
+	private JSONObject handleMessage(String username, String message) {
 		StandardPlayer player = plugin.getStandardPlayer(username);
 
 		if (player.isBanned()) {
 			plugin.getLogger().warning(username + " has been blocked from web chat because they are banned.");
-			return true;
+			
+			return buildResult("BANNED", "banned");
 		}
 
 		StandardPlugin.broadcast(ChatColor.BLUE + "[Web Chat] " + ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + ": " + message);
 
-		return true;
+		return okResult();
 	}
 
-	private boolean handleStatus(String type, String username) {
+	private JSONObject handleStatus(String type, String username) {
 		StandardPlayer player = plugin.getStandardPlayer(username);
-
-		if (player.isBanned()) {
-			plugin.getLogger().warning(username + " has been blocked from web chat because they are banned.");
-			return true;
-		}
 
 		String message;
 
 		if (type.equals("enter")) {
 			message = ChatColor.BLUE + "[Web Chat] " + ChatColor.YELLOW + player.getDisplayName(false) + " has entered web chat";
+			if (player.isBanned()) {
+				message += ", but they are banned!";
+			}
 		} else if (type.equals("exit")) {
 			message = ChatColor.BLUE + "[Web Chat] " + ChatColor.YELLOW + player.getDisplayName(false) + " has left web chat";
 		} else {
-			return false;
+			return notHandledResult();
 		}
 
 		StandardPlugin.broadcast(message);
 
-		return true;
+		return okResult();
 	}
 }

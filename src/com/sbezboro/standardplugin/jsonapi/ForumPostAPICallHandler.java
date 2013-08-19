@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.json.simple.JSONObject;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
@@ -15,7 +16,7 @@ public class ForumPostAPICallHandler extends APICallHandler {
 	}
 
 	@Override
-	public Object handle(HashMap<String, Object> payload) {
+	public JSONObject handle(HashMap<String, Object> payload) {
 		String username = (String) payload.get("username");
 		String forumName = (String) payload.get("forum_name");
 		String topic = (String) payload.get("topic_name");
@@ -39,6 +40,6 @@ public class ForumPostAPICallHandler extends APICallHandler {
 			StandardPlugin.broadcast(ChatColor.DARK_AQUA + "[Forum] " + ChatColor.YELLOW + url);
 		}
 
-		return true;
+		return okResult();
 	}
 }

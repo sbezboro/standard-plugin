@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.json.simple.JSONObject;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
@@ -18,7 +19,7 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 	}
 
 	@Override
-	public Object handle(HashMap<String, Object> payload) {
+	public JSONObject handle(HashMap<String, Object> payload) {
 		HashMap<String, Object> status = new HashMap<String, Object>();
 
 		ArrayList<Object> players = new ArrayList<Object>();
@@ -39,6 +40,6 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 		status.put("tps", EssentialsIntegration.getTPS());
 		status.put("load", load);
 
-		return status;
+		return okResult(status);
 	}
 }

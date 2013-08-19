@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.ChatColor;
+import org.json.simple.JSONObject;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
@@ -17,7 +18,7 @@ public class PlayerStatsAPICallHandler extends APICallHandler {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Object handle(HashMap<String, Object> payload) {
+	public JSONObject handle(HashMap<String, Object> payload) {
 		ArrayList<HashMap<String, Object>> players = (ArrayList<HashMap<String, Object>>) payload.get("data");
 
 		for (HashMap<String, Object> playerData : players) {
@@ -67,6 +68,6 @@ public class PlayerStatsAPICallHandler extends APICallHandler {
 			}
 		}
 
-		return true;
+		return okResult();
 	}
 }
