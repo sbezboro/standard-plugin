@@ -16,11 +16,14 @@ public class ForumPostAPICallHandler extends APICallHandler {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public JSONObject handle(HashMap<String, Object> payload) {
-		String username = (String) payload.get("username");
-		String forumName = (String) payload.get("forum_name");
-		String topic = (String) payload.get("topic_name");
-		String url = (String) payload.get("path");
+		HashMap<String, String> data = (HashMap<String, String>) payload.get("data");
+		
+		String username = (String) data.get("username");
+		String forumName = (String) data.get("forum_name");
+		String topic = (String) data.get("topic_name");
+		String url = (String) data.get("path");
 
 		StandardPlayer player = plugin.getStandardPlayer(username);
 

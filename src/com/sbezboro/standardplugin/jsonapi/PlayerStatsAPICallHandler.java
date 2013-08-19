@@ -19,6 +19,10 @@ public class PlayerStatsAPICallHandler extends APICallHandler {
 	@Override
 	@SuppressWarnings("unchecked")
 	public JSONObject handle(HashMap<String, Object> payload) {
+		if (payload == null) {
+			return okResult();
+		}
+		
 		ArrayList<HashMap<String, Object>> players = (ArrayList<HashMap<String, Object>>) payload.get("data");
 
 		for (HashMap<String, Object> playerData : players) {
