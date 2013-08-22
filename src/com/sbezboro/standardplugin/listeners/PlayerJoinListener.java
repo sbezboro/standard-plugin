@@ -21,7 +21,7 @@ public class PlayerJoinListener extends EventListener implements Listener {
 		super(plugin);
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 

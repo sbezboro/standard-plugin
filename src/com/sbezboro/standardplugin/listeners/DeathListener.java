@@ -24,7 +24,7 @@ public class DeathListener extends EventListener implements Listener {
 		super(plugin);
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onEntityDeath(EntityDeathEvent event) {
 		if (event.getEntity() instanceof Player) {
 			DeathEvent deathEvent = new DeathEvent((Player) event.getEntity());
@@ -41,7 +41,7 @@ public class DeathListener extends EventListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		String deathMessage = event.getDeathMessage();
 		Player victim = event.getEntity();

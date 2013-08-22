@@ -22,12 +22,8 @@ public class PlayerMoveListener extends EventListener implements Listener {
 		super(plugin);
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onPlayerMove(PlayerMoveEvent event) {
-		if (event.isCancelled()) {
-			return;
-		}
-
 		Location from = event.getFrom();
 		Location to = event.getTo();
 

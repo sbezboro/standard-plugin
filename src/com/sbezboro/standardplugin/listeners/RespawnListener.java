@@ -18,7 +18,7 @@ public class RespawnListener extends EventListener implements Listener {
 		super(plugin);
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 

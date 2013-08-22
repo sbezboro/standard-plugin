@@ -13,9 +13,9 @@ public class HungerListener extends EventListener implements Listener {
 		super(plugin);
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
-		if (!plugin.isHungerProtectionEnabled() || event.isCancelled()) {
+		if (!plugin.isHungerProtectionEnabled()) {
 			return;
 		}
 

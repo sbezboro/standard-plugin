@@ -200,8 +200,14 @@ public class StandardPlugin extends JavaPlugin {
 	// ------
 	public static void playerBroadcast(Player sender, final String message, boolean webchat, boolean console) {
 		for (StandardPlayer player : instance.getOnlinePlayers()) {
-			if (player != sender) {
-				player.sendMessage(message);
+			if (player != sender && player.isOnline()) {
+				try {
+					player.sendMessage(message);
+				} catch (Exception e) {
+					// Can happen if a player leaves as this handler is running
+					instance.getLogger().severe("Exception while broadcasting");
+					e.printStackTrace();
+				}
 			}
 		}
 

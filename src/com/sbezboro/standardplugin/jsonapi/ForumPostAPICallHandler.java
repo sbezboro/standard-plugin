@@ -19,7 +19,7 @@ public class ForumPostAPICallHandler extends APICallHandler {
 	@SuppressWarnings("unchecked")
 	public JSONObject handle(HashMap<String, Object> payload) {
 		HashMap<String, String> data = (HashMap<String, String>) payload.get("data");
-		
+
 		String username = (String) data.get("username");
 		String forumName = (String) data.get("forum_name");
 		String topic = (String) data.get("topic_name");
@@ -30,15 +30,15 @@ public class ForumPostAPICallHandler extends APICallHandler {
 		if (player.isForumMuted()) {
 			if (player.isOnline()) {
 				username = player.getDisplayName(false);
-				player.sendMessage(ChatColor.RED + "The notification for your forum post has been hidden due to abuse!");
+				player.sendMessage(ChatColor.RED + "The notification for your forum post has been hidden due to abuse and/or spam!");
 			}
 
 			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + username + ChatColor.DARK_AQUA + " posted in " + ChatColor.YELLOW + forumName);
 		} else {
 			username = player.getDisplayName(false);
 
-			StandardPlugin.broadcast(ChatColor.DARK_AQUA + "[Forum] " + ChatColor.YELLOW + username + ChatColor.DARK_AQUA 
-					+ " just posted in " + ChatColor.YELLOW + forumName + ChatColor.DARK_AQUA + "!");
+			StandardPlugin.broadcast(ChatColor.DARK_AQUA + "[Forum] " + ChatColor.YELLOW + username + ChatColor.DARK_AQUA + " just posted in "
+					+ ChatColor.YELLOW + forumName + ChatColor.DARK_AQUA + "!");
 			StandardPlugin.broadcast(ChatColor.DARK_AQUA + "[Forum] Topic: " + ChatColor.YELLOW + topic);
 			StandardPlugin.broadcast(ChatColor.DARK_AQUA + "[Forum] " + ChatColor.YELLOW + url);
 		}

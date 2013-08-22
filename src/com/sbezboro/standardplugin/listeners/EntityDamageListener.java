@@ -19,9 +19,9 @@ public class EntityDamageListener extends EventListener implements Listener {
 		super(plugin);
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onEntityDamage(EntityDamageByEntityEvent event) {
-		if (event.isCancelled() || !plugin.isPvpProtectionEnabled()) {
+		if (!plugin.isPvpProtectionEnabled()) {
 			return;
 		}
 

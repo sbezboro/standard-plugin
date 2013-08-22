@@ -16,12 +16,8 @@ public class PlayerPortalListener extends EventListener implements Listener {
 		super(plugin);
 	}
 	
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onPortalEvent(PlayerPortalEvent event) {
-		if (event.isCancelled()) {
-			return;
-		}
-		
 		Location from = event.getFrom();
 		Biome biome = from.getWorld().getBiome(from.getBlockX(), from.getBlockZ());
 		

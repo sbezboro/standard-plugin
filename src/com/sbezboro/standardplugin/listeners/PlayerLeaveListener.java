@@ -17,7 +17,7 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 		super(plugin);
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
@@ -31,12 +31,8 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 		player.onLeaveServer();
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerKick(PlayerKickEvent event) {
-		if (!event.isCancelled()) {
-			return;
-		}
-		
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
 		String message = String.format("%s%s was kicked!", ChatColor.DARK_GRAY, player.getDisplayName(false));

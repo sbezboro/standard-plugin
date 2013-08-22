@@ -13,7 +13,7 @@ public class DispenseListener extends EventListener implements Listener {
 		super(plugin);
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onBlockDispense(BlockDispenseEvent event) {
 		if (event.getItem().getTypeId() == Material.LAVA_BUCKET.getId()) {
 			event.setCancelled(true);

@@ -12,7 +12,7 @@ public class ChunkLoadListener extends EventListener implements Listener {
 		super(plugin);
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onChunkLoadEvent(ChunkLoadEvent event) {
 		if (event.isNewChunk()) {
 			int x = event.getChunk().getX();

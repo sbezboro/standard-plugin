@@ -13,7 +13,7 @@ public class CreatureSpawnListener extends EventListener implements Listener {
 		super(plugin);
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
 		EntityType type = event.getEntity().getType();
 		if (type == EntityType.WITHER) {

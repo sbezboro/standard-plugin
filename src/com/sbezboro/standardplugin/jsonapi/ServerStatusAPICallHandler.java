@@ -28,8 +28,15 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 			if (SimplyVanishIntegration.isVanished(player)) {
 				continue;
 			}
-
-			players.add(player.getInfo());
+			try {
+				if (player.isOnline()) {
+					players.add(player.getInfo());
+				}
+			} catch (Exception e) {
+				// Can happen if a player leaves as this handler is running
+				plugin.getLogger().severe("Exception while getting player info");
+				e.printStackTrace();
+			}
 		}
 
 		double load = ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage();
