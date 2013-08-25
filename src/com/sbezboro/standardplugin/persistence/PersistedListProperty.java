@@ -11,18 +11,23 @@ import com.sbezboro.standardplugin.exceptions.NotPersistableException;
 import com.sbezboro.standardplugin.persistence.persistables.Persistable;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
-public class PersistedList<T> implements Iterable<T> {
+public class PersistedListProperty<T> implements Iterable<T>, Persisted {
 	private PersistedObject object;
+	private Class<T> cls;
 	private String name;
 
 	private ArrayList<T> list;
 
-	@SuppressWarnings("unchecked")
-	public PersistedList(PersistedObject object, Class<T> cls, String name) {
+	public PersistedListProperty(PersistedObject object, Class<T> cls, String name) {
 		this.name = name;
 		this.object = object;
+		this.cls = cls;
 		this.list = new ArrayList<T>();
+	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public void load() {
 		ArrayList<Object> objects = (ArrayList<Object>) object.loadProperty(name, null);
 		if (objects != null) {
 			for (Object obj : objects) {

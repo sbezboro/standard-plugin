@@ -1,63 +1,43 @@
 package com.sbezboro.standardplugin.model;
 
-import java.util.HashMap;
-
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 
-import com.sbezboro.standardplugin.persistence.persistables.Persistable;
-import com.sbezboro.standardplugin.persistence.persistables.PersistableImpl;
+import com.sbezboro.standardplugin.persistence.PersistedObject;
+import com.sbezboro.standardplugin.persistence.PersistedProperty;
 import com.sbezboro.standardplugin.persistence.persistables.PersistableLocation;
+import com.sbezboro.standardplugin.persistence.storages.GateStorage;
 
-public class Gate extends PersistableImpl implements Persistable {
-	private String name;
-	private String displayName;
-	private PersistableLocation location;
+public class Gate extends PersistedObject {
+	private PersistedProperty<String> displayName;
+	private PersistedProperty<PersistableLocation> location;
+	private PersistedProperty<String> targetName;
+	
 	private Gate target;
 
-	public Gate() {
+	public Gate(GateStorage storage, String identifier) {
+		super(storage, identifier);
 	}
 
-	public Gate(String name, String displayName, Location location) {
-		this.name = name.replace(".", "");
-		this.displayName = displayName;
-		this.location = new PersistableLocation(location);
-	}
-
-	@Override
-	public String getIdentifier() {
-		return name;
+	public Gate(GateStorage storage, String identifier, String displayName, Location location) {
+		super(storage, identifier);
+		
+		this.displayName.setValue(displayName);
+		this.location.setValue(new PersistableLocation(location));
 	}
 
 	@Override
-	public void loadFromPersistance(ConfigurationSection section) {
-		name = section.getName();
-
-		displayName = section.getString("displayName");
-		location = new PersistableLocation();
-		location.loadFromPersistance(section);
-	}
-
-	@Override
-	public HashMap<String, Object> mapRepresentation() {
-		HashMap<String, Object> repr = new HashMap<String, Object>();
-
-		repr.putAll(location.mapRepresentation());
-		repr.put("displayName", displayName);
-
-		return repr;
-	}
-
-	public String getName() {
-		return name;
+	public void createProperties() {
+		displayName = createProperty(String.class, "displayName");
+		location = createProperty(PersistableLocation.class, "location");
+		targetName = createProperty(String.class, "target");
 	}
 
 	public String getDisplayName() {
-		return displayName;
+		return displayName.getValue();
 	}
 
 	public Location getLocation() {
-		return location.getLocation();
+		return location.getValue() != null ? location.getValue().getLocation() : null;
 	}
 
 	public Gate getTarget() {
@@ -66,5 +46,11 @@ public class Gate extends PersistableImpl implements Persistable {
 
 	public void setTarget(Gate target) {
 		this.target = target;
+		if (target == null) {
+			this.targetName.setValue(null);
+		} else {
+			this.targetName.setValue(target.getIdentifier());
+		}
+		
 	}
 }

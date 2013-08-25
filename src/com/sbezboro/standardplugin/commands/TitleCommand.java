@@ -29,8 +29,7 @@ public class TitleCommand extends BaseCommand {
 
 			String displayName = getRemainingString(args, 2);
 
-			Title title = new Title(args[1], displayName);
-			plugin.getTitleStorage().saveTitle(title);
+			plugin.getTitleStorage().createTitle(args[1], displayName);
 
 			sender.sendMessage("Title " + args[1] + " created!");
 		} else if (args[0].equalsIgnoreCase("rename")) {
@@ -50,7 +49,6 @@ public class TitleCommand extends BaseCommand {
 			}
 
 			title.setDisplayName(displayName);
-			plugin.getTitleStorage().save();
 
 			sender.sendMessage("Title " + args[1] + " renamed!");
 		} else if (args.length == 1) {
@@ -74,7 +72,6 @@ public class TitleCommand extends BaseCommand {
 				}
 				
 				title.setBroadcast(!title.isBroadcast());
-				plugin.getTitleStorage().save();
 				
 				sender.sendMessage(String.format("%s%s%s is %s", ChatColor.AQUA, title.getDisplayName(), 
 						ChatColor.RESET, title.isBroadcast() ? "now broadcasted" : "no longer broadcasted"));

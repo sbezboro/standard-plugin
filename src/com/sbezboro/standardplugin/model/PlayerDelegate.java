@@ -53,7 +53,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 
 import com.sbezboro.standardplugin.persistence.PersistedObject;
-import com.sbezboro.standardplugin.persistence.PlayerStorage;
+import com.sbezboro.standardplugin.persistence.storages.PlayerStorage;
 
 @SuppressWarnings("deprecation")
 public abstract class PlayerDelegate extends PersistedObject implements Player {

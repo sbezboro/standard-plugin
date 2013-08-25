@@ -34,14 +34,12 @@ public class GateCommand extends BaseCommand {
 				sender.sendMessage("Usage: /" + name + " create <name> [displayName]");
 				return false;
 			} else if (args.length == 2) {
-				Gate warp = new Gate(args[1], null, player.getLocation());
-				plugin.getGateStorage().addGate(warp);
+				plugin.getGateStorage().createGate(args[1], null, player.getLocation());
 
 				player.sendMessage("Gate \"" + args[1] + "\" created!");
 			} else {
 				String displayName = StringUtils.join(args, " ", 2, args.length);
-				Gate warp = new Gate(args[1], displayName, player.getLocation());
-				plugin.getGateStorage().addGate(warp);
+				plugin.getGateStorage().createGate(args[1], displayName, player.getLocation());
 
 				player.sendMessage("Gate \"" + args[1] + "\" (" + displayName + ") created!");
 			}
@@ -78,7 +76,7 @@ public class GateCommand extends BaseCommand {
 				} else if (target == null) {
 					sender.sendMessage("Gate \"" + args[2] + "\" does not exist.");
 				} else {
-					plugin.getGateStorage().linkGates(source, target);
+					source.setTarget(target);
 					sender.sendMessage("Gate \"" + args[1] + "\" linked to \"" + args[2] + "\"");
 				}
 			} else {
@@ -88,7 +86,7 @@ public class GateCommand extends BaseCommand {
 		} else if (args[0].equalsIgnoreCase("list")) {
 			if (args.length == 1) {
 				for (Gate gate : plugin.getGateStorage().getGates()) {
-					String gateInfo = ChatColor.AQUA + gate.getName() + ChatColor.WHITE;
+					String gateInfo = ChatColor.AQUA + gate.getIdentifier() + ChatColor.WHITE;
 					if (gate.getDisplayName() != null) {
 						gateInfo += " - " + ChatColor.YELLOW + gate.getDisplayName() + ChatColor.WHITE;
 					}
@@ -96,7 +94,7 @@ public class GateCommand extends BaseCommand {
 					gateInfo += " (" + gate.getLocation().getBlockX() + ", " + gate.getLocation().getBlockY() + ", " + gate.getLocation().getBlockZ() + ")";
 
 					if (gate.getTarget() != null) {
-						gateInfo += " linked to " + ChatColor.AQUA + gate.getTarget().getName();
+						gateInfo += " linked to " + ChatColor.AQUA + gate.getTarget().getIdentifier();
 					}
 
 					sender.sendMessage(gateInfo);

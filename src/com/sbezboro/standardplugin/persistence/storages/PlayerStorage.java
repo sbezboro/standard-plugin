@@ -1,4 +1,4 @@
-package com.sbezboro.standardplugin.persistence;
+package com.sbezboro.standardplugin.persistence.storages;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 
-public class PlayerStorage extends ObjectStorage<StandardPlayer> {
+public class PlayerStorage extends MultiFileStorage<StandardPlayer> {
 	public PlayerStorage(StandardPlugin plugin) {
 		super(plugin, "players");
 	}
@@ -24,7 +24,7 @@ public class PlayerStorage extends ObjectStorage<StandardPlayer> {
 				standardPlayer = new StandardPlayer(player, this);
 			}
 
-			cacheObject(username, standardPlayer);
+			cacheObject(standardPlayer.getIdentifier(), standardPlayer);
 		} else if (standardPlayer.isOnline() && standardPlayer.getBasePlayer() == null) {
 			standardPlayer.setPlayer(Bukkit.getPlayer(username));
 			standardPlayer.setOfflinePlayer(Bukkit.getOfflinePlayer(username));

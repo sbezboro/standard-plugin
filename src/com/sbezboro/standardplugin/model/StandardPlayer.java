@@ -10,11 +10,11 @@ import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
-import com.sbezboro.standardplugin.persistence.PersistedList;
+import com.sbezboro.standardplugin.persistence.PersistedListProperty;
 import com.sbezboro.standardplugin.persistence.PersistedProperty;
-import com.sbezboro.standardplugin.persistence.PlayerStorage;
-import com.sbezboro.standardplugin.persistence.TitleStorage;
 import com.sbezboro.standardplugin.persistence.persistables.PersistableLocation;
+import com.sbezboro.standardplugin.persistence.storages.PlayerStorage;
+import com.sbezboro.standardplugin.persistence.storages.TitleStorage;
 import com.sbezboro.standardplugin.util.AnsiConverter;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
@@ -27,7 +27,7 @@ public class StandardPlayer extends PlayerDelegate {
 	private PersistedProperty<Boolean> forumMuted;
 	private PersistedProperty<Boolean> pvpProtection;
 	private PersistedProperty<PersistableLocation> bedLocation;
-	private PersistedList<String> titleNames;
+	private PersistedListProperty<String> titleNames;
 
 	private ArrayList<Title> titles;
 
@@ -45,13 +45,18 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 
 	@Override
-	public void loadProperties() {
-		titles = new ArrayList<Title>();
+	public void createProperties() {
+		forumMuted = createProperty(Boolean.class, FORUM_MUTED_PROPERTY);
+		pvpProtection = createProperty(Boolean.class, PVP_PROTECTION_PROPERTY);
+		bedLocation = createProperty(PersistableLocation.class, BED_LOCATION_PROPERTY);
+		titleNames = createList(String.class, TITLES_PROPERTY);
+	}
 
-		forumMuted = loadProperty(Boolean.class, FORUM_MUTED_PROPERTY);
-		pvpProtection = loadProperty(Boolean.class, PVP_PROTECTION_PROPERTY);
-		bedLocation = loadProperty(PersistableLocation.class, BED_LOCATION_PROPERTY);
-		titleNames = loadList(String.class, TITLES_PROPERTY);
+	@Override
+	public void loadProperties() {
+		super.loadProperties();
+		
+		titles = new ArrayList<Title>();
 
 		TitleStorage titleStorage = StandardPlugin.getPlugin().getTitleStorage();
 		for (String name : titleNames) {
@@ -108,7 +113,7 @@ public class StandardPlayer extends PlayerDelegate {
 	public void addTitle(Title title) {
 		if (!titles.contains(title)) {
 			titles.add(title);
-			titleNames.add(title.getName());
+			titleNames.add(title.getIdentifier());
 		}
 	}
 
@@ -160,7 +165,7 @@ public class StandardPlayer extends PlayerDelegate {
 
 	public boolean hasTitle(String name) {
 		for (Title title : titles) {
-			if (title.getName().equals(name)) {
+			if (title.getIdentifier().equals(name)) {
 				return true;
 			}
 		}
@@ -201,9 +206,9 @@ public class StandardPlayer extends PlayerDelegate {
 		
 		if (broadcastedTitle == null) {
 			for (Title title : getTitles()) {
-				if (title.getName().equals(Title.TOP10_VETERAN) ||
-						title.getName().equals(Title.TOP40_VETERAN) ||
-						title.getName().equals(Title.VETERAN)) {
+				if (title.getIdentifier().equals(Title.TOP10_VETERAN) ||
+						title.getIdentifier().equals(Title.TOP40_VETERAN) ||
+						title.getIdentifier().equals(Title.VETERAN)) {
 					broadcastedTitle = title;
 					break;
 				}
@@ -285,7 +290,7 @@ public class StandardPlayer extends PlayerDelegate {
 		ArrayList<HashMap<String, String>> titleInfos = new ArrayList<HashMap<String, String>>();
 		for (Title title : titles) {
 			HashMap<String, String> titleInfo = new HashMap<String, String>();
-			titleInfo.put("name", title.getName());
+			titleInfo.put("name", title.getIdentifier());
 			titleInfo.put("display_name", title.getDisplayName());
 			titleInfos.add(titleInfo);
 		}

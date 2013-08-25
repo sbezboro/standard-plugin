@@ -1,4 +1,4 @@
-package com.sbezboro.standardplugin.persistence;
+package com.sbezboro.standardplugin.persistence.storages;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,27 +6,26 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.sbezboro.standardplugin.StandardPlugin;
-import com.sbezboro.standardplugin.persistence.persistables.PersistableImpl;
+import com.sbezboro.standardplugin.persistence.PersistedObject;
 
-public abstract class ConfigStorage<T extends PersistableImpl> implements IStorage {
+public abstract class SingleFileStorage<T extends PersistedObject> implements FileStorage {
+	protected StandardPlugin plugin;
+	private String filename;
+	
 	protected HashMap<String, ConfigurationSection> idToConfig;
 	protected HashMap<String, T> idToObject;
-
-	protected StandardPlugin plugin;
-	private Class<T> cls;
-	private String filename;
 
 	protected FileConfiguration config = null;
 	private File file = null;
 
-	public ConfigStorage(StandardPlugin plugin, Class<T> cls, String type) {
+	public SingleFileStorage(StandardPlugin plugin, String type) {
 		this.plugin = plugin;
-		this.cls = cls;
 		this.filename = type + ".yml";
 
 		idToObject = new HashMap<String, T>();
@@ -39,6 +38,8 @@ public abstract class ConfigStorage<T extends PersistableImpl> implements IStora
 			file = new File(plugin.getDataFolder(), filename);
 		}
 		config = YamlConfiguration.loadConfiguration(file);
+		
+		Bukkit.broadcastMessage("" + (config.getConfigurationSection("newbie-stalker") != null ? config.getConfigurationSection("newbie-stalker").get("broadcast") : ""));
 
 		InputStream defConfigStream = plugin.getResource(filename);
 		if (defConfigStream != null) {
@@ -48,17 +49,18 @@ public abstract class ConfigStorage<T extends PersistableImpl> implements IStora
 
 		idToConfig.clear();
 		idToObject.clear();
-
+		
 		Set<String> keys = config.getKeys(false);
 		for (String key : keys) {
 			try {
 				ConfigurationSection section = config.getConfigurationSection(key);
-
-				T object = cls.newInstance();
-				object.loadFromPersistance(section);
-
+				
+				T object = createObject(key);
+				
 				idToObject.put(key, object);
 				idToConfig.put(key, section);
+				
+				object.loadProperties();
 			} catch (Exception e) {
 				plugin.getLogger().severe("Couldn't load object " + key + " from " + filename + "! " + e.toString());
 			}
@@ -67,13 +69,56 @@ public abstract class ConfigStorage<T extends PersistableImpl> implements IStora
 		onPostLoad(keys);
 	}
 
+	public abstract void onPostLoad(Set<String> keys);
+
 	@Override
 	public void unload() {
+		for (T object : idToObject.values()) {
+			if (object.toCommit()) {
+				save();
+				return;
+			}
+		}
 	}
+
+	@Override
+	public ConfigurationSection load(String identifier) {
+		return idToConfig.get(identifier);
+	}
+
+	@Override
+	public void save(String identifier) {
+		save();
+	}
+	
+	private void save() {
+		try {
+			config.save(file);
+		} catch (IOException e) {
+			plugin.getLogger().severe("Error saving object to file!");
+		}
+	}
+
+	@Override
+	public final Object loadProperty(String identifier, String key) {
+		ConfigurationSection config = idToConfig.get(identifier);
+		return config.get(key);
+	}
+
+	@Override
+	public final void saveProperty(String identifier, String key, Object value) {
+		ConfigurationSection section = idToConfig.get(identifier);
+		if (section == null) {
+			section = config.createSection(identifier);
+			idToConfig.put(identifier, section);
+		}
+		section.set(key, value);
+	}
+	
+	public abstract T createObject(String identifier);
 
 	protected void addObject(T object) {
 		idToObject.put(object.getIdentifier(), object);
-
 		save();
 	}
 
@@ -82,39 +127,10 @@ public abstract class ConfigStorage<T extends PersistableImpl> implements IStora
 		idToConfig.remove(object.getIdentifier());
 
 		config.set(object.getIdentifier(), null);
-		
 		save();
 	}
-
-	public final void save() {
-		if (config == null || file == null) {
-			return;
-		}
-		
-		for (T object : idToObject.values()) {
-			ConfigurationSection section = idToConfig.get(object.getIdentifier());
-			HashMap<String, Object> repr = object.mapRepresentation();
-			
-			if (section == null) {
-				section = config.createSection(object.getIdentifier(), repr);
-				idToConfig.put(object.getIdentifier(), section);
-			} else {
-				for (String key : repr.keySet()) {
-					section.set(key, repr.get(key));
-				}
-			}
-		}
-		
-		try {
-			config.save(file);
-		} catch (IOException e) {
-			plugin.getLogger().severe("Error saving config storage to file!");
-		}
+	
+	protected T getObject(String identifier) {
+		return idToObject.get(identifier);
 	}
-
-	public FileConfiguration getConfig() {
-		return config;
-	}
-
-	public abstract void onPostLoad(Set<String> keys);
 }

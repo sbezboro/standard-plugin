@@ -1,4 +1,4 @@
-package com.sbezboro.standardplugin.persistence;
+package com.sbezboro.standardplugin.persistence.storages;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,13 +11,18 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.Gate;
 
-public class GateStorage extends ConfigStorage<Gate> {
+public class GateStorage extends SingleFileStorage<Gate> {
 	private Map<String, Gate> locationMap;
 
 	public GateStorage(StandardPlugin plugin) {
-		super(plugin, Gate.class, "gates");
+		super(plugin, "gates");
 
 		locationMap = new HashMap<String, Gate>();
+	}
+
+	@Override
+	public Gate createObject(String identifier) {
+		return new Gate(this, identifier);
 	}
 
 	@Override
@@ -38,12 +43,11 @@ public class GateStorage extends ConfigStorage<Gate> {
 			}
 		}
 	}
-
-	public void addGate(Gate gate) {
-		Location location = gate.getLocation();
-
-		locationMap.put(getLocationKey(location), gate);
-
+	
+	public void createGate(String name, String displayName, Location location) {
+		Gate gate = new Gate(this, name, displayName, location);
+		locationMap.put(getLocationKey(gate.getLocation()), gate);
+		
 		addObject(gate);
 	}
 
@@ -53,26 +57,14 @@ public class GateStorage extends ConfigStorage<Gate> {
 		for (Gate other : idToObject.values()) {
 			if (other.getTarget() == gate) {
 				other.setTarget(null);
-
-				ConfigurationSection section = idToConfig.get(other.getName());
-				section.set("target", null);
 			}
 		}
 
 		removeObject(gate);
 	}
 
-	public void linkGates(Gate source, Gate target) {
-		source.setTarget(target);
-
-		ConfigurationSection section = idToConfig.get(source.getName());
-		section.set("target", target.getName());
-
-		save();
-	}
-
 	public Gate getGate(String name) {
-		return idToObject.get(name);
+		return getObject(name);
 	}
 
 	public Gate getGate(Location location) {

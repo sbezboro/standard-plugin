@@ -1,15 +1,17 @@
-package com.sbezboro.standardplugin.persistence;
+package com.sbezboro.standardplugin.persistence.storages;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.persistence.PersistedObject;
 
-public abstract class ObjectStorage<T extends PersistedObject> implements IStorage {
+public abstract class MultiFileStorage<T extends PersistedObject> implements FileStorage {
 	protected StandardPlugin plugin;
 	private String dataFolder;
 
@@ -18,7 +20,7 @@ public abstract class ObjectStorage<T extends PersistedObject> implements IStora
 
 	private HashMap<String, T> idToObject;
 
-	public ObjectStorage(StandardPlugin plugin, String dataFolder) {
+	public MultiFileStorage(StandardPlugin plugin, String dataFolder) {
 		this.plugin = plugin;
 		this.dataFolder = dataFolder;
 
@@ -45,7 +47,8 @@ public abstract class ObjectStorage<T extends PersistedObject> implements IStora
 		}
 	}
 
-	public FileConfiguration load(String identifier) {
+	@Override
+	public ConfigurationSection load(String identifier) {
 		File file = idToFile.get(identifier);
 		if (file == null) {
 			file = new File(plugin.getDataFolder(), dataFolder + "/" + identifier + ".yml");
@@ -59,6 +62,7 @@ public abstract class ObjectStorage<T extends PersistedObject> implements IStora
 		return config;
 	}
 
+	@Override
 	public void save(String identifer) {
 		File file = idToFile.get(identifer);
 		FileConfiguration config = idToConfig.get(identifer);
@@ -88,6 +92,8 @@ public abstract class ObjectStorage<T extends PersistedObject> implements IStora
 
 	protected void cacheObject(String identifier, T object) {
 		idToObject.put(identifier, object);
+
+		object.loadProperties();
 	}
 
 	public void uncacheObject(String identifer) {

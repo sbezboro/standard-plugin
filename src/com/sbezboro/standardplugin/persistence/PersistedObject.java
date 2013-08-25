@@ -1,35 +1,53 @@
 package com.sbezboro.standardplugin.persistence;
 
+import java.util.ArrayList;
+
 import com.sbezboro.standardplugin.persistence.persistables.Persistable;
+import com.sbezboro.standardplugin.persistence.storages.FileStorage;
 
 public abstract class PersistedObject {
-	protected ObjectStorage<?> storage;
+	protected FileStorage storage;
 	private String identifier;
+	
+	private ArrayList<Persisted> persistedPorperties;
 
 	private boolean toCommit;
 
-	public PersistedObject(ObjectStorage<?> storage, String identifier) {
+	public PersistedObject(FileStorage storage, String identifier) {
 		this.storage = storage;
 		this.identifier = identifier;
+		
+		persistedPorperties = new ArrayList<Persisted>();
+		
 		toCommit = false;
 
 		storage.load(identifier);
-
-		loadProperties();
+		
+		createProperties();
 	}
 
-	protected abstract void loadProperties();
-
-	protected final <T> PersistedProperty<T> loadProperty(Class<T> cls, String name) {
-		return new PersistedProperty<T>(this, cls, name, null);
+	public abstract void createProperties();
+	
+	public void loadProperties() {
+		for (Persisted propery : persistedPorperties) {
+			propery.load();
+		}
 	}
 
-	protected final <T> PersistedProperty<T> loadProperty(Class<T> cls, String name, Object def) {
-		return new PersistedProperty<T>(this, cls, name, def);
+	protected final <T> PersistedProperty<T> createProperty(Class<T> cls, String name, Object def) {
+		PersistedProperty<T> property = new PersistedProperty<T>(this, cls, name, def);
+		persistedPorperties.add(property);
+		return property;
 	}
 
-	protected final <T> PersistedList<T> loadList(Class<T> cls, String name) {
-		return new PersistedList<T>(this, cls, name);
+	protected final <T> PersistedProperty<T> createProperty(Class<T> cls, String name) {
+		return createProperty(cls, name, null);
+	}
+
+	protected final <T> PersistedListProperty<T> createList(Class<T> cls, String name) {
+		PersistedListProperty<T> property = new PersistedListProperty<T>(this, cls, name);
+		persistedPorperties.add(property);
+		return property;
 	}
 
 	public final Object loadProperty(String key, Object def) {
@@ -69,5 +87,9 @@ public abstract class PersistedObject {
 
 	public final boolean toCommit() {
 		return toCommit;
+	}
+	
+	public String getIdentifier() {
+		return identifier;
 	}
 }

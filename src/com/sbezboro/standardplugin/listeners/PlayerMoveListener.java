@@ -80,7 +80,7 @@ public class PlayerMoveListener extends EventListener implements Listener {
 						player.sendMessage("You are now at " + ChatColor.AQUA + target.getDisplayName());
 					}
 
-					String message = player.getName() + " went from " + source.getName() + " to " + target.getName();
+					String message = player.getName() + " went from " + source.getIdentifier() + " to " + target.getIdentifier();
 					if (withHorse) {
 						message += " on a horse";
 					}

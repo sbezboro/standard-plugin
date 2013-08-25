@@ -10,10 +10,11 @@ import com.sbezboro.standardplugin.exceptions.NotPersistableException;
 import com.sbezboro.standardplugin.persistence.persistables.Persistable;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
-public class PersistedProperty<T> {
+public class PersistedProperty<T> implements Persisted {
 	private PersistedObject object;
 	private Class<T> cls;
 	private String name;
+	private Object def;
 
 	private T value;
 
@@ -25,14 +26,18 @@ public class PersistedProperty<T> {
 		}
 	};
 
-	@SuppressWarnings("unchecked")
 	public PersistedProperty(PersistedObject object, Class<T> cls, String name, Object def) {
 		this.cls = cls;
 		this.name = name;
 		this.object = object;
-
+		this.def = def;
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public void load() {
 		try {
-			Object obj = object.loadProperty(name, null);
+			Object obj = object.loadProperty(name, def);
 
 			if (Persistable.class.isAssignableFrom(cls)) {
 				Persistable persistable = (Persistable) cls.newInstance();
@@ -48,7 +53,8 @@ public class PersistedProperty<T> {
 				throw new NotPersistableException("Class " + cls.getName() + " does not implement Persistable nor is a primative wrapper.");
 			}
 		} catch (Exception e) {
-			StandardPlugin.getPlugin().getLogger().severe(e.toString());
+			StandardPlugin.getPlugin().getLogger().severe("Could not load persisted property!");
+			e.printStackTrace();
 		}
 	}
 
@@ -60,9 +66,13 @@ public class PersistedProperty<T> {
 		return value;
 	}
 
-	public void setValue(T value) {
+	public void setValue(T value, boolean commit) {
 		this.value = value;
 
-		object.saveProperty(name, value);
+		object.saveProperty(name, value, commit);
+	}
+
+	public void setValue(T value) {
+		setValue(value, true);
 	}
 }
