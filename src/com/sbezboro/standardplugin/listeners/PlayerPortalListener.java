@@ -33,12 +33,16 @@ public class PlayerPortalListener extends EventListener implements Listener {
 						event.setTo(player.getBedLocation());
 					}
 				}
+				
+				plugin.getLogger().info(event.getPlayer().getName() + " leaving the end.");
 			// Going to the end
 			} else {
 				World newEnd = plugin.getNewEndWorld();
-				if (newEnd != null) {
+				if (newEnd != null && !plugin.getEndResetStorage().getActivePortals().isEmpty()) {
 					event.setTo(new Location(newEnd, 100, 50, 0));
 				}
+				
+				plugin.getLogger().info(event.getPlayer().getName() + " going to the end.");
 			}
 		}
 	}
