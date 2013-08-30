@@ -1,7 +1,7 @@
 package com.sbezboro.standardplugin.persistence.persistables;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class PersistableImpl implements Persistable {
 	public String stringRepresentation() {
@@ -12,7 +12,7 @@ public abstract class PersistableImpl implements Persistable {
 		return null;
 	}
 
-	public HashMap<String, Object> mapRepresentation() {
+	public Map<String, Object> mapRepresentation() {
 		return null;
 	}
 
@@ -20,7 +20,7 @@ public abstract class PersistableImpl implements Persistable {
 	public Object persistableRepresentation() {
 		String stringRepr = stringRepresentation();
 		List<Object> listRepr = listRepresentation();
-		HashMap<String, Object> mapRepr = mapRepresentation();
+		Map<String, Object> mapRepr = mapRepresentation();
 
 		if (stringRepr != null) {
 			return stringRepresentation();

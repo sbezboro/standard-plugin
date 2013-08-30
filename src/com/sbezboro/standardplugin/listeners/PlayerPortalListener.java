@@ -1,6 +1,7 @@
 package com.sbezboro.standardplugin.listeners;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,14 +22,22 @@ public class PlayerPortalListener extends EventListener implements Listener {
 		Location from = event.getFrom();
 		Biome biome = from.getWorld().getBiome(from.getBlockX(), from.getBlockZ());
 		
-		// Make sure this is someone teleporting from the end back to the main world
-		if (event.getCause() == TeleportCause.END_PORTAL && biome == Biome.SKY) {
-			StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
-			
-			if (event.getTo().equals(event.getTo().getWorld().getSpawnLocation())) {
-				if (player.getBedLocation() != null) {
-					// Set event location to the player's bed
-					event.setTo(player.getBedLocation());
+		if (event.getCause() == TeleportCause.END_PORTAL) {
+			// Going from the end
+			if (biome == Biome.SKY) {
+				StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
+				
+				if (event.getTo().equals(event.getTo().getWorld().getSpawnLocation())) {
+					if (player.getBedLocation() != null) {
+						// Set event location to the player's bed
+						event.setTo(player.getBedLocation());
+					}
+				}
+			// Going to the end
+			} else {
+				World newEnd = plugin.getNewEndWorld();
+				if (newEnd != null) {
+					event.setTo(new Location(newEnd, 100, 50, 0));
 				}
 			}
 		}

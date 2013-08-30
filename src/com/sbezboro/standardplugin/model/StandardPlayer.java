@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
@@ -23,11 +24,13 @@ public class StandardPlayer extends PlayerDelegate {
 	private static final String PVP_PROTECTION_PROPERTY = "pvp-protection";
 	private static final String BED_LOCATION_PROPERTY = "bed";
 	private static final String TITLES_PROPERTY = "titles";
+	private static final String END_ID_PROPERTY = "end-id";
 
 	private PersistedProperty<Boolean> forumMuted;
 	private PersistedProperty<Boolean> pvpProtection;
 	private PersistedProperty<PersistableLocation> bedLocation;
 	private PersistedListProperty<String> titleNames;
+	private PersistedProperty<Integer> endId;
 
 	private ArrayList<Title> titles;
 
@@ -50,6 +53,7 @@ public class StandardPlayer extends PlayerDelegate {
 		pvpProtection = createProperty(Boolean.class, PVP_PROTECTION_PROPERTY);
 		bedLocation = createProperty(PersistableLocation.class, BED_LOCATION_PROPERTY);
 		titleNames = createList(String.class, TITLES_PROPERTY);
+		endId = createProperty(Integer.class, END_ID_PROPERTY);
 	}
 
 	@Override
@@ -131,6 +135,14 @@ public class StandardPlayer extends PlayerDelegate {
 		titles.remove(title);
 		titleNames.remove(name);
 	}
+	
+	public int getEndId() {
+		return endId.getValue();
+	}
+	
+	public void setEndId(int endId) {
+		this.endId.setValue(endId);
+	}
 
 	// ------
 	// Non-persisted property mutators
@@ -191,6 +203,14 @@ public class StandardPlayer extends PlayerDelegate {
 
 	public void onLeaveServer() {
 		player = null;
+	}
+	
+	public void sendHome(World overworld) {
+		if (getBedLocation() == null) {
+			teleport(overworld.getSpawnLocation());
+		} else {
+			teleport(getBedLocation());
+		}
 	}
 
 	public String getRankDescription(boolean self, int rank) {

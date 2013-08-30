@@ -1,7 +1,7 @@
 name: StandardPlugin
 main: com.sbezboro.standardplugin.StandardPlugin
-version: 1.7.0
-softdepend: [JSONAPI, SimplyVanish, Essentials]
+version: 1.8.0
+softdepend: [JSONAPI, SimplyVanish, Essentials, Factions]
 
 commands:
     standard:
@@ -55,6 +55,10 @@ commands:
         description: See who's online on web chat
         permission: standardplugin.webchat
         permission-message: You don't have permission
+    end:
+        description: End reset tools
+        permission: standardplugin.end
+        permission-message: You don't have permission
 
 permissions:
     standardplugin.standard:
@@ -81,3 +85,5 @@ permissions:
         default: true
     standardplugin.webchat:
         default: true
+    standardplugin.end:
+        default: op

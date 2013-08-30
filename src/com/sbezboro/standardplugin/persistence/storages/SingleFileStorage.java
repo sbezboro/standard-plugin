@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -38,8 +37,6 @@ public abstract class SingleFileStorage<T extends PersistedObject> implements Fi
 			file = new File(plugin.getDataFolder(), filename);
 		}
 		config = YamlConfiguration.loadConfiguration(file);
-		
-		Bukkit.broadcastMessage("" + (config.getConfigurationSection("newbie-stalker") != null ? config.getConfigurationSection("newbie-stalker").get("broadcast") : ""));
 
 		InputStream defConfigStream = plugin.getResource(filename);
 		if (defConfigStream != null) {

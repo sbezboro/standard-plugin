@@ -36,7 +36,7 @@ public class PersistedListProperty<T> implements Iterable<T>, Persisted {
 						Persistable persistable = (Persistable) cls.newInstance();
 						if (obj != null) {
 							ConfigurationSection section = (ConfigurationSection) obj;
-							persistable.loadFromPersistance(section);
+							persistable.loadFromPersistance(section.getValues(false));
 						}
 
 						this.list.add((T) persistable);

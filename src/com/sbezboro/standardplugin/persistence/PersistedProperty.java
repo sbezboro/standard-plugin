@@ -43,7 +43,7 @@ public class PersistedProperty<T> implements Persisted {
 				Persistable persistable = (Persistable) cls.newInstance();
 				if (obj != null) {
 					ConfigurationSection section = (ConfigurationSection) obj;
-					persistable.loadFromPersistance(section);
+					persistable.loadFromPersistance(section.getValues(false));
 				}
 
 				value = (T) persistable;

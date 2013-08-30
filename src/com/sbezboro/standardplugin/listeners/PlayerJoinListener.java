@@ -2,6 +2,7 @@ package com.sbezboro.standardplugin.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -25,9 +26,18 @@ public class PlayerJoinListener extends EventListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
+		int currentEndId = plugin.getEndResetStorage().getCurrentEndId();
+		
 		if (player.hasPlayedBefore()) {
 			if (!SimplyVanishIntegration.isVanished(player)) {
 				broadcastRank(player);
+			}
+
+			World playerWorld = player.getWorld();
+			// Check to see if the player is joining into an end world that was reset
+			if (playerWorld.getEnvironment() == Environment.THE_END && player.getEndId() < currentEndId) {
+				World overworld = plugin.getServer().getWorld(StandardPlugin.overworldName);
+				player.sendHome(overworld);
 			}
 		} else {
 			String welcomeMessage = String.format("%sWelcome %s to the server!", ChatColor.LIGHT_PURPLE, player.getName());
@@ -51,6 +61,8 @@ public class PlayerJoinListener extends EventListener implements Listener {
 		if (!SimplyVanishIntegration.isVanished(player)) {
 			StandardPlugin.webchatMessage(message);
 		}
+		
+		player.setEndId(currentEndId);
 		
 		event.setJoinMessage(message);
 	}

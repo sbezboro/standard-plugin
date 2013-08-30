@@ -1,15 +1,22 @@
 package com.sbezboro.standardplugin;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.World.Environment;
+import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.alecgorge.minecraft.jsonapi.JSONAPI;
+import com.sbezboro.standardplugin.commands.EndCommand;
 import com.sbezboro.standardplugin.commands.ForumMuteCommand;
 import com.sbezboro.standardplugin.commands.GateCommand;
 import com.sbezboro.standardplugin.commands.ICommand;
@@ -24,6 +31,7 @@ import com.sbezboro.standardplugin.commands.TitlesCommand;
 import com.sbezboro.standardplugin.commands.UnfreezeCommand;
 import com.sbezboro.standardplugin.commands.WebchatCommand;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
+import com.sbezboro.standardplugin.integrations.FactionsIntegration;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.jsonapi.ForumPostAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.PlayerStatsAPICallHandler;
@@ -33,6 +41,7 @@ import com.sbezboro.standardplugin.listeners.CreatureSpawnListener;
 import com.sbezboro.standardplugin.listeners.DeathListener;
 import com.sbezboro.standardplugin.listeners.DispenseListener;
 import com.sbezboro.standardplugin.listeners.EntityDamageListener;
+import com.sbezboro.standardplugin.listeners.FactionClaimDenyListener;
 import com.sbezboro.standardplugin.listeners.HungerListener;
 import com.sbezboro.standardplugin.listeners.PlayerInteractListener;
 import com.sbezboro.standardplugin.listeners.PlayerJoinListener;
@@ -41,16 +50,22 @@ import com.sbezboro.standardplugin.listeners.PlayerMoveListener;
 import com.sbezboro.standardplugin.listeners.PlayerPortalListener;
 import com.sbezboro.standardplugin.listeners.RespawnListener;
 import com.sbezboro.standardplugin.model.StandardPlayer;
-import com.sbezboro.standardplugin.persistence.GateStorage;
 import com.sbezboro.standardplugin.persistence.IStorage;
 import com.sbezboro.standardplugin.persistence.LogWriter;
-import com.sbezboro.standardplugin.persistence.PlayerStorage;
-import com.sbezboro.standardplugin.persistence.TitleStorage;
-import com.sbezboro.standardplugin.util.PlayerSaver;
+import com.sbezboro.standardplugin.persistence.storages.EndResetStorage;
+import com.sbezboro.standardplugin.persistence.storages.GateStorage;
+import com.sbezboro.standardplugin.persistence.storages.PlayerStorage;
+import com.sbezboro.standardplugin.persistence.storages.TitleStorage;
+import com.sbezboro.standardplugin.tasks.EndResetCheckTask;
+import com.sbezboro.standardplugin.tasks.EndResetTask;
+import com.sbezboro.standardplugin.tasks.PlayerSaverTask;
 
 public class StandardPlugin extends JavaPlugin {
 	private static final String webchatPattern = "[*WC*]";
 	private static final String consoleWebchatPattern = "[*CWC*]";
+	
+	public static final String overworldName = "world";
+	private static final String newEndWorldName = "new_the_end";
 	
 	private static StandardPlugin instance;
 
@@ -62,6 +77,11 @@ public class StandardPlugin extends JavaPlugin {
 	private GateStorage gateStorage;
 	private TitleStorage titleStorage;
 	private PlayerStorage playerStorage;
+	private EndResetStorage endResetStorage;
+	
+	private FactionClaimDenyListener denyListener;
+	
+	private World newEndWorld;
 
 	public StandardPlugin() {
 		instance = this;
@@ -89,9 +109,11 @@ public class StandardPlugin extends JavaPlugin {
 		gateStorage = new GateStorage(this);
 		titleStorage = new TitleStorage(this);
 		playerStorage = new PlayerStorage(this);
+		endResetStorage = new EndResetStorage(this);
 		storages.add(gateStorage);
 		storages.add(titleStorage);
 		storages.add(playerStorage);
+		storages.add(endResetStorage);
 
 		logs = new ArrayList<LogWriter>();
 
@@ -104,10 +126,32 @@ public class StandardPlugin extends JavaPlugin {
 
 		EssentialsIntegration.init(this);
 		SimplyVanishIntegration.init(this);
+		FactionsIntegration.init(this);
+		
+		denyListener = new FactionClaimDenyListener(this);
+		FactionsIntegration.addClaimDenyListener(denyListener);
 
 		registerJSONAPIHandlers();
 
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new PlayerSaver(), 1200, 1200);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new PlayerSaverTask(), 1200, 1200);
+		
+		if (getEndResetsEnabled()) {
+			getLogger().info("End resets enabled");
+			
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new EndResetCheckTask(this), 20, 20);
+			
+			createNewEnd();
+			
+			if (endResetStorage.getNextReset() == 0) {
+				endResetStorage.setNextReset(decideNextEndReset());
+			}
+
+			DateFormat format = new SimpleDateFormat("MMMM d yyyy, h:mm a zz");
+			format.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+			getLogger().info("End reset scheduled to be on " + format.format(endResetStorage.getNextReset()));
+		} else {
+			getLogger().info("End resets disabled");
+		}
 	}
 
 	@Override
@@ -123,6 +167,8 @@ public class StandardPlugin extends JavaPlugin {
 		}
 
 		Bukkit.getScheduler().cancelTasks(this);
+		
+		FactionsIntegration.removeClaimDenyListener(denyListener);
 	}
 
 	public void reloadPlugin() {
@@ -149,6 +195,7 @@ public class StandardPlugin extends JavaPlugin {
 		commands.add(new TitleCommand(this));
 		commands.add(new TitlesCommand(this));
 		commands.add(new WebchatCommand(this));
+		commands.add(new EndCommand(this));
 
 		for (ICommand command : commands) {
 			command.register();
@@ -180,6 +227,30 @@ public class StandardPlugin extends JavaPlugin {
 			jsonapi.registerAPICallHandler(new PlayerStatsAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new WebChatAPICallHandler(this));
 		}
+	}
+	
+	public void createNewEnd() {
+		WorldCreator creator = new WorldCreator(newEndWorldName);
+		creator.environment(Environment.THE_END);
+		newEndWorld = getServer().createWorld(creator);
+		newEndWorld.setKeepSpawnInMemory(false);
+	}
+
+	public void resetEnd() {
+		if (getEndResetsEnabled()) {
+			World overworld = getServer().getWorld(overworldName);
+			Bukkit.getScheduler().scheduleSyncDelayedTask(this, new EndResetTask(this, overworld));
+		} else {
+			getLogger().severe("resetEnd() called when end resets aren't enabled!");
+		}
+	}
+	
+	public long decideNextEndReset() {
+		// Get x days from now
+		long time = System.currentTimeMillis() + getEndResetPeriod() * 86400000;
+		// Round up to get the start of the next day in GMT, 5PM Pacific, 8PM Eastern,
+		// when there are the most players on more-or-less
+		return ((time / 86400000) + 1) * 86400000;
 	}
 	
 	private static String webchatConsoleGate(String message, boolean webchat, boolean console) {
@@ -314,12 +385,28 @@ public class StandardPlugin extends JavaPlugin {
 		return config.getNewbieStalkerThreshold();
 	}
 
+	public int getEndResetPeriod() {
+		return config.getEndResetPeriod();
+	}
+
+	public boolean getEndResetsEnabled() {
+		return config.getEndResetPeriod() > 0;
+	}
+	
+	public World getNewEndWorld() {
+		return newEndWorld;
+	}
+
 	public GateStorage getGateStorage() {
 		return gateStorage;
 	}
 
 	public TitleStorage getTitleStorage() {
 		return titleStorage;
+	}
+
+	public EndResetStorage getEndResetStorage() {
+		return endResetStorage;
 	}
 
 	public StandardPlayer getStandardPlayer(String username) {

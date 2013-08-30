@@ -1,9 +1,9 @@
-package com.sbezboro.standardplugin.util;
+package com.sbezboro.standardplugin.tasks;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 
-public class PlayerSaver implements Runnable {
+public class PlayerSaverTask implements Runnable {
 
 	@Override
 	public void run() {

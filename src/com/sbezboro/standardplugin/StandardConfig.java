@@ -4,7 +4,6 @@ import org.bukkit.configuration.Configuration;
 
 public class StandardConfig {
 	private StandardPlugin plugin;
-	private Configuration config;
 
 	private int serverId = 0;
 	private String secretKey = "";
@@ -15,15 +14,18 @@ public class StandardConfig {
 	private int pvpProtectionTime;
 	private int hungerProtectionTime;
 	private int newbieStalkerThreshold;
+	
+	private int endResetPeriod;
 
 	public StandardConfig(StandardPlugin plugin) {
 		this.plugin = plugin;
-		this.config = plugin.getConfig();
 	}
 
 	public void reload() {
+		Configuration config = plugin.getConfig();
+		
 		serverId = config.getInt("server-id");
-		plugin.getLogger().info("Server starting with server id " + serverId);
+		plugin.getLogger().info("Plugin starting with server id " + serverId);
 
 		secretKey = config.getString("secret-key");
 
@@ -37,6 +39,8 @@ public class StandardConfig {
 		pvpProtectionTime = config.getInt("pvp-protection-time");
 		hungerProtectionTime = config.getInt("hunger-protection-time");
 		newbieStalkerThreshold = config.getInt("newbie-stalker-threshold");
+
+		endResetPeriod = config.getInt("end-reset-period");
 	}
 
 	public int getServerId() {
@@ -69,5 +73,9 @@ public class StandardConfig {
 
 	public int getNewbieStalkerThreshold() {
 		return newbieStalkerThreshold;
+	}
+
+	public int getEndResetPeriod() {
+		return endResetPeriod;
 	}
 }
