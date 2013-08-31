@@ -37,8 +37,6 @@ public class PlayerInteractListener extends EventListener implements Listener {
 			StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 			Location location = clickedBlock.getLocation();
 			player.saveBedLocation(location);
-			
-			plugin.getEndResetStorage().addActivePortalLocation(location);
 		// Eye of Ender handling
 		} else if (itemStack != null && itemStack.getTypeId() == Material.EYE_OF_ENDER.getId()) {
 			if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock.getTypeId() != Material.ENDER_PORTAL_FRAME.getId()) {
