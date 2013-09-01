@@ -1,5 +1,6 @@
 package com.sbezboro.standardplugin.listeners;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,8 +16,9 @@ public class CreatureSpawnListener extends EventListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
-		EntityType type = event.getEntity().getType();
-		if (type == EntityType.WITHER) {
+		Entity entity = event.getEntity();
+		
+		if (entity.getType() == EntityType.WITHER) {
 			event.setCancelled(true);
 		}
 	}

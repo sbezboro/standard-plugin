@@ -13,14 +13,14 @@ import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.persistence.storages.EndResetStorage;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
-public class EndResetTask implements Runnable {
-	private StandardPlugin plugin;
+public class EndResetTask extends BaseTask {
 	private EndResetStorage endResetStorage;
 	
 	private World overworld;
 	
 	public EndResetTask(StandardPlugin plugin, World overworld) {
-		this.plugin = plugin;
+		super(plugin);
+		
 		this.endResetStorage = plugin.getEndResetStorage();
 		this.overworld = overworld;
 	}
@@ -154,7 +154,7 @@ public class EndResetTask implements Runnable {
 		MiscUtil.deleteDirectory(plugin.getNewEndWorld().getWorldFolder());
 		
 		// Regenerate new end world
-		plugin.createNewEnd();
+		plugin.createNewEndWorld();
 		
 		// Find a suitable location and generate the portal room
 		createNewEndPortal();

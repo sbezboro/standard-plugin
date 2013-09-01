@@ -28,6 +28,8 @@ public class PersistedListProperty<T> implements Iterable<T>, Persisted {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void load() {
+		list.clear();
+		
 		ArrayList<Object> objects = (ArrayList<Object>) object.loadProperty(name, null);
 		if (objects != null) {
 			for (Object obj : objects) {

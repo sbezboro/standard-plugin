@@ -1,7 +1,10 @@
 package com.sbezboro.standardplugin.util;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
+import java.util.TimeZone;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Horse;
@@ -92,5 +95,15 @@ public class MiscUtil {
 		}
 		
 		return path.delete();
+	}
+	
+	public static String friendlyTimestamp(long timestamp) {
+		return friendlyTimestamp(timestamp, "America/New_York");
+	}
+	
+	public static String friendlyTimestamp(long timestamp, String timezone) {
+		DateFormat format = new SimpleDateFormat("MMMM d h:mm a zz");
+		format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+		return format.format(timestamp);
 	}
 }
