@@ -256,6 +256,10 @@ public class StandardPlugin extends JavaPlugin {
 	}
 	
 	public void scheduleNextEndReset() {
+		if (!isEndResetEnabled()) {
+			return;
+		}
+		
 		long nextReset = decideNextEndReset();
 		
 		endResetStorage.setNextReset(nextReset);
