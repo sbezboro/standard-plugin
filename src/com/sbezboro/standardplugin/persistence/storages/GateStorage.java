@@ -10,6 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.Gate;
+import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class GateStorage extends SingleFileStorage<Gate> {
 	private Map<String, Gate> locationMap;
@@ -31,7 +32,7 @@ public class GateStorage extends SingleFileStorage<Gate> {
 
 		for (String key : keys) {
 			Gate gate = idToObject.get(key);
-			locationMap.put(getLocationKey(gate.getLocation()), gate);
+			locationMap.put(MiscUtil.getLocationKey(gate.getLocation()), gate);
 
 			ConfigurationSection section = config.getConfigurationSection(key);
 			String target = section.getString("target");
@@ -46,13 +47,13 @@ public class GateStorage extends SingleFileStorage<Gate> {
 	
 	public void createGate(String name, String displayName, Location location) {
 		Gate gate = new Gate(this, name, displayName, location);
-		locationMap.put(getLocationKey(gate.getLocation()), gate);
+		locationMap.put(MiscUtil.getLocationKey(gate.getLocation()), gate);
 		
 		addObject(gate);
 	}
 
 	public void removeGate(Gate gate) {
-		locationMap.remove(getLocationKey(gate.getLocation()));
+		locationMap.remove(MiscUtil.getLocationKey(gate.getLocation()));
 
 		for (Gate other : idToObject.values()) {
 			if (other.getTarget() == gate) {
@@ -68,15 +69,11 @@ public class GateStorage extends SingleFileStorage<Gate> {
 	}
 
 	public Gate getGate(Location location) {
-		return locationMap.get(getLocationKey(location));
+		return locationMap.get(MiscUtil.getLocationKey(location));
 	}
 
 	public Collection<Gate> getGates() {
 		return idToObject.values();
-	}
-
-	private static String getLocationKey(Location location) {
-		return location.getWorld().getName() + ";" + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ();
 	}
 
 }

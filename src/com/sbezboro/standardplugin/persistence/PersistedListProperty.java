@@ -11,7 +11,7 @@ import com.sbezboro.standardplugin.exceptions.NotPersistableException;
 import com.sbezboro.standardplugin.persistence.persistables.Persistable;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
-public class PersistedListProperty<T> implements Iterable<T>, Persisted {
+public class PersistedListProperty<T> implements Iterable<T>, PersistedBase {
 	private PersistedObject object;
 	private Class<T> cls;
 	private String name;

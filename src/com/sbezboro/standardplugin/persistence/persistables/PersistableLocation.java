@@ -18,11 +18,6 @@ public class PersistableLocation extends PersistableImpl implements Persistable 
 	}
 
 	@Override
-	public String getIdentifier() {
-		return null;
-	}
-
-	@Override
 	public void loadFromPersistance(Map<String, Object> map) {
 		String worldName = (String) map.get("world");
 		double x = (Double) map.get("x");

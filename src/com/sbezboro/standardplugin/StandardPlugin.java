@@ -48,11 +48,13 @@ import com.sbezboro.standardplugin.listeners.PlayerLeaveListener;
 import com.sbezboro.standardplugin.listeners.PlayerMoveListener;
 import com.sbezboro.standardplugin.listeners.PlayerPortalListener;
 import com.sbezboro.standardplugin.listeners.RespawnListener;
+import com.sbezboro.standardplugin.managers.HoneypotManager;
 import com.sbezboro.standardplugin.model.StandardPlayer;
-import com.sbezboro.standardplugin.persistence.IStorage;
 import com.sbezboro.standardplugin.persistence.LogWriter;
 import com.sbezboro.standardplugin.persistence.storages.EndResetStorage;
 import com.sbezboro.standardplugin.persistence.storages.GateStorage;
+import com.sbezboro.standardplugin.persistence.storages.HoneypotStorage;
+import com.sbezboro.standardplugin.persistence.storages.IStorage;
 import com.sbezboro.standardplugin.persistence.storages.PlayerStorage;
 import com.sbezboro.standardplugin.persistence.storages.TitleStorage;
 import com.sbezboro.standardplugin.tasks.EndResetCheckTask;
@@ -78,6 +80,9 @@ public class StandardPlugin extends JavaPlugin {
 	private TitleStorage titleStorage;
 	private PlayerStorage playerStorage;
 	private EndResetStorage endResetStorage;
+	private HoneypotStorage honeypotStorage;
+	
+	private HoneypotManager honeypotManager;
 	
 	private FactionClaimDenyListener denyListener;
 	
@@ -113,10 +118,12 @@ public class StandardPlugin extends JavaPlugin {
 		titleStorage = new TitleStorage(this);
 		playerStorage = new PlayerStorage(this);
 		endResetStorage = new EndResetStorage(this);
+		honeypotStorage = new HoneypotStorage(this);
 		storages.add(gateStorage);
 		storages.add(titleStorage);
 		storages.add(playerStorage);
 		storages.add(endResetStorage);
+		storages.add(honeypotStorage);
 
 		logs = new ArrayList<LogWriter>();
 
@@ -126,6 +133,8 @@ public class StandardPlugin extends JavaPlugin {
 
 		registerCommands();
 		registerEvents();
+		
+		honeypotManager = new HoneypotManager(this, honeypotStorage);
 
 		EssentialsIntegration.init(this);
 		SimplyVanishIntegration.init(this);
@@ -439,6 +448,10 @@ public class StandardPlugin extends JavaPlugin {
 
 	public EndResetStorage getEndResetStorage() {
 		return endResetStorage;
+	}
+	
+	public HoneypotManager getHoneypotManager() {
+		return honeypotManager;
 	}
 
 	public StandardPlayer getStandardPlayer(String username) {

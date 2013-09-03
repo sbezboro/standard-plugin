@@ -9,7 +9,7 @@ public abstract class PersistedObject {
 	protected FileStorage storage;
 	private String identifier;
 	
-	private ArrayList<Persisted> persistedPorperties;
+	private ArrayList<PersistedBase> persistedPorperties;
 
 	private boolean toCommit;
 
@@ -17,7 +17,7 @@ public abstract class PersistedObject {
 		this.storage = storage;
 		this.identifier = identifier;
 		
-		persistedPorperties = new ArrayList<Persisted>();
+		persistedPorperties = new ArrayList<PersistedBase>();
 		
 		toCommit = false;
 
@@ -29,7 +29,7 @@ public abstract class PersistedObject {
 	public abstract void createProperties();
 	
 	public void loadProperties() {
-		for (Persisted propery : persistedPorperties) {
+		for (PersistedBase propery : persistedPorperties) {
 			propery.load();
 		}
 	}

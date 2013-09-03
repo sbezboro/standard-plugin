@@ -1,5 +1,5 @@
 package com.sbezboro.standardplugin.persistence;
 
-public interface Persisted {
+public interface PersistedBase {
 	public void load();
 }

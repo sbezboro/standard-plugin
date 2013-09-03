@@ -106,4 +106,8 @@ public class MiscUtil {
 		format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		return format.format(timestamp);
 	}
+
+	public static String getLocationKey(Location location) {
+		return location.getWorld().getName() + ";" + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ();
+	}
 }

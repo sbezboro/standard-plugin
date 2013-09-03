@@ -1,4 +1,4 @@
-package com.sbezboro.standardplugin.persistence;
+package com.sbezboro.standardplugin.persistence.storages;
 
 public interface IStorage {
 	public void reload();

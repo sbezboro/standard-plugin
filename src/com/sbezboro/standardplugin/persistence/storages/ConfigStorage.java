@@ -8,7 +8,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.sbezboro.standardplugin.StandardPlugin;
-import com.sbezboro.standardplugin.persistence.IStorage;
 
 public abstract class ConfigStorage implements IStorage {
 	protected StandardPlugin plugin;

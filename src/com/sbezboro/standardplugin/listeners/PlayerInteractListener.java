@@ -37,6 +37,10 @@ public class PlayerInteractListener extends EventListener implements Listener {
 			StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 			Location location = clickedBlock.getLocation();
 			player.saveBedLocation(location);
+		// Honeypot handling
+		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock.getTypeId() == Material.CHEST.getId()) {
+			StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
+			plugin.getHoneypotManager().checkChest(clickedBlock.getLocation(), player);
 		// Eye of Ender handling
 		} else if (itemStack != null && itemStack.getTypeId() == Material.EYE_OF_ENDER.getId()) {
 			if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock.getTypeId() != Material.ENDER_PORTAL_FRAME.getId()) {

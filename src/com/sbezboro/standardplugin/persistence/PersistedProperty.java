@@ -10,7 +10,7 @@ import com.sbezboro.standardplugin.exceptions.NotPersistableException;
 import com.sbezboro.standardplugin.persistence.persistables.Persistable;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
-public class PersistedProperty<T> implements Persisted {
+public class PersistedProperty<T> implements PersistedBase {
 	private PersistedObject object;
 	private Class<T> cls;
 	private String name;
