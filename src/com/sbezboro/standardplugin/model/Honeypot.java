@@ -29,7 +29,7 @@ public class Honeypot extends PersistableImpl implements Persistable {
 		location.loadFromPersistance((Map<String, Object>) map.get("location"));
 		
 		discoverer = (String) map.get("discoverer");
-		discoverDate = ((Integer) map.get("discover-date")).longValue();
+		discoverDate = (Long) map.get("discover-date");
 	}
 
 	@Override
@@ -37,8 +37,11 @@ public class Honeypot extends PersistableImpl implements Persistable {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("location", location.persistableRepresentation());
-		map.put("discoverer", discoverer);
-		map.put("discover-date", discoverDate);
+		
+		if (isDiscovered()) {
+			map.put("discoverer", discoverer);
+			map.put("discover-date", discoverDate);
+		}
 		
 		return map;
 	}

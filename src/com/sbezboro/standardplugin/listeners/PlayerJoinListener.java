@@ -36,7 +36,7 @@ public class PlayerJoinListener extends EventListener implements Listener {
 			World playerWorld = player.getWorld();
 			// Check to see if the player is joining into an end world that was reset
 			if (playerWorld.getEnvironment() == Environment.THE_END && player.getEndId() < currentEndId) {
-				World overworld = plugin.getServer().getWorld(StandardPlugin.overworldName);
+				World overworld = plugin.getServer().getWorld(StandardPlugin.OVERWORLD_NAME);
 				player.sendHome(overworld);
 			}
 		} else {

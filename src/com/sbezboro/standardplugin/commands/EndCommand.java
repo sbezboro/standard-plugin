@@ -22,7 +22,7 @@ public class EndCommand extends BaseCommand {
 		}
 
 		if (args[0].equalsIgnoreCase("reset")) {
-			plugin.resetEnd();
+			plugin.getEndResetManager().resetEnd();
 		} else if (args[0].equalsIgnoreCase("portals")) {
 			sender.sendMessage("The following end portals are active:");
 			for (Location location : plugin.getEndResetStorage().getActivePortals()) {

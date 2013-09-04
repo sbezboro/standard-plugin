@@ -19,8 +19,8 @@ public class EntityDeathListener extends EventListener implements Listener {
 		Entity entity = event.getEntity();
 		
 		if (entity.getType() == EntityType.ENDER_DRAGON) {
-			if (!plugin.isEndResetScheduled()) {
-				plugin.scheduleNextEndReset();
+			if (!plugin.getEndResetManager().isEndResetScheduled()) {
+				plugin.getEndResetManager().scheduleNextEndReset();
 			}
 		}
 	}

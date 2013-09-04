@@ -37,7 +37,7 @@ public class PlayerPortalListener extends EventListener implements Listener {
 				plugin.getLogger().info(event.getPlayer().getName() + " leaving the end.");
 			// Going to the end
 			} else {
-				World newEnd = plugin.getNewEndWorld();
+				World newEnd = plugin.getEndResetManager().getNewEndWorld();
 				if (newEnd != null && !plugin.getEndResetStorage().getActivePortals().isEmpty()) {
 					event.setTo(new Location(newEnd, 100, 50, 0));
 				}

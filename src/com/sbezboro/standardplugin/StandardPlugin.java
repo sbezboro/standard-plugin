@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.World;
-import org.bukkit.World.Environment;
-import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -48,6 +44,7 @@ import com.sbezboro.standardplugin.listeners.PlayerLeaveListener;
 import com.sbezboro.standardplugin.listeners.PlayerMoveListener;
 import com.sbezboro.standardplugin.listeners.PlayerPortalListener;
 import com.sbezboro.standardplugin.listeners.RespawnListener;
+import com.sbezboro.standardplugin.managers.EndResetManager;
 import com.sbezboro.standardplugin.managers.HoneypotManager;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.persistence.LogWriter;
@@ -57,17 +54,14 @@ import com.sbezboro.standardplugin.persistence.storages.HoneypotStorage;
 import com.sbezboro.standardplugin.persistence.storages.IStorage;
 import com.sbezboro.standardplugin.persistence.storages.PlayerStorage;
 import com.sbezboro.standardplugin.persistence.storages.TitleStorage;
-import com.sbezboro.standardplugin.tasks.EndResetCheckTask;
-import com.sbezboro.standardplugin.tasks.EndResetTask;
 import com.sbezboro.standardplugin.tasks.PlayerSaverTask;
-import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class StandardPlugin extends JavaPlugin {
 	private static final String webchatPattern = "[*WC*]";
 	private static final String consoleWebchatPattern = "[*CWC*]";
 	
-	public static final String overworldName = "world";
-	private static final String newEndWorldName = "new_the_end";
+	public static final String OVERWORLD_NAME = "world";
+	public static final String NEW_END_WORLD_NAME = "new_the_end";
 	
 	private static StandardPlugin instance;
 
@@ -81,14 +75,12 @@ public class StandardPlugin extends JavaPlugin {
 	private PlayerStorage playerStorage;
 	private EndResetStorage endResetStorage;
 	private HoneypotStorage honeypotStorage;
-	
+
+	private EndResetManager endResetManager;
 	private HoneypotManager honeypotManager;
 	
 	private FactionClaimDenyListener denyListener;
-	
-	private World newEndWorld;
 
-	private EndResetCheckTask endResetCheckTask;
 	private PlayerSaverTask playerSaverTask;
 
 	public StandardPlugin() {
@@ -134,6 +126,7 @@ public class StandardPlugin extends JavaPlugin {
 		registerCommands();
 		registerEvents();
 		
+		endResetManager = new EndResetManager(this, endResetStorage);
 		honeypotManager = new HoneypotManager(this, honeypotStorage);
 
 		EssentialsIntegration.init(this);
@@ -147,28 +140,6 @@ public class StandardPlugin extends JavaPlugin {
 
 		playerSaverTask = new PlayerSaverTask(this);
 		playerSaverTask.runTaskTimer(this, 1200, 1200);
-		
-		if (isEndResetEnabled()) {
-			getLogger().info("End resets enabled");
-			
-			createNewEndWorld();
-			
-			if (endResetStorage.getNextReset() == 0) {
-				scheduleNextEndReset();
-			}
-			
-			if (isEndResetScheduled()) {
-				endResetCheckTask = new EndResetCheckTask(this);
-				endResetCheckTask.runTaskTimerAsynchronously(this, 20, 20);
-				
-				getLogger().info("End reset scheduled to be on "
-						+ MiscUtil.friendlyTimestamp(endResetStorage.getNextReset(), "America/Los_Angeles"));
-			} else {
-				getLogger().info("No end resets scheduled since the Ender Dragon is still alive");
-			}
-		} else {
-			getLogger().info("End resets disabled");
-		}
 	}
 
 	@Override
@@ -245,53 +216,6 @@ public class StandardPlugin extends JavaPlugin {
 			jsonapi.registerAPICallHandler(new PlayerStatsAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new WebChatAPICallHandler(this));
 		}
-	}
-	
-	public void createNewEndWorld() {
-		WorldCreator creator = new WorldCreator(newEndWorldName);
-		creator.environment(Environment.THE_END);
-		newEndWorld = getServer().createWorld(creator);
-		newEndWorld.setKeepSpawnInMemory(false);
-	}
-
-	public void resetEnd() {
-		if (isEndResetEnabled()) {
-			World overworld = getServer().getWorld(overworldName);
-			
-			new EndResetTask(this, overworld).runTask(this);
-		} else {
-			getLogger().severe("resetEnd() called when end resets aren't enabled!");
-		}
-	}
-	
-	public void scheduleNextEndReset() {
-		if (!isEndResetEnabled()) {
-			return;
-		}
-		
-		long nextReset = decideNextEndReset();
-		
-		endResetStorage.setNextReset(nextReset);
-		
-		broadcast(String.format("%s%sThe Ender Dragon has been killed! Next end reset scheduled to be on %s%s", 
-				ChatColor.BLUE, ChatColor.BOLD, ChatColor.AQUA, MiscUtil.friendlyTimestamp(nextReset)));
-		
-		if (endResetCheckTask == null) {
-			endResetCheckTask = new EndResetCheckTask(this);
-			endResetCheckTask.runTaskTimerAsynchronously(this, 20, 20);
-		}
-	}
-	
-	private long decideNextEndReset() {
-		// Get x days from now
-		long time = System.currentTimeMillis() + getEndResetPeriod() * 86400000;
-		// Round up to get the start of the next day in GMT, 5PM Pacific, 8PM Eastern,
-		// when there are the most players on more-or-less
-		return ((time / 86400000) + 1) * 86400000;
-	}
-	
-	public boolean isEndResetScheduled() {
-		return isEndResetEnabled() && endResetStorage.getNextReset() > System.currentTimeMillis();
 	}
 	
 	private static String webchatConsoleGate(String message, boolean webchat, boolean console) {
@@ -433,10 +357,6 @@ public class StandardPlugin extends JavaPlugin {
 	public boolean isEndResetEnabled() {
 		return config.getEndResetPeriod() > 0;
 	}
-	
-	public World getNewEndWorld() {
-		return newEndWorld;
-	}
 
 	public GateStorage getGateStorage() {
 		return gateStorage;
@@ -452,6 +372,10 @@ public class StandardPlugin extends JavaPlugin {
 	
 	public HoneypotManager getHoneypotManager() {
 		return honeypotManager;
+	}
+	
+	public EndResetManager getEndResetManager() {
+		return endResetManager;
 	}
 
 	public StandardPlayer getStandardPlayer(String username) {

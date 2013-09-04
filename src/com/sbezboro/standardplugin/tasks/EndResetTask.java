@@ -9,12 +9,14 @@ import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.integrations.FactionsIntegration;
+import com.sbezboro.standardplugin.managers.EndResetManager;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.persistence.storages.EndResetStorage;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class EndResetTask extends BaseTask {
 	private EndResetStorage endResetStorage;
+	private EndResetManager endResetManager;
 	
 	private World overworld;
 	
@@ -22,6 +24,7 @@ public class EndResetTask extends BaseTask {
 		super(plugin);
 		
 		this.endResetStorage = plugin.getEndResetStorage();
+		this.endResetManager = plugin.getEndResetManager();
 		this.overworld = overworld;
 	}
 	
@@ -129,6 +132,8 @@ public class EndResetTask extends BaseTask {
 	public void run() {
 		StandardPlugin.broadcast(String.format("%s%sAttention! The end is resetting!", ChatColor.BLUE, ChatColor.BOLD));
 		
+		World endWorld = endResetManager.getNewEndWorld();
+		
 		endResetStorage.incrementEndId();
 		
 		// Delete old portals
@@ -139,7 +144,7 @@ public class EndResetTask extends BaseTask {
 		}
 		
 		// Send players home if they are in the end
-		for (Player p : plugin.getNewEndWorld().getPlayers()) {
+		for (Player p : endWorld.getPlayers()) {
 			StandardPlayer player = plugin.getStandardPlayer(p);
 			player.sendHome(overworld);
 		}
@@ -150,11 +155,11 @@ public class EndResetTask extends BaseTask {
 		}
 
 		// Delete current end world from disk
-		plugin.getServer().unloadWorld(plugin.getNewEndWorld(), true);
-		MiscUtil.deleteDirectory(plugin.getNewEndWorld().getWorldFolder());
+		plugin.getServer().unloadWorld(endWorld, true);
+		MiscUtil.deleteDirectory(endWorld.getWorldFolder());
 		
 		// Regenerate new end world
-		plugin.createNewEndWorld();
+		endResetManager.createNewEndWorld();
 		
 		// Find a suitable location and generate the portal room
 		createNewEndPortal();

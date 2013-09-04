@@ -47,7 +47,7 @@ public class EndResetCheckTask extends BaseTask {
 		// A minute has passed
 		if (seconds == 0) {
 			if (totalSeconds <= 0) {
-				plugin.resetEnd();
+				plugin.getEndResetManager().resetEnd();
 			// Less than an hour remains, announce every 10 minutes, and every minute under 10 remaining, how much time is left
 			} else if (totalHours == 0 && (minutes % 10 == 0 || minutes < 10)) {
 				broadcastTime(minutes + " " + MiscUtil.pluralize("minute", minutes));
