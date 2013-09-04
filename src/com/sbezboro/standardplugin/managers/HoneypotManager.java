@@ -51,6 +51,8 @@ public class HoneypotManager extends BaseManager {
 			honeypot.setDiscovered(player.getName());
 			storage.saveHoneypots();
 			
+			player.incrementHoneypotsDiscovered();
+			
 			plugin.getServer().getConsoleSender().sendMessage(String.format("%sATTENTION! %s has found a honeypot at %s", 
 					ChatColor.YELLOW, player.getName(), MiscUtil.locationFormat(location)));
 		}

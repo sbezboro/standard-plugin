@@ -20,17 +20,13 @@ import com.sbezboro.standardplugin.util.AnsiConverter;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class StandardPlayer extends PlayerDelegate {
-	private static final String FORUM_MUTED_PROPERTY = "forum-muted";
-	private static final String PVP_PROTECTION_PROPERTY = "pvp-protection";
-	private static final String BED_LOCATION_PROPERTY = "bed";
-	private static final String TITLES_PROPERTY = "titles";
-	private static final String END_ID_PROPERTY = "end-id";
-
 	private PersistedProperty<Boolean> forumMuted;
 	private PersistedProperty<Boolean> pvpProtection;
 	private PersistedProperty<PersistableLocation> bedLocation;
 	private PersistedListProperty<String> titleNames;
 	private PersistedProperty<Integer> endId;
+	private PersistedProperty<Integer> pvpLogs;
+	private PersistedProperty<Integer> honeypotsDiscovered;
 
 	private ArrayList<Title> titles;
 
@@ -49,11 +45,13 @@ public class StandardPlayer extends PlayerDelegate {
 
 	@Override
 	public void createProperties() {
-		forumMuted = createProperty(Boolean.class, FORUM_MUTED_PROPERTY);
-		pvpProtection = createProperty(Boolean.class, PVP_PROTECTION_PROPERTY);
-		bedLocation = createProperty(PersistableLocation.class, BED_LOCATION_PROPERTY);
-		titleNames = createList(String.class, TITLES_PROPERTY);
-		endId = createProperty(Integer.class, END_ID_PROPERTY);
+		forumMuted = createProperty(Boolean.class, "forum-muted");
+		pvpProtection = createProperty(Boolean.class, "pvp-protection");
+		bedLocation = createProperty(PersistableLocation.class, "bed");
+		titleNames = createList(String.class, "titles");
+		endId = createProperty(Integer.class, "end-id");
+		pvpLogs = createProperty(Integer.class, "pvp-logs");
+		honeypotsDiscovered = createProperty(Integer.class, "honeypots-discovered");
 	}
 
 	@Override
@@ -142,6 +140,18 @@ public class StandardPlayer extends PlayerDelegate {
 	
 	public void setEndId(int endId) {
 		this.endId.setValue(endId);
+	}
+	
+	public int getPvpLogs() {
+		return pvpLogs.getValue();
+	}
+	
+	public int getHoneypotsDiscovered() {
+		return honeypotsDiscovered.getValue();
+	}
+	
+	public void incrementHoneypotsDiscovered() {
+		honeypotsDiscovered.setValue(honeypotsDiscovered.getValue() + 1);
 	}
 
 	// ------
