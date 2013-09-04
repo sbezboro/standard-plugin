@@ -159,7 +159,7 @@ public class EndResetTask extends BaseTask {
 		MiscUtil.deleteDirectory(endWorld.getWorldFolder());
 		
 		// Regenerate new end world
-		endResetManager.createNewEndWorld();
+		endResetManager.linkNewEndWorld();
 		
 		// Find a suitable location and generate the portal room
 		createNewEndPortal();

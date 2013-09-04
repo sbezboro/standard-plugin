@@ -29,6 +29,10 @@ public class FactionsIntegration extends PluginIntegration {
 	}
 	
 	public static boolean isWilderness(Location location) {
+		if (!enabled) {
+			return true;
+		}
+		
 		return Board.getFactionAt(new FLocation(location)).isNone();
 	}
 

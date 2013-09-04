@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.World.Environment;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.persistence.storages.EndResetStorage;
@@ -26,10 +27,10 @@ public class EndResetManager extends BaseManager {
 		if (plugin.isEndResetEnabled()) {
 			plugin.getLogger().info("End resets enabled");
 			
-			createNewEndWorld();
+			linkNewEndWorld();
 			
 			if (storage.getNextReset() == 0) {
-				scheduleNextEndReset();
+				scheduleNextEndReset(false);
 			}
 			
 			if (isEndResetScheduled()) {
@@ -46,7 +47,7 @@ public class EndResetManager extends BaseManager {
 		}
 	}
 	
-	public void createNewEndWorld() {
+	public void linkNewEndWorld() {
 		WorldCreator creator = new WorldCreator(StandardPlugin.NEW_END_WORLD_NAME);
 		creator.environment(Environment.THE_END);
 		newEndWorld = plugin.getServer().createWorld(creator);
@@ -63,21 +64,29 @@ public class EndResetManager extends BaseManager {
 		}
 	}
 	
-	public void scheduleNextEndReset() {
+	public void scheduleNextEndReset(boolean broadcast) {
 		if (!plugin.isEndResetEnabled()) {
 			return;
 		}
 		
-		long nextReset = decideNextEndReset();
+		final long nextReset = decideNextEndReset();
 		
 		storage.setNextReset(nextReset);
-		
-		StandardPlugin.broadcast(String.format("%s%sThe Ender Dragon has been killed! Next end reset scheduled to be on %s%s", 
-				ChatColor.BLUE, ChatColor.BOLD, ChatColor.AQUA, MiscUtil.friendlyTimestamp(nextReset)));
 		
 		if (endResetCheckTask == null) {
 			endResetCheckTask = new EndResetCheckTask(plugin);
 			endResetCheckTask.runTaskTimerAsynchronously(plugin, 20, 20);
+		}
+		
+		if (broadcast) {
+			new BukkitRunnable() {
+				
+				@Override
+				public void run() {
+					StandardPlugin.broadcast(String.format("%s%sThe Ender Dragon has been slain! Next end reset is scheduled to be on %s%s", 
+							ChatColor.BLUE, ChatColor.BOLD, ChatColor.AQUA, MiscUtil.friendlyTimestamp(nextReset)));
+				}
+			}.runTaskLater(plugin, 100);
 		}
 	}
 	

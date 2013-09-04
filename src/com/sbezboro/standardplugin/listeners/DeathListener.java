@@ -5,6 +5,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,17 +28,25 @@ public class DeathListener extends EventListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onEntityDeath(EntityDeathEvent event) {
-		if (event.getEntity() instanceof Player) {
+		LivingEntity entity = event.getEntity();
+		
+		if (entity instanceof Player) {
 			DeathEvent deathEvent = new DeathEvent((Player) event.getEntity());
 			deathEvent.log();
-		} else if (event.getEntity() != null) {
-			EntityDamageEvent damageEvent = event.getEntity().getLastDamageCause();
+		} else {
+			EntityDamageEvent damageEvent = entity.getLastDamageCause();
 			if (damageEvent instanceof EntityDamageByEntityEvent) {
 				EntityDamageByEntityEvent lastDamageByEntityEvent = (EntityDamageByEntityEvent) damageEvent;
 				Entity damager = lastDamageByEntityEvent.getDamager();
 
-				KillEvent killEvent = new KillEvent(damager, event.getEntity());
+				KillEvent killEvent = new KillEvent(damager, entity);
 				killEvent.log();
+			}
+			
+			if (entity.getType() == EntityType.ENDER_DRAGON) {
+				if (!plugin.getEndResetManager().isEndResetScheduled()) {
+					plugin.getEndResetManager().scheduleNextEndReset(true);
+				}
 			}
 		}
 	}
