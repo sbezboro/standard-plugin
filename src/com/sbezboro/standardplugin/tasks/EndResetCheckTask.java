@@ -51,11 +51,11 @@ public class EndResetCheckTask extends BaseTask {
 			// Less than an hour remains, announce every 10 minutes, and every minute under 10 remaining, how much time is left
 			} else if (totalHours == 0 && (minutes % 10 == 0 || minutes < 10)) {
 				broadcastTime(minutes + " " + MiscUtil.pluralize("minute", minutes));
-			// If less than 12 hours remain, announce every hour on the hour how much time is left
-			} else if (totalHours <= 12 && minutes == 0) {
+			// If less than 24 hours remain, announce every hour on the hour how much time is left
+			} else if (totalHours <= 24 && minutes == 0) {
 				broadcastTime(totalHours + " " + MiscUtil.pluralize("hour", totalHours));
-			// More than 12 hours remain, announce the date every hour
-			} else if (totalHours > 12 && minutes == 0) {
+			// More than 24 hours remain, announce the date every hour
+			} else if (totalHours > 24 && minutes == 0) {
 				StandardPlugin.broadcast(String.format("%s%sThe end will reset on %s%s%s%s", ChatColor.BLUE, 
 						ChatColor.BOLD, ChatColor.AQUA, MiscUtil.friendlyTimestamp(nextEndReset), ChatColor.BLUE, ChatColor.BOLD));
 			}
