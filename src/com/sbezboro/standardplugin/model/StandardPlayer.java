@@ -16,10 +16,13 @@ import com.sbezboro.standardplugin.persistence.PersistedProperty;
 import com.sbezboro.standardplugin.persistence.persistables.PersistableLocation;
 import com.sbezboro.standardplugin.persistence.storages.PlayerStorage;
 import com.sbezboro.standardplugin.persistence.storages.TitleStorage;
+import com.sbezboro.standardplugin.tasks.PvpTimerTask;
 import com.sbezboro.standardplugin.util.AnsiConverter;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class StandardPlayer extends PlayerDelegate {
+	private static final int PVP_TIMER_TIME = 200;
+	
 	private PersistedProperty<Boolean> forumMuted;
 	private PersistedProperty<Boolean> pvpProtection;
 	private PersistedProperty<PersistableLocation> bedLocation;
@@ -34,6 +37,11 @@ public class StandardPlayer extends PlayerDelegate {
 	private int rank;
 
 	private int newbieAttacks;
+	
+	private boolean pvpLogged;
+	
+	private PvpTimerTask pvpTimerTask;
+	private StandardPlayer lastAttacker;
 
 	public StandardPlayer(final Player player, final PlayerStorage storage) {
 		super(player, storage);
@@ -146,6 +154,10 @@ public class StandardPlayer extends PlayerDelegate {
 		return pvpLogs.getValue();
 	}
 	
+	public void incrementPvpLogs() {
+		pvpLogs.setValue(pvpLogs.getValue() + 1);
+	}
+	
 	public int getHoneypotsDiscovered() {
 		return honeypotsDiscovered.getValue();
 	}
@@ -210,8 +222,55 @@ public class StandardPlayer extends PlayerDelegate {
 	public boolean isVeteran() {
 		return hasTitle(Title.VETERAN);
 	}
+	
+	public StandardPlayer getLastAttacker() {
+		return lastAttacker;
+	}
+	
+	public void setLastAttacker(StandardPlayer player) {
+		lastAttacker = player;
+	}
 
+	public boolean hasPvpLogged() {
+		return pvpLogged;
+	}
+	
+	public void setPvpLogged(boolean pvpLogged) {
+		this.pvpLogged = pvpLogged;
+	}
+	
+	public boolean isInPvp() {
+		return pvpTimerTask != null && lastAttacker != null && lastAttacker.isOnline();
+	}
+	
+	public void setInPvp(StandardPlayer victim) {
+		if (pvpTimerTask == null) {
+			sendMessage("You are now in PVP");
+		} else {
+			pvpTimerTask.cancel();
+		}
+
+		pvpTimerTask = new PvpTimerTask(StandardPlugin.getPlugin(), this);
+		pvpTimerTask.runTaskLater(StandardPlugin.getPlugin(), PVP_TIMER_TIME);
+		
+		lastAttacker = victim;
+	}
+	
+	public void setNotInPvp() {
+		if (pvpTimerTask != null) {
+			sendMessage("You are no longer in PVP");
+			pvpTimerTask.cancel();
+			pvpTimerTask = null;
+			lastAttacker = null;
+		}
+	}
+	
 	public void onLeaveServer() {
+		if (pvpTimerTask != null) {
+			pvpTimerTask.cancel();
+			pvpTimerTask = null;
+		}
+		
 		player = null;
 	}
 	

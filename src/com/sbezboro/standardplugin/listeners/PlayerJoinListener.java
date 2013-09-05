@@ -1,11 +1,13 @@
 package com.sbezboro.standardplugin.listeners;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.sbezboro.http.HttpRequestManager;
 import com.sbezboro.http.HttpResponse;
@@ -24,7 +26,7 @@ public class PlayerJoinListener extends EventListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
+		final StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
 		int currentEndId = plugin.getEndResetStorage().getCurrentEndId();
 		
@@ -39,12 +41,30 @@ public class PlayerJoinListener extends EventListener implements Listener {
 				World overworld = plugin.getServer().getWorld(StandardPlugin.OVERWORLD_NAME);
 				player.sendHome(overworld);
 			}
+			
+			if (player.hasPvpLogged()) {
+				player.setPvpLogged(false);
+				player.setInPvp(player.getLastAttacker());
+				
+				new BukkitRunnable() {
+					
+					@Override
+					public void run() {
+						StandardPlugin.broadcast(String.format("%s%s %sis back after PVP logging", 
+								ChatColor.AQUA, player.getDisplayName(), ChatColor.RED));
+					}
+				}.runTaskLater(plugin, 5);
+			} else {
+				player.setLastAttacker(null);
+			}
 		} else {
 			String welcomeMessage = String.format("%sWelcome %s to the server!", ChatColor.LIGHT_PURPLE, player.getName());
 			StandardPlugin.playerBroadcast(player, welcomeMessage);
 			
 			World world = player.getLocation().getWorld();
-			player.teleport(world.getSpawnLocation());
+			Location spawnLocation = world.getSpawnLocation();
+			Location newSpawnLocation = new Location(world, spawnLocation.getX() + 0.5, spawnLocation.getY(), spawnLocation.getZ() + 0.5);
+			player.teleport(newSpawnLocation);
 
 			if (plugin.isPvpProtectionEnabled()) {
 				player.setPvpProtection(true);
