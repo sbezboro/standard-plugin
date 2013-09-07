@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class CreatureSpawnListener extends EventListener implements Listener {
 
@@ -22,8 +23,12 @@ public class CreatureSpawnListener extends EventListener implements Listener {
 		World world = entity.getLocation().getWorld();
 		
 		// Only allow withers to be spawned in the end
-		if (entity.getType() == EntityType.WITHER && world.getEnvironment() != Environment.THE_END) {
-			event.setCancelled(true);
+		if (entity.getType() == EntityType.WITHER) {
+			if (world.getEnvironment() == Environment.THE_END) {
+				plugin.getLogger().info("Wither spawned at " + MiscUtil.locationFormat(entity.getLocation()));
+			} else {
+				event.setCancelled(true);
+			}
 		}
 	}
 
