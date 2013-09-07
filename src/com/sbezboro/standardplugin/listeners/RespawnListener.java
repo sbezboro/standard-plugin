@@ -22,41 +22,26 @@ public class RespawnListener extends EventListener implements Listener {
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
-		Location actualBed = player.getBedLocation();
 		Location eventBed = player.getBedSpawnLocation();
-
-		boolean bedSpawn = false;
+		Location actualBed = player.getBedLocationIfValid();
 
 		if (eventBed == null && actualBed != null) {
 			Block bedBlock = actualBed.getBlock();
 
-			// Bukkit tells us the bed is obstructed when in fact it's still there
-			if (bedBlock.getType() == Material.BED_BLOCK) {
-				bedSpawn = true;
+			player.setBedSpawnLocation(actualBed);
 
-				player.setBedSpawnLocation(actualBed);
+			Block firstBlock = bedBlock.getRelative(BlockFace.UP);
+			Block secondBlock = firstBlock.getRelative(BlockFace.UP);
 
-				Block firstBlock = bedBlock.getRelative(BlockFace.UP);
-				Block secondBlock = firstBlock.getRelative(BlockFace.UP);
-
-				if (firstBlock.getType() == Material.AIR && secondBlock.getType() == Material.AIR) {
-					event.setRespawnLocation(firstBlock.getLocation());
-				} else {
-					event.setRespawnLocation(bedBlock.getLocation());
-				}
-
-				plugin.getLogger().info("Bukkit said bed was missing, but it was actually there for " + player.getName());
+			if (firstBlock.getType() == Material.AIR && secondBlock.getType() == Material.AIR) {
+				event.setRespawnLocation(firstBlock.getLocation());
 			} else {
-				player.saveBedLocation(null);
-
-				plugin.getLogger().info("Bed was actually missing for " + player.getName());
+				event.setRespawnLocation(bedBlock.getLocation());
 			}
-		}
 
-		Location location = event.getRespawnLocation();
-
-		if (!bedSpawn) {
-			event.setRespawnLocation(new Location(location.getWorld(), location.getBlockX(), location.getBlockY(), location.getBlockZ()));
+			plugin.getLogger().info("Bukkit said bed was missing, but it was actually there for " + player.getName());
+		} else {
+			player.saveBedLocation(null);
 		}
 	}
 }

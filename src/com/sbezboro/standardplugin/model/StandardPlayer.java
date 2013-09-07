@@ -5,8 +5,10 @@ import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
@@ -118,6 +120,19 @@ public class StandardPlayer extends PlayerDelegate {
 
 	public Location getBedLocation() {
 		return bedLocation.getValue().getLocation();
+	}
+	
+	public Location getBedLocationIfValid() {
+		if (bedLocation != null) {
+			Location location = bedLocation.getValue().getLocation();
+			Block bedBlock = location.getBlock();
+			
+			if (bedBlock.getType() == Material.BED_BLOCK) {
+				return location;
+			}
+		}
+		
+		return null;
 	}
 
 	public void addTitle(Title title) {
@@ -275,10 +290,12 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 	
 	public void sendHome(World overworld) {
-		if (getBedLocation() == null) {
+		Location location = getBedLocationIfValid();
+		
+		if (location == null) {
 			teleport(overworld.getSpawnLocation());
 		} else {
-			teleport(getBedLocation());
+			teleport(location);
 		}
 	}
 
