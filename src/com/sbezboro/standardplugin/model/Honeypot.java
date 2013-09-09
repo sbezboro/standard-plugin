@@ -11,6 +11,7 @@ import com.sbezboro.standardplugin.persistence.persistables.PersistableLocation;
 
 public class Honeypot extends PersistableImpl implements Persistable {
 	private PersistableLocation location;
+	private long creationDate;
 	private String discoverer;
 	private long discoverDate;
 
@@ -19,8 +20,9 @@ public class Honeypot extends PersistableImpl implements Persistable {
 	
 	public Honeypot(Location location) {
 		this.location = new PersistableLocation(location);
+		
+		this.creationDate = System.currentTimeMillis();
 	}
-
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -28,8 +30,14 @@ public class Honeypot extends PersistableImpl implements Persistable {
 		location = new PersistableLocation();
 		location.loadFromPersistance((Map<String, Object>) map.get("location"));
 		
-		discoverer = (String) map.get("discoverer");
-		discoverDate = (Long) map.get("discover-date");
+		creationDate = (Long) map.get("creation-date");
+		
+		try {
+			discoverer = (String) map.get("discoverer");
+			discoverDate = (Long) map.get("discover-date");
+		} catch (NullPointerException e) {
+			// Nothing
+		}
 	}
 
 	@Override
@@ -37,6 +45,8 @@ public class Honeypot extends PersistableImpl implements Persistable {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("location", location.persistableRepresentation());
+		
+		map.put("creation-date", creationDate);
 		
 		if (isDiscovered()) {
 			map.put("discoverer", discoverer);

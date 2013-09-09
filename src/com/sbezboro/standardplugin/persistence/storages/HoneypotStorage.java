@@ -20,7 +20,7 @@ public class HoneypotStorage extends ConfigStorage {
 	public void load() {
 		this.honeypots = new ArrayList<Honeypot>();
 
-		List<?> honeypots = config.getMapList("honeypots");
+		List<?> honeypots = config.getList("honeypots");
 		if (honeypots != null) {
 			for (Object section : honeypots) {
 				Honeypot honeypot = new Honeypot();

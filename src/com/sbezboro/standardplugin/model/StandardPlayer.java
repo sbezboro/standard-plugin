@@ -2,6 +2,7 @@ package com.sbezboro.standardplugin.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -371,7 +372,7 @@ public class StandardPlayer extends PlayerDelegate {
 		return messages.toArray(new String[messages.size()]);
 	}
 
-	public HashMap<String, Object> getInfo() {
+	public Map<String, Object> getInfo() {
 		HashMap<String, Object> info = new HashMap<String, Object>();
 
 		info.put("username", getName());
@@ -397,6 +398,9 @@ public class StandardPlayer extends PlayerDelegate {
 		info.put("z", getLocation().getBlockZ());
 
 		info.put("health", getHealth());
+
+		info.put("pvp_logs", getPvpLogs());
+		info.put("honeypots_discovered", getHoneypotsDiscovered());
 
 		ArrayList<HashMap<String, String>> titleInfos = new ArrayList<HashMap<String, String>>();
 		for (Title title : titles) {

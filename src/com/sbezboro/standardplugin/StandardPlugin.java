@@ -14,6 +14,7 @@ import com.sbezboro.standardplugin.commands.ClearBedCommand;
 import com.sbezboro.standardplugin.commands.EndCommand;
 import com.sbezboro.standardplugin.commands.ForumMuteCommand;
 import com.sbezboro.standardplugin.commands.GateCommand;
+import com.sbezboro.standardplugin.commands.HoneypotCommand;
 import com.sbezboro.standardplugin.commands.ICommand;
 import com.sbezboro.standardplugin.commands.PvpProtectionCommand;
 import com.sbezboro.standardplugin.commands.RankCommand;
@@ -186,6 +187,7 @@ public class StandardPlugin extends JavaPlugin {
 		commands.add(new WebchatCommand(this));
 		commands.add(new EndCommand(this));
 		commands.add(new ClearBedCommand(this));
+		commands.add(new HoneypotCommand(this));
 
 		for (ICommand command : commands) {
 			command.register();

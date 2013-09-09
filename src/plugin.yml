@@ -1,6 +1,6 @@
 name: StandardPlugin
 main: com.sbezboro.standardplugin.StandardPlugin
-version: 1.8.8
+version: 1.8.9
 softdepend: [JSONAPI, SimplyVanish, Essentials, Factions]
 
 commands:
@@ -64,6 +64,10 @@ commands:
         permission: standardplugin.clearbed
         permission-message: You don't have permission
         aliases: [resetbed, resetspawn]
+    honeypot:
+        description: Honeypot administration
+        permission: standardplugin.honeypot
+        permission-message: You don't have permission
 
 permissions:
     standardplugin.standard:
@@ -94,3 +98,5 @@ permissions:
         default: op
     standardplugin.clearbed:
         default: true
+    standardplugin.honeypot:
+        default: op
