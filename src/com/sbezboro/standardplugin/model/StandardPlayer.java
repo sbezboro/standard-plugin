@@ -256,10 +256,14 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 	
 	public boolean isInPvp() {
-		return pvpTimerTask != null && lastAttacker != null && lastAttacker.isOnline();
+		return pvpTimerTask != null && lastAttacker != null && lastAttacker.isOnline() && getHealth() > 0;
 	}
 	
 	public void setInPvp(StandardPlayer victim) {
+		if (this == victim) {
+			return;
+		}
+		
 		if (pvpTimerTask == null) {
 			sendMessage("You are now in PVP");
 		} else {

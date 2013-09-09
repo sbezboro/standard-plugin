@@ -73,10 +73,22 @@ public class EndResetTask extends BaseTask {
 					}
 					
 					if (y == newY + 3) {
-						if ((x == newX + 2 || x == newX + 6) && z >= newZ + 3 && z <= newZ + 5) {
-							block.setType(Material.ENDER_PORTAL_FRAME);
-						} else if ((z == newZ + 2 || z == newZ + 6) && x >= newX + 3 && x <= newX + 5) {
-							block.setType(Material.ENDER_PORTAL_FRAME);
+						if (z >= newZ + 3 && z <= newZ + 5) {
+							if (x == newX + 2) {
+								block.setType(Material.ENDER_PORTAL_FRAME);
+								block.setData((byte) 1); // West
+							} else if (x == newX + 6) {
+								block.setType(Material.ENDER_PORTAL_FRAME);
+								block.setData((byte) 3); // East
+							}
+						} else if (x >= newX + 3 && x <= newX + 5) {
+							if (z == newZ + 2) {
+								block.setType(Material.ENDER_PORTAL_FRAME);
+								block.setData((byte) 0); // South
+							} else if ( z == newZ + 6) {
+								block.setType(Material.ENDER_PORTAL_FRAME);
+								block.setData((byte) 2); // North
+							}
 						}
 					}
 				}
