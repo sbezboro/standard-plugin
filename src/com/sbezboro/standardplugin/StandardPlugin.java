@@ -10,6 +10,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.alecgorge.minecraft.jsonapi.JSONAPI;
+import com.sbezboro.standardplugin.commands.ClearBedCommand;
 import com.sbezboro.standardplugin.commands.EndCommand;
 import com.sbezboro.standardplugin.commands.ForumMuteCommand;
 import com.sbezboro.standardplugin.commands.GateCommand;
@@ -184,6 +185,7 @@ public class StandardPlugin extends JavaPlugin {
 		commands.add(new TitlesCommand(this));
 		commands.add(new WebchatCommand(this));
 		commands.add(new EndCommand(this));
+		commands.add(new ClearBedCommand(this));
 
 		for (ICommand command : commands) {
 			command.register();
