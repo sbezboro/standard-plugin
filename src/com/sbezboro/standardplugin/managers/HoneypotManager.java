@@ -71,7 +71,7 @@ public class HoneypotManager extends BaseManager {
 
 			do {
 				x = (int) (spawn.getBlockX() + (Math.random() * 1000.0) - 500);
-				y = (int) (7 + Math.random() * 30.0);
+				y = (int) (40 + Math.random() * 20.0);
 				z = (int) (spawn.getBlockZ() + (Math.random() * 1000.0) - 500);
 				
 				location = new Location(overworld, x, y, z);
@@ -92,7 +92,7 @@ public class HoneypotManager extends BaseManager {
 	public void checkChest(Location location, StandardPlayer player) {
 		Honeypot honeypot = locationMap.get(MiscUtil.getLocationKey(location));
 		
-		if (honeypot != null && !honeypot.isDiscovered()) {
+		if (honeypot != null && !honeypot.isDiscovered() && !honeypot.isRemoved()) {
 			honeypot.setDiscovered(player.getName());
 			storage.saveHoneypots();
 			
@@ -101,6 +101,30 @@ public class HoneypotManager extends BaseManager {
 			plugin.getServer().getConsoleSender().sendMessage(String.format("%sATTENTION! %s has found a honeypot at %s", 
 					ChatColor.YELLOW, player.getName(), MiscUtil.locationFormat(location)));
 		}
+	}
+
+	public Location removeOldestHoneypot() {
+		Honeypot honeypot = null;
+		
+		for (Honeypot h : storage.getHoneypots()) {
+			if (!h.isRemoved()) {
+				honeypot = h;
+				break;
+			}
+		}
+		
+		if (honeypot == null) {
+			return null;
+		}
+		
+		honeypot.setRemoved(true);
+		storage.saveHoneypots();
+		
+		Location location = honeypot.getLocation();
+		Block block = location.getWorld().getBlockAt(location);
+		block.setType(Material.STONE);
+		
+		return location;
 	}
 
 }

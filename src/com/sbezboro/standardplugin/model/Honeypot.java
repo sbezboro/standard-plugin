@@ -14,6 +14,7 @@ public class Honeypot extends PersistableImpl implements Persistable {
 	private long creationDate;
 	private String discoverer;
 	private long discoverDate;
+	private boolean removed;
 
 	public Honeypot() {
 	}
@@ -38,6 +39,12 @@ public class Honeypot extends PersistableImpl implements Persistable {
 		} catch (NullPointerException e) {
 			// Nothing
 		}
+		
+		try {
+			removed = (Boolean) map.get("removed");
+		} catch (NullPointerException e) {
+			// Nothing
+		}
 	}
 
 	@Override
@@ -51,6 +58,10 @@ public class Honeypot extends PersistableImpl implements Persistable {
 		if (isDiscovered()) {
 			map.put("discoverer", discoverer);
 			map.put("discover-date", discoverDate);
+		}
+		
+		if (removed) {
+			map.put("removed", removed);
 		}
 		
 		return map;
@@ -67,6 +78,14 @@ public class Honeypot extends PersistableImpl implements Persistable {
 	public void setDiscovered(String username) {
 		discoverer = username;
 		discoverDate = System.currentTimeMillis();
+	}
+	
+	public boolean isRemoved() {
+		return removed;
+	}
+	
+	public void setRemoved(boolean removed) {
+		this.removed = removed;
 	}
 
 }

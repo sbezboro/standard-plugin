@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.managers.HoneypotManager;
+import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class HoneypotCommand extends BaseCommand {
 
@@ -20,9 +21,10 @@ public class HoneypotCommand extends BaseCommand {
 			showUsageInfo(sender);
 			return false;
 		}
+		
+		HoneypotManager honeypotManager = plugin.getHoneypotManager();
 
 		if (args[0].equalsIgnoreCase("generate")) {
-			HoneypotManager honeypotManager = plugin.getHoneypotManager();
 			
 			if (args.length == 1) {
 				honeypotManager.createHoneypot(null);
@@ -42,6 +44,14 @@ public class HoneypotCommand extends BaseCommand {
 			} else {
 				showUsageInfo(sender);
 				return false;
+			}
+		} else if (args[0].equalsIgnoreCase("remove")) {
+			Location location = honeypotManager.removeOldestHoneypot();
+			
+			if (location == null) {
+				sender.sendMessage("No honeypots left to remove");
+			} else {
+				sender.sendMessage("Honeypot removed at " + MiscUtil.locationFormat(location));
 			}
 		}
 		

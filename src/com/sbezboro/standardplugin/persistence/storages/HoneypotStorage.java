@@ -36,6 +36,12 @@ public class HoneypotStorage extends ConfigStorage {
 		saveHoneypots();
 	}
 	
+	public void removeHoneypot(Honeypot honeypot) {
+		this.honeypots.remove(honeypot);
+		
+		saveHoneypots();
+	}
+	
 	public void saveHoneypots() {
 		ArrayList<Map<String, Object>> newList = new ArrayList<Map<String,Object>>();
 		

@@ -125,10 +125,10 @@ public class EndResetTask extends BaseTask {
 		
 		do {
 			do {
-				newX = (int) (spawn.getBlockX() + (Math.random() * 2400.0) - 1200);
+				newX = (int) (spawn.getBlockX() + (Math.random() * 4000.0) - 2000);
 				newY = (int) (26 + Math.random() * 10);
-				newZ = (int) (spawn.getBlockZ() + (Math.random() * 2400.0) - 1200);
-			} while(Math.abs(newX - x) < 800 || Math.abs(newZ - z) < 800);
+				newZ = (int) (spawn.getBlockZ() + (Math.random() * 4000.0) - 2000);
+			} while(Math.abs(newX - x) < 1000 || Math.abs(newZ - z) < 1000);
 		} while(!testEndPortalLocation(overworld, newX, newY, newZ));
 
 		generateEndPortal(overworld, newX, newY, newZ);

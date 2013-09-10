@@ -34,6 +34,10 @@ public class EntityDamageListener extends EventListener implements Listener {
 		// Player attacking
 		if (damager != null) {
 			StandardPlayer victim = plugin.getStandardPlayer(event.getEntity());
+			
+			if (damager == victim) {
+				return;
+			}
 
 			if (victim != null) {
 				// Victim protected
