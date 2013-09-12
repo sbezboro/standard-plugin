@@ -17,6 +17,7 @@ import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.model.Title;
 import com.sbezboro.standardplugin.net.RankHttpRequest;
+import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class PlayerJoinListener extends EventListener implements Listener {
 
@@ -64,11 +65,17 @@ public class PlayerJoinListener extends EventListener implements Listener {
 							StandardPlugin.broadcast(String.format("%s%s %sis back after PVP logging", 
 									ChatColor.AQUA, player.getDisplayName(), ChatColor.RED));
 							
-							if (player.getPvpLogs() >= plugin.getPvpLogThreshold() && !player.hasTitle(Title.PVP_LOGGER)) {
-								Title title = player.addTitle(Title.PVP_LOGGER);
-								
-								StandardPlugin.broadcast(String.format("%s%s %shas automatically been bestowed the %s%s %stitle!", 
-										ChatColor.AQUA, player.getDisplayName(), ChatColor.RED, ChatColor.AQUA, title.getDisplayName(), ChatColor.RED));
+							if (!player.hasTitle(Title.PVP_LOGGER)) {
+								if (player.getPvpLogs() < plugin.getPvpLogThreshold()) {
+									int pvpLogsLeft = plugin.getPvpLogThreshold() - player.getPvpLogs();
+									player.sendMessage(String.format("%sWARNING! You will be given the %sPVP Logger %stitle if you PVP log %d more %s!", 
+											ChatColor.RED, ChatColor.AQUA, ChatColor.RED, pvpLogsLeft, MiscUtil.pluralize("time", pvpLogsLeft)));
+								} else {
+									Title title = player.addTitle(Title.PVP_LOGGER);
+									
+									StandardPlugin.broadcast(String.format("%s%s %shas automatically been bestowed the %s%s %stitle after PVP logging at least %d times!", 
+											ChatColor.AQUA, player.getDisplayName(), ChatColor.RED, ChatColor.AQUA, title.getDisplayName(), ChatColor.RED, plugin.getPvpLogThreshold()));
+								}
 							}
 						}
 					}
