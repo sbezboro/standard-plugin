@@ -37,10 +37,8 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 					ChatColor.AQUA, player.getDisplayName(), ChatColor.RED, ChatColor.AQUA, 
 					player.getLastAttacker().getDisplayName(), ChatColor.RED));
 			
-			if (player.getPvpLogs() >= plugin.getPvpLogThreshold()) {
-				if (player.hasTitle(Title.PVP_LOGGER)) {
-					player.damage(1000);
-				}
+			if (player.hasTitle(Title.PVP_LOGGER)) {
+				player.damage(1000);
 			}
 		}
 
