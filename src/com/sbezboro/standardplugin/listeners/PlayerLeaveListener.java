@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.model.StandardPlayer;
+import com.sbezboro.standardplugin.model.Title;
 
 public class PlayerLeaveListener extends EventListener implements Listener {
 
@@ -17,7 +18,7 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 		super(plugin);
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
@@ -35,6 +36,12 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 			StandardPlugin.broadcast(String.format("%s%s %sPVP logged to %s%s%s!",
 					ChatColor.AQUA, player.getDisplayName(), ChatColor.RED, ChatColor.AQUA, 
 					player.getLastAttacker().getDisplayName(), ChatColor.RED));
+			
+			if (player.getPvpLogs() >= plugin.getPvpLogThreshold()) {
+				if (player.hasTitle(Title.PVP_LOGGER)) {
+					player.damage(1000);
+				}
+			}
 		}
 
 		player.onLeaveServer();

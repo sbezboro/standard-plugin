@@ -17,6 +17,8 @@ public class StandardConfig {
 	
 	private int endResetPeriod;
 
+	private int pvpLogThreshold;
+
 	public StandardConfig(StandardPlugin plugin) {
 		this.plugin = plugin;
 	}
@@ -41,6 +43,8 @@ public class StandardConfig {
 		newbieStalkerThreshold = config.getInt("newbie-stalker-threshold");
 
 		endResetPeriod = config.getInt("end-reset-period");
+		
+		pvpLogThreshold = config.getInt("pvp-log-threshold");
 	}
 
 	public int getServerId() {
@@ -77,5 +81,9 @@ public class StandardConfig {
 
 	public int getEndResetPeriod() {
 		return endResetPeriod;
+	}
+
+	public int getPvpLogThreshold() {
+		return pvpLogThreshold;
 	}
 }

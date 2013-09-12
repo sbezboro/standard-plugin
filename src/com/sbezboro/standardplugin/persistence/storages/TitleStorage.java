@@ -27,6 +27,7 @@ public class TitleStorage extends SingleFileStorage<Title> {
 		defaults.put(Title.TOP10_VETERAN, new Title(this, Title.TOP10_VETERAN, "Top 10 Veteran"));
 		defaults.put(Title.TOP40_VETERAN, new Title(this, Title.TOP40_VETERAN, "Top 40 Veteran"));
 		defaults.put(Title.VETERAN, new Title(this, Title.VETERAN, "Veteran"));
+		defaults.put(Title.PVP_LOGGER, new Title(this, Title.PVP_LOGGER, "PVP Logger"));
 		
 		for (Title title : defaults.values()) {
 			if (!keys.contains(title.getIdentifier())) {

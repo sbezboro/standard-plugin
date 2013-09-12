@@ -361,6 +361,10 @@ public class StandardPlugin extends JavaPlugin {
 	public boolean isEndResetEnabled() {
 		return config.getEndResetPeriod() > 0;
 	}
+	
+	public int getPvpLogThreshold() {
+		return config.getPvpLogThreshold();
+	}
 
 	public GateStorage getGateStorage() {
 		return gateStorage;

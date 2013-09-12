@@ -44,14 +44,33 @@ public class PlayerJoinListener extends EventListener implements Listener {
 			
 			if (player.hasPvpLogged()) {
 				player.setPvpLogged(false);
-				player.setInPvp(player.getLastAttacker());
+
+				if (player.isDead()) {
+					player.setNotInPvp();
+				} else {
+					player.setInPvp(player.getLastAttacker());
+				}
 				
 				new BukkitRunnable() {
 					
 					@Override
 					public void run() {
-						StandardPlugin.broadcast(String.format("%s%s %sis back after PVP logging", 
-								ChatColor.AQUA, player.getDisplayName(), ChatColor.RED));
+						
+						if (player.isDead()) {
+							player.sendMessage(ChatColor.RED + "You were killed for PVP logging");
+							StandardPlugin.playerBroadcast(player, String.format("%s%s %sis back after PVP logging", 
+									ChatColor.AQUA, player.getDisplayName(), ChatColor.RED));
+						} else {
+							StandardPlugin.broadcast(String.format("%s%s %sis back after PVP logging", 
+									ChatColor.AQUA, player.getDisplayName(), ChatColor.RED));
+							
+							if (player.getPvpLogs() >= plugin.getPvpLogThreshold() && !player.hasTitle(Title.PVP_LOGGER)) {
+								Title title = player.addTitle(Title.PVP_LOGGER);
+								
+								StandardPlugin.broadcast(String.format("%s%s %shas automatically been bestowed the %s%s %stitle!", 
+										ChatColor.AQUA, player.getDisplayName(), ChatColor.RED, ChatColor.AQUA, title.getDisplayName(), ChatColor.RED));
+							}
+						}
 					}
 				}.runTaskLater(plugin, 5);
 			} else {

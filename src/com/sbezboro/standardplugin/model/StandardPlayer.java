@@ -267,6 +267,9 @@ public class StandardPlayer extends PlayerDelegate {
 		
 		if (pvpTimerTask == null) {
 			sendMessage("You are now in PVP");
+			if (hasTitle(Title.PVP_LOGGER)) {
+				sendMessage(ChatColor.RED + "YOU WILL BE KILLED IF YOU PVP LOG");
+			}
 		} else {
 			pvpTimerTask.cancel();
 		}

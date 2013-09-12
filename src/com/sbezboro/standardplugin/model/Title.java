@@ -9,6 +9,7 @@ public class Title extends PersistedObject {
 	public static final String TOP10_VETERAN = "top10-veteran";
 	public static final String TOP40_VETERAN = "top40-veteran";
 	public static final String VETERAN = "veteran";
+	public static final String PVP_LOGGER = "pvp-logger";
 
 	private PersistedProperty<String> displayName;
 	private PersistedProperty<Boolean> hidden;

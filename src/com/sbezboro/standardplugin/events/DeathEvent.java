@@ -13,12 +13,13 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import com.sbezboro.http.HttpRequestManager;
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.net.DeathHttpRequest;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class DeathEvent {
 	public static enum DeathType {
-		PLAYER, SUICIDE, FALL, FIRE, LAVA, EXPLOSION, CACTUS, VOID, SUFFOCATION, DROWNING, STARVATION, MAGIC, OTHER
+		PLAYER, SUICIDE, FALL, FIRE, LAVA, EXPLOSION, CACTUS, VOID, SUFFOCATION, DROWNING, STARVATION, MAGIC, PVP_LOG, OTHER
 	};
 
 	private Player player;
@@ -68,6 +69,9 @@ public class DeathEvent {
 		case MAGIC:
 			typeString = "magic";
 			break;
+		case PVP_LOG:
+			typeString = "pvp_log";
+			break;
 		case OTHER:
 			typeString = "other";
 			break;
@@ -92,12 +96,13 @@ public class DeathEvent {
 	}
 
 	public void log() {
-		if (StandardPlugin.getPlugin().isDebug()) {
-			return;
-		}
-
 		if (cause == null) {
-			log(DeathType.SUICIDE);
+			StandardPlayer standardPlayer = StandardPlugin.getPlugin().getStandardPlayer(player);
+			if (standardPlayer.hasPvpLogged()) {
+				log(DeathType.PVP_LOG);
+			} else {
+				log(DeathType.SUICIDE);
+			}
 		} else if (damageEvent instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent lastDamageByEntityEvent = (EntityDamageByEntityEvent) damageEvent;
 			Entity damager = lastDamageByEntityEvent.getDamager();
