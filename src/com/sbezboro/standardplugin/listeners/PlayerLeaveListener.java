@@ -18,7 +18,7 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 		super(plugin);
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 

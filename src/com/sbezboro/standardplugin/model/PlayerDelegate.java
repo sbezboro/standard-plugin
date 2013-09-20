@@ -930,10 +930,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getMaxHealth();
 	}
 
-	public boolean isScaledHealth() {
-		return player.isScaledHealth();
-	}
-
 	public void setHealth(double arg0) {
 		player.setHealth(arg0);
 	}
@@ -944,10 +940,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 
 	public void setMaxHealth(double arg0) {
 		player.setMaxHealth(arg0);
-	}
-
-	public void setScaleHealth(boolean arg0) {
-		player.setScaleHealth(arg0);
 	}
 
 	public void _INVALID_damage(int arg0, Entity arg1) {
@@ -980,6 +972,38 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 
 	public void _INVALID_setMaxHealth(int arg0) {
 		player._INVALID_setMaxHealth(arg0);
+	}
+
+	public double getHealthScale() {
+		return player.getHealthScale();
+	}
+
+	public Entity getLeashHolder() throws IllegalStateException {
+		return player.getLeashHolder();
+	}
+
+	public boolean isHealthScaled() {
+		return player.isHealthScaled();
+	}
+
+	public boolean isLeashed() {
+		return player.isLeashed();
+	}
+
+	public void playSound(Location arg0, String arg1, float arg2, float arg3) {
+		player.playSound(arg0, arg1, arg2, arg3);
+	}
+
+	public void setHealthScale(double arg0) throws IllegalArgumentException {
+		player.setHealthScale(arg0);
+	}
+
+	public void setHealthScaled(boolean arg0) {
+		player.setHealthScaled(arg0);
+	}
+
+	public boolean setLeashHolder(Entity arg0) {
+		return player.setLeashHolder(arg0);
 	}
 
 }

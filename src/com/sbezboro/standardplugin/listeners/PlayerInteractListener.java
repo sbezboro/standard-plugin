@@ -1,14 +1,14 @@
 package com.sbezboro.standardplugin.listeners;
 
-import net.minecraft.server.v1_6_R2.EntityEnderSignal;
+import net.minecraft.server.v1_6_R3.EntityEnderSignal;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_6_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_6_R2.entity.CraftEnderSignal;
-import org.bukkit.craftbukkit.v1_6_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_6_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_6_R3.entity.CraftEnderSignal;
+import org.bukkit.craftbukkit.v1_6_R3.entity.CraftPlayer;
 import org.bukkit.entity.EnderSignal;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
@@ -33,17 +33,17 @@ public class PlayerInteractListener extends EventListener implements Listener {
 		ItemStack itemStack = event.getItem();
 		
 		// Setting bed locations
-		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock.getTypeId() == Material.BED_BLOCK.getId()) {
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock.getType() == Material.BED_BLOCK) {
 			StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 			Location location = clickedBlock.getLocation();
 			player.saveBedLocation(location);
 		// Honeypot handling
-		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock.getTypeId() == Material.CHEST.getId()) {
+		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock.getType() == Material.CHEST) {
 			StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 			plugin.getHoneypotManager().checkChest(clickedBlock.getLocation(), player);
 		// Eye of Ender handling
-		} else if (itemStack != null && itemStack.getTypeId() == Material.EYE_OF_ENDER.getId()) {
-			if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock.getTypeId() != Material.ENDER_PORTAL_FRAME.getId()) {
+		} else if (itemStack != null && itemStack.getType() == Material.EYE_OF_ENDER) {
+			if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock.getType() != Material.ENDER_PORTAL_FRAME) {
 				handleThrownEnderEye(event, event.getPlayer(), itemStack);
 			} else if (event.getAction() == Action.RIGHT_CLICK_AIR) {
 				handleThrownEnderEye(event, event.getPlayer(), itemStack);
