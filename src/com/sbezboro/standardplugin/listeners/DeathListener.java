@@ -3,6 +3,7 @@ package com.sbezboro.standardplugin.listeners;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World.Environment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -46,6 +47,12 @@ public class DeathListener extends EventListener implements Listener {
 			if (entity.getType() == EntityType.ENDER_DRAGON) {
 				if (!plugin.getEndResetManager().isEndResetScheduled()) {
 					plugin.getEndResetManager().scheduleNextEndReset(true);
+				}
+			} else if (entity.getType() == EntityType.ENDERMAN) {
+				// No xp or drops for endermen in the end
+				if (entity.getLocation().getWorld().getEnvironment() == Environment.THE_END) {
+					event.setDroppedExp(0);
+					event.getDrops().clear();
 				}
 			}
 		}
