@@ -38,6 +38,7 @@ import com.sbezboro.standardplugin.listeners.CreatureSpawnListener;
 import com.sbezboro.standardplugin.listeners.DeathListener;
 import com.sbezboro.standardplugin.listeners.DispenseListener;
 import com.sbezboro.standardplugin.listeners.EntityDamageListener;
+import com.sbezboro.standardplugin.listeners.EntityTargetListener;
 import com.sbezboro.standardplugin.listeners.FactionClaimDenyListener;
 import com.sbezboro.standardplugin.listeners.HungerListener;
 import com.sbezboro.standardplugin.listeners.PlayerInteractListener;
@@ -208,6 +209,7 @@ public class StandardPlugin extends JavaPlugin {
 		pluginManager.registerEvents(new DispenseListener(this), this);
 		pluginManager.registerEvents(new PlayerPortalListener(this), this);
 		pluginManager.registerEvents(new BlockBreakListener(this), this);
+		pluginManager.registerEvents(new EntityTargetListener(this), this);
 	}
 
 	private void registerJSONAPIHandlers() {
