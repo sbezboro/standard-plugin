@@ -3,6 +3,7 @@ package com.sbezboro.standardplugin.listeners;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World.Environment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -16,6 +17,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.events.DeathEvent;
@@ -49,10 +51,15 @@ public class DeathListener extends EventListener implements Listener {
 					plugin.getEndResetManager().scheduleNextEndReset(true);
 				}
 			} else if (entity.getType() == EntityType.ENDERMAN) {
-				// No xp or drops for endermen in the end
+				// Nerfed xp and drops for endermen in the end
 				if (entity.getLocation().getWorld().getEnvironment() == Environment.THE_END) {
-					event.setDroppedExp(0);
+					event.setDroppedExp(1);
 					event.getDrops().clear();
+					
+					// 5% chance to drop a pearl
+					if (Math.random() < 0.05) {
+						event.getDrops().add(new ItemStack(Material.ENDER_PEARL, 1));
+					}
 				}
 			}
 		}

@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -43,6 +44,10 @@ public class EndResetTask extends BaseTask {
 					if (block.getType() != Material.STONE && block.getType() != Material.DIRT
 							&& block.getType() != Material.GRAVEL && block.getType() != Material.COAL_ORE
 							&& block.getType() != Material.IRON_ORE) {
+						return false;
+					}
+					
+					if (block.getBiome() == Biome.OCEAN) {
 						return false;
 					}
 				}
@@ -176,7 +181,7 @@ public class EndResetTask extends BaseTask {
 		// Find a suitable location and generate the portal room
 		createNewEndPortal();
 
-		StandardPlugin.broadcast(String.format("%s%sThe end has reset!", ChatColor.BLUE, ChatColor.BOLD));
+		StandardPlugin.broadcast(String.format("%s%sThe end has reset! Use eyes of ender to find the new end portal!", ChatColor.BLUE, ChatColor.BOLD));
 	}
 
 }
