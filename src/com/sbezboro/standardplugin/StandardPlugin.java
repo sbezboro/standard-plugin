@@ -38,7 +38,6 @@ import com.sbezboro.standardplugin.listeners.CreatureSpawnListener;
 import com.sbezboro.standardplugin.listeners.DeathListener;
 import com.sbezboro.standardplugin.listeners.DispenseListener;
 import com.sbezboro.standardplugin.listeners.EntityDamageListener;
-import com.sbezboro.standardplugin.listeners.EntityTargetListener;
 import com.sbezboro.standardplugin.listeners.FactionClaimDenyListener;
 import com.sbezboro.standardplugin.listeners.HungerListener;
 import com.sbezboro.standardplugin.listeners.PlayerInteractListener;
@@ -57,7 +56,6 @@ import com.sbezboro.standardplugin.persistence.storages.HoneypotStorage;
 import com.sbezboro.standardplugin.persistence.storages.IStorage;
 import com.sbezboro.standardplugin.persistence.storages.PlayerStorage;
 import com.sbezboro.standardplugin.persistence.storages.TitleStorage;
-import com.sbezboro.standardplugin.tasks.PlayerSaverTask;
 
 public class StandardPlugin extends JavaPlugin {
 	private static final String webchatPattern = "[*WC*]";
@@ -83,8 +81,6 @@ public class StandardPlugin extends JavaPlugin {
 	private HoneypotManager honeypotManager;
 	
 	private FactionClaimDenyListener denyListener;
-
-	private PlayerSaverTask playerSaverTask;
 
 	public StandardPlugin() {
 		instance = this;
@@ -140,9 +136,6 @@ public class StandardPlugin extends JavaPlugin {
 		FactionsIntegration.addClaimDenyListener(denyListener);
 
 		registerJSONAPIHandlers();
-
-		playerSaverTask = new PlayerSaverTask(this);
-		playerSaverTask.runTaskTimer(this, 1200, 1200);
 	}
 
 	@Override
@@ -209,7 +202,7 @@ public class StandardPlugin extends JavaPlugin {
 		pluginManager.registerEvents(new DispenseListener(this), this);
 		pluginManager.registerEvents(new PlayerPortalListener(this), this);
 		pluginManager.registerEvents(new BlockBreakListener(this), this);
-		pluginManager.registerEvents(new EntityTargetListener(this), this);
+		//pluginManager.registerEvents(new EntityTargetListener(this), this);
 	}
 
 	private void registerJSONAPIHandlers() {
