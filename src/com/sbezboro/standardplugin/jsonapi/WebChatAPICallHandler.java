@@ -49,7 +49,7 @@ public class WebChatAPICallHandler extends APICallHandler {
 			}
 		}
 
-		StandardPlugin.webchatMessage(fullMessage);
+		StandardPlugin.consoleWebchatMessage(fullMessage);
 
 		return okResult();
 	}

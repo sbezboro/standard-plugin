@@ -261,6 +261,10 @@ public class StandardPlugin extends JavaPlugin {
 		broadcast(message, true, true);
 	}
 	
+	public static void consoleWebchatMessage(String message) {
+		Bukkit.getConsoleSender().sendMessage(consoleWebchatPattern + message);
+	}
+	
 	public static void webchatMessage(String message) {
 		Bukkit.getConsoleSender().sendMessage(webchatPattern + message);
 	}
