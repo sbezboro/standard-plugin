@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.json.simple.JSONObject;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class WebChatAPICallHandler extends APICallHandler {
@@ -32,15 +33,23 @@ public class WebChatAPICallHandler extends APICallHandler {
 	}
 
 	private JSONObject handleMessage(String username, String message) {
-		StandardPlayer player = plugin.getStandardPlayer(username);
+		StandardPlayer sender = plugin.getStandardPlayer(username);
 
-		if (player.isBanned()) {
+		if (sender.isBanned()) {
 			plugin.getLogger().warning(username + " has been blocked from web chat because they are banned.");
 			
 			return buildResult("BANNED", "banned");
 		}
+		
+		String fullMessage = ChatColor.BLUE + "[Web Chat] " + ChatColor.AQUA + sender.getDisplayName() + ChatColor.RESET + ": " + message;
+		
+		for (StandardPlayer player : plugin.getOnlinePlayers()) {
+			if (!EssentialsIntegration.doesPlayerIgnorePlayer(player, sender)) {
+				player.sendMessage(fullMessage);
+			}
+		}
 
-		StandardPlugin.broadcast(ChatColor.BLUE + "[Web Chat] " + ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + ": " + message);
+		StandardPlugin.webchatMessage(fullMessage);
 
 		return okResult();
 	}
