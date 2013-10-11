@@ -33,6 +33,11 @@ public class WebChatAPICallHandler extends APICallHandler {
 	}
 
 	private JSONObject handleMessage(String username, String message) {
+		if (username.equals("Server")) {
+			StandardPlugin.broadcast(ChatColor.BLUE + "[Web Chat] " + ChatColor.LIGHT_PURPLE + username + ChatColor.RESET + ": " + message);
+			return okResult();
+		}
+		
 		StandardPlayer sender = plugin.getStandardPlayer(username);
 
 		if (sender.isBanned()) {

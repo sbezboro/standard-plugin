@@ -93,6 +93,8 @@ public class DeathListener extends EventListener implements Listener {
 			}
 		}
 		
+		plugin.getStandardPlayer(victim).setNotInPvp();
+		
 		StandardPlugin.webchatMessage(deathMessage);
 
 		event.setDeathMessage(deathMessage);
