@@ -12,8 +12,7 @@ public abstract class ApiHttpRequest extends HttpRequest {
 		
 		this.apiType = apiType;
 		
-		addProperty("server-id", plugin.getServerId());
-		addProperty("secret-key", plugin.getSecretKey());
+		setAuth(String.valueOf(plugin.getServerId()), plugin.getSecretKey());
 	}
 
 	@Override

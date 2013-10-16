@@ -10,6 +10,8 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
+import javax.xml.bind.DatatypeConverter;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONObject;
@@ -28,6 +30,8 @@ public abstract class HttpRequest implements Runnable {
 	private HashMap<String, String> properties;
 	private HTTPMethod method;
 	private HttpRequestListener listener;
+	
+	private String authorization;
 	
 	protected int maxAttempts;
 	private int attemptNum;
@@ -57,6 +61,11 @@ public abstract class HttpRequest implements Runnable {
 
 	public void addProperty(String key, boolean value) {
 		properties.put(key, value ? "1" : "0");
+	}
+	
+	public void setAuth(String username, String password) {
+		String data = username + ":" + password;
+		authorization = "Basic " + DatatypeConverter.printBase64Binary(data.getBytes());
 	}
 
 	private String getPropertyData() {
@@ -97,6 +106,10 @@ public abstract class HttpRequest implements Runnable {
 				wr.write(getPropertyData());
 				wr.flush();
 				wr.close();
+			}
+			
+			if (authorization != null) {
+				conn.setRequestProperty("Authorization",  authorization);
 			}
 
 			String response = "";
