@@ -99,6 +99,10 @@ public abstract class HttpRequest implements Runnable {
 
 			URL url = new URL(urlString);
 			URLConnection conn = url.openConnection();
+			
+			if (authorization != null) {
+				conn.setRequestProperty("Authorization",  authorization);
+			}
 
 			if (method == HTTPMethod.POST) {
 				conn.setDoOutput(true);
@@ -106,10 +110,6 @@ public abstract class HttpRequest implements Runnable {
 				wr.write(getPropertyData());
 				wr.flush();
 				wr.close();
-			}
-			
-			if (authorization != null) {
-				conn.setRequestProperty("Authorization",  authorization);
 			}
 
 			String response = "";

@@ -101,7 +101,7 @@ public class DeathListener extends EventListener implements Listener {
 
 		Location location = victim.getLocation();
 		Bukkit.getConsoleSender().sendMessage(
-				deathMessage + ChatColor.RESET + " ([" + location.getWorld().getName() + "] " + ((int) location.getX()) + ", " + ((int) location.getY()) + ", "
+				ChatColor.RESET + " ([" + location.getWorld().getName() + "] " + ((int) location.getX()) + ", " + ((int) location.getY()) + ", "
 						+ ((int) location.getZ()) + ")");
 	}
 }

@@ -7,10 +7,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.sbezboro.http.HttpRequestManager;
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.model.Title;
+import com.sbezboro.standardplugin.net.LeaveHttpRequest;
 
 public class PlayerLeaveListener extends EventListener implements Listener {
 
@@ -43,6 +45,8 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 		}
 
 		player.onLeaveServer();
+		
+		HttpRequestManager.getInstance().startRequest(new LeaveHttpRequest(player.getName(), null));
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -57,5 +61,7 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 		}
 
 		player.onLeaveServer();
+		
+		HttpRequestManager.getInstance().startRequest(new LeaveHttpRequest(player.getName(), null));
 	}
 }
