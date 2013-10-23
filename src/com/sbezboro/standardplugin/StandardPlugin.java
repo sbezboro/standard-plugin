@@ -30,7 +30,7 @@ import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.integrations.FactionsIntegration;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.jsonapi.ForumPostAPICallHandler;
-import com.sbezboro.standardplugin.jsonapi.PlayerStatsAPICallHandler;
+import com.sbezboro.standardplugin.jsonapi.StatsAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.ServerStatusAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.WebChatAPICallHandler;
 import com.sbezboro.standardplugin.listeners.BlockBreakListener;
@@ -212,7 +212,7 @@ public class StandardPlugin extends JavaPlugin {
 
 			jsonapi.registerAPICallHandler(new ForumPostAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new ServerStatusAPICallHandler(this));
-			jsonapi.registerAPICallHandler(new PlayerStatsAPICallHandler(this));
+			jsonapi.registerAPICallHandler(new StatsAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new WebChatAPICallHandler(this));
 		}
 	}

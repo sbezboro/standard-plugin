@@ -2,6 +2,7 @@ package com.sbezboro.standardplugin.jsonapi;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.json.simple.JSONObject;
@@ -10,10 +11,11 @@ import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
-public class PlayerStatsAPICallHandler extends APICallHandler {
+public class StatsAPICallHandler extends APICallHandler {
+	private boolean lastSession = true;
 
-	public PlayerStatsAPICallHandler(StandardPlugin plugin) {
-		super(plugin, "player_stats");
+	public StatsAPICallHandler(StandardPlugin plugin) {
+		super(plugin, "stats");
 	}
 
 	@Override
@@ -23,7 +25,8 @@ public class PlayerStatsAPICallHandler extends APICallHandler {
 			return okResult();
 		}
 		
-		ArrayList<HashMap<String, Object>> players = (ArrayList<HashMap<String, Object>>) payload.get("data");
+		Map<String, Object> data = (Map<String, Object>) payload.get("data");
+		ArrayList<HashMap<String, Object>> players = (ArrayList<HashMap<String, Object>>) data.get("player_stats");
 
 		for (HashMap<String, Object> playerData : players) {
 			String username = (String) playerData.get("username");
@@ -71,6 +74,16 @@ public class PlayerStatsAPICallHandler extends APICallHandler {
 				}
 			}
 		}
+		
+		boolean session = (Boolean) data.get("session");
+		
+		if (!session) {
+			StandardPlugin.broadcast(ChatColor.DARK_AQUA + "Session servers are down! If you leave the server now, you probably won't be able to get back on!", false, true);
+		} else if (!lastSession) {
+			StandardPlugin.broadcast(ChatColor.DARK_AQUA + "Session servers appear to have come back up.", false, true);
+		}
+		
+		lastSession = session;
 
 		return okResult();
 	}
