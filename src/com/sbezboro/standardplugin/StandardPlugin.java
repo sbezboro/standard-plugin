@@ -364,6 +364,10 @@ public class StandardPlugin extends JavaPlugin {
 	public int getPvpLogThreshold() {
 		return config.getPvpLogThreshold();
 	}
+	
+	public boolean getNerfEndermenDrops() {
+		return config.getNerfEndermenDrops();
+	}
 
 	public GateStorage getGateStorage() {
 		return gateStorage;

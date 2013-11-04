@@ -18,6 +18,8 @@ public class StandardConfig {
 	private int endResetPeriod;
 
 	private int pvpLogThreshold;
+	
+	private boolean nerfEndermenDrops;
 
 	public StandardConfig(StandardPlugin plugin) {
 		this.plugin = plugin;
@@ -45,6 +47,8 @@ public class StandardConfig {
 		endResetPeriod = config.getInt("end-reset-period");
 		
 		pvpLogThreshold = config.getInt("pvp-log-threshold");
+		
+		nerfEndermenDrops = config.getBoolean("nerf-endermen-drops");
 	}
 
 	public int getServerId() {
@@ -85,5 +89,9 @@ public class StandardConfig {
 
 	public int getPvpLogThreshold() {
 		return pvpLogThreshold;
+	}
+	
+	public boolean getNerfEndermenDrops() {
+		return nerfEndermenDrops;
 	}
 }
