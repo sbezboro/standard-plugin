@@ -81,10 +81,10 @@ public class EndResetTask extends BaseTask {
 						if (z >= newZ + 3 && z <= newZ + 5) {
 							if (x == newX + 2) {
 								block.setType(Material.ENDER_PORTAL_FRAME);
-								block.setData((byte) 1); // West
+								block.setData((byte) 3); // East
 							} else if (x == newX + 6) {
 								block.setType(Material.ENDER_PORTAL_FRAME);
-								block.setData((byte) 3); // East
+								block.setData((byte) 1); // West
 							}
 						} else if (x >= newX + 3 && x <= newX + 5) {
 							if (z == newZ + 2) {
