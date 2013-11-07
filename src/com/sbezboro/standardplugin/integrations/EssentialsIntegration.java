@@ -49,6 +49,14 @@ public class EssentialsIntegration extends PluginIntegration {
 
 		return tps;
 	}
+	
+	public static boolean isPlayerMuted(String username) {
+		if (!enabled) {
+			return false;
+		}
+		
+		return getUser(username).isMuted();
+	}
 
     public static boolean doesPlayerIgnorePlayer(Player first, Player second) {
         if (!enabled) {

@@ -42,8 +42,12 @@ public class WebChatAPICallHandler extends APICallHandler {
 
 		if (sender.isBanned()) {
 			plugin.getLogger().warning(username + " has been blocked from web chat because they are banned.");
-			
-			return buildResult("BANNED", "banned");
+			return buildResult("banned");
+		}
+		
+		if (sender.isMuted()) {
+			plugin.getLogger().warning(username + " has been blocked from web chat because they are muted.");
+			return buildResult("muted");
 		}
 		
 		String fullMessage = ChatColor.BLUE + "[Web Chat] " + ChatColor.AQUA + sender.getDisplayName() + ChatColor.RESET + ": " + message;

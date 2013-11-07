@@ -435,6 +435,10 @@ public class StandardPlayer extends PlayerDelegate {
 
 		return getName();
 	}
+	
+	public boolean isMuted() {
+		return EssentialsIntegration.isPlayerMuted(getName());
+	}
 
 	@Override
 	public String getDisplayName() {

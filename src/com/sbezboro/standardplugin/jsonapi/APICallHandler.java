@@ -18,10 +18,11 @@ public abstract class APICallHandler implements JSONAPICallHandler {
 	@SuppressWarnings("serial")
 	protected static final Map<String, Integer> API_CALL_RESULTS = new HashMap<String, Integer>() {
 		{
-			put("OK", 0);
-			put("EXCEPTION", 1);
-			put("NOT_HANDLED", 2);
-			put("BANNED", 3);
+			put("ok", 0);
+			put("exception", 1);
+			put("not_handled", 2);
+			put("banned", 3);
+			put("muted", 4);
 		}
 	};
 
@@ -47,14 +48,14 @@ public abstract class APICallHandler implements JSONAPICallHandler {
 			try {
 				JSONObject result = handle(payload);
 				
-				if (result.get("result") == API_CALL_RESULTS.get("NOT_HANDLED")) {
+				if (result.get("result") == API_CALL_RESULTS.get("not_handled")) {
 					logger.warning("API call not handled properly! Args: " + StringUtils.join(args));
 				}
 	
 				return result;
 			} catch (Exception e) {
 				e.printStackTrace();
-				return buildResult("EXCEPTION", "Exception while handling API call: " + e.toString());
+				return buildResult("exception", "Exception while handling API call: " + e.toString());
 			}
 		}
 
@@ -90,17 +91,21 @@ public abstract class APICallHandler implements JSONAPICallHandler {
 	protected JSONObject buildResult(String result, String message) {
 		return buildResult(result, message, null);
 	}
+
+	protected JSONObject buildResult(String result) {
+		return buildResult(result, null, null);
+	}
 	
 	protected JSONObject okResult() {
-		return buildResult("OK", null);
+		return buildResult("ok", null);
 	}
 	
 	protected JSONObject okResult(HashMap<String, Object> data) {
-		return buildResult("OK", null, data);
+		return buildResult("ok", null, data);
 	}
 	
 	protected JSONObject notHandledResult() {
-		return buildResult("NOT_HANDLED", "args not handled properly");
+		return buildResult("not_handled", "args not handled properly");
 	}
 
 	public abstract JSONObject handle(HashMap<String, Object> payload);
