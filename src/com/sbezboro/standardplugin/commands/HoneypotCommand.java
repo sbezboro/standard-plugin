@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.managers.HoneypotManager;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class HoneypotCommand extends BaseCommand {
@@ -28,6 +29,31 @@ public class HoneypotCommand extends BaseCommand {
 			
 			if (args.length == 1) {
 				honeypotManager.createHoneypot(null);
+			} else if (args.length == 3) {
+				if (args[1].equals("under")) {
+					World overworld = plugin.getServer().getWorld(StandardPlugin.OVERWORLD_NAME);
+					
+					StandardPlayer player = plugin.getStandardPlayer(sender);
+					
+					if (player == null) {
+						showPlayerOnlyMessage(sender);
+						return false;
+					}
+
+					try {
+						int x = player.getLocation().getBlockX();
+						int y = player.getLocation().getBlockY() - Integer.parseInt(args[2]);
+						int z = player.getLocation().getBlockZ();
+						
+						honeypotManager.createHoneypot(new Location(overworld, x, y, z));
+					} catch (NumberFormatException e) {
+						sender.sendMessage("Error parsing coordinates");
+						return false;
+					}
+				} else {
+					showUsageInfo(sender);
+					return false;
+				}
 			} else if (args.length == 4) {
 				World overworld = plugin.getServer().getWorld(StandardPlugin.OVERWORLD_NAME);
 				
@@ -61,6 +87,7 @@ public class HoneypotCommand extends BaseCommand {
 	@Override
 	public void showUsageInfo(CommandSender sender) {
 		sender.sendMessage("Usage: /" + name + " generate [x y z]");
+		sender.sendMessage("Usage: /" + name + " generate under <below>");
 	}
 
 	@Override
