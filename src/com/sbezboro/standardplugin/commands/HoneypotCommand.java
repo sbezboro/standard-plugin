@@ -44,8 +44,11 @@ public class HoneypotCommand extends BaseCommand {
 						int x = player.getLocation().getBlockX();
 						int y = player.getLocation().getBlockY() - Integer.parseInt(args[2]);
 						int z = player.getLocation().getBlockZ();
+
+						Location location = new Location(overworld, x, y, z);
+						honeypotManager.createHoneypot(location);
 						
-						honeypotManager.createHoneypot(new Location(overworld, x, y, z));
+						sender.sendMessage("Honeypot generated at " + MiscUtil.locationFormat(location));
 					} catch (NumberFormatException e) {
 						sender.sendMessage("Error parsing coordinates");
 						return false;
@@ -62,7 +65,10 @@ public class HoneypotCommand extends BaseCommand {
 					int y = Integer.parseInt(args[2]);
 					int z = Integer.parseInt(args[3]);
 					
-					honeypotManager.createHoneypot(new Location(overworld, x, y, z));
+					Location location = new Location(overworld, x, y, z);
+					honeypotManager.createHoneypot(location);
+					
+					sender.sendMessage("Honeypot generated at " + MiscUtil.locationFormat(location));
 				} catch (NumberFormatException e) {
 					sender.sendMessage("Error parsing coordinates");
 					return false;
