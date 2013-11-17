@@ -93,9 +93,9 @@ public class EndResetManager extends BaseManager {
 	private long decideNextEndReset() {
 		// Get x days from now
 		long time = System.currentTimeMillis() + plugin.getEndResetPeriod() * 86400000;
-		// Round up to get the start of the next day in GMT, 5PM Pacific, 8PM Eastern,
+		// Round to get the start of the next day in GMT, 5PM Pacific, 8PM Eastern,
 		// when there are the most players on more-or-less
-		return ((time / 86400000) + 1) * 86400000;
+		return (time / 86400000) * 86400000;
 	}
 	
 	public World getNewEndWorld() {

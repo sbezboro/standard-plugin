@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.alecgorge.minecraft.jsonapi.JSONAPI;
 import com.sbezboro.standardplugin.commands.ClearBedCommand;
 import com.sbezboro.standardplugin.commands.EndCommand;
+import com.sbezboro.standardplugin.commands.EndresetCommand;
 import com.sbezboro.standardplugin.commands.ForumMuteCommand;
 import com.sbezboro.standardplugin.commands.GateCommand;
 import com.sbezboro.standardplugin.commands.HoneypotCommand;
@@ -182,6 +183,7 @@ public class StandardPlugin extends JavaPlugin {
 		commands.add(new EndCommand(this));
 		commands.add(new ClearBedCommand(this));
 		commands.add(new HoneypotCommand(this));
+		commands.add(new EndresetCommand(this));
 
 		for (ICommand command : commands) {
 			command.register();

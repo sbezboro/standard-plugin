@@ -68,6 +68,10 @@ commands:
         description: Honeypot administration
         permission: standardplugin.honeypot
         permission-message: You don't have permission
+    endreset:
+        description: Find out when the next end reset is
+        permission: standardplugin.endreset
+        permission-message: You don't have permission
 
 permissions:
     standardplugin.standard:
@@ -100,3 +104,5 @@ permissions:
         default: true
     standardplugin.honeypot:
         default: op
+    standardplugin.endreset:
+        default: true
