@@ -6,7 +6,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.sbezboro.http.HttpRequestManager;
-import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.net.KillHttpRequest;
 import com.sbezboro.standardplugin.util.MiscUtil;
 
@@ -20,10 +19,6 @@ public class KillEvent {
 	}
 
 	public void log() {
-		if (StandardPlugin.getPlugin().isDebug()) {
-			return;
-		}
-
 		if (killer instanceof Arrow) {
 			Arrow arrow = (Arrow) killer;
 
@@ -31,13 +26,13 @@ public class KillEvent {
 				Player player = (Player) arrow.getShooter();
 
 				HttpRequestManager.getInstance().startRequest(
-						new KillHttpRequest(player.getName(), MiscUtil.getNameFromLivingEntity(victim).toLowerCase(), null));
+						new KillHttpRequest(player.getName(), MiscUtil.getNameFromLivingEntity(victim).toLowerCase()));
 			}
 		} else if (killer instanceof Player) {
 			Player player = (Player) killer;
 
 			HttpRequestManager.getInstance().startRequest(
-					new KillHttpRequest(player.getName(), MiscUtil.getNameFromLivingEntity(victim).toLowerCase(), null));
+					new KillHttpRequest(player.getName(), MiscUtil.getNameFromLivingEntity(victim).toLowerCase()));
 		}
 	}
 }

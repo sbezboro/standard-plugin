@@ -88,10 +88,10 @@ public class DeathEvent {
 		if (killer instanceof Player) {
 			Player playerKiller = (Player) killer;
 			HttpRequestManager.getInstance().startRequest(
-					new DeathHttpRequest(player.getName(), "player", playerKiller.getName(), null));
+					new DeathHttpRequest(player.getName(), "player", playerKiller.getName()));
 		} else {
 			HttpRequestManager.getInstance().startRequest(
-					new DeathHttpRequest(player.getName(), MiscUtil.getNameFromLivingEntity(killer).toLowerCase(), null));
+					new DeathHttpRequest(player.getName(), MiscUtil.getNameFromLivingEntity(killer).toLowerCase()));
 		}
 	}
 

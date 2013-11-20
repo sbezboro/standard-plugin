@@ -31,8 +31,8 @@ import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.integrations.FactionsIntegration;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.jsonapi.ForumPostAPICallHandler;
-import com.sbezboro.standardplugin.jsonapi.StatsAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.ServerStatusAPICallHandler;
+import com.sbezboro.standardplugin.jsonapi.StatsAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.WebChatAPICallHandler;
 import com.sbezboro.standardplugin.listeners.BlockBreakListener;
 import com.sbezboro.standardplugin.listeners.CreatureSpawnListener;
@@ -204,7 +204,8 @@ public class StandardPlugin extends JavaPlugin {
 		pluginManager.registerEvents(new DispenseListener(this), this);
 		pluginManager.registerEvents(new PlayerPortalListener(this), this);
 		pluginManager.registerEvents(new BlockBreakListener(this), this);
-		//pluginManager.registerEvents(new EntityTargetListener(this), this);
+		// Figure this out later
+		//pluginManager.registerEvents(new FurnaceExtractListener(this), this);
 	}
 
 	private void registerJSONAPIHandlers() {
