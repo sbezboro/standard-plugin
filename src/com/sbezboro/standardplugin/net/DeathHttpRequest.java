@@ -1,6 +1,5 @@
 package com.sbezboro.standardplugin.net;
 
-import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
 
 public class DeathHttpRequest extends ApiHttpRequest {

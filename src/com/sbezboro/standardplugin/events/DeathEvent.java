@@ -81,7 +81,7 @@ public class DeathEvent {
 		}
 
 		HttpRequestManager.getInstance().startRequest(
-				new DeathHttpRequest(player.getName(), typeString, null));
+				new DeathHttpRequest(player.getName(), typeString));
 	}
 
 	private void log(LivingEntity killer) {
