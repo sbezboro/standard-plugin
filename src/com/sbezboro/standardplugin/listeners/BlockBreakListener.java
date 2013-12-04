@@ -23,6 +23,7 @@ public class BlockBreakListener extends EventListener implements Listener {
 		add(Material.DIAMOND_ORE);
 		add(Material.EMERALD_ORE);
 		add(Material.COAL_ORE);
+		add(Material.GLOWING_REDSTONE_ORE);
 		add(Material.REDSTONE_ORE);
 		add(Material.LAPIS_ORE);
 		add(Material.QUARTZ_ORE);
@@ -50,9 +51,15 @@ public class BlockBreakListener extends EventListener implements Listener {
 		ItemStack tool = player.getItemInHand();
 		
 		// Track this ore discovery if breaking this block yields the raw material
-		if (event.getExpToDrop() > 0 && !tool.getEnchantments().containsKey(Enchantment.SILK_TOUCH)
+		if (!tool.getEnchantments().containsKey(Enchantment.SILK_TOUCH)
 				&& MINABLE_ORES.contains(block.getType())) {
-			OreDiscoveryEvent ev = new OreDiscoveryEvent(player, block.getType().toString(), location);
+			String type = block.getType().toString();
+			
+			if (block.getType() == Material.GLOWING_REDSTONE_ORE) {
+				type = Material.REDSTONE_ORE.toString();
+			}
+			
+			OreDiscoveryEvent ev = new OreDiscoveryEvent(player, type, location);
 			ev.log();
 		}
 	}
