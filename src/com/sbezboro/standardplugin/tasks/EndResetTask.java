@@ -40,14 +40,16 @@ public class EndResetTask extends BaseTask {
 			for (int z = newZ; z < newZ + 9; ++z) {
 				for (int y = newY; y < newY + 8; ++y) {
 					Block block = world.getBlockAt(x, y, z);
+					Material type = block.getType();
+					Biome biome = block.getBiome();
 					
-					if (block.getType() != Material.STONE && block.getType() != Material.DIRT
-							&& block.getType() != Material.GRAVEL && block.getType() != Material.COAL_ORE
-							&& block.getType() != Material.IRON_ORE) {
+					if (type != Material.STONE && type != Material.DIRT
+							&& type != Material.GRAVEL && type != Material.COAL_ORE
+							&& type != Material.IRON_ORE) {
 						return false;
 					}
 					
-					if (block.getBiome() == Biome.OCEAN) {
+					if (biome == Biome.OCEAN || biome == Biome.DEEP_OCEAN) {
 						return false;
 					}
 				}
