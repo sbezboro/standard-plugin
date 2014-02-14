@@ -69,6 +69,8 @@ public class StandardPlugin extends JavaPlugin {
 
 	private List<IStorage> storages;
 	private List<LogWriter> logs;
+	
+	private List<SubPlugin> subPlugins;
 
 	private StandardConfig config;
 
@@ -118,6 +120,8 @@ public class StandardPlugin extends JavaPlugin {
 		storages.add(honeypotStorage);
 
 		logs = new ArrayList<LogWriter>();
+		
+		subPlugins = new ArrayList<SubPlugin>();
 
 		config = new StandardConfig(this);
 
@@ -218,6 +222,12 @@ public class StandardPlugin extends JavaPlugin {
 			jsonapi.registerAPICallHandler(new StatsAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new WebChatAPICallHandler(this));
 		}
+	}
+	
+	public void registerSubPlugin(SubPlugin subPlugin) {
+		getLogger().info("Regestring sub-plugin '" + subPlugin.getSubPluginName() + "'");
+		
+		subPlugins.add(subPlugin);
 	}
 	
 	private static String webchatConsoleGate(String message, boolean webchat, boolean console) {

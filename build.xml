@@ -13,8 +13,8 @@
 		<delete file="${jarfile}"/>
 		<jar destfile="${jarfile}">
 			<fileset dir="bin" includes="**/*.class"/>
-			<fileset dir="src" includes="plugin.yml"/>
-			<fileset dir="src" includes="config.yml"/>
+			<fileset dir="." includes="plugin.yml"/>
+			<fileset dir="." includes="config.yml"/>
 		</jar>
 	</target>
 	
