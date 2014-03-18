@@ -2,6 +2,7 @@ package com.sbezboro.standardplugin.persistence.storages;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,6 +24,8 @@ public abstract class MultiFileStorage<T extends PersistedObject> implements Fil
 	public MultiFileStorage(StandardPlugin plugin, String dataFolder) {
 		this.plugin = plugin;
 		this.dataFolder = dataFolder;
+		
+		new File(plugin.getDataFolder(), dataFolder).mkdirs();
 
 		idToFile = new HashMap<String, File>();
 		idToConfig = new HashMap<String, FileConfiguration>();
@@ -61,11 +64,24 @@ public abstract class MultiFileStorage<T extends PersistedObject> implements Fil
 
 		return config;
 	}
+	
+	public void loadObjects() {
+		File directory = new File(plugin.getDataFolder(), dataFolder);
+		for (File file : directory.listFiles()) {
+			if (file.isFile()) {
+				String identifier = file.getName().split("\\.(?=[^\\.]+$)")[0];
+				if (identifier.length() > 0) {
+					T object = createObject(identifier);
+					cacheObject(identifier, object);
+				}
+			}
+		}
+	}
 
 	@Override
-	public void save(String identifer) {
-		File file = idToFile.get(identifer);
-		FileConfiguration config = idToConfig.get(identifer);
+	public void save(String identifier) {
+		File file = idToFile.get(identifier);
+		FileConfiguration config = idToConfig.get(identifier);
 		if (config == null || file == null) {
 			return;
 		}
@@ -76,6 +92,15 @@ public abstract class MultiFileStorage<T extends PersistedObject> implements Fil
 			plugin.getLogger().severe("Error saving object to file!");
 		}
 	}
+	
+	public void remove(String identifier) {
+		File file = idToFile.get(identifier);
+		file.delete();
+		
+		idToFile.remove(identifier);
+		idToConfig.remove(identifier);
+		idToObject.remove(identifier);
+	}
 
 	public final Object loadProperty(String identifier, String key) {
 		FileConfiguration config = idToConfig.get(identifier);
@@ -85,9 +110,17 @@ public abstract class MultiFileStorage<T extends PersistedObject> implements Fil
 	public final void saveProperty(String identifier, String key, Object value) {
 		idToConfig.get(identifier).set(key, value);
 	}
+	
+	protected Collection<T> getObjects() {
+		return idToObject.values();
+	}
 
 	protected T getObject(String identifier) {
 		return idToObject.get(identifier);
+	}
+	
+	public T createObject(String identifier) {
+		return null;
 	}
 
 	protected void cacheObject(String identifier, T object) {

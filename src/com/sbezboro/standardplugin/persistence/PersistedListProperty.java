@@ -88,6 +88,10 @@ public class PersistedListProperty<T> implements Iterable<T>, PersistedBase {
 
 		return copy;
 	}
+	
+	public List<T> getList() {
+		return list;
+	}
 
 	@Override
 	public Iterator<T> iterator() {

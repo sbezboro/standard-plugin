@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.TimeZone;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Horse.Variant;
@@ -35,7 +34,6 @@ public class MiscUtil {
 	}
 
 	public static String getNameFromLivingEntity(LivingEntity livingEntity) {
-		Bukkit.broadcastMessage(livingEntity.toString());
 		if (livingEntity == null) {
 			return "dispenser";
 		} else if (livingEntity instanceof Player) {
