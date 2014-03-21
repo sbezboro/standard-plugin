@@ -158,6 +158,10 @@ public class StandardPlugin extends JavaPlugin {
 		for (IStorage storage : storages) {
 			storage.reload();
 		}
+		
+		for (SubPlugin subPlugin : subPlugins) {
+			subPlugin.reloadPlugin();
+		}
 	}
 
 	private void registerCommands() {
@@ -220,6 +224,10 @@ public class StandardPlugin extends JavaPlugin {
 		for (ICommand command : subPlugin.getCommands()) {
 			command.register();
 		}
+		
+		getConfig().setDefaults(subPlugin.getConfig());
+		getConfig().options().copyDefaults(true);
+		saveConfig();
 		
 		subPlugins.add(subPlugin);
 	}
