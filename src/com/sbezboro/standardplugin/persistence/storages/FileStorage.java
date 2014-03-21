@@ -8,4 +8,7 @@ public interface FileStorage extends IStorage {
 	
 	public Object loadProperty(String identifier, String key);
 	public void saveProperty(String identifier, String key, Object value);
+	
+	public void remove(String identifier);
+	public void rename(String fromIdentifier, String toIdentifier);
 }

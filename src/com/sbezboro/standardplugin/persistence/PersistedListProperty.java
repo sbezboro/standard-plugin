@@ -3,6 +3,7 @@ package com.sbezboro.standardplugin.persistence;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -37,8 +38,12 @@ public class PersistedListProperty<T> implements Iterable<T>, PersistedBase {
 					if (Persistable.class.isAssignableFrom(cls)) {
 						Persistable persistable = (Persistable) cls.newInstance();
 						if (obj != null) {
-							ConfigurationSection section = (ConfigurationSection) obj;
-							persistable.loadFromPersistance(section.getValues(false));
+							if (obj instanceof ConfigurationSection) {
+								ConfigurationSection section = (ConfigurationSection) obj;
+								persistable.loadFromPersistance(section.getValues(false));
+							} else {
+								persistable.loadFromPersistance((Map<String, Object>) obj);
+							}
 						}
 
 						this.list.add((T) persistable);

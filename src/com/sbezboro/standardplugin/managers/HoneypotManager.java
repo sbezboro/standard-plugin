@@ -10,7 +10,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import com.sbezboro.standardplugin.StandardPlugin;
-import com.sbezboro.standardplugin.integrations.FactionsIntegration;
 import com.sbezboro.standardplugin.model.Honeypot;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.persistence.storages.HoneypotStorage;
@@ -42,10 +41,6 @@ public class HoneypotManager extends BaseManager {
 		
 		for (int x = newX - 2; x <= newX + 2; ++x) {
 			for (int z = newZ - 2; z <= newZ + 2; ++z) {
-				if (!FactionsIntegration.isWilderness(new Location(world, x, 64, z))) {
-					return false;
-				}
-				
 				for (int y = newY - 2; y <= newY + 2; ++y) {
 					Block block = world.getBlockAt(x, y, z);
 					

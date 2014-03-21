@@ -80,6 +80,11 @@ public abstract class PersistedObject {
 	public final void saveProperty(String key, Object value) {
 		saveProperty(key, value, true);
 	}
+	
+	public final void setIdentifier(String identifier) {
+		storage.rename(this.identifier, identifier);
+		this.identifier = identifier;
+	}
 
 	public final void save() {
 		storage.save(identifier);

@@ -95,6 +95,21 @@ public abstract class SingleFileStorage<T extends PersistedObject> implements Fi
 			plugin.getLogger().severe("Error saving object to file!");
 		}
 	}
+	
+	@Override
+	public void remove(String identifier) {
+		idToConfig.remove(identifier);
+		idToObject.remove(identifier);
+	}
+
+	@Override
+	public void rename(String fromIdentifier, String toIdentifier) {
+		ConfigurationSection config = idToConfig.remove(fromIdentifier);
+		T object = idToObject.remove(fromIdentifier);
+		
+		idToConfig.put(toIdentifier, config);
+		idToObject.put(toIdentifier, object);
+	}
 
 	@Override
 	public final Object loadProperty(String identifier, String key) {

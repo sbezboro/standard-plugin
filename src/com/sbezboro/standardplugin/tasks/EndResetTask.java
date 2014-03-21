@@ -9,7 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
-import com.sbezboro.standardplugin.integrations.FactionsIntegration;
 import com.sbezboro.standardplugin.managers.EndResetManager;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.persistence.storages.EndResetStorage;
@@ -30,12 +29,6 @@ public class EndResetTask extends BaseTask {
 	}
 	
 	private boolean testEndPortalLocation(World world, int newX, int newY, int newZ) {
-		// Faction territory, ignore
-		if (!FactionsIntegration.isWilderness(new Location(world, newX, newY, newZ))
-				|| !FactionsIntegration.isWilderness(new Location(world, newX + 8, newY, newZ + 8))) {
-			return false;
-		}
-		
 		for (int x = newX; x < newX + 9; ++x) {
 			for (int z = newZ; z < newZ + 9; ++z) {
 				for (int y = newY; y < newY + 8; ++y) {

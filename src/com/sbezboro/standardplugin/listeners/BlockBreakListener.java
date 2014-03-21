@@ -33,7 +33,7 @@ public class BlockBreakListener extends EventListener implements Listener {
 		super(plugin);
 	}
 	
-	@EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
+	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled=true)
 	public void onBlockBreak(org.bukkit.event.block.BlockBreakEvent event) {
 		Block block = event.getBlock();
 		Location location = block.getLocation();

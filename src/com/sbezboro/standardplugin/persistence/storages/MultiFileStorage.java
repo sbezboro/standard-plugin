@@ -93,6 +93,7 @@ public abstract class MultiFileStorage<T extends PersistedObject> implements Fil
 		}
 	}
 	
+	@Override
 	public void remove(String identifier) {
 		File file = idToFile.get(identifier);
 		file.delete();
@@ -100,6 +101,28 @@ public abstract class MultiFileStorage<T extends PersistedObject> implements Fil
 		idToFile.remove(identifier);
 		idToConfig.remove(identifier);
 		idToObject.remove(identifier);
+	}
+
+	@Override
+	public void rename(String fromIdentifier, String toIdentifier) {
+		assert(!idToFile.containsKey(toIdentifier));
+		
+		File file = idToFile.remove(fromIdentifier);
+		file.delete();
+		
+		FileConfiguration config = idToConfig.remove(fromIdentifier);
+		T object = idToObject.remove(fromIdentifier);
+		
+		file = new File(plugin.getDataFolder(), dataFolder + "/" + toIdentifier + ".yml");
+		idToFile.put(toIdentifier, file);
+		idToConfig.put(toIdentifier, config);
+		idToObject.put(toIdentifier, object);
+
+		try {
+			config.save(file);
+		} catch (IOException e) {
+			plugin.getLogger().severe("Error saving object to file!");
+		}
 	}
 
 	public final Object loadProperty(String identifier, String key) {

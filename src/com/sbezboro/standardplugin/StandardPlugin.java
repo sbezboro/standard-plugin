@@ -28,7 +28,6 @@ import com.sbezboro.standardplugin.commands.TitlesCommand;
 import com.sbezboro.standardplugin.commands.UnfreezeCommand;
 import com.sbezboro.standardplugin.commands.WebchatCommand;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
-import com.sbezboro.standardplugin.integrations.FactionsIntegration;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.jsonapi.ForumPostAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.ServerStatusAPICallHandler;
@@ -39,7 +38,6 @@ import com.sbezboro.standardplugin.listeners.CreatureSpawnListener;
 import com.sbezboro.standardplugin.listeners.DeathListener;
 import com.sbezboro.standardplugin.listeners.DispenseListener;
 import com.sbezboro.standardplugin.listeners.EntityDamageListener;
-import com.sbezboro.standardplugin.listeners.FactionClaimDenyListener;
 import com.sbezboro.standardplugin.listeners.HungerListener;
 import com.sbezboro.standardplugin.listeners.PlayerInteractListener;
 import com.sbezboro.standardplugin.listeners.PlayerJoinListener;
@@ -82,8 +80,6 @@ public class StandardPlugin extends JavaPlugin {
 
 	private EndResetManager endResetManager;
 	private HoneypotManager honeypotManager;
-	
-	private FactionClaimDenyListener denyListener;
 
 	public StandardPlugin() {
 		instance = this;
@@ -135,10 +131,6 @@ public class StandardPlugin extends JavaPlugin {
 
 		EssentialsIntegration.init(this);
 		SimplyVanishIntegration.init(this);
-		FactionsIntegration.init(this);
-		
-		denyListener = new FactionClaimDenyListener(this);
-		FactionsIntegration.addClaimDenyListener(denyListener);
 
 		registerJSONAPIHandlers();
 	}
@@ -156,8 +148,6 @@ public class StandardPlugin extends JavaPlugin {
 		}
 
 		Bukkit.getScheduler().cancelTasks(this);
-		
-		FactionsIntegration.removeClaimDenyListener(denyListener);
 	}
 
 	public void reloadPlugin() {
