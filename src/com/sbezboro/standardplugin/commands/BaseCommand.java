@@ -35,7 +35,7 @@ public abstract class BaseCommand implements ICommand, CommandExecutor {
 		return false;
 	}
 
-	protected void showPlayerOnlyMessage(CommandSender sender) {
+	public void showPlayerOnlyMessage(CommandSender sender) {
 		sender.sendMessage("This command can only be run by a player.");
 	}
 
