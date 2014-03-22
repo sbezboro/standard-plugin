@@ -16,6 +16,7 @@ import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.net.DeathHttpRequest;
 import com.sbezboro.standardplugin.util.MiscUtil;
+import org.bukkit.projectiles.ProjectileSource;
 
 public class DeathEvent {
 	public static enum DeathType {
@@ -110,7 +111,11 @@ public class DeathEvent {
 			if (damager instanceof Arrow) {
 				Arrow arrow = (Arrow) damager;
 
-				log(arrow.getShooter());
+				ProjectileSource source = arrow.getShooter();
+
+				if (source instanceof LivingEntity) {
+					log((LivingEntity) source);
+				}
 			} else if (cause.equals(DamageCause.ENTITY_EXPLOSION)) {
 				log(DeathType.EXPLOSION);
 			} else if (damager instanceof LivingEntity) {

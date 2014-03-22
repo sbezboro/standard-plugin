@@ -134,6 +134,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return offlinePlayer.serialize();
 	}
 
+	@Deprecated
 	public void setBanned(boolean banned) {
 		offlinePlayer.setBanned(banned);
 	}
@@ -190,6 +191,16 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.awardAchievement(achievement);
 	}
 
+	@Override
+	public void removeAchievement(Achievement achievement) {
+		player.removeAchievement(achievement);
+	}
+
+	@Override
+	public boolean hasAchievement(Achievement achievement) {
+		return player.hasAchievement(achievement);
+	}
+
 	public boolean beginConversation(Conversation conversation) {
 		return player.beginConversation(conversation);
 	}
@@ -206,10 +217,17 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.closeInventory();
 	}
 
+	@Deprecated
 	public void damage(int arg0, Entity arg1) {
 		player.damage(arg0, arg1);
 	}
 
+	@Override
+	public double getHealth() {
+		return player.getHealth();
+	}
+
+	@Deprecated
 	public void damage(int arg0) {
 		player.damage(arg0);
 	}
@@ -326,6 +344,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getLastDamageCause();
 	}
 
+	@Deprecated
 	public List<Block> getLastTwoTargetBlocks(HashSet<Byte> transparent, int maxDistance) {
 		return player.getLastTwoTargetBlocks(transparent, maxDistance);
 	}
@@ -334,6 +353,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getLevel();
 	}
 
+	@Deprecated
 	public List<Block> getLineOfSight(HashSet<Byte> transparent, int maxDistance) {
 		return player.getLineOfSight(transparent, maxDistance);
 	}
@@ -418,6 +438,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getSleepTicks();
 	}
 
+	@Deprecated
 	public Block getTargetBlock(HashSet<Byte> transparent, int maxDistance) {
 		return player.getTargetBlock(transparent, maxDistance);
 	}
@@ -490,16 +511,86 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.incrementStatistic(statistic, amount);
 	}
 
+	@Override
+	public void decrementStatistic(Statistic statistic, int i) throws IllegalArgumentException {
+		player.decrementStatistic(statistic, i);
+	}
+
+	@Override
+	public void setStatistic(Statistic statistic, int i) throws IllegalArgumentException {
+		player.setStatistic(statistic, i);
+	}
+
+	@Override
+	public int getStatistic(Statistic statistic) throws IllegalArgumentException {
+		return player.getStatistic(statistic);
+	}
+
 	public void incrementStatistic(Statistic statistic, Material material, int amount) {
 		player.incrementStatistic(statistic, material, amount);
+	}
+
+	@Override
+	public void decrementStatistic(Statistic statistic, Material material, int i) throws IllegalArgumentException {
+		player.decrementStatistic(statistic, material, i);
+	}
+
+	@Override
+	public void setStatistic(Statistic statistic, Material material, int i) throws IllegalArgumentException {
+		player.setStatistic(statistic, material, i);
+	}
+
+	@Override
+	public void incrementStatistic(Statistic statistic, EntityType entityType) throws IllegalArgumentException {
+		player.incrementStatistic(statistic, entityType);
+	}
+
+	@Override
+	public void decrementStatistic(Statistic statistic, EntityType entityType) throws IllegalArgumentException {
+		player.decrementStatistic(statistic, entityType);
+	}
+
+	@Override
+	public int getStatistic(Statistic statistic, EntityType entityType) throws IllegalArgumentException {
+		return player.getStatistic(statistic, entityType);
+	}
+
+	@Override
+	public void incrementStatistic(Statistic statistic, EntityType entityType, int i) throws IllegalArgumentException {
+		player.incrementStatistic(statistic, entityType, i);
+	}
+
+	@Override
+	public void decrementStatistic(Statistic statistic, EntityType entityType, int i) {
+		player.decrementStatistic(statistic, entityType, i);
+	}
+
+	@Override
+	public void setStatistic(Statistic statistic, EntityType entityType, int i) {
+		player.setStatistic(statistic, entityType, i);
 	}
 
 	public void incrementStatistic(Statistic statistic, Material material) {
 		player.incrementStatistic(statistic, material);
 	}
 
+	@Override
+	public void decrementStatistic(Statistic statistic, Material material) throws IllegalArgumentException {
+		player.decrementStatistic(statistic, material);
+	}
+
+	@Override
+	public int getStatistic(Statistic statistic, Material material) throws IllegalArgumentException {
+		return player.getStatistic(statistic, material);
+	}
+
 	public void incrementStatistic(Statistic statistic) {
 		player.incrementStatistic(statistic);
+	}
+
+	@Override
+	public void decrementStatistic(Statistic statistic) throws IllegalArgumentException {
+		player.decrementStatistic(statistic);
 	}
 
 	public boolean isBlocking() {
@@ -530,6 +621,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.isInsideVehicle();
 	}
 
+	@Deprecated
 	public boolean isOnGround() {
 		return player.isOnGround();
 	}
@@ -574,6 +666,11 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.launchProjectile(projectile);
 	}
 
+	@Override
+	public <T extends Projectile> T launchProjectile(Class<? extends T> aClass, Vector vector) {
+		return player.launchProjectile(aClass, vector);
+	}
+
 	public boolean leaveVehicle() {
 		return player.leaveVehicle();
 	}
@@ -606,6 +703,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.playEffect(type);
 	}
 
+	@Deprecated
 	public void playEffect(Location loc, Effect effect, int data) {
 		player.playEffect(loc, effect, data);
 	}
@@ -614,6 +712,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.playEffect(loc, effect, data);
 	}
 
+	@Deprecated
 	public void playNote(Location loc, byte instrument, byte note) {
 		player.playNote(loc, instrument, note);
 	}
@@ -662,14 +761,17 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.saveData();
 	}
 
+	@Deprecated
 	public void sendBlockChange(Location loc, int material, byte data) {
 		player.sendBlockChange(loc, material, data);
 	}
 
+	@Deprecated
 	public void sendBlockChange(Location loc, Material material, byte data) {
 		player.sendBlockChange(loc, material, data);
 	}
 
+	@Deprecated
 	public boolean sendChunkChange(Location loc, int sx, int sy, int sz, byte[] data) {
 		return player.sendChunkChange(loc, sx, sy, sz, data);
 	}
@@ -758,8 +860,14 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.setGameMode(arg0);
 	}
 
+	@Deprecated
 	public void setHealth(int arg0) {
 		player.setHealth(arg0);
+	}
+
+	@Override
+	public double getMaxHealth() {
+		return player.getMaxHealth();
 	}
 
 	public void setItemInHand(ItemStack arg0) {
@@ -770,6 +878,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.setItemOnCursor(arg0);
 	}
 
+	@Deprecated
 	public void setLastDamage(int damage) {
 		player.setLastDamage(damage);
 	}
@@ -778,10 +887,59 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.setLastDamageCause(event);
 	}
 
+	@Override
+	@Deprecated
+	public int _INVALID_getLastDamage() {
+		return player._INVALID_getLastDamage();
+	}
+
+	@Override
+	@Deprecated
+	public void _INVALID_setLastDamage(int i) {
+		player._INVALID_setLastDamage(i);
+	}
+
+	@Override
+	@Deprecated
+	public void _INVALID_setMaxHealth(int i) {
+		player._INVALID_setMaxHealth(i);
+	}
+
+	@Override
+	@Deprecated
+	public int _INVALID_getMaxHealth() {
+		return player._INVALID_getMaxHealth();
+	}
+
+	@Override
+	@Deprecated
+	public void _INVALID_setHealth(int i) {
+		player._INVALID_setHealth(i);
+	}
+
+	@Override
+	@Deprecated
+	public int _INVALID_getHealth() {
+		return player._INVALID_getHealth();
+	}
+
+	@Override
+	@Deprecated
+	public void _INVALID_damage(int i, Entity entity) {
+		player._INVALID_damage(i, entity);
+	}
+
+	@Override
+	@Deprecated
+	public void _INVALID_damage(int i) {
+		player._INVALID_damage(i);
+	}
+
 	public void setLevel(int level) {
 		player.setLevel(level);
 	}
 
+	@Deprecated
 	public void setMaxHealth(int arg0) {
 		player.setMaxHealth(arg0);
 	}
@@ -792,6 +950,11 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 
 	public void setMaximumNoDamageTicks(int ticks) {
 		player.setMaximumNoDamageTicks(ticks);
+	}
+
+	@Override
+	public double getLastDamage() {
+		return player.getLastDamage();
 	}
 
 	public void setMetadata(String arg0, MetadataValue arg1) {
@@ -842,8 +1005,14 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.setSprinting(sprinting);
 	}
 
+	@Deprecated
 	public void setTexturePack(String url) {
 		player.setTexturePack(url);
+	}
+
+	@Override
+	public void setResourcePack(String s) {
+		player.setResourcePack(s);
 	}
 
 	public void setTicksLived(int value) {
@@ -866,6 +1035,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.setWindowProperty(arg0, arg1);
 	}
 
+	@Deprecated
 	public Arrow shootArrow() {
 		return player.shootArrow();
 	}
@@ -890,14 +1060,17 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.teleport(location);
 	}
 
+	@Deprecated
 	public Egg throwEgg() {
 		return player.throwEgg();
 	}
 
+	@Deprecated
 	public Snowball throwSnowball() {
 		return player.throwSnowball();
 	}
 
+	@Deprecated
 	public void updateInventory() {
 		player.updateInventory();
 	}
@@ -918,18 +1091,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.damage(arg0);
 	}
 
-	public double getHealth() {
-		return player.getHealth();
-	}
-
-	public double getLastDamage() {
-		return player.getLastDamage();
-	}
-
-	public double getMaxHealth() {
-		return player.getMaxHealth();
-	}
-
 	public void setHealth(double arg0) {
 		player.setHealth(arg0);
 	}
@@ -940,38 +1101,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 
 	public void setMaxHealth(double arg0) {
 		player.setMaxHealth(arg0);
-	}
-
-	public void _INVALID_damage(int arg0, Entity arg1) {
-		player._INVALID_damage(arg0, arg1);
-	}
-
-	public void _INVALID_damage(int arg0) {
-		player._INVALID_damage(arg0);
-	}
-
-	public int _INVALID_getHealth() {
-		return player._INVALID_getHealth();
-	}
-
-	public int _INVALID_getLastDamage() {
-		return player._INVALID_getLastDamage();
-	}
-
-	public int _INVALID_getMaxHealth() {
-		return player._INVALID_getMaxHealth();
-	}
-
-	public void _INVALID_setHealth(int arg0) {
-		player._INVALID_setHealth(arg0);
-	}
-
-	public void _INVALID_setLastDamage(int arg0) {
-		player._INVALID_setLastDamage(arg0);
-	}
-
-	public void _INVALID_setMaxHealth(int arg0) {
-		player._INVALID_setMaxHealth(arg0);
 	}
 
 	public double getHealthScale() {
@@ -990,6 +1119,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.isLeashed();
 	}
 
+	@Deprecated
 	public void playSound(Location arg0, String arg1, float arg2, float arg3) {
 		player.playSound(arg0, arg1, arg2, arg3);
 	}

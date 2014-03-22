@@ -42,8 +42,8 @@ public class PlayerMoveListener extends EventListener implements Listener {
 						if (entity instanceof Player) {
 							StandardPlayer other = plugin.getStandardPlayer(entity);
 							if (other.canSee(player)) {
-								other.playEffect(effectLocation, Effect.ENDER_SIGNAL, 0);
-								other.playEffect(effectLocation, Effect.EXTINGUISH, 0);
+								other.playEffect(effectLocation, Effect.ENDER_SIGNAL, null);
+								other.playEffect(effectLocation, Effect.EXTINGUISH, null);
 							}
 						}
 					}

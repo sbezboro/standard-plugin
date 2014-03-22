@@ -40,7 +40,7 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 					player.getLastAttacker().getDisplayName(), ChatColor.RED));
 			
 			if (player.hasTitle(Title.PVP_LOGGER)) {
-				player.damage(1000);
+				player.damage(1000.0);
 			}
 		}
 

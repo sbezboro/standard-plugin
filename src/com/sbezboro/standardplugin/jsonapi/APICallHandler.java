@@ -16,15 +16,13 @@ public abstract class APICallHandler implements JSONAPICallHandler {
 	protected String name;
 
 	@SuppressWarnings("serial")
-	protected static final Map<String, Integer> API_CALL_RESULTS = new HashMap<String, Integer>() {
-		{
-			put("ok", 0);
-			put("exception", 1);
-			put("not_handled", 2);
-			put("banned", 3);
-			put("muted", 4);
-		}
-	};
+	protected static final Map<String, Integer> API_CALL_RESULTS = new HashMap<String, Integer>() {{
+		put("ok", 0);
+		put("exception", 1);
+		put("not_handled", 2);
+		put("banned", 3);
+		put("muted", 4);
+	}};
 
 	protected Logger logger;
 

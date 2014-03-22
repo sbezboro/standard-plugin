@@ -1,7 +1,8 @@
 package com.sbezboro.standardplugin.listeners;
 
+import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 import net.minecraft.server.v1_7_R1.EntityEnderSignal;
-
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,9 +18,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-
-import com.sbezboro.standardplugin.StandardPlugin;
-import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class PlayerInteractListener extends EventListener implements Listener {
 
