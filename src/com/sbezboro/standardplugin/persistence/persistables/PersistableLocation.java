@@ -23,8 +23,20 @@ public class PersistableLocation extends PersistableImpl implements Persistable 
 		double x = (Double) map.get("x");
 		double y = (Double) map.get("y");
 		double z = (Double) map.get("z");
-		double yaw = (Double) map.get("yaw");
-		double pitch = (Double) map.get("pitch");
+		double yaw;
+		double pitch;
+
+		try {
+			yaw = (Double) map.get("yaw");
+		} catch (Exception e) {
+			yaw = 0;
+		}
+
+		try {
+			pitch = (Double) map.get("pitch");
+		} catch (Exception e) {
+			pitch = 0;
+		}
 
 		World world = Bukkit.getWorld(worldName);
 		location = new Location(world, x, y, z, (float) yaw, (float) pitch);
@@ -41,8 +53,13 @@ public class PersistableLocation extends PersistableImpl implements Persistable 
 		map.put("x", location.getX());
 		map.put("y", location.getY());
 		map.put("z", location.getZ());
-		map.put("yaw", location.getYaw());
-		map.put("pitch", location.getPitch());
+
+		if (location.getYaw() != 0) {
+			map.put("yaw", location.getYaw());
+		}
+		if (location.getPitch() != 0) {
+			map.put("pitch", location.getPitch());
+		}
 
 		return map;
 	}

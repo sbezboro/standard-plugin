@@ -22,6 +22,7 @@ import com.sbezboro.standardplugin.persistence.storages.TitleStorage;
 import com.sbezboro.standardplugin.tasks.PvpTimerTask;
 import com.sbezboro.standardplugin.util.AnsiConverter;
 import com.sbezboro.standardplugin.util.MiscUtil;
+import org.bukkit.util.BlockIterator;
 
 public class StandardPlayer extends PlayerDelegate {
 	private static final int PVP_TIMER_TIME = 200;
@@ -81,6 +82,27 @@ public class StandardPlayer extends PlayerDelegate {
 				titles.add(title);
 			}
 		}
+	}
+
+	public Block getTargetBlock(int range) {
+		BlockIterator it = new BlockIterator(player, range);
+		Block lastBlock = it.next();
+
+		while (it.hasNext()) {
+			lastBlock = it.next();
+
+			if (lastBlock.getType() == Material.AIR) {
+				continue;
+			}
+
+			break;
+		}
+
+		if (lastBlock.getType() == Material.AIR) {
+			lastBlock = null;
+		}
+
+		return lastBlock;
 	}
 
 	// ------

@@ -30,7 +30,7 @@
 		</for>
 	</target>
     
-	<target name="test" depends="build" description="Copy plugin to test environment">
+	<target name="test" description="Copy plugin to test environment">
 		<copy file="${jarfile}" todir="../craftbukkit/plugins/"/>
 	</target>
 </project>
