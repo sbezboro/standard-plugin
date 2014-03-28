@@ -71,6 +71,12 @@ public class PersistedListProperty<T> implements Iterable<T>, PersistedBase {
 		object.saveProperty(name, listRepresentation());
 	}
 
+	public void clear() {
+		this.list.clear();
+
+		object.saveProperty(name, listRepresentation());
+	}
+
 	public boolean contains(T obj) {
 		return this.list.contains(obj);
 	}
