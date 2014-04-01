@@ -29,8 +29,8 @@ public abstract class PersistedObject {
 	public abstract void createProperties();
 	
 	public void loadProperties() {
-		for (PersistedBase propery : persistedPorperties) {
-			propery.load();
+		for (PersistedBase property : persistedPorperties) {
+			property.load();
 		}
 	}
 
