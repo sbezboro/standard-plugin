@@ -1,8 +1,7 @@
 package com.sbezboro.standardplugin;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.sbezboro.standardplugin.commands.BaseCommand;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public abstract class SubPluginCommand<T extends JavaPlugin> extends BaseCommand {
 	protected T subPlugin;

@@ -7,7 +7,7 @@ import com.sbezboro.standardplugin.StandardPlugin;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SubCommand {
+public abstract class SubCommand implements Comparable<SubCommand> {
 	protected StandardPlugin plugin;
 	protected BaseCommand command;
 	protected String commandName;
@@ -37,5 +37,10 @@ public abstract class SubCommand {
 
 	public List<String> getAlternatives() {
 		return alternatives;
+	}
+
+	@Override
+	public int compareTo(SubCommand other) {
+		return this.commandName.compareTo(other.getCommandName());
 	}
 }
