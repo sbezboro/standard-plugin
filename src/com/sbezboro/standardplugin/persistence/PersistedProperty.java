@@ -23,6 +23,7 @@ public class PersistedProperty<T> implements PersistedBase {
 		{
 			put(Boolean.class, Boolean.FALSE);
 			put(Integer.class, Integer.valueOf(0));
+			put(Long.class, Long.valueOf(0));
 		}
 	};
 

@@ -1136,4 +1136,9 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.setLeashHolder(arg0);
 	}
 
+	@Override
+	public void sendSignChange(Location location, String[] strings) throws IllegalArgumentException {
+		player.sendSignChange(location, strings);
+	}
+
 }
