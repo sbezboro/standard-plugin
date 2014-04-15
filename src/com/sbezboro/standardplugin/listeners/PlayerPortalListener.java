@@ -1,5 +1,6 @@
 package com.sbezboro.standardplugin.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
@@ -18,7 +19,7 @@ public class PlayerPortalListener extends EventListener implements Listener {
 	}
 	
 	@EventHandler(ignoreCancelled = true)
-	public void onPortalEvent(PlayerPortalEvent event) {
+	public void onPlayerPortal(PlayerPortalEvent event) {
 		World fromWorld = event.getFrom().getWorld();
 		
 		if (event.getCause() == TeleportCause.END_PORTAL) {

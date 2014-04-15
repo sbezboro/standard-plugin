@@ -401,7 +401,7 @@ public class StandardPlayer extends PlayerDelegate {
 		HashMap<String, Object> info = new HashMap<String, Object>();
 
 		info.put("username", getName());
-		info.put("uuid", getUniqueId().toString());
+		info.put("uuid", getUniqueId().toString().replaceAll("-", ""));
 		info.put("address", getAddress().getAddress().getHostAddress());
 
 		if (hasNickname()) {

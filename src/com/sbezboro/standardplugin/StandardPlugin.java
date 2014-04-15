@@ -3,6 +3,7 @@ package com.sbezboro.standardplugin;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sbezboro.standardplugin.listeners.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -33,18 +34,6 @@ import com.sbezboro.standardplugin.jsonapi.ForumPostAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.ServerStatusAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.StatsAPICallHandler;
 import com.sbezboro.standardplugin.jsonapi.WebChatAPICallHandler;
-import com.sbezboro.standardplugin.listeners.BlockBreakListener;
-import com.sbezboro.standardplugin.listeners.CreatureSpawnListener;
-import com.sbezboro.standardplugin.listeners.DeathListener;
-import com.sbezboro.standardplugin.listeners.DispenseListener;
-import com.sbezboro.standardplugin.listeners.EntityDamageListener;
-import com.sbezboro.standardplugin.listeners.HungerListener;
-import com.sbezboro.standardplugin.listeners.PlayerInteractListener;
-import com.sbezboro.standardplugin.listeners.PlayerJoinListener;
-import com.sbezboro.standardplugin.listeners.PlayerLeaveListener;
-import com.sbezboro.standardplugin.listeners.PlayerMoveListener;
-import com.sbezboro.standardplugin.listeners.PlayerPortalListener;
-import com.sbezboro.standardplugin.listeners.RespawnListener;
 import com.sbezboro.standardplugin.managers.EndResetManager;
 import com.sbezboro.standardplugin.managers.HoneypotManager;
 import com.sbezboro.standardplugin.model.StandardPlayer;
@@ -202,6 +191,8 @@ public class StandardPlugin extends JavaPlugin {
 		pluginManager.registerEvents(new DispenseListener(this), this);
 		pluginManager.registerEvents(new PlayerPortalListener(this), this);
 		pluginManager.registerEvents(new BlockBreakListener(this), this);
+		pluginManager.registerEvents(new BlockPlaceListener(this), this);
+		pluginManager.registerEvents(new PlayerTeleportListener(this), this);
 		// Figure this out later
 		//pluginManager.registerEvents(new FurnaceExtractListener(this), this);
 	}
