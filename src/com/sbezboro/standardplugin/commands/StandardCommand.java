@@ -1,5 +1,6 @@
 package com.sbezboro.standardplugin.commands;
 
+import com.sbezboro.standardplugin.tasks.UUIDMigrationTask;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -22,6 +23,10 @@ public class StandardCommand extends BaseCommand {
 			plugin.reloadPlugin();
 			sender.sendMessage("Plugin reloaded");
 			return true;
+		} else if (args[0].equalsIgnoreCase("migrate")) {
+			UUIDMigrationTask task = new UUIDMigrationTask(plugin);
+			task.run();
+			return true;
 		}
 
 		showUsageInfo(sender);
@@ -31,6 +36,7 @@ public class StandardCommand extends BaseCommand {
 	@Override
 	public void showUsageInfo(CommandSender sender) {
 		sender.sendMessage("Usage: /" + name + " reload");
+		sender.sendMessage("Usage: /" + name + " migrate");
 	}
 
 	@Override

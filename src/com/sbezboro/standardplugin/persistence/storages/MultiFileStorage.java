@@ -1,23 +1,22 @@
 package com.sbezboro.standardplugin.persistence.storages;
 
+import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.persistence.PersistedObject;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import com.sbezboro.standardplugin.StandardPlugin;
-import com.sbezboro.standardplugin.persistence.PersistedObject;
-
 public abstract class MultiFileStorage<T extends PersistedObject> implements FileStorage {
 	protected StandardPlugin plugin;
 	private String dataFolder;
 
-	private HashMap<String, File> idToFile;
-	private HashMap<String, FileConfiguration> idToConfig;
+	protected HashMap<String, File> idToFile;
+	protected HashMap<String, FileConfiguration> idToConfig;
 
 	private HashMap<String, T> idToObject;
 

@@ -395,6 +395,10 @@ public class StandardPlugin extends JavaPlugin {
 		return endResetManager;
 	}
 
+	public List<SubPlugin> getSubPlugins() {
+		return subPlugins;
+	}
+
 	public StandardPlayer getStandardPlayer(String username) {
 		return playerStorage.getPlayer(username);
 	}

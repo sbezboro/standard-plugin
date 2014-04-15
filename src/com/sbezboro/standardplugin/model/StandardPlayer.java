@@ -77,7 +77,7 @@ public class StandardPlayer extends PlayerDelegate {
 			Title title = titleStorage.getTitle(name);
 
 			if (title == null) {
-				StandardPlugin.getPlugin().getLogger().severe("Player has title non-existant title \"" + name + "\"!");
+				StandardPlugin.getPlugin().getLogger().severe("Player has non-existant title \"" + name + "\"!");
 			} else {
 				titles.add(title);
 			}

@@ -10,4 +10,7 @@ public interface SubPlugin extends Plugin {
 	public String getSubPluginName();
 	public List<ICommand> getCommands();
 	public void reloadPlugin();
+
+	// UUID migration
+	public void migrate();
 }
