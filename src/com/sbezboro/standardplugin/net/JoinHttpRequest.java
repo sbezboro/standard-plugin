@@ -5,10 +5,10 @@ import com.sbezboro.standardplugin.StandardPlugin;
 
 public class JoinHttpRequest extends ApiHttpRequest {
 	
-	public JoinHttpRequest(String username, HttpRequestListener listener) {
+	public JoinHttpRequest(String uuid, HttpRequestListener listener) {
 		super(StandardPlugin.getPlugin(), "join_server", HTTPMethod.POST, listener);
 		
-		addProperty("username", username);
+		addProperty("uuid", uuid);
 	}
 
 }

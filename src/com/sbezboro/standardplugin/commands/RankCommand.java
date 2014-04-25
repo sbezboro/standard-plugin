@@ -40,13 +40,11 @@ public class RankCommand extends BaseCommand {
 		}
 
 		HttpRequestManager.getInstance().startRequest(
-				new RankHttpRequest(username, false, new HttpRequestListener() {
+				new RankHttpRequest(username, new HttpRequestListener() {
 
 			@Override
 			public void requestSuccess(HttpResponse response) {
-				int result = response.getInt("result");
-
-				if (result == 1) {
+				if (response.isApiSuccess()) {
 					int rank = response.getInt("rank");
 					String time = response.getString("time");
 					String actualUsername = response.getString("username");
@@ -56,13 +54,13 @@ public class RankCommand extends BaseCommand {
 					sender.sendMessage(actualPlayer.getRankDescription(actualPlayer == senderPlayer, rank));
 					sender.sendMessage(actualPlayer.getTimePlayedDescription(actualPlayer == senderPlayer, time));
 				} else {
-					sender.sendMessage("The player \"" + username + "\" doesn't exist on the server.");
+					sender.sendMessage("The player " + ChatColor.AQUA + username + ChatColor.RESET + " doesn't exist on the server.");
 				}
 			}
 
 			@Override
 			public void requestFailure(HttpResponse response) {
-				sender.sendMessage("There was a problem getting the rank!");
+				sender.sendMessage(ChatColor.RED + "There was a problem getting the rank!");
 			}
 		}));
 

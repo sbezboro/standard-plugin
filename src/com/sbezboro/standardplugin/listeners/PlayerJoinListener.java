@@ -55,7 +55,6 @@ public class PlayerJoinListener extends EventListener implements Listener {
 					
 					@Override
 					public void run() {
-						
 						if (player.isDead()) {
 							player.sendMessage(ChatColor.RED + "You were killed for PVP logging");
 							StandardPlugin.playerBroadcast(player, String.format("%s%s %sis back after PVP logging", 
@@ -113,12 +112,11 @@ public class PlayerJoinListener extends EventListener implements Listener {
 	}
 
 	private void broadcastRank(final StandardPlayer player) {
-		HttpRequestManager.getInstance().startRequest(new RankHttpRequest(player.getName(), true, new HttpRequestListener() {
+		HttpRequestManager.getInstance().startRequest(new RankHttpRequest(player, new HttpRequestListener() {
 
 			@Override
 			public void requestSuccess(HttpResponse response) {
-				int result = response.getInt("result");
-				if (result == 1) {
+				if (response.isApiSuccess()) {
 					int rank = response.getInt("rank");
 					int veteranRank = response.getInt("veteran_rank");
 					int timeSpent = response.getInt("minutes");

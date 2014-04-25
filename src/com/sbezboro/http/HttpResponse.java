@@ -19,7 +19,7 @@ public class HttpResponse {
 			return ((Long) jsonResponse.get(key)).intValue();
 		}
 
-		return 0;
+		return -1;
 	}
 
 	public String getString(String key) {
@@ -44,5 +44,13 @@ public class HttpResponse {
 	
 	public JSONObject getJsonResponse() {
 		return jsonResponse;
+	}
+
+	public boolean isApiSuccess() {
+		try {
+			return getInt("err") == 0;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }

@@ -23,11 +23,11 @@ public class DeathEvent {
 		PLAYER, SUICIDE, FALL, FIRE, LAVA, EXPLOSION, CACTUS, VOID, SUFFOCATION, DROWNING, STARVATION, MAGIC, PVP_LOG, OTHER
 	};
 
-	private Player player;
+	private StandardPlayer player;
 	private EntityDamageEvent damageEvent;
 	private DamageCause cause;
 
-	public DeathEvent(Player player) {
+	public DeathEvent(StandardPlayer player) {
 		this.player = player;
 
 		if (player.getLastDamageCause() != null) {
@@ -37,7 +37,7 @@ public class DeathEvent {
 	}
 
 	private void log(DeathType type) {
-		String typeString = "other";
+		String typeString;
 
 		switch (type) {
 		case SUICIDE:
@@ -82,24 +82,24 @@ public class DeathEvent {
 		}
 
 		HttpRequestManager.getInstance().startRequest(
-				new DeathHttpRequest(player.getName(), typeString));
+				new DeathHttpRequest(player.getUuidString(), typeString));
 	}
 
 	private void log(LivingEntity killer) {
-		if (killer instanceof Player) {
-			Player playerKiller = (Player) killer;
+		StandardPlayer playerKiller = StandardPlugin.getPlugin().getStandardPlayer(killer);
+
+		if (playerKiller == null) {
 			HttpRequestManager.getInstance().startRequest(
-					new DeathHttpRequest(player.getName(), "player", playerKiller.getName()));
+					new DeathHttpRequest(player.getUuidString(), MiscUtil.getNameFromLivingEntity(killer).toLowerCase()));
 		} else {
 			HttpRequestManager.getInstance().startRequest(
-					new DeathHttpRequest(player.getName(), MiscUtil.getNameFromLivingEntity(killer).toLowerCase()));
+					new DeathHttpRequest(player.getUuidString(), "player", playerKiller.getUuidString()));
 		}
 	}
 
 	public void log() {
 		if (cause == null) {
-			StandardPlayer standardPlayer = StandardPlugin.getPlugin().getStandardPlayer(player);
-			if (standardPlayer.hasPvpLogged()) {
+			if (player.hasPvpLogged()) {
 				log(DeathType.PVP_LOG);
 			} else {
 				log(DeathType.SUICIDE);

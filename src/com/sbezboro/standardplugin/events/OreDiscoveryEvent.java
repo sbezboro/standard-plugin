@@ -19,7 +19,7 @@ public class OreDiscoveryEvent {
 	
 	public void log() {
 		HttpRequestManager.getInstance().startRequest(
-				new OreDiscoveryHttpRequest(player.getName(), type,
+				new OreDiscoveryHttpRequest(player.getUuidString(), type,
 						location.getBlockX(), location.getBlockY(), location.getBlockZ()));
 	}
 }

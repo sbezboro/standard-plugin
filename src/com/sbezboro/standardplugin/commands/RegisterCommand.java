@@ -1,5 +1,6 @@
 package com.sbezboro.standardplugin.commands;
 
+import com.sbezboro.standardplugin.net.RegisterHttpRequest;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -9,7 +10,6 @@ import com.sbezboro.http.HttpResponse;
 import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
-import com.sbezboro.standardplugin.net.LinkHttpRequest;
 
 public class RegisterCommand extends BaseCommand {
 
@@ -27,27 +27,32 @@ public class RegisterCommand extends BaseCommand {
 		}
 
 		final String username = player.getName();
+		final String uuid = player.getUuidString();
 		final String password = args[0];
 
 		player.sendMessage("Registering...");
 
 		HttpRequestManager.getInstance().startRequest(
-				new LinkHttpRequest(username, password, new HttpRequestListener() {
+				new RegisterHttpRequest(uuid, password, new HttpRequestListener() {
 
 			@Override
 			public void requestSuccess(HttpResponse response) {
-				String result = response.getStringResponse();
-
-				player.sendMessage(result);
-				player.sendMessage(ChatColor.GREEN + "Website username: " + ChatColor.AQUA + username + ChatColor.GREEN + ", password: " + ChatColor.AQUA
-						+ password);
-				player.sendMessage(ChatColor.GREEN + "Visit standardsurvival.com/login");
-				plugin.getLogger().info(username + ": " + result);
+				String message = (String) response.getJsonResponse().get("message");
+				
+				if (response.isApiSuccess()) {
+					player.sendMessage(ChatColor.DARK_GREEN + message);
+					player.sendMessage(ChatColor.GREEN + "Website username: " + ChatColor.AQUA + username + ChatColor.GREEN + ", password: " + ChatColor.AQUA
+							+ password);
+					player.sendMessage(ChatColor.GREEN + "Visit standardsurvival.com/login");
+					plugin.getLogger().info(username + ": " + message);
+				} else {
+					player.sendMessage(ChatColor.RED + message);
+				}
 			}
 
 			@Override
 			public void requestFailure(HttpResponse response) {
-				player.sendMessage("There was an error registering your account!");
+				player.sendMessage(ChatColor.RED + "There was an error registering your account!");
 			}
 		}));
 

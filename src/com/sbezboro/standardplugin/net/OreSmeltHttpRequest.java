@@ -4,9 +4,9 @@ import com.sbezboro.standardplugin.StandardPlugin;
 
 public class OreSmeltHttpRequest extends ApiHttpRequest {
 	
-	public OreSmeltHttpRequest(String username, String type, int amount) {
+	public OreSmeltHttpRequest(String uuid, String type, int amount) {
 		super(StandardPlugin.getPlugin(), "log_ore_smelt", HTTPMethod.POST, null);
-		addProperty("username", username);
+		addProperty("uuid", uuid);
 		addProperty("type", type);
 		addProperty("amount", amount);
 	}

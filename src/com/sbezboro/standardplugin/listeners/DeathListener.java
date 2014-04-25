@@ -1,5 +1,6 @@
 package com.sbezboro.standardplugin.listeners;
 
+import com.sbezboro.standardplugin.model.StandardPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -32,20 +33,31 @@ public class DeathListener extends EventListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onEntityDeath(EntityDeathEvent event) {
 		LivingEntity entity = event.getEntity();
-		
-		if (entity instanceof Player) {
-			DeathEvent deathEvent = new DeathEvent((Player) event.getEntity());
-			deathEvent.log();
-		} else {
+
+		StandardPlayer player = plugin.getStandardPlayer(entity);
+
+		if (player == null) {
 			EntityDamageEvent damageEvent = entity.getLastDamageCause();
 			if (damageEvent instanceof EntityDamageByEntityEvent) {
 				EntityDamageByEntityEvent lastDamageByEntityEvent = (EntityDamageByEntityEvent) damageEvent;
 				Entity damager = lastDamageByEntityEvent.getDamager();
 
-				KillEvent killEvent = new KillEvent(damager, entity);
-				killEvent.log();
+				StandardPlayer killer = plugin.getStandardPlayer(damager);
+
+				if (killer == null) {
+					if (damager instanceof Arrow) {
+						Arrow arrow = (Arrow) damager;
+
+						killer = plugin.getStandardPlayer(arrow.getShooter());
+					}
+				}
+
+				if (killer != null) {
+					KillEvent killEvent = new KillEvent(killer, entity);
+					killEvent.log();
+				}
 			}
-			
+
 			if (entity.getType() == EntityType.ENDER_DRAGON) {
 				if (!plugin.getEndResetManager().isEndResetScheduled()) {
 					plugin.getEndResetManager().scheduleNextEndReset(true);
@@ -56,7 +68,7 @@ public class DeathListener extends EventListener implements Listener {
 					if (entity.getLocation().getWorld().getEnvironment() == Environment.THE_END) {
 						event.setDroppedExp(1);
 						event.getDrops().clear();
-						
+
 						// 5% chance to drop a pearl
 						if (Math.random() < 0.05) {
 							event.getDrops().add(new ItemStack(Material.ENDER_PEARL, 1));
@@ -64,13 +76,17 @@ public class DeathListener extends EventListener implements Listener {
 					}
 				}
 			}
+		} else {
+			DeathEvent deathEvent = new DeathEvent(player);
+			deathEvent.log();
 		}
 	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		String deathMessage = event.getDeathMessage();
-		Player victim = event.getEntity();
+
+		StandardPlayer victim = plugin.getStandardPlayer(event.getEntity());
 
 		deathMessage = ChatColor.DARK_RED + deathMessage.replaceAll(victim.getName(), ChatColor.stripColor(victim.getDisplayName()));
 
@@ -78,15 +94,14 @@ public class DeathListener extends EventListener implements Listener {
 		if (damageEvent instanceof EntityDamageByEntityEvent) {
 			EntityDamageByEntityEvent lastDamageByEntityEvent = (EntityDamageByEntityEvent) damageEvent;
 			Entity damager = lastDamageByEntityEvent.getDamager();
-			Player killer = null;
 
-			if (damager instanceof Player && damager != victim) {
-				killer = (Player) damager;
-			} else if (damager instanceof Arrow) {
-				Arrow arrow = (Arrow) damager;
+			StandardPlayer killer = plugin.getStandardPlayer(damager);
 
-				if (arrow.getShooter() instanceof Player && arrow.getShooter() != victim) {
-					killer = (Player) arrow.getShooter();
+			if (killer == null) {
+				if (damager instanceof Arrow) {
+					Arrow arrow = (Arrow) damager;
+
+					killer = plugin.getStandardPlayer(arrow.getShooter());
 				}
 			}
 
@@ -94,8 +109,8 @@ public class DeathListener extends EventListener implements Listener {
 				deathMessage = deathMessage.replaceAll(killer.getName(), ChatColor.stripColor(killer.getDisplayName()));
 			}
 		}
-		
-		plugin.getStandardPlayer(victim).setNotInPvp();
+
+		victim.setNotInPvp();
 		
 		StandardPlugin.webchatMessage(deathMessage);
 

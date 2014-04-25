@@ -125,6 +125,7 @@ public abstract class HttpRequest implements Runnable {
 			try {
 				jsonResponse = (JSONObject) JSONValue.parse(response);
 			} catch (Exception e) {
+				// Ignore
 			}
 
 			if (jsonResponse == null) {

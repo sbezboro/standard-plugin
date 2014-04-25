@@ -401,7 +401,7 @@ public class StandardPlayer extends PlayerDelegate {
 		HashMap<String, Object> info = new HashMap<String, Object>();
 
 		info.put("username", getName());
-		info.put("uuid", getUniqueId().toString().replaceAll("-", ""));
+		info.put("uuid", getUuidString());
 		info.put("address", getAddress().getAddress().getHostAddress());
 
 		if (hasNickname()) {
@@ -461,6 +461,10 @@ public class StandardPlayer extends PlayerDelegate {
 	
 	public boolean isMuted() {
 		return EssentialsIntegration.isPlayerMuted(getName());
+	}
+
+	public String getUuidString() {
+		return getUniqueId().toString().replaceAll("-", "");
 	}
 
 	@Override

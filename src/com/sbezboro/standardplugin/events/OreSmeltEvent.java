@@ -17,6 +17,6 @@ public class OreSmeltEvent {
 	
 	public void log() {
 		HttpRequestManager.getInstance().startRequest(
-				new OreSmeltHttpRequest(player.getName(), type, amount));
+				new OreSmeltHttpRequest(player.getUuidString(), type, amount));
 	}
 }
