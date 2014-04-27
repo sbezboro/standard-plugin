@@ -375,6 +375,10 @@ public class StandardPlugin extends JavaPlugin {
 		return config.getNerfEndermenDrops();
 	}
 
+	public boolean getNerfPigzombieDrops() {
+		return config.getNerfPigzombieDrops();
+	}
+
 	public GateStorage getGateStorage() {
 		return gateStorage;
 	}

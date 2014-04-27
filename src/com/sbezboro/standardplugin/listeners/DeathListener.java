@@ -54,13 +54,27 @@ public class DeathListener extends EventListener implements Listener {
 				if (plugin.getNerfEndermenDrops()) {
 					// Nerfed xp and drops for endermen in the end
 					if (entity.getLocation().getWorld().getEnvironment() == Environment.THE_END) {
-						event.setDroppedExp(1);
 						event.getDrops().clear();
-						
-						// 5% chance to drop a pearl
-						if (Math.random() < 0.05) {
-							event.getDrops().add(new ItemStack(Material.ENDER_PEARL, 1));
+
+						if (event.getDroppedExp() > 0) {
+							event.setDroppedExp(1);
+
+							// 5% chance to drop a pearl
+							if (Math.random() < 0.05) {
+								event.getDrops().add(new ItemStack(Material.ENDER_PEARL, 1));
+							}
 						}
+					}
+				}
+			} else if (entity.getType() == EntityType.PIG_ZOMBIE) {
+				if (plugin.getNerfPigzombieDrops()) {
+					// Nerfed xp and drops for zombie pigmen in the overworld
+					if (entity.getLocation().getWorld().getEnvironment() == Environment.NORMAL) {
+						if (event.getDroppedExp() > 0) {
+							event.setDroppedExp(1);
+						}
+
+						event.getDrops().clear();
 					}
 				}
 			}
