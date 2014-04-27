@@ -20,6 +20,7 @@ public class StandardConfig {
 	private int pvpLogThreshold;
 	
 	private boolean nerfEndermenDrops;
+	private boolean nerfPigzombieDrops;
 
 	public StandardConfig(StandardPlugin plugin) {
 		this.plugin = plugin;
@@ -49,6 +50,7 @@ public class StandardConfig {
 		pvpLogThreshold = config.getInt("pvp-log-threshold");
 		
 		nerfEndermenDrops = config.getBoolean("nerf-endermen-drops");
+		nerfPigzombieDrops = config.getBoolean("nerf-pigzombie-drops");
 	}
 
 	public int getServerId() {
@@ -93,5 +95,9 @@ public class StandardConfig {
 	
 	public boolean getNerfEndermenDrops() {
 		return nerfEndermenDrops;
+	}
+
+	public boolean getNerfPigzombieDrops() {
+		return nerfPigzombieDrops;
 	}
 }
