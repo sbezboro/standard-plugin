@@ -43,8 +43,6 @@ public class StatsAPICallHandler extends APICallHandler {
 				continue;
 			}
 
-			plugin.getLogger().info("UUID match for " + username);
-
 			player.setTimeSpent(timeSpent.intValue());
 			player.setRank(rank.intValue());
 
