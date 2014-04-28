@@ -418,6 +418,6 @@ public class StandardPlugin extends JavaPlugin {
 			return null;
 		}
 
-		return getStandardPlayer(((Player) object).getUniqueId());
+		return getStandardPlayer(((Player) object).getName());
 	}
 }
