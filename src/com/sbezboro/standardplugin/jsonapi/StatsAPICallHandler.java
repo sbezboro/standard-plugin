@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.json.simple.JSONObject;
 
@@ -28,12 +29,21 @@ public class StatsAPICallHandler extends APICallHandler {
 		Map<String, Object> data = (Map<String, Object>) payload.get("data");
 		ArrayList<HashMap<String, Object>> players = (ArrayList<HashMap<String, Object>>) data.get("player_stats");
 
+
 		for (HashMap<String, Object> playerData : players) {
+			String uuid = (String) playerData.get("uuid");
 			String username = (String) playerData.get("username");
 			Long timeSpent = (Long) playerData.get("minutes");
 			Long rank = (Long) playerData.get("rank");
 
 			StandardPlayer player = plugin.getStandardPlayer(username);
+
+			if (!player.getUuidString().equals(uuid)) {
+				plugin.getLogger().severe("UUID mismatch! " + username + "'s uuid is " + player.getUuidString() + ", expected " + uuid);
+				continue;
+			}
+
+			plugin.getLogger().info("UUID match for " + username);
 
 			player.setTimeSpent(timeSpent.intValue());
 			player.setRank(rank.intValue());

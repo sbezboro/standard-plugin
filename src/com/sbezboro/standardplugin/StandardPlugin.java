@@ -2,6 +2,7 @@ package com.sbezboro.standardplugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.sbezboro.standardplugin.listeners.*;
 import org.bukkit.Bukkit;
@@ -403,8 +404,13 @@ public class StandardPlugin extends JavaPlugin {
 		return subPlugins;
 	}
 
+	@Deprecated
 	public StandardPlayer getStandardPlayer(String username) {
 		return playerStorage.getPlayer(username);
+	}
+
+	public StandardPlayer getStandardPlayer(UUID uuid) {
+		return playerStorage.getPlayer(uuid);
 	}
 
 	public StandardPlayer getStandardPlayer(Object object) {
@@ -412,6 +418,6 @@ public class StandardPlugin extends JavaPlugin {
 			return null;
 		}
 
-		return getStandardPlayer(((Player) object).getName());
+		return getStandardPlayer(((Player) object).getUniqueId());
 	}
 }
