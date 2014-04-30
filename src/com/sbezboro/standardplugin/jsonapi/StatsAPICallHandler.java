@@ -29,7 +29,6 @@ public class StatsAPICallHandler extends APICallHandler {
 		Map<String, Object> data = (Map<String, Object>) payload.get("data");
 		ArrayList<HashMap<String, Object>> players = (ArrayList<HashMap<String, Object>>) data.get("player_stats");
 
-
 		for (HashMap<String, Object> playerData : players) {
 			String uuid = (String) playerData.get("uuid");
 			String username = (String) playerData.get("username");
@@ -37,6 +36,10 @@ public class StatsAPICallHandler extends APICallHandler {
 			Long rank = (Long) playerData.get("rank");
 
 			StandardPlayer player = plugin.getStandardPlayer(username);
+
+			if (!player.isOnline()) {
+				continue;
+			}
 
 			if (!player.getUuidString().equals(uuid)) {
 				plugin.getLogger().severe("UUID mismatch! " + username + "'s uuid is " + player.getUuidString() + ", expected " + uuid);
@@ -53,7 +56,7 @@ public class StatsAPICallHandler extends APICallHandler {
 						+ ChatColor.BLUE + " on the server! Congrats!");
 			}
 
-			if (plugin.isPvpProtectionEnabled() && player.isOnline() && player.isPvpProtected()) {
+			if (plugin.isPvpProtectionEnabled() && player.isPvpProtected()) {
 				int remainingTime = player.getPvpProtectionTimeRemaining();
 
 				// Disable PVP protection after time is up
@@ -63,8 +66,7 @@ public class StatsAPICallHandler extends APICallHandler {
 
 					player.setPvpProtection(false);
 					logger.info("Disabling PVP protection for " + player.getName() + " after reaching time limit.");
-					// Show warning a few times before the PVP protection wears
-					// off
+					// Show warning a few times before the PVP protection wears off
 				} else if (timeSpent % (plugin.getPvpProtectionTime() / 4) == 0 || remainingTime == 5) {
 					player.sendMessage(ChatColor.RED + "Warning! You have " + ChatColor.AQUA + remainingTime + ChatColor.RED
 							+ MiscUtil.pluralize(" minute", remainingTime) + " left until PVP protection is disabled!");

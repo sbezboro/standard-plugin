@@ -20,10 +20,10 @@ public class ForumPostAPICallHandler extends APICallHandler {
 	public JSONObject handle(HashMap<String, Object> payload) {
 		HashMap<String, String> data = (HashMap<String, String>) payload.get("data");
 
-		String username = (String) data.get("username");
-		String forumName = (String) data.get("forum_name");
-		String topic = (String) data.get("topic_name");
-		String url = (String) data.get("path");
+		String username = data.get("username");
+		String forumName = data.get("forum_name");
+		String topic = data.get("topic_name");
+		String url = data.get("path");
 
 		StandardPlayer player = plugin.getStandardPlayer(username);
 

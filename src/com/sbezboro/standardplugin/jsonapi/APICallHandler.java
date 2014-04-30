@@ -2,9 +2,13 @@ package com.sbezboro.standardplugin.jsonapi;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.json.simple.JSONObject;
 
 import com.alecgorge.minecraft.jsonapi.api.APIMethodName;
@@ -35,25 +39,47 @@ public abstract class APICallHandler implements JSONAPICallHandler {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Object handle(APIMethodName methodName, Object[] args) {
+	public Object handle(APIMethodName methodName, final Object[] args) {
 		if (methodName.matches(name)) {
-			HashMap<String, Object> payload = null;
+			Callable<HashMap<String, Object>> callable = new Callable<HashMap<String, Object>>() {
 
-			if (args.length == 1) {
-				payload = (HashMap<String, Object>) args[0];
-			}
+				@Override
+				public HashMap<String, Object> call() throws Exception {
+					HashMap<String, Object> payload = null;
 
-			try {
-				JSONObject result = handle(payload);
-				
-				if (result.get("result") == API_CALL_RESULTS.get("not_handled")) {
-					logger.warning("API call not handled properly! Args: " + StringUtils.join(args));
+					if (args.length == 1) {
+						payload = (HashMap<String, Object>) args[0];
+					}
+
+					try {
+						JSONObject result = handle(payload);
+
+						if (result.get("result") == API_CALL_RESULTS.get("not_handled")) {
+							logger.warning("API call not handled properly! Args: " + StringUtils.join(args));
+						}
+
+						return result;
+					} catch (Exception e) {
+						e.printStackTrace();
+						return buildResult("exception", "Exception while handling API call: " + e.toString());
+					}
 				}
-	
-				return result;
-			} catch (Exception e) {
-				e.printStackTrace();
-				return buildResult("exception", "Exception while handling API call: " + e.toString());
+			};
+
+			if (isAsync()) {
+				try {
+					return callable.call();
+				} catch (Exception e) {
+					return null;
+				}
+			} else {
+				Future<HashMap<String, Object>> future = plugin.getServer().getScheduler().callSyncMethod(plugin, callable);
+
+				try {
+					return future.get();
+				} catch (Exception e) {
+					return null;
+				}
 			}
 		}
 
@@ -63,6 +89,10 @@ public abstract class APICallHandler implements JSONAPICallHandler {
 	@Override
 	public boolean willHandle(APIMethodName methodName) {
 		return methodName.matches(name);
+	}
+
+	public boolean isAsync() {
+		return false;
 	}
 	
 	@SuppressWarnings("unchecked")
