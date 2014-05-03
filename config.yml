@@ -8,5 +8,6 @@ end-reset-period: 0
 pvp-log-threshold: 5
 nerf-endermen-drops: false
 nerf-pigzombie-drops: false
+animal-chunk-cap: 30
 endpoint: http://standardsurvival.com/api/v1/
 rts-address: http://rts.standardsurvival.com

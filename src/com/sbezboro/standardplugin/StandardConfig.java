@@ -22,6 +22,8 @@ public class StandardConfig {
 	private boolean nerfEndermenDrops;
 	private boolean nerfPigzombieDrops;
 
+	private int animalChunkCap;
+
 	public StandardConfig(StandardPlugin plugin) {
 		this.plugin = plugin;
 	}
@@ -51,6 +53,8 @@ public class StandardConfig {
 		
 		nerfEndermenDrops = config.getBoolean("nerf-endermen-drops");
 		nerfPigzombieDrops = config.getBoolean("nerf-pigzombie-drops");
+
+		animalChunkCap = config.getInt("animal-chunk-cap");
 	}
 
 	public int getServerId() {
@@ -99,5 +103,9 @@ public class StandardConfig {
 
 	public boolean getNerfPigzombieDrops() {
 		return nerfPigzombieDrops;
+	}
+
+	public int getAnimalChunkCap() {
+		return animalChunkCap;
 	}
 }

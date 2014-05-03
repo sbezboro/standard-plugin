@@ -380,6 +380,10 @@ public class StandardPlugin extends JavaPlugin {
 		return config.getNerfPigzombieDrops();
 	}
 
+	public int getAnimalChunkCap() {
+		return config.getAnimalChunkCap();
+	}
+
 	public GateStorage getGateStorage() {
 		return gateStorage;
 	}
