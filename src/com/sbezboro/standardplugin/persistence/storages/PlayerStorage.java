@@ -18,10 +18,10 @@ public class PlayerStorage extends MultiFileStorage<StandardPlayer> {
 
 	@Deprecated
 	public StandardPlayer getPlayer(String username) {
-		StandardPlayer standardPlayer = getObject(username);
+		StandardPlayer standardPlayer = getObject(username.toLowerCase());
 
 		if (standardPlayer == null) {
-			Player player = Bukkit.getPlayer(username);
+			Player player = Bukkit.getPlayerExact(username);
 			if (player == null) {
 				OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(username);
 				standardPlayer = new StandardPlayer(offlinePlayer, this);
@@ -29,7 +29,7 @@ public class PlayerStorage extends MultiFileStorage<StandardPlayer> {
 				standardPlayer = new StandardPlayer(player, this);
 			}
 
-			cacheObject(standardPlayer.getIdentifier(), standardPlayer);
+			cacheObject(standardPlayer.getIdentifier().toLowerCase(), standardPlayer);
 		} else if (standardPlayer.isOnline() && standardPlayer.getBasePlayer() == null) {
 			standardPlayer.setPlayer(Bukkit.getPlayer(username));
 			standardPlayer.setOfflinePlayer(Bukkit.getOfflinePlayer(username));
@@ -50,7 +50,7 @@ public class PlayerStorage extends MultiFileStorage<StandardPlayer> {
 				standardPlayer = new StandardPlayer(player, this);
 			}
 
-			cacheObject(standardPlayer.getIdentifier(), standardPlayer);
+			cacheObject(standardPlayer.getUniqueId(), standardPlayer);
 		} else if (standardPlayer.isOnline() && standardPlayer.getBasePlayer() == null) {
 			standardPlayer.setPlayer(Bukkit.getPlayer(uuid));
 			standardPlayer.setOfflinePlayer(Bukkit.getOfflinePlayer(uuid));

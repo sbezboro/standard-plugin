@@ -5,7 +5,7 @@ import com.mojang.api.profiles.Profile;
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.SubPlugin;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +39,16 @@ public class UUIDMigrationTask extends BaseTask {
 			plugin.getLogger().info("Renaming " + profile.getName() + " to " + profile.getId());
 
 			File file = new File(directory, profile.getName() + ".yml");
-			file.renameTo(new File(directory, profile.getId() + ".yml"));
+			File newFile = new File(directory, profile.getId() + ".yml");
+			file.renameTo(newFile);
+
+			try {
+				PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(newFile, true)));
+				out.println("username: " + profile.getName());
+				out.close();
+			} catch (IOException e) {
+				// Do nothing
+			}
 		}
 
 		plugin.getLogger().info("Migrating sub plugins");
