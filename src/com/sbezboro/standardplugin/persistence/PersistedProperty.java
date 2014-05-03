@@ -33,6 +33,11 @@ public class PersistedProperty<T> implements PersistedBase {
 		this.object = object;
 		this.def = def;
 	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
@@ -59,6 +64,7 @@ public class PersistedProperty<T> implements PersistedBase {
 		}
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public T getValue() {
 		if (value == null) {

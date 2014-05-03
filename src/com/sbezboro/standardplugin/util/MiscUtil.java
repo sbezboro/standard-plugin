@@ -110,4 +110,16 @@ public class MiscUtil {
 	public static String getLocationKey(Location location) {
 		return location.getWorld().getName() + ";" + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ();
 	}
+
+	public static boolean safeBoolean(Object object) {
+		if (object == null) {
+			return false;
+		} else {
+			try {
+				return (Boolean) object;
+			} catch (ClassCastException e) {
+				return false;
+			}
+		}
+	}
 }

@@ -1,16 +1,15 @@
 package com.sbezboro.standardplugin.persistence;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.bukkit.configuration.ConfigurationSection;
-
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.exceptions.NotPersistableException;
 import com.sbezboro.standardplugin.persistence.persistables.Persistable;
 import com.sbezboro.standardplugin.util.MiscUtil;
+import org.bukkit.configuration.ConfigurationSection;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class PersistedListProperty<T> implements Iterable<T>, PersistedBase {
 	private PersistedObject object;
@@ -24,6 +23,11 @@ public class PersistedListProperty<T> implements Iterable<T>, PersistedBase {
 		this.object = object;
 		this.cls = cls;
 		this.list = new ArrayList<T>();
+	}
+
+	@Override
+	public String getName() {
+		return name;
 	}
 
 	@Override
@@ -57,6 +61,11 @@ public class PersistedListProperty<T> implements Iterable<T>, PersistedBase {
 				}
 			}
 		}
+	}
+
+	@Override
+	public Object getValue() {
+		return listRepresentation();
 	}
 
 	public void add(T obj) {

@@ -87,7 +87,13 @@ public abstract class PersistedObject {
 	}
 
 	public final void save() {
+		for (PersistedBase property : persistedPorperties) {
+			saveProperty(property.getName(), property.getValue(), false);
+		}
+
 		storage.save(identifier);
+
+		toCommit = false;
 	}
 
 	public final boolean toCommit() {
