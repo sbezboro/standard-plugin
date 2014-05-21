@@ -302,8 +302,15 @@ public class StandardPlugin extends JavaPlugin {
 		StandardPlayer[] onlinePlayers = getOnlinePlayers();
 		for (StandardPlayer onlinePlayer : onlinePlayers) {
 			if (onlinePlayer.getDisplayName(false).toLowerCase().startsWith(username.toLowerCase())) {
-				player = onlinePlayer;
-				break;
+				// Return a player with a display name that directly matches the query
+				if (onlinePlayer.getName().equalsIgnoreCase(username)) {
+					return onlinePlayer;
+				}
+
+				// Otherwise find the shortest length player name that the query is a prefix to
+				if (player == null || onlinePlayer.getDisplayName(false).length() < player.getDisplayName(false).length()) {
+					player = onlinePlayer;
+				}
 			}
 		}
 

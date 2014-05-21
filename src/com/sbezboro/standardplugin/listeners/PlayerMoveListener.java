@@ -27,6 +27,10 @@ public class PlayerMoveListener extends EventListener implements Listener {
 		Location from = event.getFrom();
 		Location to = event.getTo();
 
+		if (from == null || to == null) {
+			return;
+		}
+
 		if (from.getBlockX() != to.getBlockX() || from.getBlockY() != to.getBlockY() || from.getBlockZ() != to.getBlockZ()) {
 			Gate source = plugin.getGateStorage().getGate(to);
 
