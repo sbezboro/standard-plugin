@@ -70,16 +70,17 @@ public class WebChatAPICallHandler extends APICallHandler {
 
 		if (type.equals("enter")) {
 			message = ChatColor.BLUE + "[Web Chat] " + ChatColor.YELLOW + player.getDisplayName(false) + " has entered web chat";
-			if (player.isBanned()) {
-				message += ", but they are banned!";
-			}
 		} else if (type.equals("exit")) {
 			message = ChatColor.BLUE + "[Web Chat] " + ChatColor.YELLOW + player.getDisplayName(false) + " has left web chat";
 		} else {
 			return notHandledResult();
 		}
 
-		StandardPlugin.broadcast(message);
+		if (player.isBanned()) {
+			plugin.getLogger().warning(ChatColor.stripColor(message));
+		} else {
+			StandardPlugin.broadcast(message);
+		}
 
 		return okResult();
 	}
