@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.UUID;
 
 import com.sbezboro.standardplugin.listeners.*;
+import com.sbezboro.standardplugin.managers.WeatherManager;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -70,6 +72,7 @@ public class StandardPlugin extends JavaPlugin {
 
 	private EndResetManager endResetManager;
 	private HoneypotManager honeypotManager;
+	private WeatherManager weatherManager;
 
 	public StandardPlugin() {
 		instance = this;
@@ -115,9 +118,12 @@ public class StandardPlugin extends JavaPlugin {
 
 		registerCommands();
 		registerEvents();
+
+		World overworld = getServer().getWorld(OVERWORLD_NAME);
 		
 		endResetManager = new EndResetManager(this, endResetStorage);
 		honeypotManager = new HoneypotManager(this, honeypotStorage);
+		weatherManager = new WeatherManager(this, overworld);
 
 		EssentialsIntegration.init(this);
 		SimplyVanishIntegration.init(this);
