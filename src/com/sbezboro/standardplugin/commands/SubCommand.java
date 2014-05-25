@@ -1,5 +1,6 @@
 package com.sbezboro.standardplugin.commands;
 
+import com.sbezboro.standardplugin.util.PaginatedOutput;
 import org.bukkit.command.CommandSender;
 
 import com.sbezboro.standardplugin.StandardPlugin;
@@ -12,12 +13,16 @@ public abstract class SubCommand implements Comparable<SubCommand> {
 	protected BaseCommand command;
 	protected String commandName;
 	protected List<String> alternatives;
+
+	protected List<String> helpLines;
 	
 	public SubCommand(StandardPlugin plugin, BaseCommand command, String commandName) {
 		this.plugin = plugin;
 		this.command = command;
 		this.commandName = commandName;
 		this.alternatives = new ArrayList<String>();
+
+		this.helpLines = new ArrayList<String>();
 	}
 
 	public SubCommand(StandardPlugin plugin, BaseCommand command, String commandName, List<String> alternatives) {
@@ -25,11 +30,27 @@ public abstract class SubCommand implements Comparable<SubCommand> {
 		this.command = command;
 		this.commandName = commandName;
 		this.alternatives = alternatives;
+
+		this.helpLines = new ArrayList<String>();
 	}
 	
 	public abstract boolean handle(CommandSender sender, String[] args);
 	
-	public abstract void showHelp(CommandSender sender);
+	public void addHelp(String line) {
+		this.helpLines.add(line);
+	}
+
+	public final void showHelp(CommandSender sender) {
+		for (String line : helpLines) {
+			sender.sendMessage(line);
+		}
+	}
+
+	public final void showHelp(PaginatedOutput output) {
+		for (String line : helpLines) {
+			output.addLine(line);
+		}
+	}
 
 	public String getCommandName() {
 		return commandName;
