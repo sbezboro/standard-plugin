@@ -36,7 +36,9 @@ public abstract class MultiFileStorage<T extends PersistedObject> implements Fil
 	public void reload() {
 		for (String identifier : idToFile.keySet()) {
 			load(identifier);
-			idToObject.get(identifier).loadProperties();
+			if (idToObject.containsKey(identifier)) {
+				idToObject.get(identifier).loadProperties();
+			}
 		}
 	}
 

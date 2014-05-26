@@ -22,7 +22,7 @@ public class WeatherManager extends BaseManager {
 			public void run() {
 				weatherCheck();
 			}
-		}, 100, 72000);
+		}, 72000, 72000);
 	}
 
 	private void weatherCheck() {
