@@ -18,6 +18,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class PlayerJoinListener extends EventListener implements Listener {
 
 	public PlayerJoinListener(StandardPlugin plugin) {
@@ -118,25 +121,13 @@ public class PlayerJoinListener extends EventListener implements Listener {
 			public void requestSuccess(HttpResponse response) {
 				if (response.isApiSuccess()) {
 					int rank = response.getInt("rank");
-					int veteranRank = response.getInt("veteran_rank");
 					int timeSpent = response.getInt("minutes");
+					ArrayList<HashMap<String, Object>> titles = (ArrayList<HashMap<String, Object>>) response.getJsonResponse().get("titles");
 
 					player.setRank(rank);
 					player.setTimeSpent(timeSpent);
 
-					if (veteranRank > 0) {
-						if (veteranRank <= 10) {
-							if (!player.isTop10Veteran()) {
-								player.addTitle(Title.TOP10_VETERAN);
-							}
-						} else if (veteranRank <= 40) {
-							if (!player.isTop40Veteran()) {
-								player.addTitle(Title.TOP40_VETERAN);
-							}
-						} else if (!player.isVeteran()) {
-							player.addTitle(Title.VETERAN);
-						}
-					}
+					plugin.getTitleStorage().addTitles(titles, player);
 					
 					StandardPlugin.playerBroadcast(player, player.getRankDescription(false, rank));
 					player.sendMessage(player.getRankDescription(true, rank));

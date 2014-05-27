@@ -250,18 +250,6 @@ public class StandardPlayer extends PlayerDelegate {
 		return hasTitle(Title.NEWBIE_STALKER);
 	}
 
-	public boolean isTop10Veteran() {
-		return hasTitle(Title.TOP10_VETERAN);
-	}
-
-	public boolean isTop40Veteran() {
-		return hasTitle(Title.TOP40_VETERAN);
-	}
-
-	public boolean isVeteran() {
-		return hasTitle(Title.VETERAN);
-	}
-	
 	public StandardPlayer getLastAttacker() {
 		return lastAttacker;
 	}
@@ -338,17 +326,6 @@ public class StandardPlayer extends PlayerDelegate {
 			if (title.isBroadcast()) {
 				broadcastedTitle = title;
 				break;
-			}
-		}
-		
-		if (broadcastedTitle == null) {
-			for (Title title : getTitles()) {
-				if (title.getIdentifier().equals(Title.TOP10_VETERAN) ||
-						title.getIdentifier().equals(Title.TOP40_VETERAN) ||
-						title.getIdentifier().equals(Title.VETERAN)) {
-					broadcastedTitle = title;
-					break;
-				}
 			}
 		}
 		

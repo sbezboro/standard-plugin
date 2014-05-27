@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sbezboro.standardplugin.model.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.json.simple.JSONObject;
@@ -34,6 +35,7 @@ public class StatsAPICallHandler extends APICallHandler {
 			String username = (String) playerData.get("username");
 			Long timeSpent = (Long) playerData.get("minutes");
 			Long rank = (Long) playerData.get("rank");
+			ArrayList<HashMap<String, Object>> titles = (ArrayList<HashMap<String, Object>>) playerData.get("titles");
 
 			StandardPlayer player = plugin.getStandardPlayer(username);
 
@@ -48,6 +50,8 @@ public class StatsAPICallHandler extends APICallHandler {
 
 			player.setTimeSpent(timeSpent.intValue());
 			player.setRank(rank.intValue());
+
+			plugin.getTitleStorage().addTitles(titles, player);
 
 			long hours = timeSpent / 60;
 			String hoursString = String.valueOf(hours) + MiscUtil.pluralize(" hour", hours);
