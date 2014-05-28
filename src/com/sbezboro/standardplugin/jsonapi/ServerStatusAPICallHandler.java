@@ -4,6 +4,7 @@ import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.sbezboro.standardplugin.SubPlugin;
 import org.bukkit.Bukkit;
 import org.json.simple.JSONObject;
 
@@ -39,6 +40,10 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 		status.put("maxplayers", Bukkit.getMaxPlayers());
 		status.put("tps", EssentialsIntegration.getTPS());
 		status.put("load", load);
+
+		for (SubPlugin subPlugin : plugin.getSubPlugins()) {
+			status.putAll(subPlugin.additionalServerStatus());
+		}
 
 		return okResult(status);
 	}
