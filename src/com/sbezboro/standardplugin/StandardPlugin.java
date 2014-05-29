@@ -306,11 +306,15 @@ public class StandardPlugin extends JavaPlugin {
 	public StandardPlayer matchPlayer(String username) {
 		StandardPlayer player = null;
 
+		String usernameLower = username.toLowerCase();
+
 		StandardPlayer[] onlinePlayers = getOnlinePlayers();
 		for (StandardPlayer onlinePlayer : onlinePlayers) {
-			if (onlinePlayer.getDisplayName(false).toLowerCase().startsWith(username.toLowerCase())) {
+			if (onlinePlayer.getDisplayName(false).toLowerCase().startsWith(usernameLower) ||
+					onlinePlayer.getName().toLowerCase().startsWith(usernameLower)) {
 				// Return a player with a display name that directly matches the query
-				if (onlinePlayer.getName().equalsIgnoreCase(username)) {
+				if (onlinePlayer.getDisplayName(false).equalsIgnoreCase(usernameLower) ||
+						onlinePlayer.getName().equalsIgnoreCase(usernameLower)) {
 					return onlinePlayer;
 				}
 
