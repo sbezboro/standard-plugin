@@ -27,7 +27,7 @@ public class PlayerMoveListener extends EventListener implements Listener {
 		Location from = event.getFrom();
 		Location to = event.getTo();
 
-		if (from == null || to == null) {
+		if (from == null || to == null || from.getWorld() == null || to.getWorld() == null) {
 			return;
 		}
 
