@@ -73,14 +73,20 @@ public class StandardPlayer extends PlayerDelegate {
 		titles = new ArrayList<Title>();
 
 		TitleStorage titleStorage = StandardPlugin.getPlugin().getTitleStorage();
+		ArrayList<String> titlesToRemove = new ArrayList<String>();
 		for (String name : titleNames) {
 			Title title = titleStorage.getTitle(name);
 
 			if (title == null) {
-				StandardPlugin.getPlugin().getLogger().severe("Player has non-existant title \"" + name + "\"!");
+				StandardPlugin.getPlugin().getLogger().severe("Player has non-existent title \"" + name + "\"!");
+				titlesToRemove.add(name);
 			} else {
 				titles.add(title);
 			}
+		}
+
+		for (String name : titlesToRemove) {
+			titleNames.remove(name);
 		}
 	}
 
