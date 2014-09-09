@@ -2,7 +2,6 @@ package com.sbezboro.standardplugin.persistence.storages;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.persistence.PersistedObject;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

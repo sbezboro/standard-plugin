@@ -1,11 +1,20 @@
 package com.sbezboro.standardplugin;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
+import com.alecgorge.minecraft.jsonapi.JSONAPI;
+import com.sbezboro.standardplugin.commands.*;
+import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
+import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
+import com.sbezboro.standardplugin.jsonapi.ForumPostAPICallHandler;
+import com.sbezboro.standardplugin.jsonapi.ServerStatusAPICallHandler;
+import com.sbezboro.standardplugin.jsonapi.StatsAPICallHandler;
+import com.sbezboro.standardplugin.jsonapi.WebChatAPICallHandler;
 import com.sbezboro.standardplugin.listeners.*;
+import com.sbezboro.standardplugin.managers.EndResetManager;
+import com.sbezboro.standardplugin.managers.HoneypotManager;
 import com.sbezboro.standardplugin.managers.WeatherManager;
+import com.sbezboro.standardplugin.model.StandardPlayer;
+import com.sbezboro.standardplugin.persistence.LogWriter;
+import com.sbezboro.standardplugin.persistence.storages.*;
 import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -15,40 +24,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.alecgorge.minecraft.jsonapi.JSONAPI;
-import com.sbezboro.standardplugin.commands.ClearBedCommand;
-import com.sbezboro.standardplugin.commands.EndCommand;
-import com.sbezboro.standardplugin.commands.EndresetCommand;
-import com.sbezboro.standardplugin.commands.ForumMuteCommand;
-import com.sbezboro.standardplugin.commands.GateCommand;
-import com.sbezboro.standardplugin.commands.HoneypotCommand;
-import com.sbezboro.standardplugin.commands.ICommand;
-import com.sbezboro.standardplugin.commands.PvpProtectionCommand;
-import com.sbezboro.standardplugin.commands.RankCommand;
-import com.sbezboro.standardplugin.commands.RegisterCommand;
-import com.sbezboro.standardplugin.commands.SetSpawnCommand;
-import com.sbezboro.standardplugin.commands.SpawnCommand;
-import com.sbezboro.standardplugin.commands.StandardCommand;
-import com.sbezboro.standardplugin.commands.TitleCommand;
-import com.sbezboro.standardplugin.commands.TitlesCommand;
-import com.sbezboro.standardplugin.commands.UnfreezeCommand;
-import com.sbezboro.standardplugin.commands.WebchatCommand;
-import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
-import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
-import com.sbezboro.standardplugin.jsonapi.ForumPostAPICallHandler;
-import com.sbezboro.standardplugin.jsonapi.ServerStatusAPICallHandler;
-import com.sbezboro.standardplugin.jsonapi.StatsAPICallHandler;
-import com.sbezboro.standardplugin.jsonapi.WebChatAPICallHandler;
-import com.sbezboro.standardplugin.managers.EndResetManager;
-import com.sbezboro.standardplugin.managers.HoneypotManager;
-import com.sbezboro.standardplugin.model.StandardPlayer;
-import com.sbezboro.standardplugin.persistence.LogWriter;
-import com.sbezboro.standardplugin.persistence.storages.EndResetStorage;
-import com.sbezboro.standardplugin.persistence.storages.GateStorage;
-import com.sbezboro.standardplugin.persistence.storages.HoneypotStorage;
-import com.sbezboro.standardplugin.persistence.storages.IStorage;
-import com.sbezboro.standardplugin.persistence.storages.PlayerStorage;
-import com.sbezboro.standardplugin.persistence.storages.TitleStorage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StandardPlugin extends JavaPlugin {
 	private static final String webchatPattern = "[*WC*]";
@@ -439,11 +416,11 @@ public class StandardPlugin extends JavaPlugin {
 	}
 
 	public StandardPlayer getStandardPlayer(Object object) {
-		if (!(object instanceof Player)) {
+		if (!(object instanceof OfflinePlayer)) {
 			return null;
 		}
 
-		String uuid = MiscUtil.getUuidString(((Player) object).getUniqueId());
+		String uuid = MiscUtil.getUuidString(((OfflinePlayer) object).getUniqueId());
 		return getStandardPlayerByUUID(uuid);
 	}
 }
