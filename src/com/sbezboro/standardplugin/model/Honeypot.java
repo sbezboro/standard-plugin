@@ -75,8 +75,8 @@ public class Honeypot extends PersistableImpl implements Persistable {
 		return discoverer != null && discoverer.length() > 0;
 	}
 	
-	public void setDiscovered(String username) {
-		discoverer = username;
+	public void setDiscovered(String uuid) {
+		discoverer = uuid;
 		discoverDate = System.currentTimeMillis();
 	}
 	

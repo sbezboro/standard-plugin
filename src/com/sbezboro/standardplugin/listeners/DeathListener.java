@@ -102,7 +102,7 @@ public class DeathListener extends EventListener implements Listener {
 
 		StandardPlayer victim = plugin.getStandardPlayer(event.getEntity());
 
-		deathMessage = ChatColor.DARK_RED + deathMessage.replaceAll(victim.getName(), ChatColor.stripColor(victim.getDisplayName()));
+		deathMessage = ChatColor.DARK_RED + deathMessage.replaceAll(victim.getName(), victim.getDisplayName(false));
 
 		EntityDamageEvent damageEvent = victim.getLastDamageCause();
 		if (damageEvent instanceof EntityDamageByEntityEvent) {
@@ -120,7 +120,7 @@ public class DeathListener extends EventListener implements Listener {
 			}
 
 			if (killer != null && deathMessage.contains(killer.getName())) {
-				deathMessage = deathMessage.replaceAll(killer.getName(), ChatColor.stripColor(killer.getDisplayName()));
+				deathMessage = deathMessage.replaceAll(killer.getName(), killer.getDisplayName(false));
 			}
 		}
 

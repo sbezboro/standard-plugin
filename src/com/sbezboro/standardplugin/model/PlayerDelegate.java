@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -61,14 +62,14 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	protected OfflinePlayer offlinePlayer;
 
 	public PlayerDelegate(Player player, PlayerStorage storage) {
-		super(storage, player.getName());
+		super(storage, MiscUtil.getUuidString(player.getUniqueId()));
 
 		this.player = player;
-		this.offlinePlayer = Bukkit.getOfflinePlayer(player.getName());
+		this.offlinePlayer = Bukkit.getOfflinePlayer(player.getUniqueId());
 	}
 
 	public PlayerDelegate(OfflinePlayer offlinePlayer, PlayerStorage storage) {
-		super(storage, offlinePlayer.getName());
+		super(storage, MiscUtil.getUuidString(offlinePlayer.getUniqueId()));
 
 		this.player = null;
 		this.offlinePlayer = offlinePlayer;

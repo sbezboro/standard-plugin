@@ -16,30 +16,13 @@ public class PlayerStorage extends MultiFileStorage<StandardPlayer> {
 		super(plugin, "players");
 	}
 
-	@Deprecated
-	public StandardPlayer getPlayer(String username) {
-		StandardPlayer standardPlayer = getObject(username.toLowerCase());
+	public StandardPlayer getPlayerByUUID(String uuidString) {
+		StandardPlayer standardPlayer = getObject(uuidString);
 
-		if (standardPlayer == null) {
-			Player player = Bukkit.getPlayerExact(username);
-			if (player == null) {
-				OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(username);
-				standardPlayer = new StandardPlayer(offlinePlayer, this);
-			} else {
-				standardPlayer = new StandardPlayer(player, this);
-			}
-
-			cacheObject(standardPlayer.getIdentifier().toLowerCase(), standardPlayer);
-		} else if (standardPlayer.isOnline() && standardPlayer.getBasePlayer() == null) {
-			standardPlayer.setPlayer(Bukkit.getPlayer(username));
-			standardPlayer.setOfflinePlayer(Bukkit.getOfflinePlayer(username));
-		}
-
-		return standardPlayer;
-	}
-
-	public StandardPlayer getPlayer(UUID uuid) {
-		StandardPlayer standardPlayer = getObject(uuid);
+		String uuidWithDashes = uuidString.replaceFirst(
+				"([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)",
+				"$1-$2-$3-$4-$5");
+		UUID uuid = UUID.fromString(uuidWithDashes);
 
 		if (standardPlayer == null) {
 			Player player = Bukkit.getPlayer(uuid);
@@ -50,28 +33,12 @@ public class PlayerStorage extends MultiFileStorage<StandardPlayer> {
 				standardPlayer = new StandardPlayer(player, this);
 			}
 
-			cacheObject(standardPlayer.getUniqueId(), standardPlayer);
+			cacheObject(uuidString, standardPlayer);
 		} else if (standardPlayer.isOnline() && standardPlayer.getBasePlayer() == null) {
 			standardPlayer.setPlayer(Bukkit.getPlayer(uuid));
 			standardPlayer.setOfflinePlayer(Bukkit.getOfflinePlayer(uuid));
 		}
 
 		return standardPlayer;
-	}
-
-	public void save(UUID uuid) {
-		save(uuid.toString().replaceAll("-", ""));
-	}
-
-	protected StandardPlayer getObject(UUID uuid) {
-		return getObject(uuid.toString().replaceAll("-", ""));
-	}
-
-	protected void cacheObject(UUID uuid, StandardPlayer player) {
-		cacheObject(uuid.toString().replaceAll("-", ""), player);
-	}
-
-	public void uncacheObject(UUID uuid) {
-		uncacheObject(uuid.toString().replaceAll("-", ""));
 	}
 }

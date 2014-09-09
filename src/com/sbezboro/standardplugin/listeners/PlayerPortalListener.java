@@ -36,15 +36,17 @@ public class PlayerPortalListener extends EventListener implements Listener {
 				
 				event.setTo(to);
 				
-				plugin.getLogger().info(event.getPlayer().getName() + " leaving the end.");
+				plugin.getLogger().info(player.getDisplayName(false) + " leaving the end.");
 			// Going to the end
 			} else {
 				World newEnd = plugin.getEndResetManager().getNewEndWorld();
+				StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
+
 				if (newEnd != null && !plugin.getEndResetStorage().getActivePortals().isEmpty()) {
 					event.setTo(new Location(newEnd, 100, 50, 0));
 				}
 				
-				plugin.getLogger().info(event.getPlayer().getName() + " going to the end.");
+				plugin.getLogger().info(player.getDisplayName(false) + " going to the end.");
 			}
 		}
 	}

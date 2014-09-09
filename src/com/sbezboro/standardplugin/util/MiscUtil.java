@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Horse;
@@ -122,4 +123,9 @@ public class MiscUtil {
 			}
 		}
 	}
+
+	public static String getUuidString(UUID uuid) {
+		return uuid.toString().replaceAll("-", "");
+	}
+
 }

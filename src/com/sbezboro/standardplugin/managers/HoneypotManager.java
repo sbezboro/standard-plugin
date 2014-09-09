@@ -88,7 +88,7 @@ public class HoneypotManager extends BaseManager {
 		Honeypot honeypot = locationMap.get(MiscUtil.getLocationKey(location));
 		
 		if (honeypot != null && !honeypot.isDiscovered() && !honeypot.isRemoved()) {
-			honeypot.setDiscovered(player.getName());
+			honeypot.setDiscovered(player.getUuidString());
 			storage.saveHoneypots();
 			
 			player.incrementHoneypotsDiscovered();

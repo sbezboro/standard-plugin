@@ -47,9 +47,9 @@ public class RankCommand extends BaseCommand {
 				if (response.isApiSuccess()) {
 					int rank = response.getInt("rank");
 					String time = response.getString("time");
-					String actualUsername = response.getString("username");
+					String uuid = response.getString("uuid");
 
-					StandardPlayer actualPlayer = plugin.getStandardPlayer(actualUsername);
+					StandardPlayer actualPlayer = plugin.getStandardPlayerByUUID(uuid);
 
 					sender.sendMessage(actualPlayer.getRankDescription(actualPlayer == senderPlayer, rank));
 					sender.sendMessage(actualPlayer.getTimePlayedDescription(actualPlayer == senderPlayer, time));

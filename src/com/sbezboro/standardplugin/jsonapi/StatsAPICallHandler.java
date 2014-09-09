@@ -37,7 +37,7 @@ public class StatsAPICallHandler extends APICallHandler {
 			Long rank = (Long) playerData.get("rank");
 			ArrayList<HashMap<String, Object>> titles = (ArrayList<HashMap<String, Object>>) playerData.get("titles");
 
-			StandardPlayer player = plugin.getStandardPlayer(username);
+			StandardPlayer player = plugin.getStandardPlayerByUUID(uuid);
 
 			if (!player.isOnline()) {
 				continue;

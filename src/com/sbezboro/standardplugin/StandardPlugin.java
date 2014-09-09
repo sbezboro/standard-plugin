@@ -6,7 +6,9 @@ import java.util.UUID;
 
 import com.sbezboro.standardplugin.listeners.*;
 import com.sbezboro.standardplugin.managers.WeatherManager;
+import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -426,13 +428,14 @@ public class StandardPlugin extends JavaPlugin {
 		return subPlugins;
 	}
 
-	@Deprecated
-	public StandardPlayer getStandardPlayer(String username) {
-		return playerStorage.getPlayer(username);
+	public StandardPlayer getStandardPlayerByUUID(String uuid) {
+		return playerStorage.getPlayerByUUID(uuid);
 	}
 
-	public StandardPlayer getStandardPlayer(UUID uuid) {
-		return playerStorage.getPlayer(uuid);
+	@Deprecated
+	public StandardPlayer getStandardPlayer(String username) {
+		OfflinePlayer offlinePlayer = getServer().getOfflinePlayer(username);
+		return getStandardPlayer(offlinePlayer);
 	}
 
 	public StandardPlayer getStandardPlayer(Object object) {
@@ -440,6 +443,7 @@ public class StandardPlugin extends JavaPlugin {
 			return null;
 		}
 
-		return getStandardPlayer(((Player) object).getName());
+		String uuid = MiscUtil.getUuidString(((Player) object).getUniqueId());
+		return getStandardPlayerByUUID(uuid);
 	}
 }

@@ -37,10 +37,10 @@ public class WebchatCommand extends BaseCommand {
 				for (int i = 0; i < users.size(); i++) {
 					JSONObject object = (JSONObject) users.get(i);
 					
-					String username = (String) object.get("username");
-					StandardPlayer player = plugin.getStandardPlayer(username);
+					String uuid = (String) object.get("uuid");
+					StandardPlayer player = plugin.getStandardPlayerByUUID(uuid);
 					
-					message += ChatColor.AQUA + player.getDisplayName();
+					message += ChatColor.WHITE + player.getDisplayName();
 					if (i < users.size() - 1) {
 						message += ChatColor.RESET + ", ";
 					}

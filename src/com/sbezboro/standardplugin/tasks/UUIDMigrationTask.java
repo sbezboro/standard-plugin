@@ -58,5 +58,7 @@ public class UUIDMigrationTask extends BaseTask {
 		}
 
 		plugin.getLogger().info("Migration complete");
+
+		plugin.reloadPlugin();
 	}
 }

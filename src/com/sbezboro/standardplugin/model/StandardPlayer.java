@@ -447,7 +447,7 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 
 	public String getUuidString() {
-		return getUniqueId().toString().replaceAll("-", "");
+		return MiscUtil.getUuidString(getUniqueId());
 	}
 
 	@Override

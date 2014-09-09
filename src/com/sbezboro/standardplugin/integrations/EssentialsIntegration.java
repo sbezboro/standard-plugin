@@ -58,14 +58,18 @@ public class EssentialsIntegration extends PluginIntegration {
 		return getUser(username).isMuted();
 	}
 
-    public static boolean doesPlayerIgnorePlayer(Player first, Player second) {
-        if (!enabled) {
-            return false;
-        }
+	public static boolean doesPlayerIgnorePlayer(Player first, Player second) {
+		if (!enabled) {
+			return false;
+		}
 
-        User firstUser = getUser(first.getName());
-        User secondUser = getUser(second.getName());
+		if (first == null || second == null) {
+			return false;
+		}
 
-        return firstUser.isIgnoredPlayer(secondUser);
-    }
+		User firstUser = getUser(first.getName());
+		User secondUser = getUser(second.getName());
+
+		return firstUser.isIgnoredPlayer(secondUser);
+	}
 }
