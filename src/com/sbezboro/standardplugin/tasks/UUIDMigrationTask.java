@@ -7,7 +7,9 @@ import com.sbezboro.standardplugin.SubPlugin;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UUIDMigrationTask extends BaseTask {
 
@@ -35,16 +37,23 @@ public class UUIDMigrationTask extends BaseTask {
 
 		Profile[] profiles = repository.findProfilesByNames(usernames.toArray(new String[usernames.size()]));
 
+		Map<String, String> uuidMap = new HashMap<String, String>();
 		for (Profile profile : profiles) {
-			plugin.getLogger().info("Renaming " + profile.getName() + " to " + profile.getId());
+			uuidMap.put(profile.getName(), profile.getId());
+		}
 
-			File file = new File(directory, profile.getName() + ".yml");
-			File newFile = new File(directory, profile.getId() + ".yml");
+		for (String username : uuidMap.keySet()) {
+			String uuid = uuidMap.get(username);
+
+			plugin.getLogger().info("Renaming " + username + " to " + uuid);
+
+			File file = new File(directory, username + ".yml");
+			File newFile = new File(directory, uuid + ".yml");
 			file.renameTo(newFile);
 
 			try {
 				PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(newFile, true)));
-				out.println("username: " + profile.getName());
+				out.println("username: " + username);
 				out.close();
 			} catch (IOException e) {
 				// Do nothing
@@ -54,7 +63,7 @@ public class UUIDMigrationTask extends BaseTask {
 		plugin.getLogger().info("Migrating sub plugins");
 
 		for (SubPlugin subPlugin : plugin.getSubPlugins()) {
-			subPlugin.migrate();
+			subPlugin.migrate(uuidMap);
 		}
 
 		plugin.getLogger().info("Migration complete");

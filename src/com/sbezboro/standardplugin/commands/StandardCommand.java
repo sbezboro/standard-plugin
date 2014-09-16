@@ -25,7 +25,7 @@ public class StandardCommand extends BaseCommand {
 			return true;
 		} else if (args[0].equalsIgnoreCase("migrate")) {
 			UUIDMigrationTask task = new UUIDMigrationTask(plugin);
-			task.run();
+			task.runTaskAsynchronously(plugin);
 			return true;
 		}
 

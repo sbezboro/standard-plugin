@@ -14,5 +14,5 @@ public interface SubPlugin extends Plugin {
 	public Map<String, Object> additionalServerStatus();
 
 	// UUID migration
-	public void migrate();
+	public void migrate(Map<String, String> uuidMap);
 }
