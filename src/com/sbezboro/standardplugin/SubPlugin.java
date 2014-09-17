@@ -12,7 +12,4 @@ public interface SubPlugin extends Plugin {
 	public List<ICommand> getCommands();
 	public void reloadPlugin();
 	public Map<String, Object> additionalServerStatus();
-
-	// UUID migration
-	public void migrate(Map<String, String> uuidMap);
 }
