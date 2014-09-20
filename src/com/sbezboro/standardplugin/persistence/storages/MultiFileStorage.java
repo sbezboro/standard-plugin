@@ -73,7 +73,9 @@ public abstract class MultiFileStorage<T extends PersistedObject> implements Fil
 				String identifier = file.getName().split("\\.(?=[^\\.]+$)")[0];
 				if (identifier.length() > 0) {
 					T object = createObject(identifier);
-					cacheObject(identifier, object);
+					if (object != null) {
+						cacheObject(identifier, object);
+					}
 				}
 			}
 		}

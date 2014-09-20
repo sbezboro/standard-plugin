@@ -312,6 +312,8 @@ public class StandardPlayer extends PlayerDelegate {
 		}
 		
 		player = null;
+
+		((PlayerStorage) storage).uncacheObject(getUuidString());
 	}
 	
 	public void sendHome(World overworld) {
