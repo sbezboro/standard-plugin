@@ -41,6 +41,8 @@ public class WeatherManager extends BaseManager {
 				public void run() {
 					plugin.getLogger().info("Turning off storm.");
 
+					overworld.setThunderDuration(0);
+					overworld.setWeatherDuration(0);
 					overworld.setStorm(false);
 					overworld.setThundering(false);
 				}
