@@ -5,10 +5,11 @@ import com.sbezboro.standardplugin.StandardPlugin;
 
 public class RegisterHttpRequest extends ApiHttpRequest {
 
-	public RegisterHttpRequest(String uuid, String password, HttpRequestListener listener) {
+	public RegisterHttpRequest(String uuid, String username, String email, HttpRequestListener listener) {
 		super(StandardPlugin.getPlugin(), "register", HTTPMethod.POST, listener);
 
 		addProperty("uuid", uuid);
-		addProperty("password", password);
+		addProperty("username", username);
+		addProperty("email", email);
 	}
 }

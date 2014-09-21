@@ -28,12 +28,12 @@ public class RegisterCommand extends BaseCommand {
 
 		final String username = player.getName();
 		final String uuid = player.getUuidString();
-		final String password = args[0];
+		final String email = args[0].trim();
 
 		player.sendMessage("Registering...");
 
 		HttpRequestManager.getInstance().startRequest(
-				new RegisterHttpRequest(uuid, password, new HttpRequestListener() {
+				new RegisterHttpRequest(uuid, username, email, new HttpRequestListener() {
 
 			@Override
 			public void requestSuccess(HttpResponse response) {
@@ -41,9 +41,7 @@ public class RegisterCommand extends BaseCommand {
 				
 				if (response.isApiSuccess()) {
 					player.sendMessage(ChatColor.DARK_GREEN + message);
-					player.sendMessage(ChatColor.GREEN + "Website username: " + ChatColor.AQUA + username + ChatColor.GREEN + ", password: " + ChatColor.AQUA
-							+ password);
-					player.sendMessage(ChatColor.GREEN + "Visit standardsurvival.com/login");
+					player.sendMessage(ChatColor.GREEN + "Email: " + ChatColor.AQUA + email);
 					plugin.getLogger().info(username + ": " + message);
 				} else {
 					player.sendMessage(ChatColor.RED + message);
@@ -61,10 +59,8 @@ public class RegisterCommand extends BaseCommand {
 
 	@Override
 	public void showUsageInfo(CommandSender sender) {
-		sender.sendMessage(ChatColor.AQUA + "Usage: /" + name + " <password>");
-		sender.sendMessage(ChatColor.GREEN + "This command will create an account on the website using");
-		sender.sendMessage(ChatColor.GREEN + "your Minecraft username and a password you specify. ");
-		sender.sendMessage(ChatColor.RED + "WARNING! DO NOT use your Minecraft password!");
+		sender.sendMessage(ChatColor.AQUA + "Usage: /" + name + " <email>");
+		sender.sendMessage(ChatColor.GREEN + "This command allows you to create an account on the server's website using your email address.");
 	}
 
 	@Override
