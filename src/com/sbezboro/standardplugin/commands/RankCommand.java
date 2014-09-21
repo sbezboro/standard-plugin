@@ -26,7 +26,12 @@ public class RankCommand extends BaseCommand {
 
 		final StandardPlayer senderPlayer = plugin.getStandardPlayer(sender);
 
-		final String username = args[0];
+		final String username;
+		if (args.length > 0) {
+			username = args[0];
+		} else {
+			username = senderPlayer.getName();
+		}
 
 		HttpRequestManager.getInstance().startRequest(
 				new RankHttpRequest(username, new HttpRequestListener() {
