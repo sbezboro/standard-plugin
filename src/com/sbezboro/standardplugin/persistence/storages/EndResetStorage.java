@@ -123,7 +123,7 @@ public class EndResetStorage extends ConfigStorage {
 		return portalLocation;
 	}
 	
-	public boolean isNearPortal(Location location, int blocks) {
+	public boolean isNearActivePortal(Location location, int blocks) {
 		Location portal = getClosestPortal(location);
 		
 		if (portal != null) {

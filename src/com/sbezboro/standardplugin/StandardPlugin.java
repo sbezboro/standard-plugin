@@ -17,6 +17,7 @@ import com.sbezboro.standardplugin.persistence.LogWriter;
 import com.sbezboro.standardplugin.persistence.storages.*;
 import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -208,6 +209,10 @@ public class StandardPlugin extends JavaPlugin {
 		saveConfig();
 		
 		subPlugins.add(subPlugin);
+	}
+
+	public boolean isNearActiveEndPortal(Location location, int blocks) {
+		return endResetStorage.isNearActivePortal(location, blocks);
 	}
 	
 	private static String webchatConsoleGate(String message, boolean webchat, boolean console) {
