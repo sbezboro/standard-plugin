@@ -26,7 +26,6 @@ public class NewMessageAPICallHandler extends APICallHandler {
 
 		StandardPlayer toPlayer = plugin.getStandardPlayerByUUID(toUuid);
 		if (toPlayer == null || !toPlayer.isOnline()) {
-			Bukkit.broadcastMessage("lel");
 			return okResult();
 		}
 
