@@ -4,10 +4,7 @@ import com.alecgorge.minecraft.jsonapi.JSONAPI;
 import com.sbezboro.standardplugin.commands.*;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
-import com.sbezboro.standardplugin.jsonapi.ForumPostAPICallHandler;
-import com.sbezboro.standardplugin.jsonapi.ServerStatusAPICallHandler;
-import com.sbezboro.standardplugin.jsonapi.StatsAPICallHandler;
-import com.sbezboro.standardplugin.jsonapi.WebChatAPICallHandler;
+import com.sbezboro.standardplugin.jsonapi.*;
 import com.sbezboro.standardplugin.listeners.*;
 import com.sbezboro.standardplugin.managers.EndResetManager;
 import com.sbezboro.standardplugin.managers.HoneypotManager;
@@ -191,6 +188,7 @@ public class StandardPlugin extends JavaPlugin {
 			JSONAPI jsonapi = (JSONAPI) plugin;
 
 			jsonapi.registerAPICallHandler(new ForumPostAPICallHandler(this));
+			jsonapi.registerAPICallHandler(new NewMessageAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new ServerStatusAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new StatsAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new WebChatAPICallHandler(this));

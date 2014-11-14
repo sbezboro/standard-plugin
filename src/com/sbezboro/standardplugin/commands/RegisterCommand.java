@@ -1,6 +1,7 @@
 package com.sbezboro.standardplugin.commands;
 
 import com.sbezboro.standardplugin.net.RegisterHttpRequest;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -28,7 +29,7 @@ public class RegisterCommand extends BaseCommand {
 
 		final String username = player.getName();
 		final String uuid = player.getUuidString();
-		final String email = args[0].trim();
+		final String email = args[0].trim().replaceAll("<", "").replaceAll(">", "");
 
 		player.sendMessage("Registering...");
 
