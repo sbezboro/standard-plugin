@@ -158,10 +158,11 @@ public class PlayerJoinListener extends EventListener implements Listener {
 
 					@Override
 					public void requestSuccess(HttpResponse response) {
+						Boolean noUser = (Boolean) response.getJsonResponse().get("no_user");
 						Map<String, Object> playerMessages = (Map<String, Object>) response.getJsonResponse().get("player_messages");
+
 						Long numNewMessages = (Long) playerMessages.get("num_new_messages");
 						List<String> fromUuids = (List<String>) playerMessages.get("from_uuids");
-						Boolean noUser = (Boolean) playerMessages.get("no_user");
 						String url = (String) playerMessages.get("url");
 
 						if (numNewMessages > 0) {
