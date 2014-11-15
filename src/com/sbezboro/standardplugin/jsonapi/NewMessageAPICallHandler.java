@@ -14,6 +14,7 @@ public class NewMessageAPICallHandler extends APICallHandler {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public JSONObject handle(HashMap<String, Object> payload) {
 		Map<String, Object> data = (Map<String, Object>) payload.get("data");
 
@@ -38,6 +39,7 @@ public class NewMessageAPICallHandler extends APICallHandler {
 			}
 		}
 
+		String name;
 		if (fromPlayer == null) {
 			name = fromUsername;
 		} else {

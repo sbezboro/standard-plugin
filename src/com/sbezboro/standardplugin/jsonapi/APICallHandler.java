@@ -1,19 +1,16 @@
 package com.sbezboro.standardplugin.jsonapi;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.logging.Logger;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.scheduler.BukkitScheduler;
-import org.json.simple.JSONObject;
-
 import com.alecgorge.minecraft.jsonapi.api.APIMethodName;
 import com.alecgorge.minecraft.jsonapi.api.JSONAPICallHandler;
 import com.sbezboro.standardplugin.StandardPlugin;
+import org.apache.commons.lang.StringUtils;
+import org.json.simple.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.logging.Logger;
 
 public abstract class APICallHandler implements JSONAPICallHandler {
 	protected StandardPlugin plugin;
