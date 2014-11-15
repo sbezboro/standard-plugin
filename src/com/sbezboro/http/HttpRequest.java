@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -21,15 +22,23 @@ import com.sbezboro.http.listeners.HttpRequestListener;
 
 public abstract class HttpRequest implements Runnable {
 	private static final int DEFAULT_MAX_ATTEMPTS = 5;
+
+	public class NotJsonException extends Exception {
+		public NotJsonException(String message) {
+			super(message);
+		}
+	}
 	
 	protected enum HTTPMethod {
 		GET, POST
-	};
+	}
 
 	protected final Plugin plugin;
-	private HashMap<String, String> properties;
+	private HashMap<String, Object> properties;
 	private HTTPMethod method;
 	private HttpRequestListener listener;
+
+	private boolean isJson;
 	
 	private String authorization;
 	
@@ -44,7 +53,7 @@ public abstract class HttpRequest implements Runnable {
 		this.maxAttempts = DEFAULT_MAX_ATTEMPTS;
 		this.attemptNum = 1;
 		
-		properties = new HashMap<String, String>();
+		properties = new HashMap<String, Object>();
 	}
 	
 	public int getAttempts() {
@@ -62,6 +71,18 @@ public abstract class HttpRequest implements Runnable {
 	public void addProperty(String key, boolean value) {
 		properties.put(key, value ? "1" : "0");
 	}
+
+	public void addProperty(String key, Map value) throws NotJsonException {
+		if (!isJson) {
+			throw new NotJsonException("Can't add Map property for non-json request");
+		}
+
+		properties.put(key, value);
+	}
+
+	public void setJson(boolean isJson) {
+		this.isJson = isJson;
+	}
 	
 	public void setAuth(String username, String password) {
 		String data = username + ":" + password;
@@ -69,11 +90,17 @@ public abstract class HttpRequest implements Runnable {
 	}
 
 	private String getPropertyData() {
+		if (isJson) {
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.putAll(properties);
+			return jsonObject.toJSONString();
+		}
+
 		String data = "";
 
 		int i = 0;
 		for (String key : properties.keySet()) {
-			String value = properties.get(key);
+			String value = (String) properties.get(key);
 
 			try {
 				data += URLEncoder.encode(key, "UTF-8") + "=" + URLEncoder.encode(value, "UTF-8");
@@ -99,6 +126,10 @@ public abstract class HttpRequest implements Runnable {
 
 			URL url = new URL(urlString);
 			URLConnection conn = url.openConnection();
+
+			if (isJson) {
+				conn.addRequestProperty("Content-Type", "application/json");
+			}
 			
 			if (authorization != null) {
 				conn.setRequestProperty("Authorization",  authorization);

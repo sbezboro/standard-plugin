@@ -1,6 +1,7 @@
 package com.sbezboro.standardplugin;
 
 import com.alecgorge.minecraft.jsonapi.JSONAPI;
+import com.sbezboro.http.HttpRequestManager;
 import com.sbezboro.standardplugin.commands.*;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
@@ -10,6 +11,7 @@ import com.sbezboro.standardplugin.managers.EndResetManager;
 import com.sbezboro.standardplugin.managers.HoneypotManager;
 import com.sbezboro.standardplugin.managers.WeatherManager;
 import com.sbezboro.standardplugin.model.StandardPlayer;
+import com.sbezboro.standardplugin.net.AuditLogHttpRequest;
 import com.sbezboro.standardplugin.persistence.LogWriter;
 import com.sbezboro.standardplugin.persistence.storages.*;
 import com.sbezboro.standardplugin.util.MiscUtil;
@@ -23,7 +25,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StandardPlugin extends JavaPlugin {
 	private static final String webchatPattern = "[*WC*]";
@@ -410,6 +414,32 @@ public class StandardPlugin extends JavaPlugin {
 
 	public StandardPlayer getStandardPlayerByUUID(String uuid) {
 		return playerStorage.getPlayerByUUID(uuid);
+	}
+
+	public void logAlert(String type, StandardPlayer player, Location location) {
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("x", location.getX());
+		data.put("y", location.getY());
+		data.put("z", location.getZ());
+		data.put("world", location.getWorld().getName());
+
+		logAlert(type, player, data);
+	}
+
+	public void logAlert(String type, StandardPlayer player, String message) {
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("message", message);
+
+		logAlert(type, player, data);
+	}
+
+	public void logAlert(String type, StandardPlayer player, Map<String, Object> data) {
+		String uuidString = null;
+		if (player != null) {
+			uuidString = player.getUuidString();
+		}
+
+		HttpRequestManager.getInstance().startRequest(new AuditLogHttpRequest(type, uuidString, data, null));
 	}
 
 	@Deprecated
