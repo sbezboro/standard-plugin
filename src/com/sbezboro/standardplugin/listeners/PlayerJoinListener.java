@@ -90,6 +90,8 @@ public class PlayerJoinListener extends EventListener implements Listener {
 			} else {
 				player.setLastAttacker(null);
 			}
+
+			notifyNewMessages(player);
 		} else {
 			String welcomeMessage = String.format("%sWelcome %s to the server!", ChatColor.LIGHT_PURPLE, player.getName());
 			StandardPlugin.playerBroadcast(player, welcomeMessage);
@@ -118,56 +120,6 @@ public class PlayerJoinListener extends EventListener implements Listener {
 		player.setEndId(currentEndId);
 		
 		event.setJoinMessage(message);
-
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-
-			@Override
-			public void run() {
-				HttpRequestManager.getInstance().startRequest(new JoinHttpRequest(player.getUuidString(), new HttpRequestListener() {
-					@Override
-					public void requestSuccess(HttpResponse response) {
-						Map<String, Object> playerMessages = (Map<String, Object>) response.getJsonResponse().get("player_messages");
-						Long numNewMessages = (Long) playerMessages.get("num_new_messages");
-						List<String> fromUuids = (List<String>) playerMessages.get("from_uuids");
-						Boolean noUser = (Boolean) playerMessages.get("no_user");
-						String url = (String) playerMessages.get("url");
-
-						String message = "";
-						if (numNewMessages > 0) {
-							message += "" + ChatColor.DARK_GREEN + ChatColor.BOLD + "You have " + numNewMessages + " new " + MiscUtil.pluralize("message", numNewMessages) + "! ";
-						}
-
-						if (!fromUuids.isEmpty()) {
-							message += ChatColor.RESET + "(From: ";
-
-							String names = "";
-							for (String uuid : fromUuids) {
-								StandardPlayer fromPlayer = plugin.getStandardPlayerByUUID(uuid);
-								if (names.length() > 0) {
-									names += ", ";
-								}
-								names += fromPlayer.getDisplayName(true) + ChatColor.RESET;
-							}
-
-							message += names;
-							message += ")";
-						}
-
-						player.sendMessage(message);
-						player.sendMessage(ChatColor.GREEN + "See messages here: " + ChatColor.AQUA + url);
-
-						if (noUser) {
-							player.sendMessage(ChatColor.RED + "Note: you will need to create a website account first by typing /register");
-						}
-					}
-
-					@Override
-					public void requestFailure(HttpResponse response) {
-						// Do nothing
-					}
-				}));
-			}
-		}, 80);
 	}
 
 	private void broadcastRank(final StandardPlayer player) {
@@ -192,7 +144,61 @@ public class PlayerJoinListener extends EventListener implements Listener {
 
 			@Override
 			public void requestFailure(HttpResponse response) {
+				// Do nothing
 			}
 		}));
+	}
+
+	private void notifyNewMessages(final StandardPlayer player) {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+
+			@Override
+			public void run() {
+				HttpRequestManager.getInstance().startRequest(new JoinHttpRequest(player.getUuidString(), new HttpRequestListener() {
+
+					@Override
+					public void requestSuccess(HttpResponse response) {
+						Map<String, Object> playerMessages = (Map<String, Object>) response.getJsonResponse().get("player_messages");
+						Long numNewMessages = (Long) playerMessages.get("num_new_messages");
+						List<String> fromUuids = (List<String>) playerMessages.get("from_uuids");
+						Boolean noUser = (Boolean) playerMessages.get("no_user");
+						String url = (String) playerMessages.get("url");
+
+						if (numNewMessages > 0) {
+							String message = "";
+							message += "" + ChatColor.DARK_GREEN + ChatColor.BOLD + "You have " + numNewMessages + " new " + MiscUtil.pluralize("message", numNewMessages) + "! ";
+
+							if (!fromUuids.isEmpty()) {
+								message += ChatColor.RESET + "(From: ";
+
+								String names = "";
+								for (String uuid : fromUuids) {
+									StandardPlayer fromPlayer = plugin.getStandardPlayerByUUID(uuid);
+									if (names.length() > 0) {
+										names += ", ";
+									}
+									names += fromPlayer.getDisplayName(true) + ChatColor.RESET;
+								}
+
+								message += names;
+								message += ")";
+							}
+
+							player.sendMessage(message);
+							player.sendMessage(ChatColor.GREEN + "See messages here: " + ChatColor.AQUA + url);
+
+							if (noUser) {
+								player.sendMessage(ChatColor.RED + "Note: you will need to create a website account first by typing /register");
+							}
+						}
+					}
+
+					@Override
+					public void requestFailure(HttpResponse response) {
+						// Do nothing
+					}
+				}));
+			}
+		}, 60);
 	}
 }

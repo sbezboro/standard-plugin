@@ -2,7 +2,6 @@ package com.sbezboro.standardplugin.jsonapi;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.json.simple.JSONObject;
 
