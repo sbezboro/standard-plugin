@@ -2,14 +2,15 @@ package com.sbezboro.standardplugin.listeners;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
-import net.minecraft.server.v1_7_R4.EntityEnderSignal;
+import net.minecraft.server.v1_8_R1.BlockPosition;
+import net.minecraft.server.v1_8_R1.EntityEnderSignal;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEnderSignal;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftEnderSignal;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.EnderSignal;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
@@ -65,7 +66,7 @@ public class PlayerInteractListener extends EventListener implements Listener {
 		CraftWorld craftWorld = (CraftWorld) eyeLocation.getWorld();
 		craftWorld.getHandle().makeSound(((CraftPlayer) player).getHandle(), "random.bow", 0.5F, 0.4F / 1.0F);
 		EntityEnderSignal eye = ((CraftEnderSignal) craftWorld.spawn(eyeLocation, EnderSignal.class)).getHandle();
-		eye.a(portalLocation.getX(), portalLocation.getBlockY(), portalLocation.getZ());
+		eye.a(new BlockPosition(portalLocation.getX(), portalLocation.getBlockY(), portalLocation.getZ()));
 		
 		if (player.getGameMode() == GameMode.SURVIVAL) {
 			if (itemStack.getAmount() == 1) {

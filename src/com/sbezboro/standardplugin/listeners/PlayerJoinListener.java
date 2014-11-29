@@ -158,6 +158,10 @@ public class PlayerJoinListener extends EventListener implements Listener {
 
 					@Override
 					public void requestSuccess(HttpResponse response) {
+						if (!player.isOnline()) {
+							return;
+						}
+
 						Boolean noUser = (Boolean) response.getJsonResponse().get("no_user");
 						Map<String, Object> playerMessages = (Map<String, Object>) response.getJsonResponse().get("player_messages");
 
