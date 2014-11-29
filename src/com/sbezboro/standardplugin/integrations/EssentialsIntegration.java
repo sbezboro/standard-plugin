@@ -3,7 +3,10 @@ package com.sbezboro.standardplugin.integrations;
 import com.earth2me.essentials.IEssentials;
 import com.earth2me.essentials.User;
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class EssentialsIntegration extends PluginIntegration {
 	private static final String CLASS_NAME = "com.earth2me.essentials.IEssentials";
@@ -14,22 +17,22 @@ public class EssentialsIntegration extends PluginIntegration {
 		essentials = init(plugin, CLASS_NAME, PLUGIN_NAME);
 	}
 
-	public static User getUser(String username) {
+	public static User getUser(StandardPlayer player) {
 		if (!enabled) {
 			return null;
 		}
-		return essentials.getUser(username);
+		return essentials.getUser(player.getUniqueId());
 	}
 
-	public static boolean hasNickname(String username) {
+	public static boolean hasNickname(StandardPlayer player) {
 		if (!enabled) {
 			return false;
 		}
-		return getNickname(username) != null;
+		return getNickname(player) != null;
 	}
 
-	public static String getNickname(String username) {
-		User user = getUser(username);
+	public static String getNickname(StandardPlayer player) {
+		User user = getUser(player);
 		if (user != null) {
 			return user.getNickname();
 		}
@@ -37,12 +40,12 @@ public class EssentialsIntegration extends PluginIntegration {
 		return null;
 	}
 
-	public static float getTPS() {
+	public static double getTPS() {
 		if (!enabled) {
 			return 0f;
 		}
 
-		Float tps = essentials.getTimer().getAverageTPS();
+		Double tps = essentials.getTimer().getAverageTPS();
 		if (tps == null) {
 			return 0f;
 		}
@@ -50,15 +53,15 @@ public class EssentialsIntegration extends PluginIntegration {
 		return tps;
 	}
 	
-	public static boolean isPlayerMuted(String username) {
+	public static boolean isPlayerMuted(StandardPlayer player) {
 		if (!enabled) {
 			return false;
 		}
 		
-		return getUser(username).isMuted();
+		return getUser(player).isMuted();
 	}
 
-	public static boolean doesPlayerIgnorePlayer(Player first, Player second) {
+	public static boolean doesPlayerIgnorePlayer(StandardPlayer first, StandardPlayer second) {
 		if (!enabled) {
 			return false;
 		}
@@ -67,8 +70,8 @@ public class EssentialsIntegration extends PluginIntegration {
 			return false;
 		}
 
-		User firstUser = getUser(first.getName());
-		User secondUser = getUser(second.getName());
+		User firstUser = getUser(first);
+		User secondUser = getUser(second);
 
 		return firstUser.isIgnoredPlayer(secondUser);
 	}

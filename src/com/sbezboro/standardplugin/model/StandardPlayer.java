@@ -427,12 +427,12 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 
 	public boolean hasNickname() {
-		return EssentialsIntegration.hasNickname(getName());
+		return EssentialsIntegration.hasNickname(this);
 	}
 
 	public String getDisplayName(boolean colored) {
 		if (hasNickname()) {
-			String name = EssentialsIntegration.getNickname(getName());
+			String name = EssentialsIntegration.getNickname(this);
 
 			if (!colored) {
 				return ChatColor.stripColor(name);
@@ -445,7 +445,7 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 	
 	public boolean isMuted() {
-		return EssentialsIntegration.isPlayerMuted(getName());
+		return EssentialsIntegration.isPlayerMuted(this);
 	}
 
 	public String getUuidString() {

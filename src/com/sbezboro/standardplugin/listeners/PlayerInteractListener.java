@@ -66,7 +66,7 @@ public class PlayerInteractListener extends EventListener implements Listener {
 		CraftWorld craftWorld = (CraftWorld) eyeLocation.getWorld();
 		craftWorld.getHandle().makeSound(((CraftPlayer) player).getHandle(), "random.bow", 0.5F, 0.4F / 1.0F);
 		EntityEnderSignal eye = ((CraftEnderSignal) craftWorld.spawn(eyeLocation, EnderSignal.class)).getHandle();
-		eye.a(new BlockPosition(portalLocation.getX(), portalLocation.getBlockY(), portalLocation.getZ()));
+		eye.a(new BlockPosition(portalLocation.getBlockX(), portalLocation.getBlockY(), portalLocation.getBlockZ()));
 		
 		if (player.getGameMode() == GameMode.SURVIVAL) {
 			if (itemStack.getAmount() == 1) {
