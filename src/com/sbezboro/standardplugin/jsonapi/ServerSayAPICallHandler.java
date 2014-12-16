@@ -1,6 +1,7 @@
 package com.sbezboro.standardplugin.jsonapi;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.json.simple.JSONObject;
 
@@ -16,7 +17,7 @@ public class ServerSayAPICallHandler extends APICallHandler {
 	public JSONObject handle(HashMap<String, Object> payload) {
 		String message = (String) payload.get("message");
 
-		StandardPlugin.broadcast("" + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "[Server] " + message);
+		Bukkit.getServer().broadcastMessage("" + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "[Server] " + message);
 
 		return okResult();
 	}
