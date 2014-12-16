@@ -193,6 +193,7 @@ public class StandardPlugin extends JavaPlugin {
 
 			jsonapi.registerAPICallHandler(new ForumPostAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new NewMessageAPICallHandler(this));
+			jsonapi.registerAPICallHandler(new ServerSayAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new ServerStatusAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new StatsAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new WebChatAPICallHandler(this));
