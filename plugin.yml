@@ -1,6 +1,6 @@
 name: StandardPlugin
 main: com.sbezboro.standardplugin.StandardPlugin
-version: 2.3.10
+version: 2.3.11
 softdepend: [JSONAPI, SimplyVanish, Essentials, Factions]
 
 commands:
@@ -43,9 +43,9 @@ commands:
         description: Query/enable/disable pvp protection for players
         permission: standardplugin.pvp
         permission-message: You don't have permission
-    title:
+    sstitle:
         description: Administrate player titles
-        permission: standardplugin.title
+        permission: standardplugin.sstitle
         permission-message: You don't have permission
     titles:
         description: Check out titles for a player

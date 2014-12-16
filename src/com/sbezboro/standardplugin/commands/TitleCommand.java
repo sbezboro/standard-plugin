@@ -11,7 +11,7 @@ import com.sbezboro.standardplugin.model.Title;
 public class TitleCommand extends BaseCommand {
 
 	public TitleCommand(StandardPlugin plugin) {
-		super(plugin, "title");
+		super(plugin, "sstitle");
 	}
 
 	@Override
