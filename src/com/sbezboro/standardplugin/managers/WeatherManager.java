@@ -22,11 +22,11 @@ public class WeatherManager extends BaseManager {
 			public void run() {
 				weatherCheck();
 			}
-		}, 72000, 72000);
+		}, 36000, 36000);
 	}
 
 	private void weatherCheck() {
-		// 25% chance of a storm every hour
+		// 25% chance of a storm period
 		if (Math.random() < 0.25) {
 			overworld.setStorm(true);
 
