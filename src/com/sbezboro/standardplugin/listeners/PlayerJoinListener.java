@@ -92,6 +92,8 @@ public class PlayerJoinListener extends EventListener implements Listener {
 			}
 
 			notifyNewMessages(player);
+
+			player.sendTitleMessage("Welcome back, " + player.getDisplayName() + ChatColor.RESET + "!");
 		} else {
 			String welcomeMessage = String.format("%sWelcome %s to the server!", ChatColor.LIGHT_PURPLE, player.getName());
 			StandardPlugin.playerBroadcast(player, welcomeMessage);
@@ -104,6 +106,8 @@ public class PlayerJoinListener extends EventListener implements Listener {
 			if (plugin.isPvpProtectionEnabled()) {
 				player.setPvpProtection(true);
 			}
+
+			player.sendTitleMessage("Welcome, " + player.getDisplayName() + ChatColor.RESET + "!");
 		}
 
 		String message;

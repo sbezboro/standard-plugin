@@ -3,6 +3,7 @@ package com.sbezboro.standardplugin;
 import com.alecgorge.minecraft.jsonapi.JSONAPI;
 import com.sbezboro.http.HttpRequestManager;
 import com.sbezboro.standardplugin.commands.*;
+import com.sbezboro.standardplugin.commands.ICommand;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.jsonapi.*;
@@ -15,10 +16,12 @@ import com.sbezboro.standardplugin.net.AuditLogHttpRequest;
 import com.sbezboro.standardplugin.persistence.LogWriter;
 import com.sbezboro.standardplugin.persistence.storages.*;
 import com.sbezboro.standardplugin.util.MiscUtil;
+import net.minecraft.server.v1_8_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -268,6 +271,25 @@ public class StandardPlugin extends JavaPlugin {
 	
 	public static void webchatMessage(String message) {
 		Bukkit.getConsoleSender().sendMessage(webchatPattern + message);
+	}
+
+	public static void sendTitleMessage(StandardPlayer player, String title, String subtitle, int fadeIn, int time, int fadeOut) {
+		PlayerConnection connection = ((CraftPlayer) player.getPlayer()).getHandle().playerConnection;
+
+		PacketPlayOutTitle packet = new PacketPlayOutTitle(EnumTitleAction.TIMES, null, fadeIn, time, fadeOut);
+		connection.sendPacket(packet);
+
+		if (title != null) {
+			IChatBaseComponent component = ChatSerializer.a("{\"text\": \"" + title + "\"}");
+			packet = new PacketPlayOutTitle(EnumTitleAction.TITLE, component);
+			connection.sendPacket(packet);
+		}
+
+		if (subtitle != null) {
+			IChatBaseComponent component = ChatSerializer.a("{\"text\": \"" + subtitle + "\"}");
+			packet = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, component);
+			connection.sendPacket(packet);
+		}
 	}
 
 	public StandardPlayer[] getOnlinePlayers() {
