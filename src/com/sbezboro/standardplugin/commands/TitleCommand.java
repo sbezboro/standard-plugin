@@ -126,7 +126,7 @@ public class TitleCommand extends BaseCommand {
 				if (player.hasTitle(titleName)) {
 					Title title = plugin.getTitleStorage().getTitle(titleName);
 
-					player.removeTitle(titleName);
+					player.removeTitle(title);
 
 					StandardPlugin.broadcast(ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + " no longer has the title " + ChatColor.AQUA
 							+ title.getDisplayName());

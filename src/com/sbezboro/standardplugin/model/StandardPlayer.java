@@ -175,11 +175,9 @@ public class StandardPlayer extends PlayerDelegate {
 		return title;
 	}
 
-	public void removeTitle(String name) {
-		Title title = StandardPlugin.getPlugin().getTitleStorage().getTitle(name);
-
+	public void removeTitle(Title title) {
 		titles.remove(title);
-		titleNames.remove(name);
+		titleNames.remove(title.getIdentifier());
 	}
 	
 	public int getEndId() {
@@ -408,11 +406,13 @@ public class StandardPlayer extends PlayerDelegate {
 		info.put("pvp_logs", getPvpLogs());
 		info.put("honeypots_discovered", getHoneypotsDiscovered());
 
-		ArrayList<HashMap<String, String>> titleInfos = new ArrayList<HashMap<String, String>>();
+		ArrayList<HashMap<String, Object>> titleInfos = new ArrayList<HashMap<String, Object>>();
 		for (Title title : titles) {
-			HashMap<String, String> titleInfo = new HashMap<String, String>();
+			HashMap<String, Object> titleInfo = new HashMap<String, Object>();
 			titleInfo.put("name", title.getIdentifier());
 			titleInfo.put("display_name", title.getDisplayName());
+			titleInfo.put("broadcast", title.isBroadcast());
+			titleInfo.put("hidden", title.isHidden());
 			titleInfos.add(titleInfo);
 		}
 
