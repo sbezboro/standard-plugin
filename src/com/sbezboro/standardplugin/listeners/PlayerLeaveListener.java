@@ -1,5 +1,6 @@
 package com.sbezboro.standardplugin.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -35,10 +36,11 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 			player.setPvpLogged(true);
 			
 			player.incrementPvpLogs();
+
 			StandardPlugin.broadcast(String.format("%s%s %sPVP logged to %s%s%s!",
 					ChatColor.AQUA, player.getDisplayName(), ChatColor.RED, ChatColor.AQUA, 
 					player.getLastAttacker().getDisplayName(), ChatColor.RED));
-			
+
 			if (player.hasTitle(Title.PVP_LOGGER)) {
 				player.damage(1000.0);
 			}

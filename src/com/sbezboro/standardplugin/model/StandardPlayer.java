@@ -28,6 +28,7 @@ public class StandardPlayer extends PlayerDelegate {
 	private PersistedListProperty<String> titleNames;
 	private PersistedProperty<Integer> endId;
 	private PersistedProperty<Integer> pvpLogs;
+	private PersistedProperty<Boolean> pvpLogged;
 	private PersistedProperty<Integer> honeypotsDiscovered;
 
 	private ArrayList<Title> titles;
@@ -36,8 +37,6 @@ public class StandardPlayer extends PlayerDelegate {
 	private int rank;
 
 	private int newbieAttacks;
-	
-	private boolean pvpLogged;
 	
 	private PvpTimerTask pvpTimerTask;
 	private StandardPlayer lastAttacker;
@@ -58,6 +57,7 @@ public class StandardPlayer extends PlayerDelegate {
 		titleNames = createList(String.class, "titles");
 		endId = createProperty(Integer.class, "end-id");
 		pvpLogs = createProperty(Integer.class, "pvp-logs");
+		pvpLogged = createProperty(Boolean.class, "pvp-logged");
 		honeypotsDiscovered = createProperty(Integer.class, "honeypots-discovered");
 	}
 
@@ -260,11 +260,11 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 
 	public boolean hasPvpLogged() {
-		return pvpLogged;
+		return pvpLogged.getValue();
 	}
 	
 	public void setPvpLogged(boolean pvpLogged) {
-		this.pvpLogged = pvpLogged;
+		this.pvpLogged.setValue(pvpLogged);
 	}
 	
 	public boolean isInPvp() {
