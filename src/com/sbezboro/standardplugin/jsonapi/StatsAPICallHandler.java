@@ -60,31 +60,36 @@ public class StatsAPICallHandler extends APICallHandler {
 						+ ChatColor.BLUE + " on the server! Congrats!");
 			}
 
-			if (plugin.isPvpProtectionEnabled() && player.isPvpProtected()) {
-				int remainingTime = player.getPvpProtectionTimeRemaining();
-
-				// Disable PVP protection after time is up
-				if (remainingTime == 0) {
-					player.sendMessage("" + ChatColor.RED + ChatColor.BOLD + "After playing on the server for " + ChatColor.BOLD + ChatColor.AQUA + hoursString
-							+ ChatColor.RED + ChatColor.BOLD + " your PVP protection has been disabled! Stay safe out there!");
-
-					player.setPvpProtection(false);
-					logger.info("Disabling PVP protection for " + player.getName() + " after reaching time limit.");
-					// Show warning a few times before the PVP protection wears off
-				} else if (timeSpent % (plugin.getPvpProtectionTime() / 4) == 0 || remainingTime == 5) {
-					player.sendMessage(ChatColor.RED + "Warning! You have " + ChatColor.AQUA + remainingTime + ChatColor.RED
-							+ MiscUtil.pluralize(" minute", remainingTime) + " left until PVP protection is disabled!");
-					// Various new player messages
-				} else if (timeSpent == 1) {
-					player.sendMessage(ChatColor.AQUA + "Welcome to " + ChatColor.BOLD + "Standard Survival" + ChatColor.AQUA
-							+ "! To make it easier for you to settle in, you start of with " + plugin.getPvpProtectionTime()
-							+ " minutes of PVP protection and " + plugin.getHungerProtectionTime() + " minutes of hunger protection.");
+			if (plugin.isPvpProtectionEnabled()) {
+				// Various new player messages
+				if (timeSpent == 1) {
+					player.sendMessage(ChatColor.DARK_AQUA + "Welcome to " + ChatColor.BOLD + "Standard Survival" + ChatColor.DARK_AQUA
+							+ "! To make it easier for you to settle in, you start off with:");
+					player.sendMessage("" + ChatColor.GOLD + plugin.getPvpProtectionTime() + " minutes of PVP protection");
+					player.sendMessage("" + ChatColor.GOLD + plugin.getHungerProtectionTime() + " minutes of hunger protection.");
 				} else if (timeSpent == 2) {
-					player.sendMessage(ChatColor.AQUA + "Try to travel far away from spawn to find a suitable spot in the wilderness to begin your adventure. "
-							+ "There are a lot of factions, both hostile and friendly, in the area surrounding spawn.");
+					player.sendMessage(ChatColor.DARK_AQUA + "Try to travel far away from spawn to find a suitable spot in the wilderness to begin your adventure. "
+							+ "There are a lot of groups, both hostile and friendly, in the area surrounding spawn.");
 				} else if (timeSpent == 3) {
-					player.sendMessage(ChatColor.AQUA
-							+ "Attacking a vulnerable player will automatically disable your PVP protection, so be careful! Good luck and have fun!");
+					player.sendMessage(ChatColor.DARK_AQUA
+							+ "Attacking another player will automatically disable your PVP protection, so be careful! Good luck and have fun!");
+				}
+
+				if (player.isPvpProtected()) {
+					int remainingTime = player.getPvpProtectionTimeRemaining();
+
+					// Disable PVP protection after time is up
+					if (remainingTime == 0) {
+						player.sendMessage("" + ChatColor.RED + ChatColor.BOLD + "After playing on the server for " + ChatColor.BOLD + ChatColor.AQUA + hoursString
+								+ ChatColor.RED + ChatColor.BOLD + " your PVP protection has been disabled! Stay safe out there!");
+
+						player.setPvpProtection(false);
+						logger.info("Disabling PVP protection for " + player.getName() + " after reaching time limit.");
+						// Show warning a few times before the PVP protection wears off
+					} else if (timeSpent % (plugin.getPvpProtectionTime() / 4) == 0 || remainingTime == 5) {
+						player.sendMessage(ChatColor.RED + "Warning! You have " + ChatColor.AQUA + remainingTime + ChatColor.RED
+								+ MiscUtil.pluralize(" minute", remainingTime) + " left until PVP protection is disabled!");
+					}
 				}
 			}
 		}
