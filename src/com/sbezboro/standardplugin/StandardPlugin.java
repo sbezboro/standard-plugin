@@ -27,10 +27,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class StandardPlugin extends JavaPlugin {
 	private static final String webchatPattern = "[*WC*]";
@@ -292,12 +289,12 @@ public class StandardPlugin extends JavaPlugin {
 		}
 	}
 
-	public StandardPlayer[] getOnlinePlayers() {
-		Player[] onlinePlayers = Bukkit.getOnlinePlayers();
-		StandardPlayer[] result = new StandardPlayer[onlinePlayers.length];
+	public List<StandardPlayer> getOnlinePlayers() {
+		List<StandardPlayer> result = new ArrayList<StandardPlayer>();
 
-		for (int i = 0; i < onlinePlayers.length; ++i) {
-			result[i] = getStandardPlayer(onlinePlayers[i]);
+		Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
+		for (Player player : onlinePlayers) {
+			result.add(getStandardPlayer(player));
 		}
 
 		return result;
@@ -317,8 +314,7 @@ public class StandardPlugin extends JavaPlugin {
 
 		String usernameLower = username.toLowerCase();
 
-		StandardPlayer[] onlinePlayers = getOnlinePlayers();
-		for (StandardPlayer onlinePlayer : onlinePlayers) {
+		for (StandardPlayer onlinePlayer : getOnlinePlayers()) {
 			if (onlinePlayer.getDisplayName(false).toLowerCase().startsWith(usernameLower) ||
 					onlinePlayer.getName().toLowerCase().startsWith(usernameLower)) {
 				// Return a player with a display name that directly matches the query

@@ -8,12 +8,8 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Horse;
+import org.bukkit.entity.*;
 import org.bukkit.entity.Horse.Variant;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Ocelot;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Wolf;
 
 public class MiscUtil {
 
@@ -46,6 +42,8 @@ public class MiscUtil {
 			Variant variant = horse.getVariant();
 
 			return variant.name().toLowerCase();
+		} else if (livingEntity instanceof Rabbit) {
+			return "rabbit";
 		} else {
 			return livingEntity.toString().substring(5);
 		}
