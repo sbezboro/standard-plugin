@@ -159,6 +159,7 @@ public class StandardPlugin extends JavaPlugin {
 		commands.add(new ClearBedCommand(this));
 		commands.add(new HoneypotCommand(this));
 		commands.add(new EndresetCommand(this));
+		commands.add(new UsernamesCommand(this));
 
 		for (ICommand command : commands) {
 			command.register();

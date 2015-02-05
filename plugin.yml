@@ -1,6 +1,6 @@
 name: StandardPlugin
 main: com.sbezboro.standardplugin.StandardPlugin
-version: 2.3.16
+version: 2.3.17
 softdepend: [JSONAPI, SimplyVanish, Essentials, Factions]
 
 commands:
@@ -72,6 +72,10 @@ commands:
         description: Find out when the next end reset is
         permission: standardplugin.endreset
         permission-message: You don't have permission
+    usernames:
+        description: See past usernames of a player
+        permission: standardplugin.usernames
+        permission-message: You don't have permission
 
 permissions:
     standardplugin.standard:
@@ -105,4 +109,6 @@ permissions:
     standardplugin.honeypot:
         default: op
     standardplugin.endreset:
+        default: true
+    standardplugin.usernames:
         default: true

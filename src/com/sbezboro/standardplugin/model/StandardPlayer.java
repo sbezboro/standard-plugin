@@ -17,6 +17,7 @@ import org.bukkit.util.BlockIterator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class StandardPlayer extends PlayerDelegate {
@@ -31,7 +32,8 @@ public class StandardPlayer extends PlayerDelegate {
 	private PersistedProperty<Boolean> pvpLogged;
 	private PersistedProperty<Integer> honeypotsDiscovered;
 
-	private ArrayList<Title> titles;
+	private List<Title> titles;
+	private List<String> pastUsernames;
 
 	private int timeSpent;
 	private int rank;
@@ -83,6 +85,8 @@ public class StandardPlayer extends PlayerDelegate {
 		for (String name : titlesToRemove) {
 			titleNames.remove(name);
 		}
+
+		pastUsernames = new ArrayList<String>();
 	}
 
 	public Block getTargetBlock(int range) {
@@ -204,6 +208,14 @@ public class StandardPlayer extends PlayerDelegate {
 		honeypotsDiscovered.setValue(honeypotsDiscovered.getValue() + 1);
 	}
 
+	public boolean hasPvpLogged() {
+		return pvpLogged.getValue();
+	}
+
+	public void setPvpLogged(boolean pvpLogged) {
+		this.pvpLogged.setValue(pvpLogged);
+	}
+
 	// ------
 	// Non-persisted property mutators
 	// ------
@@ -231,7 +243,7 @@ public class StandardPlayer extends PlayerDelegate {
 		return newbieAttacks++;
 	}
 
-	public ArrayList<Title> getTitles() {
+	public List<Title> getTitles() {
 		return titles;
 	}
 
@@ -257,12 +269,16 @@ public class StandardPlayer extends PlayerDelegate {
 		lastAttacker = player;
 	}
 
-	public boolean hasPvpLogged() {
-		return pvpLogged.getValue();
+	public List<String> getPastUsernames() {
+		return pastUsernames;
 	}
-	
-	public void setPvpLogged(boolean pvpLogged) {
-		this.pvpLogged.setValue(pvpLogged);
+
+	public void setPastUsernames(List<String> pastUsernames) {
+		this.pastUsernames.clear();
+
+		for (String username : pastUsernames) {
+			this.pastUsernames.add(username);
+		}
 	}
 	
 	public boolean isInPvp() {

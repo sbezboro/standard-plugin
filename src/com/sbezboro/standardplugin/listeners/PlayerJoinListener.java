@@ -20,6 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,8 +92,6 @@ public class PlayerJoinListener extends EventListener implements Listener {
 				player.setLastAttacker(null);
 			}
 
-			notifyNewMessages(player);
-
 			player.sendTitleMessage("Welcome back, " + player.getDisplayName() + ChatColor.RESET + "!");
 		} else {
 			String welcomeMessage = String.format("%sWelcome %s to the server!", ChatColor.LIGHT_PURPLE, player.getName());
@@ -124,6 +123,8 @@ public class PlayerJoinListener extends EventListener implements Listener {
 		player.setEndId(currentEndId);
 		
 		event.setJoinMessage(message);
+
+		joinServerEvent(player);
 	}
 
 	private void broadcastRank(final StandardPlayer player) {
@@ -153,60 +154,68 @@ public class PlayerJoinListener extends EventListener implements Listener {
 		}));
 	}
 
-	private void notifyNewMessages(final StandardPlayer player) {
+	private void joinServerEvent(final StandardPlayer player) {
+		HttpRequestManager.getInstance().startRequest(new JoinHttpRequest(player.getUuidString(), new HttpRequestListener() {
+
+			@Override
+			public void requestSuccess(HttpResponse response) {
+				if (!player.isOnline()) {
+					return;
+				}
+
+				JSONObject data = response.getJsonResponse();
+				List<String> pastUsernames = (List<String>) data.get("past_usernames");
+				Map<String, Object> playerMessages = (Map<String, Object>) data.get("player_messages");
+				Boolean noUser = (Boolean) data.get("no_user");
+
+				player.setPastUsernames(pastUsernames);
+
+				notifyNewMessages(player, playerMessages, noUser);
+			}
+
+			@Override
+			public void requestFailure(HttpResponse response) {
+				// Do nothing
+			}
+		}));
+	}
+
+	private void notifyNewMessages(final StandardPlayer player, final Map<String, Object> playerMessages, final boolean noUser) {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 
 			@Override
 			public void run() {
-				HttpRequestManager.getInstance().startRequest(new JoinHttpRequest(player.getUuidString(), new HttpRequestListener() {
+				Long numNewMessages = (Long) playerMessages.get("num_new_messages");
+				List<String> fromUuids = (List<String>) playerMessages.get("from_uuids");
+				String url = (String) playerMessages.get("url");
 
-					@Override
-					public void requestSuccess(HttpResponse response) {
-						if (!player.isOnline()) {
-							return;
+				if (numNewMessages > 0) {
+					String message = "";
+					message += "" + ChatColor.DARK_GREEN + ChatColor.BOLD + "You have " + numNewMessages + " new " + MiscUtil.pluralize("message", numNewMessages) + "! ";
+
+					if (!fromUuids.isEmpty()) {
+						message += ChatColor.RESET + "(From: ";
+
+						String names = "";
+						for (String uuid : fromUuids) {
+							StandardPlayer fromPlayer = plugin.getStandardPlayerByUUID(uuid);
+							if (names.length() > 0) {
+								names += ", ";
+							}
+							names += fromPlayer.getDisplayName(true) + ChatColor.RESET;
 						}
 
-						Boolean noUser = (Boolean) response.getJsonResponse().get("no_user");
-						Map<String, Object> playerMessages = (Map<String, Object>) response.getJsonResponse().get("player_messages");
-
-						Long numNewMessages = (Long) playerMessages.get("num_new_messages");
-						List<String> fromUuids = (List<String>) playerMessages.get("from_uuids");
-						String url = (String) playerMessages.get("url");
-
-						if (numNewMessages > 0) {
-							String message = "";
-							message += "" + ChatColor.DARK_GREEN + ChatColor.BOLD + "You have " + numNewMessages + " new " + MiscUtil.pluralize("message", numNewMessages) + "! ";
-
-							if (!fromUuids.isEmpty()) {
-								message += ChatColor.RESET + "(From: ";
-
-								String names = "";
-								for (String uuid : fromUuids) {
-									StandardPlayer fromPlayer = plugin.getStandardPlayerByUUID(uuid);
-									if (names.length() > 0) {
-										names += ", ";
-									}
-									names += fromPlayer.getDisplayName(true) + ChatColor.RESET;
-								}
-
-								message += names;
-								message += ")";
-							}
-
-							player.sendMessage(message);
-							player.sendMessage(ChatColor.GREEN + "See messages here: " + ChatColor.AQUA + url);
-
-							if (noUser) {
-								player.sendMessage(ChatColor.RED + "Note: you will need to create a website account first by typing /register");
-							}
-						}
+						message += names;
+						message += ")";
 					}
 
-					@Override
-					public void requestFailure(HttpResponse response) {
-						// Do nothing
+					player.sendMessage(message);
+					player.sendMessage(ChatColor.GREEN + "See messages here: " + ChatColor.AQUA + url);
+
+					if (noUser) {
+						player.sendMessage(ChatColor.RED + "Note: you will need to create a website account first by typing /register");
 					}
-				}));
+				}
 			}
 		}, 60);
 	}
