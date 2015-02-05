@@ -49,7 +49,6 @@ public class UsernamesCommand extends BaseCommand {
 			}
 		}
 
-		player.teleport(player);
 		return true;
 	}
 
