@@ -55,7 +55,8 @@ public class UsernamesCommand extends BaseCommand {
 
 	@Override
 	public void showUsageInfo(CommandSender sender) {
-		sender.sendMessage("Usage: /" + name);
+		sender.sendMessage("Usage: /" + name + " [username]");
+		sender.sendMessage(ChatColor.GREEN + "This command will tell you the past known usernames of a player");
 	}
 
 	@Override
