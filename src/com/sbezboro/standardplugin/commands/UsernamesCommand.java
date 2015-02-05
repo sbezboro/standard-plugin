@@ -39,10 +39,17 @@ public class UsernamesCommand extends BaseCommand {
 
 		List<String> usernames = player.getPastUsernames();
 
-		if (usernames.isEmpty()) {
-			sender.sendMessage(ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + " (" + player.getName() + ") has no other known usernames");
+		String displayName;
+		if (player.hasNickname()) {
+			displayName = ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + " (" + player.getName() + ")";
 		} else {
-			sender.sendMessage(ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + " (" + player.getName() + ") has had the following usernames:");
+			displayName = ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET;
+		}
+
+		if (usernames.isEmpty()) {
+			sender.sendMessage(displayName + " has no other known usernames");
+		} else {
+			sender.sendMessage(displayName + " has had the following usernames:");
 
 			for (String otherUsername : usernames) {
 				sender.sendMessage(ChatColor.AQUA + otherUsername);
