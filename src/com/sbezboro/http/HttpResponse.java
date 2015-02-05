@@ -2,6 +2,8 @@ package com.sbezboro.http;
 
 import org.json.simple.JSONObject;
 
+import java.util.List;
+
 public class HttpResponse {
 	private String stringResponse;
 	private JSONObject jsonResponse;
@@ -36,6 +38,14 @@ public class HttpResponse {
 		}
 
 		return false;
+	}
+
+	public List<Object> getList(String key) {
+		if (jsonResponse.containsKey(key) && jsonResponse.get(key) instanceof List) {
+			return (List<Object>) jsonResponse.get(key);
+		}
+
+		return null;
 	}
 
 	public String getStringResponse() {

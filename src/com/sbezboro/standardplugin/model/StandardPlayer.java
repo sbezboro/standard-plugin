@@ -33,7 +33,6 @@ public class StandardPlayer extends PlayerDelegate {
 	private PersistedProperty<Integer> honeypotsDiscovered;
 
 	private List<Title> titles;
-	private List<String> pastUsernames;
 
 	private int timeSpent;
 	private int rank;
@@ -85,8 +84,6 @@ public class StandardPlayer extends PlayerDelegate {
 		for (String name : titlesToRemove) {
 			titleNames.remove(name);
 		}
-
-		pastUsernames = new ArrayList<String>();
 	}
 
 	public Block getTargetBlock(int range) {
@@ -267,18 +264,6 @@ public class StandardPlayer extends PlayerDelegate {
 	
 	public void setLastAttacker(StandardPlayer player) {
 		lastAttacker = player;
-	}
-
-	public List<String> getPastUsernames() {
-		return pastUsernames;
-	}
-
-	public void setPastUsernames(List<String> pastUsernames) {
-		this.pastUsernames.clear();
-
-		for (String username : pastUsernames) {
-			this.pastUsernames.add(username);
-		}
 	}
 	
 	public boolean isInPvp() {

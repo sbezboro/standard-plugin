@@ -1,7 +1,11 @@
 package com.sbezboro.standardplugin.commands;
 
+import com.sbezboro.http.HttpRequestManager;
+import com.sbezboro.http.HttpResponse;
+import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
+import com.sbezboro.standardplugin.net.UsernamesHttpRequest;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,46 +19,56 @@ public class UsernamesCommand extends BaseCommand {
 	}
 
 	@Override
-	public boolean handle(CommandSender sender, Command command, String label, String[] args) {
+	public boolean handle(final CommandSender sender, Command command, String label, String[] args) {
 		if (args.length > 1) {
 			showUsageInfo(sender);
 			return false;
 		}
 
 		final StandardPlayer senderPlayer = plugin.getStandardPlayer(sender);
+		final StandardPlayer player;
 
-		final String username;
 		if (args.length > 0) {
-			username = args[0];
+			player = plugin.matchPlayer(args[0]);
 		} else {
-			username = senderPlayer.getName();
+			player = senderPlayer;
 		}
 
-		StandardPlayer player = plugin.matchPlayer(username);
-
 		if (player == null) {
-			sender.sendMessage("Player " + username + " not found!");
+			sender.sendMessage("Player " + args[0] + " not found!");
 			return true;
 		}
 
-		List<String> usernames = player.getPastUsernames();
+		HttpRequestManager.getInstance().startRequest(
+			new UsernamesHttpRequest(player, new HttpRequestListener() {
 
-		String displayName;
-		if (player.hasNickname()) {
-			displayName = ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + " (" + player.getName() + ")";
-		} else {
-			displayName = ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET;
-		}
+			@Override
+			public void requestSuccess(HttpResponse response) {
+				String displayName;
+				if (player.hasNickname()) {
+					displayName = ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET + " (" + player.getName() + ")";
+				} else {
+					displayName = ChatColor.AQUA + player.getDisplayName() + ChatColor.RESET;
+				}
 
-		if (usernames.isEmpty()) {
-			sender.sendMessage(displayName + " has no other known usernames");
-		} else {
-			sender.sendMessage(displayName + " has had the following usernames:");
+				List<Object> usernames = response.getList("past_usernames");
 
-			for (String otherUsername : usernames) {
-				sender.sendMessage(ChatColor.AQUA + otherUsername);
+				if (usernames.isEmpty()) {
+					sender.sendMessage(displayName + " has no other known usernames");
+				} else {
+					sender.sendMessage(displayName + " has had the following usernames:");
+
+					for (Object otherUsername : usernames) {
+						sender.sendMessage(ChatColor.AQUA + (String)otherUsername);
+					}
+				}
 			}
-		}
+
+			@Override
+			public void requestFailure(HttpResponse response) {
+				sender.sendMessage(ChatColor.RED + "There was a problem getting usernames");
+			}
+		}));
 
 		return true;
 	}

@@ -164,11 +164,8 @@ public class PlayerJoinListener extends EventListener implements Listener {
 				}
 
 				JSONObject data = response.getJsonResponse();
-				List<String> pastUsernames = (List<String>) data.get("past_usernames");
 				Map<String, Object> playerMessages = (Map<String, Object>) data.get("player_messages");
 				Boolean noUser = (Boolean) data.get("no_user");
-
-				player.setPastUsernames(pastUsernames);
 
 				notifyNewMessages(player, playerMessages, noUser);
 			}

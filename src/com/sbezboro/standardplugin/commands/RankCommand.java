@@ -25,16 +25,15 @@ public class RankCommand extends BaseCommand {
 		}
 
 		final StandardPlayer senderPlayer = plugin.getStandardPlayer(sender);
+		final StandardPlayer player;
 
-		final String username;
 		if (args.length > 0) {
-			username = args[0];
+			player = plugin.matchPlayer(args[0]);
 		} else {
-			username = senderPlayer.getName();
+			player = senderPlayer;
 		}
 
-		HttpRequestManager.getInstance().startRequest(
-				new RankHttpRequest(username, new HttpRequestListener() {
+		HttpRequestListener listener = new HttpRequestListener() {
 
 			@Override
 			public void requestSuccess(HttpResponse response) {
@@ -48,7 +47,7 @@ public class RankCommand extends BaseCommand {
 					sender.sendMessage(actualPlayer.getRankDescription(actualPlayer == senderPlayer, rank));
 					sender.sendMessage(actualPlayer.getTimePlayedDescription(actualPlayer == senderPlayer, time));
 				} else {
-					sender.sendMessage("The player " + ChatColor.AQUA + username + ChatColor.RESET + " doesn't exist on the server.");
+					sender.sendMessage("The player " + ChatColor.AQUA + args[0] + ChatColor.RESET + " doesn't exist on the server.");
 				}
 			}
 
@@ -56,7 +55,17 @@ public class RankCommand extends BaseCommand {
 			public void requestFailure(HttpResponse response) {
 				sender.sendMessage(ChatColor.RED + "There was a problem getting the rank!");
 			}
-		}));
+		};
+
+		RankHttpRequest request;
+		if (player == null) {
+			request = new RankHttpRequest(args[0], listener);
+		} else {
+			request = new RankHttpRequest(player, listener);
+		}
+
+		HttpRequestManager.getInstance().startRequest(request);
+
 
 		return true;
 	}
