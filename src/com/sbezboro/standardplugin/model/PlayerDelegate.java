@@ -320,6 +320,11 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getLastTwoTargetBlocks(transparent, maxDistance);
 	}
 
+	@Override
+	public List<Block> getLastTwoTargetBlocks(Set<Material> set, int i) {
+		return player.getLastTwoTargetBlocks(set, i);
+	}
+
 	public int getLevel() {
 		return player.getLevel();
 	}
@@ -327,6 +332,11 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	@Deprecated
 	public List<Block> getLineOfSight(HashSet<Byte> transparent, int maxDistance) {
 		return player.getLineOfSight(transparent, maxDistance);
+	}
+
+	@Override
+	public List<Block> getLineOfSight(Set<Material> set, int i) {
+		return player.getLineOfSight(set, i);
 	}
 
 	public Set<String> getListeningPluginChannels() {
@@ -412,6 +422,11 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	@Deprecated
 	public Block getTargetBlock(HashSet<Byte> transparent, int maxDistance) {
 		return player.getTargetBlock(transparent, maxDistance);
+	}
+
+	@Override
+	public Block getTargetBlock(Set<Material> set, int i) {
+		return player.getTargetBlock(set, i);
 	}
 
 	public int getTicksLived() {
@@ -858,54 +873,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.setLastDamageCause(event);
 	}
 
-	@Override
-	@Deprecated
-	public int _INVALID_getLastDamage() {
-		return player._INVALID_getLastDamage();
-	}
-
-	@Override
-	@Deprecated
-	public void _INVALID_setLastDamage(int i) {
-		player._INVALID_setLastDamage(i);
-	}
-
-	@Override
-	@Deprecated
-	public void _INVALID_setMaxHealth(int i) {
-		player._INVALID_setMaxHealth(i);
-	}
-
-	@Override
-	@Deprecated
-	public int _INVALID_getMaxHealth() {
-		return player._INVALID_getMaxHealth();
-	}
-
-	@Override
-	@Deprecated
-	public void _INVALID_setHealth(int i) {
-		player._INVALID_setHealth(i);
-	}
-
-	@Override
-	@Deprecated
-	public int _INVALID_getHealth() {
-		return player._INVALID_getHealth();
-	}
-
-	@Override
-	@Deprecated
-	public void _INVALID_damage(int i, Entity entity) {
-		player._INVALID_damage(i, entity);
-	}
-
-	@Override
-	@Deprecated
-	public void _INVALID_damage(int i) {
-		player._INVALID_damage(i);
-	}
-
 	public void setLevel(int level) {
 		player.setLevel(level);
 	}
@@ -1076,6 +1043,11 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 
 	public double getHealthScale() {
 		return player.getHealthScale();
+	}
+
+	@Override
+	public Spigot spigot() {
+		return player.spigot();
 	}
 
 	public Entity getLeashHolder() throws IllegalStateException {

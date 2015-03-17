@@ -1,8 +1,6 @@
 package com.sbezboro.standardplugin.persistence.storages;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,9 +26,10 @@ public abstract class ConfigStorage implements IStorage {
 		}
 		config = YamlConfiguration.loadConfiguration(file);
 		
-		InputStream defConfigStream = plugin.getResource(filename);
-		if (defConfigStream != null) {
-			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+		InputStream configStream = plugin.getResource(filename);
+		if (configStream != null) {
+			InputStreamReader reader = new InputStreamReader(configStream);
+			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(reader);
 			config.setDefaults(defConfig);
 		}
 		
