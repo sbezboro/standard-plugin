@@ -33,6 +33,7 @@ public class WeatherManager extends BaseManager {
 			// The storm lasts randomly between 5 and 20 minutes
 			int minutes = (int) (15 * Math.random()) + 5;
 			int duration = minutes * 60 * 20;
+			overworld.setWeatherDuration(duration);
 
 			plugin.getLogger().info("Starting storm for " + minutes + " minutes.");
 
@@ -62,6 +63,7 @@ public class WeatherManager extends BaseManager {
 						plugin.getLogger().info("Starting thunder.");
 
 						overworld.setThundering(true);
+						overworld.setThunderDuration(2400);
 					}
 				}, duration);
 			}
