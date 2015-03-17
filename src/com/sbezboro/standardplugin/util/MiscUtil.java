@@ -8,6 +8,8 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Horse.Variant;
 
@@ -124,6 +126,15 @@ public class MiscUtil {
 
 	public static String getUuidString(UUID uuid) {
 		return uuid.toString().replaceAll("-", "");
+	}
+
+	public static Block[] getAdjacentBlocks(Block block) {
+		return new Block[] {
+				block.getRelative(BlockFace.NORTH),
+				block.getRelative(BlockFace.EAST),
+				block.getRelative(BlockFace.SOUTH),
+				block.getRelative(BlockFace.WEST)
+		};
 	}
 
 }
