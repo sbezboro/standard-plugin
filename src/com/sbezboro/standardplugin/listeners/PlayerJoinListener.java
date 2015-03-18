@@ -8,7 +8,6 @@ import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.model.Title;
 import com.sbezboro.standardplugin.net.JoinHttpRequest;
-import com.sbezboro.standardplugin.net.LeaveHttpRequest;
 import com.sbezboro.standardplugin.net.RankHttpRequest;
 import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.Bukkit;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class PlayerJoinListener extends EventListener implements Listener {
 
@@ -141,7 +139,7 @@ public class PlayerJoinListener extends EventListener implements Listener {
 					player.setTimeSpent(timeSpent);
 
 					plugin.getTitleStorage().addTitles(titles, player);
-					
+
 					StandardPlugin.playerBroadcast(player, player.getRankDescription(false, rank));
 					player.sendMessage(player.getRankDescription(true, rank));
 				}
@@ -165,9 +163,10 @@ public class PlayerJoinListener extends EventListener implements Listener {
 
 				JSONObject data = response.getJsonResponse();
 				Map<String, Object> playerMessages = (Map<String, Object>) data.get("player_messages");
+				Map<String, Object> playerNotifications = (Map<String, Object>) data.get("player_notifications");
 				Boolean noUser = (Boolean) data.get("no_user");
 
-				notifyNewMessages(player, playerMessages, noUser);
+				notifyNewEvents(player, playerMessages, playerNotifications, noUser);
 			}
 
 			@Override
@@ -177,43 +176,75 @@ public class PlayerJoinListener extends EventListener implements Listener {
 		}));
 	}
 
-	private void notifyNewMessages(final StandardPlayer player, final Map<String, Object> playerMessages, final boolean noUser) {
+	private boolean notifyMessages(StandardPlayer player, Map<String, Object> playerMessages) {
+		Long numNewMessages = (Long) playerMessages.get("num_new_messages");
+		List<String> fromUuids = (List<String>) playerMessages.get("from_uuids");
+		String url = (String) playerMessages.get("url");
+
+		if (numNewMessages == 0) {
+			return false;
+		}
+
+		String message = "";
+		message += "" + ChatColor.DARK_GREEN + ChatColor.BOLD + "You have " +
+				ChatColor.YELLOW + ChatColor.BOLD +	numNewMessages +
+				ChatColor.DARK_GREEN + ChatColor.BOLD + " unread " +
+				MiscUtil.pluralize("message", numNewMessages) + "! ";
+
+		if (!fromUuids.isEmpty()) {
+			message += ChatColor.RESET + "(From: ";
+
+			String names = "";
+			for (String uuid : fromUuids) {
+				StandardPlayer fromPlayer = plugin.getStandardPlayerByUUID(uuid);
+				if (names.length() > 0) {
+					names += ", ";
+				}
+				names += fromPlayer.getDisplayName(true) + ChatColor.RESET;
+			}
+
+			message += names;
+			message += ")";
+		}
+
+		player.sendMessage(message);
+		player.sendMessage(ChatColor.GREEN + "Click here: " + ChatColor.AQUA + url);
+
+			return true;
+	}
+
+	private boolean notifyNotifications(StandardPlayer player, Map<String, Object> playerNotifications) {
+		Long numNewNotifications = (Long) playerNotifications.get("num_new_notifications");
+		String url = (String) playerNotifications.get("url");
+
+		if (numNewNotifications == 0) {
+			return false;
+		}
+
+		player.sendMessage("" + ChatColor.DARK_GREEN + ChatColor.BOLD + "You have " +
+				ChatColor.YELLOW + ChatColor.BOLD +	numNewNotifications +
+				ChatColor.DARK_GREEN + ChatColor.BOLD + " unread " +
+				MiscUtil.pluralize("notification", numNewNotifications) + "! ");
+		player.sendMessage(ChatColor.DARK_GREEN + "Click here: " + ChatColor.AQUA + url);
+
+		return true;
+	}
+
+	private void notifyNewEvents(final StandardPlayer player,
+								 final Map<String, Object> playerMessages,
+								 final Map<String, Object> playerNotifications,
+								 final boolean noUser) {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 
 			@Override
 			public void run() {
-				Long numNewMessages = (Long) playerMessages.get("num_new_messages");
-				List<String> fromUuids = (List<String>) playerMessages.get("from_uuids");
-				String url = (String) playerMessages.get("url");
+				boolean hasMessages = notifyMessages(player, playerMessages);
+				boolean hasNotifications = notifyNotifications(player, playerNotifications);
 
-				if (numNewMessages > 0) {
-					String message = "";
-					message += "" + ChatColor.DARK_GREEN + ChatColor.BOLD + "You have " + numNewMessages + " new " + MiscUtil.pluralize("message", numNewMessages) + "! ";
-
-					if (!fromUuids.isEmpty()) {
-						message += ChatColor.RESET + "(From: ";
-
-						String names = "";
-						for (String uuid : fromUuids) {
-							StandardPlayer fromPlayer = plugin.getStandardPlayerByUUID(uuid);
-							if (names.length() > 0) {
-								names += ", ";
-							}
-							names += fromPlayer.getDisplayName(true) + ChatColor.RESET;
-						}
-
-						message += names;
-						message += ")";
-					}
-
-					player.sendMessage(message);
-					player.sendMessage(ChatColor.GREEN + "See messages here: " + ChatColor.AQUA + url);
-
-					if (noUser) {
-						player.sendMessage(ChatColor.RED + "Note: you will need to create a website account first by typing /register");
-					}
+				if (noUser && (hasMessages || hasNotifications)) {
+					player.sendMessage(ChatColor.RED + "You will need to create a website account first by typing /register");
 				}
 			}
-		}, 60);
+		}, 80);
 	}
 }
