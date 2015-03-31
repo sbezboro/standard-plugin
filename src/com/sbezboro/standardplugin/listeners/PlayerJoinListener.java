@@ -208,7 +208,7 @@ public class PlayerJoinListener extends EventListener implements Listener {
 		}
 
 		player.sendMessage(message);
-		player.sendMessage(ChatColor.GREEN + "Click here: " + ChatColor.AQUA + url);
+		player.sendMessage(ChatColor.DARK_GREEN + "Click here: " + ChatColor.AQUA + url);
 
 			return true;
 	}
