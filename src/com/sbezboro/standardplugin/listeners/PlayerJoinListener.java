@@ -63,6 +63,10 @@ public class PlayerJoinListener extends EventListener implements Listener {
 					
 					@Override
 					public void run() {
+						if (!player.isOnline()) {
+							return;
+						}
+
 						if (player.isDead()) {
 							player.sendMessage(ChatColor.RED + "You were killed for PVP logging");
 							StandardPlugin.playerBroadcast(player, String.format("%s%s %sis back after PVP logging", 
@@ -210,7 +214,7 @@ public class PlayerJoinListener extends EventListener implements Listener {
 		player.sendMessage(message);
 		player.sendMessage(ChatColor.DARK_GREEN + "Click here: " + ChatColor.AQUA + url);
 
-			return true;
+		return true;
 	}
 
 	private boolean notifyNotifications(StandardPlayer player, Map<String, Object> playerNotifications) {
@@ -238,6 +242,10 @@ public class PlayerJoinListener extends EventListener implements Listener {
 
 			@Override
 			public void run() {
+				if (!player.isOnline()) {
+					return;
+				}
+
 				boolean hasMessages = notifyMessages(player, playerMessages);
 				boolean hasNotifications = notifyNotifications(player, playerNotifications);
 

@@ -451,6 +451,32 @@ public class StandardPlayer extends PlayerDelegate {
 	public void sendTitleMessage(String title, String subtitle, int fadeIn, int time, int fadeOut) {
 		StandardPlugin.sendTitleMessage(this, title, subtitle, fadeIn, time, fadeOut);
 	}
+
+	public void sendDelayedMessages(final String[] messages, int delayInSeconds) {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(StandardPlugin.getPlugin(), new Runnable() {
+
+			@Override
+			public void run() {
+				if (!isOnline()) {
+					return;
+				}
+
+				sendMessage(messages);
+			}
+		}, delayInSeconds * 20);
+	}
+
+	public void sendDelayedMessages(String[] messages) {
+		sendDelayedMessages(messages, 1);
+	}
+
+	public void sendDelayedMessage(String message, int delayInSeconds) {
+		sendDelayedMessages(new String[] {message}, delayInSeconds);
+	}
+
+	public void sendDelayedMessage(String message) {
+		sendDelayedMessages(new String[] {message});
+	}
 	
 	public boolean isMuted() {
 		return EssentialsIntegration.isPlayerMuted(this);
