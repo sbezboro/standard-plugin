@@ -23,6 +23,11 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 	public JSONObject handle(HashMap<String, Object> payload) {
 		HashMap<String, Object> status = new HashMap<String, Object>();
 
+		boolean minimal = false;
+		if (payload != null && payload.get("minimal") != null) {
+			minimal = (Boolean) payload.get("minimal");
+		}
+
 		ArrayList<Object> players = new ArrayList<Object>();
 
 		for (StandardPlayer player : plugin.getOnlinePlayers()) {
@@ -42,7 +47,7 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 		status.put("load", load);
 
 		for (SubPlugin subPlugin : plugin.getSubPlugins()) {
-			status.putAll(subPlugin.additionalServerStatus());
+			status.putAll(subPlugin.additionalServerStatus(minimal));
 		}
 
 		return okResult(status);
