@@ -6,11 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World.Environment;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -45,10 +41,10 @@ public class DeathListener extends EventListener implements Listener {
 				StandardPlayer killer = plugin.getStandardPlayer(damager);
 
 				if (killer == null) {
-					if (damager instanceof Arrow) {
-						Arrow arrow = (Arrow) damager;
+					if (damager instanceof Projectile) {
+						Projectile projectile = (Projectile) damager;
 
-						killer = plugin.getStandardPlayer(arrow.getShooter());
+						killer = plugin.getStandardPlayer(projectile.getShooter());
 					}
 				}
 
@@ -112,15 +108,20 @@ public class DeathListener extends EventListener implements Listener {
 			StandardPlayer killer = plugin.getStandardPlayer(damager);
 
 			if (killer == null) {
-				if (damager instanceof Arrow) {
-					Arrow arrow = (Arrow) damager;
-
-					killer = plugin.getStandardPlayer(arrow.getShooter());
+				if (damager instanceof Projectile) {
+					Projectile projectile = (Projectile) damager;
+					killer = plugin.getStandardPlayer(projectile.getShooter());
 				}
 			}
 
-			if (killer != null && deathMessage.contains(killer.getName())) {
-				deathMessage = deathMessage.replaceAll(killer.getName(), killer.getDisplayName(false));
+			if (killer != null) {
+				if (plugin.isSpawnKillProtectionEnabled()) {
+					victim.enableSpawnKillProtection();
+				}
+
+				if (deathMessage.contains(killer.getName())) {
+					deathMessage = deathMessage.replaceAll(killer.getName(), killer.getDisplayName(false));
+				}
 			}
 		}
 

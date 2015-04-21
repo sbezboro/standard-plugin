@@ -2,10 +2,7 @@ package com.sbezboro.standardplugin.events;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -108,10 +105,9 @@ public class DeathEvent {
 			EntityDamageByEntityEvent lastDamageByEntityEvent = (EntityDamageByEntityEvent) damageEvent;
 			Entity damager = lastDamageByEntityEvent.getDamager();
 
-			if (damager instanceof Arrow) {
-				Arrow arrow = (Arrow) damager;
-
-				ProjectileSource source = arrow.getShooter();
+			if (damager instanceof Projectile) {
+				Projectile projectile = (Projectile) damager;
+				ProjectileSource source = projectile.getShooter();
 
 				if (source instanceof LivingEntity) {
 					log((LivingEntity) source);

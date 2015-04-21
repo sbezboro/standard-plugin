@@ -2,6 +2,7 @@ debug: false
 server-id: 1
 secret-key: aaaa
 pvp-protection-time: 60
+spawn-kill-protection-time: 120
 hunger-protection-time: 60
 newbie-stalker-threshold: 40
 end-reset-period: 0

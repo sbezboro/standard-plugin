@@ -8,6 +8,7 @@ import com.sbezboro.standardplugin.persistence.persistables.PersistableLocation;
 import com.sbezboro.standardplugin.persistence.storages.PlayerStorage;
 import com.sbezboro.standardplugin.persistence.storages.TitleStorage;
 import com.sbezboro.standardplugin.tasks.PvpTimerTask;
+import com.sbezboro.standardplugin.tasks.SpawnKillProtectionTask;
 import com.sbezboro.standardplugin.util.AnsiConverter;
 import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.*;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 public class StandardPlayer extends PlayerDelegate {
-	private static final int PVP_TIMER_TIME = 200;
+	private static final int PVP_TIMER_TIME = 200;  // 10 seconds
 	
 	private PersistedProperty<Boolean> forumMuted;
 	private PersistedProperty<Boolean> pvpProtection;
@@ -41,6 +42,8 @@ public class StandardPlayer extends PlayerDelegate {
 	
 	private PvpTimerTask pvpTimerTask;
 	private StandardPlayer lastAttacker;
+
+	private SpawnKillProtectionTask spawnKillProtectionTask;
 
 	public StandardPlayer(final Player player, final PlayerStorage storage) {
 		super(player, storage);
@@ -298,12 +301,41 @@ public class StandardPlayer extends PlayerDelegate {
 			lastAttacker = null;
 		}
 	}
+
+	public boolean isSpawnKillProtected() {
+		return spawnKillProtectionTask != null;
+	}
+
+	public void enableSpawnKillProtection() {
+		if (spawnKillProtectionTask != null) {
+			spawnKillProtectionTask.cancel();
+		}
+
+		spawnKillProtectionTask = new SpawnKillProtectionTask(StandardPlugin.getPlugin(), this);
+		spawnKillProtectionTask.runTaskLater(StandardPlugin.getPlugin(),
+				StandardPlugin.getPlugin().getSpawnKillProtectionTime() * 20);
+
+		StandardPlugin.getPlugin().getLogger().info("Enabling spawn kill protection for " +
+				getDisplayName(false));
+	}
+
+	public void disableSpawnKillProtection() {
+		if (spawnKillProtectionTask != null) {
+			spawnKillProtectionTask.cancel();
+			spawnKillProtectionTask = null;
+
+			StandardPlugin.getPlugin().getLogger().info("Disabling spawn kill protection for " +
+					getDisplayName(false));
+		}
+	}
 	
 	public void onLeaveServer() {
 		if (pvpTimerTask != null) {
 			pvpTimerTask.cancel();
 			pvpTimerTask = null;
 		}
+
+		disableSpawnKillProtection();
 		
 		player = null;
 
