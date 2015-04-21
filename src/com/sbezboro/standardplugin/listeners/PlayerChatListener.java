@@ -8,7 +8,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.regex.Pattern;
+
 public class PlayerChatListener extends EventListener implements Listener {
+
+	private final Pattern[] helpPatterns = new Pattern[] {
+			Pattern.compile(".*help.*", Pattern.CASE_INSENSITIVE),
+			Pattern.compile(".*how do i.*", Pattern.CASE_INSENSITIVE),
+			Pattern.compile(".*i['`\"]?m new.*", Pattern.CASE_INSENSITIVE),
+	};
 
 	public PlayerChatListener(StandardPlugin plugin) {
 		super(plugin);
@@ -20,10 +28,7 @@ public class PlayerChatListener extends EventListener implements Listener {
 
 		String message = event.getMessage();
 
-		if (player.getTimeSpent() < 120 && (
-				message.equalsIgnoreCase("help") ||
-				message.toLowerCase().contains("how do i")
-		)) {
+		if (player.getTimeSpent() < 600 && matchesHelpPattern(message)) {
 			plugin.getLogger().info("Sending help message to " + player.getDisplayName(false));
 
 			player.sendDelayedMessages(new String[] {
@@ -32,6 +37,16 @@ public class PlayerChatListener extends EventListener implements Listener {
 					ChatColor.GRAY + "standardsurvival.com/help"
 			});
 		}
+	}
+
+	private boolean matchesHelpPattern(String message) {
+		for (Pattern pattern : helpPatterns) {
+			if (pattern.matcher(message).matches()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 	
 }
