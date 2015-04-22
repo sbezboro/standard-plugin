@@ -335,7 +335,10 @@ public class StandardPlayer extends PlayerDelegate {
 			pvpTimerTask = null;
 		}
 
-		disableSpawnKillProtection();
+		if (spawnKillProtectionTask != null) {
+			spawnKillProtectionTask.cancel();
+			spawnKillProtectionTask = null;
+		}
 		
 		player = null;
 

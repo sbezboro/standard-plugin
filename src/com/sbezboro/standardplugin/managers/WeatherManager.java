@@ -22,18 +22,18 @@ public class WeatherManager extends BaseManager {
 			public void run() {
 				weatherCheck();
 			}
-		}, 36000, 36000);
+		}, 36000, 36000); // Every half hour
 	}
 
 	private void weatherCheck() {
-		// 25% chance of a storm period
-		if (Math.random() < 0.25) {
-			overworld.setStorm(true);
-
+		// 50% chance of a storm period
+		if (Math.random() < 0.50) {
 			// The storm lasts randomly between 5 and 20 minutes
 			int minutes = (int) (15 * Math.random()) + 5;
 			int duration = minutes * 60 * 20;
+
 			overworld.setWeatherDuration(duration);
+			overworld.setStorm(true);
 
 			plugin.getLogger().info("Starting storm for " + minutes + " minutes.");
 
@@ -67,6 +67,8 @@ public class WeatherManager extends BaseManager {
 					}
 				}, duration);
 			}
+		} else {
+			plugin.getLogger().info("Not starting storm.");
 		}
 	}
 }
