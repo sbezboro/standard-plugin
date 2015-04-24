@@ -8,7 +8,7 @@ import com.sbezboro.standardplugin.persistence.persistables.PersistableLocation;
 import com.sbezboro.standardplugin.persistence.storages.PlayerStorage;
 import com.sbezboro.standardplugin.persistence.storages.TitleStorage;
 import com.sbezboro.standardplugin.tasks.PvpTimerTask;
-import com.sbezboro.standardplugin.tasks.SpawnKillProtectionTask;
+import com.sbezboro.standardplugin.tasks.SpawnKillTimeoutTask;
 import com.sbezboro.standardplugin.util.AnsiConverter;
 import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.*;
@@ -43,7 +43,8 @@ public class StandardPlayer extends PlayerDelegate {
 	private PvpTimerTask pvpTimerTask;
 	private StandardPlayer lastAttacker;
 
-	private SpawnKillProtectionTask spawnKillProtectionTask;
+	private boolean spawnKillProtection;
+	private SpawnKillTimeoutTask spawnKillTimeoutTask;
 
 	public StandardPlayer(final Player player, final PlayerStorage storage) {
 		super(player, storage);
@@ -303,30 +304,47 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 
 	public boolean isSpawnKillProtected() {
-		return spawnKillProtectionTask != null;
+		return spawnKillProtection;
+	}
+
+	public boolean hasSpawnKillTimeout() {
+		return spawnKillTimeoutTask != null;
 	}
 
 	public void enableSpawnKillProtection() {
-		if (spawnKillProtectionTask != null) {
-			spawnKillProtectionTask.cancel();
+		spawnKillProtection = true;
+
+		if (spawnKillTimeoutTask != null) {
+			spawnKillTimeoutTask.cancel();
 		}
 
-		spawnKillProtectionTask = new SpawnKillProtectionTask(StandardPlugin.getPlugin(), this);
-		spawnKillProtectionTask.runTaskLater(StandardPlugin.getPlugin(),
-				StandardPlugin.getPlugin().getSpawnKillProtectionTime() * 20);
+		StandardPlugin plugin = StandardPlugin.getPlugin();
 
-		StandardPlugin.getPlugin().getLogger().info("Enabling spawn kill protection for " +
-				getDisplayName(false));
+		spawnKillTimeoutTask = new SpawnKillTimeoutTask(StandardPlugin.getPlugin(), this);
+		spawnKillTimeoutTask.runTaskLater(plugin, plugin.getSpawnKillTimeout() * 20);
+
+		StandardPlugin.getPlugin().getLogger().info("Enabling spawn kill protection and timeout for " +
+				getDisplayName(false)
+		);
+	}
+
+	public void disableSpawnKillTimeout() {
+		if (spawnKillTimeoutTask != null) {
+			spawnKillTimeoutTask.cancel();
+			spawnKillTimeoutTask = null;
+		}
+
+		StandardPlugin.getPlugin().getLogger().info("Disabling spawn kill timeout for " +
+						getDisplayName(false)
+		);
 	}
 
 	public void disableSpawnKillProtection() {
-		if (spawnKillProtectionTask != null) {
-			spawnKillProtectionTask.cancel();
-			spawnKillProtectionTask = null;
+		spawnKillProtection = false;
 
-			StandardPlugin.getPlugin().getLogger().info("Disabling spawn kill protection for " +
-					getDisplayName(false));
-		}
+		StandardPlugin.getPlugin().getLogger().info("Disabling spawn kill protection for " +
+						getDisplayName(false)
+		);
 	}
 	
 	public void onLeaveServer() {
@@ -335,9 +353,9 @@ public class StandardPlayer extends PlayerDelegate {
 			pvpTimerTask = null;
 		}
 
-		if (spawnKillProtectionTask != null) {
-			spawnKillProtectionTask.cancel();
-			spawnKillProtectionTask = null;
+		if (spawnKillTimeoutTask != null) {
+			spawnKillTimeoutTask.cancel();
+			spawnKillTimeoutTask = null;
 		}
 		
 		player = null;

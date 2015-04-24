@@ -64,9 +64,11 @@ public class EntityDamageListener extends EventListener implements Listener {
 				}
 
 				// Victim spawn kill protected
-				if (plugin.isSpawnKillProtectionEnabled() && victim.isSpawnKillProtected()) {
-					damager.kickPlayer("Spawn killing is bad");
-					event.setCancelled(true);
+				if (victim.isSpawnKillProtected()) {
+					damager.sendMessage(ChatColor.RED + "This player is protected from PVP!");
+					victim.sendMessage(ChatColor.RED + "You are spawn kill protected until you move. If you want, type " +
+							ChatColor.AQUA + "/clearbed" + ChatColor.RED + " to reset your spawn point.");
+							event.setCancelled(true);
 					return;
 				}
 

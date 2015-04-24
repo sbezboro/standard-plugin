@@ -12,6 +12,9 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Horse.Variant;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
 public class MiscUtil {
 
@@ -135,6 +138,26 @@ public class MiscUtil {
 				block.getRelative(BlockFace.SOUTH),
 				block.getRelative(BlockFace.WEST)
 		};
+	}
+
+	public static LivingEntity getLivingEntityFromDamageEvent(EntityDamageEvent event) {
+		if (event instanceof EntityDamageByEntityEvent) {
+			EntityDamageByEntityEvent lastDamageByEntityEvent = (EntityDamageByEntityEvent) event;
+			Entity damager = lastDamageByEntityEvent.getDamager();
+
+			if (damager instanceof Projectile) {
+				Projectile projectile = (Projectile) damager;
+				ProjectileSource source = projectile.getShooter();
+
+				if (source instanceof LivingEntity) {
+					return (LivingEntity) source;
+				}
+			} else if (damager instanceof LivingEntity) {
+				return (LivingEntity) damager;
+			}
+		}
+
+		return null;
 	}
 
 }

@@ -31,15 +31,22 @@ public class PlayerMoveListener extends EventListener implements Listener {
 			return;
 		}
 
+		if (event.getPlayer().isDead()) {
+			return;
+		}
+
 		if (from.getBlockX() != to.getBlockX() || from.getBlockY() != to.getBlockY() || from.getBlockZ() != to.getBlockZ()) {
+			final StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
+			if (player.isSpawnKillProtected()) {
+				player.disableSpawnKillProtection();
+			}
+
 			Gate source = plugin.getGateStorage().getGate(to);
 
 			if (source != null) {
 				Gate target = source.getTarget();
 
 				if (target != null) {
-					final StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
-
 					// Play effect at the source portal to other players
 					Location effectLocation = new Location(to.getWorld(), to.getBlockX(), to.getBlockY() + 1, to.getBlockZ());
 					for (Entity entity : player.getNearbyEntities(20, 10, 20)) {

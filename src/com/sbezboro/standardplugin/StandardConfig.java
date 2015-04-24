@@ -23,7 +23,7 @@ public class StandardConfig {
 	private boolean nerfPigzombieDrops;
 
 	private int animalChunkCap;
-	private int spawnKillProtectionTime;
+	private int spawnKillTimeout;
 
 	public StandardConfig(StandardPlugin plugin) {
 		this.plugin = plugin;
@@ -45,7 +45,7 @@ public class StandardConfig {
 		endpoint = config.getString("endpoint");
 		rtsAddress = config.getString("rts-address");
 		pvpProtectionTime = config.getInt("pvp-protection-time");
-		spawnKillProtectionTime = config.getInt("spawn-kill-protection-time");
+		spawnKillTimeout = config.getInt("spawn-kill-timeout");
 		hungerProtectionTime = config.getInt("hunger-protection-time");
 		newbieStalkerThreshold = config.getInt("newbie-stalker-threshold");
 
@@ -83,8 +83,8 @@ public class StandardConfig {
 		return pvpProtectionTime;
 	}
 
-	public int getSpawnKillProtectionTime() {
-		return spawnKillProtectionTime;
+	public int getSpawnKillTimeout() {
+		return spawnKillTimeout;
 	}
 
 	public int getHungerProtectionTime() {

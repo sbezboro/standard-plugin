@@ -1,6 +1,7 @@
 package com.sbezboro.standardplugin.listeners;
 
 import com.sbezboro.standardplugin.model.StandardPlayer;
+import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -86,13 +87,10 @@ public class DeathListener extends EventListener implements Listener {
 					}
 				}
 			}
-		} else {
-			DeathEvent deathEvent = new DeathEvent(player);
-			deathEvent.log();
 		}
 	}
 
-	@EventHandler(ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		String deathMessage = event.getDeathMessage();
 
@@ -101,35 +99,34 @@ public class DeathListener extends EventListener implements Listener {
 		deathMessage = ChatColor.DARK_RED + deathMessage.replaceAll(victim.getName(), victim.getDisplayName(false));
 
 		EntityDamageEvent damageEvent = victim.getLastDamageCause();
-		if (damageEvent instanceof EntityDamageByEntityEvent) {
-			EntityDamageByEntityEvent lastDamageByEntityEvent = (EntityDamageByEntityEvent) damageEvent;
-			Entity damager = lastDamageByEntityEvent.getDamager();
+		LivingEntity entity = MiscUtil.getLivingEntityFromDamageEvent(damageEvent);
+		StandardPlayer killerPlayer = plugin.getStandardPlayer(entity);
 
-			StandardPlayer killer = plugin.getStandardPlayer(damager);
+		if (killerPlayer != null) {
+			if (victim.hasSpawnKillTimeout()) {
+				victim.enableSpawnKillProtection();
 
-			if (killer == null) {
-				if (damager instanceof Projectile) {
-					Projectile projectile = (Projectile) damager;
-					killer = plugin.getStandardPlayer(projectile.getShooter());
-				}
+				event.setDeathMessage(null);
+				plugin.getLogger().info("Not logging player " + killerPlayer.getDisplayName(false) +
+						" killing " + victim.getDisplayName(false));
+				return;
 			}
 
-			if (killer != null) {
-				if (plugin.isSpawnKillProtectionEnabled()) {
-					victim.enableSpawnKillProtection();
-				}
+			victim.enableSpawnKillProtection();
 
-				if (deathMessage.contains(killer.getName())) {
-					deathMessage = deathMessage.replaceAll(killer.getName(), killer.getDisplayName(false));
-				}
+			if (deathMessage.contains(killerPlayer.getName())) {
+				deathMessage = deathMessage.replaceAll(killerPlayer.getName(), killerPlayer.getDisplayName(false));
 			}
 		}
 
+		DeathEvent deathEvent = new DeathEvent(victim);
+		deathEvent.log();
+
 		victim.setNotInPvp();
-		
-		StandardPlugin.webchatMessage(deathMessage);
 
 		event.setDeathMessage(deathMessage);
+
+		StandardPlugin.webchatMessage(deathMessage);
 
 		Location location = victim.getLocation();
 		Bukkit.getConsoleSender().sendMessage(

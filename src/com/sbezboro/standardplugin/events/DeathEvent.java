@@ -16,9 +16,9 @@ import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.projectiles.ProjectileSource;
 
 public class DeathEvent {
-	public static enum DeathType {
-		PLAYER, SUICIDE, FALL, FIRE, LAVA, EXPLOSION, CACTUS, VOID, SUFFOCATION, DROWNING, STARVATION, MAGIC, PVP_LOG, OTHER
-	};
+	public enum DeathType {
+		SUICIDE, FALL, FIRE, LAVA, EXPLOSION, CACTUS, VOID, SUFFOCATION, DROWNING, STARVATION, MAGIC, PVP_LOG, OTHER
+	}
 
 	private StandardPlayer player;
 	private EntityDamageEvent damageEvent;
@@ -102,22 +102,12 @@ public class DeathEvent {
 				log(DeathType.SUICIDE);
 			}
 		} else if (damageEvent instanceof EntityDamageByEntityEvent) {
-			EntityDamageByEntityEvent lastDamageByEntityEvent = (EntityDamageByEntityEvent) damageEvent;
-			Entity damager = lastDamageByEntityEvent.getDamager();
+			LivingEntity livingDamager = MiscUtil.getLivingEntityFromDamageEvent(damageEvent);
 
-			if (damager instanceof Projectile) {
-				Projectile projectile = (Projectile) damager;
-				ProjectileSource source = projectile.getShooter();
-
-				if (source instanceof LivingEntity) {
-					log((LivingEntity) source);
-				}
+			if (livingDamager != null) {
+				log(livingDamager);
 			} else if (cause.equals(DamageCause.ENTITY_EXPLOSION)) {
 				log(DeathType.EXPLOSION);
-			} else if (damager instanceof LivingEntity) {
-				LivingEntity livingEntity = (LivingEntity) damager;
-
-				log(livingEntity);
 			} else {
 				log(DeathType.SUICIDE);
 			}

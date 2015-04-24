@@ -375,12 +375,8 @@ public class StandardPlugin extends JavaPlugin {
 		return config.getPvpProtectionTime() > 0;
 	}
 
-	public int getSpawnKillProtectionTime() {
-		return config.getSpawnKillProtectionTime();
-	}
-
-	public boolean isSpawnKillProtectionEnabled() {
-		return config.getSpawnKillProtectionTime() > 0;
+	public int getSpawnKillTimeout() {
+		return config.getSpawnKillTimeout();
 	}
 
 	public int getHungerProtectionTime() {
