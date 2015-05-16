@@ -69,15 +69,23 @@ public class PersistedListProperty<T> implements Iterable<T>, PersistedBase {
 	}
 
 	public void add(T obj) {
+		this.add(obj, true);
+	}
+
+	public void add(T obj, boolean commit) {
 		this.list.add(obj);
 
-		object.saveProperty(name, listRepresentation());
+		object.saveProperty(name, listRepresentation(), commit);
 	}
 
 	public void remove(T obj) {
+		this.remove(obj, true);
+	}
+
+	public void remove(T obj, boolean commit) {
 		this.list.remove(obj);
 
-		object.saveProperty(name, listRepresentation());
+		object.saveProperty(name, listRepresentation(), commit);
 	}
 
 	public void clear() {
