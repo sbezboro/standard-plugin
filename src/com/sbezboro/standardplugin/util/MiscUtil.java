@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -113,6 +114,10 @@ public class MiscUtil {
 
 	public static String getLocationKey(Location location) {
 		return location.getWorld().getName() + ";" + location.getBlockX() + ";" + location.getBlockY() + ";" + location.getBlockZ();
+	}
+
+	public static String getChunkKey(Chunk chunk) {
+		return chunk.getWorld().getName() + ";" + chunk.getX() + ";" + chunk.getZ();
 	}
 
 	public static boolean safeBoolean(Object object) {
