@@ -26,10 +26,8 @@ public class StatsAPICallHandler extends APICallHandler {
 		if (payload == null) {
 			return okResult();
 		}
-		
-		Map<String, Object> data = (Map<String, Object>) payload.get("data");
-		ArrayList<HashMap<String, Object>> players = (ArrayList<HashMap<String, Object>>) data.get("player_stats");
 
+		ArrayList<HashMap<String, Object>> players = (ArrayList<HashMap<String, Object>>) payload.get("player_stats");
 		for (HashMap<String, Object> playerData : players) {
 			String uuid = (String) playerData.get("uuid");
 			String username = (String) playerData.get("username");
@@ -94,7 +92,7 @@ public class StatsAPICallHandler extends APICallHandler {
 			}
 		}
 		
-		boolean session = (Boolean) data.get("session");
+		boolean session = (Boolean) payload.get("session");
 		
 		if (!session) {
 			StandardPlugin.broadcast(ChatColor.DARK_AQUA + "Session servers are down! If you leave the server now, you probably won't be able to get back on!", false, true);

@@ -16,13 +16,11 @@ public class NewMessageAPICallHandler extends APICallHandler {
 	@Override
 	@SuppressWarnings("unchecked")
 	public JSONObject handle(HashMap<String, Object> payload) {
-		Map<String, Object> data = (Map<String, Object>) payload.get("data");
-
-		String fromUuid = (String) data.get("from_uuid");
-		String fromUsername = (String) data.get("from_username");
-		String toUuid = (String) data.get("to_uuid");
-		String url = (String) data.get("url");
-		Boolean noUser = (Boolean) data.get("no_user");
+		String fromUuid = (String) payload.get("from_uuid");
+		String fromUsername = (String) payload.get("from_username");
+		String toUuid = (String) payload.get("to_uuid");
+		String url = (String) payload.get("url");
+		Boolean noUser = (Boolean) payload.get("no_user");
 
 		StandardPlayer toPlayer = plugin.getStandardPlayerByUUID(toUuid);
 		if (toPlayer == null || !toPlayer.isOnline()) {

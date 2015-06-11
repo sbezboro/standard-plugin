@@ -18,14 +18,12 @@ public class ForumPostAPICallHandler extends APICallHandler {
 	@Override
 	@SuppressWarnings("unchecked")
 	public JSONObject handle(HashMap<String, Object> payload) {
-		HashMap<String, Object> data = (HashMap<String, Object>) payload.get("data");
-
-		String uuid = (String) data.get("uuid");
-		String username = (String) data.get("username");
-		String forumName = (String) data.get("forum_name");
-		String topic = (String) data.get("topic_name");
-		String url = (String) data.get("path");
-		boolean isNewTopic = (Boolean) data.get("is_new_topic");
+		String uuid = (String) payload.get("uuid");
+		String username = (String) payload.get("username");
+		String forumName = (String) payload.get("forum_name");
+		String topic = (String) payload.get("topic_name");
+		String url = (String) payload.get("path");
+		boolean isNewTopic = (Boolean) payload.get("is_new_topic");
 
 		String name;
 
