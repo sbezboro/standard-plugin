@@ -22,7 +22,7 @@ public class WeatherManager extends BaseManager {
 			public void run() {
 				weatherCheck();
 			}
-		}, 36000, 36000); // Every half hour
+		}, 12000, 12000); // Every 10 minutes
 	}
 
 	private void weatherCheck() {
