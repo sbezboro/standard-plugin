@@ -105,7 +105,9 @@ public class StandardPlugin extends JavaPlugin {
 		
 		endResetManager = new EndResetManager(this, endResetStorage);
 		honeypotManager = new HoneypotManager(this, honeypotStorage);
-		weatherManager = new WeatherManager(this, overworld);
+
+		//Disable for now
+		//weatherManager = new WeatherManager(this, overworld);
 
 		EssentialsIntegration.init(this);
 		SimplyVanishIntegration.init(this);
