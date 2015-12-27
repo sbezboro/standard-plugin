@@ -1045,11 +1045,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getHealthScale();
 	}
 
-	@Override
-	public Spigot spigot() {
-		return player.spigot();
-	}
-
 	public Entity getLeashHolder() throws IllegalStateException {
 		return player.getLeashHolder();
 	}
@@ -1104,5 +1099,45 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	@Override
 	public void setSpectatorTarget(Entity entity) {
 		player.setSpectatorTarget(entity);
+	}
+
+	@Override
+	public int _INVALID_getLastDamage() {
+		return player._INVALID_getLastDamage();
+	}
+
+	@Override
+	public void _INVALID_setLastDamage(int i) {
+		player._INVALID_setLastDamage(i);
+	}
+
+	@Override
+	public void _INVALID_damage(int i) {
+		player._INVALID_damage(i);
+	}
+
+	@Override
+	public void _INVALID_damage(int i, Entity entity) {
+		player._INVALID_damage(i, entity);
+	}
+
+	@Override
+	public int _INVALID_getHealth() {
+		return player._INVALID_getHealth();
+	}
+
+	@Override
+	public void _INVALID_setHealth(int i) {
+		player._INVALID_setHealth(i);
+	}
+
+	@Override
+	public int _INVALID_getMaxHealth() {
+		return player._INVALID_getMaxHealth();
+	}
+
+	@Override
+	public void _INVALID_setMaxHealth(int i) {
+		player._INVALID_setMaxHealth(i);
 	}
 }

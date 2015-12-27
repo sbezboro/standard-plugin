@@ -13,6 +13,7 @@ import com.sbezboro.standardplugin.util.AnsiConverter;
 import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 
