@@ -1084,4 +1084,25 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.sendSignChange(location, strings);
 	}
 
+	@Override
+	@Deprecated
+	public void resetTitle() {
+		player.resetTitle();
+	}
+
+	@Override
+	@Deprecated
+	public void sendTitle(String s, String s1) {
+		player.sendTitle(s, s1);
+	}
+
+	@Override
+	public Entity getSpectatorTarget() {
+		return player.getSpectatorTarget();
+	}
+
+	@Override
+	public void setSpectatorTarget(Entity entity) {
+		player.setSpectatorTarget(entity);
+	}
 }
