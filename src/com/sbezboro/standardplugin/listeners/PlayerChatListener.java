@@ -8,25 +8,28 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class PlayerChatListener extends EventListener implements Listener {
+
+	private final String PLAYER_NAME_REPLACE = "PLAYER_NAME";
 	
 	private class AutoHelpTopic {
 		private String topicName;
-		private Pattern[] helpPatterns;
-		private String[] helpMessage;
+		private List<Pattern> helpPatterns;
+		private String[] helpMessages;
 		
-		public AutoHelpTopic(String name, String[] regExpressions, String[] messageLines) {
-			topicName = name;
-			
-			helpPattern = new Pattern[regExpressions.length()];
-			for (int i = 0; i < regExpressions.length(); i++) {
-				helpPattern[i] = Pattern.compile(regExpressions[i], Pattern.CASE_INSENSITIVE);
+		public AutoHelpTopic(String topicName, String[] helpRegexes, String[] helpMessages) {
+			this.topicName = topicName;
+
+			this.helpPatterns = new ArrayList<Pattern>();
+			for (String regex : helpRegexes) {
+				this.helpPatterns.add(Pattern.compile(regex, Pattern.CASE_INSENSITIVE));
 			}
-			
-			helpMessage = new String[messageLines.length()];
-			System.arraycopy(messageLines, 0, helpMessage, 0, messageLines.length());
+
+			this.helpMessages = helpMessages;
 		}
 		
 		public boolean matches(String message) {
@@ -35,56 +38,61 @@ public class PlayerChatListener extends EventListener implements Listener {
 					return true;
 				}
 			}
+
 			return false;
 		}
 		
 		public void sendHelpMessage(StandardPlayer player) {
 			plugin.getLogger().info("Sending " + topicName + " help message to " + player.getDisplayName(false));
-			player.sendDelayedMessages(helpMessage);
+
+			String[] messages = this.helpMessages.clone();
+			for (int i = 0; i < messages.length; ++i) {
+				messages[i] = this.helpMessages[i].replaceAll(PLAYER_NAME_REPLACE, player.getDisplayName(false));
+			}
+
+			player.sendDelayedMessages(messages);
 		}
 	}
 	
-	private final AutoHelpTopic helpTopics = new AutoHelpTopic[] {
+	private final AutoHelpTopic[] helpTopics = new AutoHelpTopic[] {
 		new AutoHelpTopic("Groups",
 			new String[] { ".*(how|can you|can we|can i).* claim.*",
 				".*(how|can you|can we|can i).* own land.*",
-				".*(how|can you|can we|can i).* protect .*",
-				".*(how|can you|can we|can i).* lock chest.*",
+				".*(how|can you|can we|can i).* protect.*",
+				".*(how|can you|can we|can i).* lock.*",
 				".* faction.*" },
 			new String[] {
-				ChatColor.GRAY + "Hey " + ChatColor.BOLD + player.getDisplayName(false) +
-					ChatColor.GRAY + ", need help with our custom plugin " +
-					ChatColor.ITALIC + "Groups" + ChatColor.GRAY + "?",
-				ChatColor.GRAY + "Try clicking on this link: standardsurvival.com/help"
+				ChatColor.DARK_AQUA + "Hey " + ChatColor.BOLD + PLAYER_NAME_REPLACE +
+					ChatColor.DARK_AQUA + ", need help with our custom plugin " +
+					ChatColor.ITALIC + "Groups" + ChatColor.DARK_AQUA + "?",
+				ChatColor.DARK_AQUA + "Try clicking on this link: " + ChatColor.UNDERLINE +
+						"standardsurvival.com/help"
 		}),
 		
 		new AutoHelpTopic("PVP protection",
 			new String[] { ".*on peaceful.*",
 				".*los(e|ing) hunger.*" },
 			new String[] {
-				ChatColor.GRAY + ChatColor.BOLD + player.getDisplayName(false) +
-					ChatColor.GRAY + ", you start off with one hour of" +
+				String.valueOf(ChatColor.DARK_AQUA) + ChatColor.BOLD + PLAYER_NAME_REPLACE +
+					ChatColor.DARK_AQUA + ", you start off with one hour of" +
 					" PVP and hunger protection.",
-				ChatColor.GRAY + "Don't worry, you will receive several warnings" +
+				ChatColor.DARK_AQUA + "Don't worry, you will receive several warnings" +
 					" before it expires."
 		}),
 		
-		new AutoHelpTopic("generic",
+		new AutoHelpTopic("Generic",
 			new String[] { ".*help.*",
 				".*how (do|can) (you|we|i).*",
-				".*how (do|can) (you|we|i).*" },
+				".*i(['`\"]?m| am) new.*" },
 			new String[] {
-				ChatColor.GRAY + "Hey " + ChatColor.BOLD + player.getDisplayName(false) +
-					ChatColor.GRAY + ", need help with our custom plugin " +
-					ChatColor.ITALIC + "Groups" + ChatColor.GRAY + "?",
-				ChatColor.GRAY + "Try clicking on this link: standardsurvival.com/help"
+				ChatColor.DARK_AQUA + "Hey " + ChatColor.BOLD + PLAYER_NAME_REPLACE +
+					ChatColor.DARK_AQUA + ", need help? Try clicking on this link:",
+				String.valueOf(ChatColor.DARK_AQUA) + ChatColor.UNDERLINE + "standardsurvival.com/help"
 	}) };
-
 
 	public PlayerChatListener(StandardPlugin plugin) {
 		super(plugin);
 	}
-
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerChat(AsyncPlayerChatEvent event) {
@@ -93,7 +101,7 @@ public class PlayerChatListener extends EventListener implements Listener {
 		String message = event.getMessage();
 
 		if (player.getTimeSpent() < 600) {
-			for (int i = 0; i < helpTopics.length(); i++) {
+			for (int i = 0; i < helpTopics.length; i++) {
 				if (helpTopics[i].matches(message)) {
 					helpTopics[i].sendHelpMessage(player);
 					return;
