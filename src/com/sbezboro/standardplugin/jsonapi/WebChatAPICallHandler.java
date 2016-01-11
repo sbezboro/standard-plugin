@@ -2,6 +2,7 @@ package com.sbezboro.standardplugin.jsonapi;
 
 import java.util.HashMap;
 
+import com.sbezboro.standardplugin.SubPlugin;
 import org.bukkit.ChatColor;
 import org.json.simple.JSONObject;
 
@@ -61,16 +62,36 @@ public class WebChatAPICallHandler extends APICallHandler {
 				return buildResult("muted");
 			}
 		}
-		
+
 		String fullMessage = ChatColor.BLUE + "[Web Chat] " + ChatColor.AQUA + name + ChatColor.RESET + ": " + message;
-		
+
+		String newMessage = fullMessage;
+		String newName = name;
+
+		for (SubPlugin subPlugin : plugin.getSubPlugins()) {
+			newName = subPlugin.formatWebChatName(sender, null, newName);
+		}
+		if (!name.equals(newName)) {
+			newMessage = newMessage.replaceAll(name, newName);
+		}
+		StandardPlugin.consoleWebchatMessage(newMessage);
+
 		for (StandardPlayer player : plugin.getOnlinePlayers()) {
 			if (!EssentialsIntegration.doesPlayerIgnorePlayer(player, sender)) {
-				player.sendMessage(fullMessage);
+				newMessage = fullMessage;
+				newName = name;
+
+				for (SubPlugin subPlugin : plugin.getSubPlugins()) {
+					newName = subPlugin.formatWebChatName(sender, player, newName);
+				}
+
+				if (!name.equals(newName)) {
+					newMessage = newMessage.replaceAll(name, newName);
+				}
+
+				player.sendMessage(newMessage);
 			}
 		}
-
-		StandardPlugin.consoleWebchatMessage(fullMessage);
 
 		return okResult();
 	}
