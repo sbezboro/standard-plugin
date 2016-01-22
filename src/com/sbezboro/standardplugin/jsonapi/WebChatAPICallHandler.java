@@ -63,7 +63,8 @@ public class WebChatAPICallHandler extends APICallHandler {
 			}
 		}
 
-		String fullMessage = ChatColor.BLUE + "[Web Chat] " + ChatColor.AQUA + name + ChatColor.RESET + ": " + message;
+		String fullMessage = ChatColor.BLUE + "[Web Chat] " + ChatColor.AQUA + name +
+				ChatColor.RESET + ": " + ChatColor.GRAY + message;
 
 		String newMessage = fullMessage;
 		String newName = name;
