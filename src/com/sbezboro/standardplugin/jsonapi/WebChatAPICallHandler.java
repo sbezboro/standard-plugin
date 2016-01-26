@@ -24,7 +24,7 @@ public class WebChatAPICallHandler extends APICallHandler {
 
 		StandardPlayer player = null;
 
-		if (uuid != null) {
+		if (uuid != null && !uuid.isEmpty()) {
 			player = plugin.getStandardPlayerByUUID(uuid);
 
 			if (!player.hasPlayedBefore()) {
