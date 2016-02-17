@@ -34,14 +34,18 @@ public abstract class PersistedObject {
 		}
 	}
 
-	protected final <T> PersistedProperty<T> createProperty(Class<T> cls, String name, Object def) {
+	protected final <T> PersistedProperty<T> createProperty(Class cls, String name, Object def) {
 		PersistedProperty<T> property = new PersistedProperty<T>(this, cls, name, def);
 		persistedProperties.add(property);
 		return property;
 	}
 
-	protected final <T> PersistedProperty<T> createProperty(Class<T> cls, String name) {
+	protected final <T> PersistedProperty<T> createProperty(Class cls, String name) {
 		return createProperty(cls, name, null);
+	}
+
+	protected final <T> PersistedProperty<T> createProperty(PersistedPropertyDefinition definition) {
+		return createProperty(definition.getCls(), definition.getIdentifier());
 	}
 
 	protected final <T> PersistedListProperty<T> createList(Class<T> cls, String name) {

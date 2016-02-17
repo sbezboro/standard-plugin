@@ -4,6 +4,7 @@ import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
 import com.sbezboro.standardplugin.persistence.PersistedListProperty;
 import com.sbezboro.standardplugin.persistence.PersistedProperty;
+import com.sbezboro.standardplugin.persistence.PersistedPropertyDefinition;
 import com.sbezboro.standardplugin.persistence.persistables.PersistableLocation;
 import com.sbezboro.standardplugin.persistence.storages.PlayerStorage;
 import com.sbezboro.standardplugin.persistence.storages.TitleStorage;
@@ -65,6 +66,10 @@ public class StandardPlayer extends PlayerDelegate {
 		pvpLogs = createProperty(Integer.class, "pvp-logs");
 		pvpLogged = createProperty(Boolean.class, "pvp-logged");
 		honeypotsDiscovered = createProperty(Integer.class, "honeypots-discovered");
+
+		for (PersistedPropertyDefinition definition : StandardPlugin.getPlugin().getExtraPlayerPropertyDefinitions()) {
+			createProperty(definition);
+		}
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.sbezboro.standardplugin.commands.ICommand;
 import com.sbezboro.standardplugin.model.StandardPlayer;
+import com.sbezboro.standardplugin.persistence.PersistedPropertyDefinition;
 import org.bukkit.plugin.Plugin;
 
 
@@ -14,4 +15,5 @@ public interface SubPlugin extends Plugin {
 	public void reloadPlugin();
 	public Map<String, Object> additionalServerStatus(boolean minimal);
 	public String formatWebChatName(StandardPlayer sender, StandardPlayer receiver, String name);
+	public List<PersistedPropertyDefinition> extraPlayerPropertyDefinitions();
 }

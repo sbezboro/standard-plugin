@@ -13,6 +13,8 @@ import com.sbezboro.standardplugin.managers.WeatherManager;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.net.AuditLogHttpRequest;
 import com.sbezboro.standardplugin.persistence.LogWriter;
+import com.sbezboro.standardplugin.persistence.PersistedProperty;
+import com.sbezboro.standardplugin.persistence.PersistedPropertyDefinition;
 import com.sbezboro.standardplugin.persistence.storages.*;
 import com.sbezboro.standardplugin.util.MiscUtil;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
@@ -217,6 +219,16 @@ public class StandardPlugin extends JavaPlugin {
 		saveConfig();
 		
 		subPlugins.add(subPlugin);
+	}
+
+	public List<PersistedPropertyDefinition> getExtraPlayerPropertyDefinitions() {
+		List<PersistedPropertyDefinition> properties = new ArrayList<PersistedPropertyDefinition>();
+
+		for (SubPlugin subPlugin : getSubPlugins()) {
+			properties.addAll(subPlugin.extraPlayerPropertyDefinitions());
+		}
+
+		return properties;
 	}
 
 	public boolean isNearActiveEndPortal(Location location, int blocks) {
