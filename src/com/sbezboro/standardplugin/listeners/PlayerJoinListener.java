@@ -10,6 +10,7 @@ import com.sbezboro.standardplugin.model.Title;
 import com.sbezboro.standardplugin.net.JoinHttpRequest;
 import com.sbezboro.standardplugin.net.RankHttpRequest;
 import com.sbezboro.standardplugin.util.MiscUtil;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -121,6 +122,8 @@ public class PlayerJoinListener extends EventListener implements Listener {
 		if (!SimplyVanishIntegration.isVanished(player)) {
 			StandardPlugin.webchatMessage(message);
 		}
+
+		broadcastDuplicateIP(player);
 		
 		player.setEndId(currentEndId);
 		
@@ -154,6 +157,23 @@ public class PlayerJoinListener extends EventListener implements Listener {
 				// Do nothing
 			}
 		}));
+	}
+
+	private void broadcastDuplicateIP(final StandardPlayer player) {
+		List<String> duplicateIPUsernames = new ArrayList<String>();
+
+		for (StandardPlayer otherPlayer : plugin.getOnlinePlayers()) {
+			if (player != otherPlayer && otherPlayer.getAddress().getAddress().getHostAddress().equals(
+					player.getAddress().getAddress().getHostAddress()
+			)) {
+				duplicateIPUsernames.add(otherPlayer.getDisplayName(false));
+			}
+		}
+
+		if (!duplicateIPUsernames.isEmpty()) {
+			plugin.getLogger().warning(player.getDisplayName(false) + " shares IP address with: " +
+					StringUtils.join(duplicateIPUsernames, ","));
+		}
 	}
 
 	private void joinServerEvent(final StandardPlayer player) {
