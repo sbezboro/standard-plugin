@@ -23,6 +23,7 @@ public abstract class APICallHandler implements JSONAPICallHandler {
 		put("not_handled", 2);
 		put("banned", 3);
 		put("muted", 4);
+		put("never_joined", 5);
 	}};
 
 	protected Logger logger;

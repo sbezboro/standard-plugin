@@ -26,10 +26,6 @@ public class WebChatAPICallHandler extends APICallHandler {
 
 		if (uuid != null && !uuid.isEmpty()) {
 			player = plugin.getStandardPlayerByUUID(uuid);
-
-			if (!player.hasPlayedBefore()) {
-				player = null;
-			}
 		}
 
 		if (type.equals("message")) {
@@ -60,6 +56,12 @@ public class WebChatAPICallHandler extends APICallHandler {
 			if (sender.isMuted()) {
 				plugin.getLogger().warning(sender.getName() + " has been blocked from web chat because they are muted.");
 				return buildResult("muted");
+			}
+
+			if (!sender.hasPlayedBefore()) {
+				plugin.getLogger().warning(username + " (" + sender.getUuidString() + ") " +
+						"has been blocked from web chat because they never joined.");
+				return buildResult("never_joined");
 			}
 		}
 
@@ -116,7 +118,7 @@ public class WebChatAPICallHandler extends APICallHandler {
 			return notHandledResult();
 		}
 
-		if (player != null && player.isBanned()) {
+		if (player != null && (player.isBanned() || player.isMuted() || !player.hasPlayedBefore())) {
 			plugin.getLogger().warning(ChatColor.stripColor(message));
 		} else {
 			StandardPlugin.broadcast(message);
