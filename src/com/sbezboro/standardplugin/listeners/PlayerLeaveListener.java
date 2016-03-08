@@ -53,6 +53,7 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 		HttpRequestManager.getInstance().startRequest(new LeaveHttpRequest(player.getName(), null));
 	}
 
+	//onPlayerQuit will be called right after this
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerKick(PlayerKickEvent event) {
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
@@ -73,9 +74,5 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 		if (!SimplyVanishIntegration.isVanished(player)) {
 			StandardPlugin.webchatMessage(message);
 		}
-
-		player.onLeaveServer();
-		
-		HttpRequestManager.getInstance().startRequest(new LeaveHttpRequest(player.getName(), null));
 	}
 }
