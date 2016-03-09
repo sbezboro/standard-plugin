@@ -50,7 +50,7 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 
 		player.onLeaveServer();
 		
-		HttpRequestManager.getInstance().startRequest(new LeaveHttpRequest(player.getName(), null));
+		HttpRequestManager.getInstance().startRequest(new LeaveHttpRequest(player.getUuidString(), null));
 	}
 
 	//onPlayerQuit will be called right after this
