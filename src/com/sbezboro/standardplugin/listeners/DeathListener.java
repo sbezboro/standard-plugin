@@ -62,16 +62,19 @@ public class DeathListener extends EventListener implements Listener {
 			} else if (entity.getType() == EntityType.ENDERMAN) {
 				if (plugin.getNerfEndermenDrops()) {
 					// Nerfed xp and drops for endermen in the end
-					if (entity.getLocation().getWorld().getEnvironment() == Environment.THE_END) {
-						event.getDrops().clear();
-
-						if (event.getDroppedExp() > 0) {
-							event.setDroppedExp(1);
-
+					Location location = entity.getLocation();
+					if (location.getWorld().getEnvironment() == Environment.THE_END) {
+						if (Math.max(location.getBlockX(), location.getBlockZ()) > 200) {
+							event.getDrops().clear();
+							
 							// 5% chance to drop a pearl
 							if (Math.random() < 0.05) {
 								event.getDrops().add(new ItemStack(Material.ENDER_PEARL, 1));
 							}
+						}
+						
+						if (event.getDroppedExp() > 0) {
+							event.setDroppedExp(1);
 						}
 					}
 				}
@@ -102,9 +105,16 @@ public class DeathListener extends EventListener implements Listener {
 		LivingEntity entity = MiscUtil.getLivingEntityFromDamageEvent(damageEvent);
 		StandardPlayer killerPlayer = plugin.getStandardPlayer(entity);
 
-		if (killerPlayer != null) {
+		// Essentials' /suicide and PVP log deaths seem to be only detectable this way
+		if (deathMessage.equals(ChatColor.DARK_RED + victim.getDisplayName(false) + " died")) {
+			victim.setLastDeathInPvp(victim.wasInPvp() || victim.hasPvpLogged());
+			victim.setLastDeathBySpawnkill(false);
+		} else if (killerPlayer != null) {
 			if (victim.hasSpawnKillTimeout()) {
 				victim.enableSpawnKillProtection();
+
+				victim.setLastDeathInPvp(true);
+				victim.setLastDeathBySpawnkill(true);
 
 				event.setDeathMessage(null);
 				plugin.getLogger().info("Not logging player " + killerPlayer.getDisplayName(false) +
@@ -117,6 +127,12 @@ public class DeathListener extends EventListener implements Listener {
 			if (deathMessage.contains(killerPlayer.getName())) {
 				deathMessage = deathMessage.replaceAll(killerPlayer.getName(), killerPlayer.getDisplayName(false));
 			}
+			
+			victim.setLastDeathInPvp(true);
+			victim.setLastDeathBySpawnkill(false);
+		} else {
+			victim.setLastDeathInPvp(victim.wasInPvp());
+			victim.setLastDeathBySpawnkill(false);
 		}
 
 		DeathEvent deathEvent = new DeathEvent(victim);
