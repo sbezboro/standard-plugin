@@ -1,12 +1,11 @@
 package com.sbezboro.standardplugin.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class EnablePvpCommand extends BaseCommand {
 
