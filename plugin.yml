@@ -39,6 +39,10 @@ commands:
         description: Hide forum post notifications from chat for certain users
         permission: standardplugin.forummute
         permission-message: You don't have permission
+    enablepvp:
+        description: Disable your PVP protection early
+        permission: standardplugin.enablepvp
+        permission-message: You don't have permission
     pvp:
         description: Query/enable/disable pvp protection for players
         permission: standardplugin.pvp
@@ -94,6 +98,8 @@ permissions:
         default: op
     standardplugin.forummute:
         default: op
+    standardplugin.enablepvp:
+        default: true
     standardplugin.pvp:
         default: op
     standardplugin.title:
