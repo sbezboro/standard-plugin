@@ -53,13 +53,14 @@ public class EntityDamageListener extends EventListener implements Listener {
 						return;
 					}
 
-					// Attacker protected but victim isn't so turn off
-					// attacker's protection
+					// Attacker protected but victim isn't, so send message to attacker on how to
+					// turn off their protection
 					if (damager.isPvpProtected()) {
-						damager.sendMessage("" + ChatColor.RED + ChatColor.BOLD + "Your PVP protection has been disabled!");
-						damager.setPvpProtection(false);
-
-						plugin.getLogger().info("Disabling PVP protection for " + damager.getName() + " due to an attack on " + victim.getName());
+						damager.sendMessage(ChatColor.DARK_PURPLE + "You are still protected from PVP! Use " +
+								ChatColor.AQUA + "/enablepvp" + ChatColor.DARK_PURPLE + " if you want to start fighting.");
+						
+						event.setCancelled(true);
+						return;
 					}
 				}
 
@@ -73,7 +74,7 @@ public class EntityDamageListener extends EventListener implements Listener {
 				}
 
 				damager.setInPvp(victim);
-				victim.setLastAttacker(damager);
+				victim.setInPvp(damager);
 			}
 		}
 	}
