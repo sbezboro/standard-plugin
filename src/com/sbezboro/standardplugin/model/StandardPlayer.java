@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 public class StandardPlayer extends PlayerDelegate {
-	private static final int PVP_TIMER_TIME = 200;  // 10 seconds
+	private static final int PVP_TIMER_TIME = 600;  // 30 seconds
 	
 	private PersistedProperty<Boolean> forumMuted;
 	private PersistedProperty<Boolean> pvpProtection;
@@ -43,8 +43,10 @@ public class StandardPlayer extends PlayerDelegate {
 	private int newbieAttacks;
 	
 	private PvpTimerTask pvpTimerTask;
-	private StandardPlayer lastAttacker;
+	private String lastAttackerUuid;
 
+	private boolean lastDeathInPvp;
+	private boolean lastDeathBySpawnkill;
 	private boolean spawnKillProtection;
 	private SpawnKillTimeoutTask spawnKillTimeoutTask;
 
@@ -268,20 +270,29 @@ public class StandardPlayer extends PlayerDelegate {
 		return hasTitle(Title.NEWBIE_STALKER);
 	}
 
-	public StandardPlayer getLastAttacker() {
-		return lastAttacker;
+	public String getLastAttackerUuid() {
+		return lastAttackerUuid;
 	}
 	
 	public void setLastAttacker(StandardPlayer player) {
-		lastAttacker = player;
+		if (player == null) {
+			lastAttackerUuid = null;
+		} else {
+			lastAttackerUuid = new String(player.getUuidString());
+		}
 	}
 	
 	public boolean isInPvp() {
-		return pvpTimerTask != null && lastAttacker != null && lastAttacker.isOnline() && getHealth() > 0;
+		return pvpTimerTask != null && lastAttackerUuid != null &&
+				StandardPlugin.getPlugin().getStandardPlayerByUUID(lastAttackerUuid).isOnline() && getHealth() > 0;
 	}
 	
-	public void setInPvp(StandardPlayer victim) {
-		if (this == victim) {
+	public boolean wasInPvp() {
+		return pvpTimerTask != null;
+	}
+	
+	public void setInPvp(StandardPlayer opponent) {
+		if (opponent == null || this == opponent) {
 			return;
 		}
 		
@@ -297,7 +308,7 @@ public class StandardPlayer extends PlayerDelegate {
 		pvpTimerTask = new PvpTimerTask(StandardPlugin.getPlugin(), this);
 		pvpTimerTask.runTaskLater(StandardPlugin.getPlugin(), PVP_TIMER_TIME);
 		
-		lastAttacker = victim;
+		lastAttackerUuid = new String(opponent.getUuidString());
 	}
 	
 	public void setNotInPvp() {
@@ -305,7 +316,6 @@ public class StandardPlayer extends PlayerDelegate {
 			sendMessage("You are no longer in PVP");
 			pvpTimerTask.cancel();
 			pvpTimerTask = null;
-			lastAttacker = null;
 		}
 	}
 
@@ -315,6 +325,22 @@ public class StandardPlayer extends PlayerDelegate {
 
 	public boolean hasSpawnKillTimeout() {
 		return spawnKillTimeoutTask != null;
+	}
+	
+	public boolean lastDeathInPvp() {
+		return lastDeathInPvp;
+	}
+	
+	public boolean lastDeathBySpawnkill() {
+		return lastDeathBySpawnkill;
+	}
+	
+	public void setLastDeathInPvp(boolean value) {
+		lastDeathInPvp = value;
+	}
+	
+	public void setLastDeathBySpawnkill(boolean value) {
+		lastDeathBySpawnkill = value;
 	}
 
 	public void enableSpawnKillProtection() {
