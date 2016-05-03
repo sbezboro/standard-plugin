@@ -53,12 +53,7 @@ public class PlayerJoinListener extends EventListener implements Listener {
 			
 			if (player.hasPvpLogged()) {
 				player.setPvpLogged(false);
-
-				if (player.isDead()) {
-					player.setNotInPvp();
-				} else {
-					player.setInPvp(player.getLastAttacker());
-				}
+				player.setNotInPvp();
 				
 				new BukkitRunnable() {
 					
