@@ -4,6 +4,8 @@ import com.sbezboro.standardplugin.persistence.PersistedObject;
 import com.sbezboro.standardplugin.persistence.storages.PlayerStorage;
 import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
@@ -973,11 +975,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.setWindowProperty(arg0, arg1);
 	}
 
-	@Deprecated
-	public Arrow shootArrow() {
-		return player.shootArrow();
-	}
-
 	public void showPlayer(Player player) {
 		this.player.showPlayer(player);
 	}
@@ -996,16 +993,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 
 	public boolean teleport(Location location) {
 		return player.teleport(location);
-	}
-
-	@Deprecated
-	public Egg throwEgg() {
-		return player.throwEgg();
-	}
-
-	@Deprecated
-	public Snowball throwSnowball() {
-		return player.throwSnowball();
 	}
 
 	@Deprecated
@@ -1045,11 +1032,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getHealthScale();
 	}
 
-	@Override
-	public Spigot spigot() {
-		return player.spigot();
-	}
-
 	public Entity getLeashHolder() throws IllegalStateException {
 		return player.getLeashHolder();
 	}
@@ -1084,4 +1066,190 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.sendSignChange(location, strings);
 	}
 
+	@Override
+	@Deprecated
+	public void resetTitle() {
+		player.resetTitle();
+	}
+
+	@Override
+	@Deprecated
+	public void sendTitle(String s, String s1) {
+		player.sendTitle(s, s1);
+	}
+
+	@Override
+	public Entity getSpectatorTarget() {
+		return player.getSpectatorTarget();
+	}
+
+	@Override
+	public void setSpectatorTarget(Entity entity) {
+		player.setSpectatorTarget(entity);
+	}
+
+	@Override
+	public int _INVALID_getLastDamage() {
+		return player._INVALID_getLastDamage();
+	}
+
+	@Override
+	public void _INVALID_setLastDamage(int i) {
+		player._INVALID_setLastDamage(i);
+	}
+
+	@Override
+	public void _INVALID_damage(int i) {
+		player._INVALID_damage(i);
+	}
+
+	@Override
+	public void _INVALID_damage(int i, Entity entity) {
+		player._INVALID_damage(i, entity);
+	}
+
+	@Override
+	public int _INVALID_getHealth() {
+		return player._INVALID_getHealth();
+	}
+
+	@Override
+	public void _INVALID_setHealth(int i) {
+		player._INVALID_setHealth(i);
+	}
+
+	@Override
+	public int _INVALID_getMaxHealth() {
+		return player._INVALID_getMaxHealth();
+	}
+
+	@Override
+	public void _INVALID_setMaxHealth(int i) {
+		player._INVALID_setMaxHealth(i);
+	}
+
+	@Override
+	public void spawnParticle(Particle particle, Location location, int i) {
+		player.spawnParticle(particle, location, i);
+	}
+
+	@Override
+	public void spawnParticle(Particle particle, double v, double v1, double v2, int i) {
+		player.spawnParticle(particle, v, v1, v2, i);
+	}
+
+	@Override
+	public <T> void spawnParticle(Particle particle, Location location, int i, T t) {
+		player.spawnParticle(particle, location, i, t);
+	}
+
+	@Override
+	public <T> void spawnParticle(Particle particle, double v, double v1, double v2, int i, T t) {
+		player.spawnParticle(particle, v, v1, v2, i, t);
+	}
+
+	@Override
+	public void spawnParticle(Particle particle, Location location, int i, double v, double v1, double v2) {
+		player.spawnParticle(particle, location, i, v, v1, v2);
+	}
+
+	@Override
+	public void spawnParticle(Particle particle, double v, double v1, double v2, int i, double v3, double v4, double v5) {
+		player.spawnParticle(particle, v, v1, v2, i, v3, v4, v5);
+	}
+
+	@Override
+	public <T> void spawnParticle(Particle particle, Location location, int i, double v, double v1, double v2, T t) {
+		player.spawnParticle(particle, location, i, v, v1, v2, t);
+	}
+
+	@Override
+	public <T> void spawnParticle(Particle particle, double v, double v1, double v2, int i, double v3, double v4, double v5, T t) {
+		player.spawnParticle(particle, v, v1, v2, i, v3, v4, v5, t);
+	}
+
+	@Override
+	public void spawnParticle(Particle particle, Location location, int i, double v, double v1, double v2, double v3) {
+		player.spawnParticle(particle, location, i, v, v1, v2, v3);
+	}
+
+	@Override
+	public void spawnParticle(Particle particle, double v, double v1, double v2, int i, double v3, double v4, double v5, double v6) {
+		player.spawnParticle(particle, v, v1, v2, i, v3, v4, v5, v6);
+	}
+
+	@Override
+	public <T> void spawnParticle(Particle particle, Location location, int i, double v, double v1, double v2, double v3, T t) {
+		player.spawnParticle(particle, location, i, v, v1, v2, v3, t);
+	}
+
+	@Override
+	public <T> void spawnParticle(Particle particle, double v, double v1, double v2, int i, double v3, double v4, double v5, double v6, T t) {
+		player.spawnParticle(particle, v, v1, v2, i, v3, v4, v5, v6, t);
+	}
+
+	@Override
+	public InventoryView openMerchant(Villager villager, boolean b) {
+		return player.openMerchant(villager, b);
+	}
+
+	@Override
+	public MainHand getMainHand() {
+		return player.getMainHand();
+	}
+
+	@Override
+	public boolean isGliding() {
+		return player.isGliding();
+	}
+
+	@Override
+	public void setGliding(boolean b) {
+		player.setGliding(b);
+	}
+
+	@Override
+	public void setAI(boolean b) {
+		player.setAI(b);
+	}
+
+	@Override
+	public boolean hasAI() {
+		return player.hasAI();
+	}
+
+	@Override
+	public void setCollidable(boolean b) {
+		player.setCollidable(b);
+	}
+
+	@Override
+	public boolean isCollidable() {
+		return player.isCollidable();
+	}
+
+	@Override
+	public AttributeInstance getAttribute(Attribute attribute) {
+		return player.getAttribute(attribute);
+	}
+
+	@Override
+	public void setGlowing(boolean b) {
+		player.setGlowing(b);
+	}
+
+	@Override
+	public boolean isGlowing() {
+		return player.isGlowing();
+	}
+
+	@Override
+	public void setInvulnerable(boolean b) {
+		player.setInvulnerable(b);
+	}
+
+	@Override
+	public boolean isInvulnerable() {
+		return player.isInvulnerable();
+	}
 }

@@ -5,10 +5,10 @@ import com.sbezboro.standardplugin.StandardPlugin;
 
 public class LeaveHttpRequest extends ApiHttpRequest {
 	
-	public LeaveHttpRequest(String username, HttpRequestListener listener) {
+	public LeaveHttpRequest(String uuid, HttpRequestListener listener) {
 		super(StandardPlugin.getPlugin(), "leave_server", HTTPMethod.POST, listener);
 		
-		addProperty("username", username);
+		addProperty("uuid", uuid);
 	}
 
 }

@@ -17,6 +17,8 @@ import com.sbezboro.standardplugin.net.LeaveHttpRequest;
 
 public class PlayerLeaveListener extends EventListener implements Listener {
 
+	public static final String HAVE_BEEN = "have been";
+
 	public PlayerLeaveListener(StandardPlugin plugin) {
 		super(plugin);
 	}
@@ -48,22 +50,29 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 
 		player.onLeaveServer();
 		
-		HttpRequestManager.getInstance().startRequest(new LeaveHttpRequest(player.getName(), null));
+		HttpRequestManager.getInstance().startRequest(new LeaveHttpRequest(player.getUuidString(), null));
 	}
 
+	//onPlayerQuit will be called right after this
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerKick(PlayerKickEvent event) {
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
-		String message = String.format("%s%s was kicked!", ChatColor.DARK_GRAY, player.getDisplayName(false));
+		String reason = event.getReason();
+		String action;
+
+		if (reason.contains(HAVE_BEEN) && reason.contains(":")) {
+			int actionIndex = reason.indexOf(HAVE_BEEN) + HAVE_BEEN.length() + 1;
+			action = ChatColor.stripColor(reason.substring(actionIndex));
+		} else {
+			action = "kicked: " + reason;
+		}
+
+		String message = String.format("%s%s was " + action, ChatColor.DARK_GRAY, player.getDisplayName(false));
 		event.setLeaveMessage(message);
 
 		if (!SimplyVanishIntegration.isVanished(player)) {
 			StandardPlugin.webchatMessage(message);
 		}
-
-		player.onLeaveServer();
-		
-		HttpRequestManager.getInstance().startRequest(new LeaveHttpRequest(player.getName(), null));
 	}
 }

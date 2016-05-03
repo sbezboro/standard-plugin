@@ -2,15 +2,15 @@ package com.sbezboro.standardplugin.listeners;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
-import net.minecraft.server.v1_8_R3.BlockPosition;
-import net.minecraft.server.v1_8_R3.EntityEnderSignal;
+import net.minecraft.server.v1_9_R1.BlockPosition;
+import net.minecraft.server.v1_9_R1.EntityEnderSignal;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEnderSignal;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftEnderSignal;
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
 import org.bukkit.entity.EnderSignal;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
@@ -64,7 +64,7 @@ public class PlayerInteractListener extends EventListener implements Listener {
 		
 		// Gross hacks to internal server code to spawn a new eye of ender, send it to a new location, and play a sound
 		CraftWorld craftWorld = (CraftWorld) eyeLocation.getWorld();
-		craftWorld.getHandle().makeSound(((CraftPlayer) player).getHandle(), "random.bow", 0.5F, 0.4F / 1.0F);
+		//craftWorld.getHandle().makeSound(((CraftPlayer) player).getHandle(), "random.bow", 0.5F, 0.4F / 1.0F);
 		EntityEnderSignal eye = ((CraftEnderSignal) craftWorld.spawn(eyeLocation, EnderSignal.class)).getHandle();
 		eye.a(new BlockPosition(portalLocation.getBlockX(), portalLocation.getBlockY(), portalLocation.getBlockZ()));
 		

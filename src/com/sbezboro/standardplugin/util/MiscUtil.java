@@ -136,6 +136,13 @@ public class MiscUtil {
 		return uuid.toString().replaceAll("-", "");
 	}
 
+	public static UUID getUuid(String uuidString) {
+		String uuidWithDashes = uuidString.replaceFirst(
+				"([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)",
+				"$1-$2-$3-$4-$5");
+		return UUID.fromString(uuidWithDashes);
+	}
+
 	public static Block[] getAdjacentBlocks(Block block) {
 		return new Block[] {
 				block.getRelative(BlockFace.NORTH),

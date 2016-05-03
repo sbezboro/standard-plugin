@@ -12,7 +12,7 @@ import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class PersistedProperty<T> implements PersistedBase {
 	private PersistedObject object;
-	private Class<T> cls;
+	private Class cls;
 	private String name;
 	private Object def;
 
@@ -27,7 +27,7 @@ public class PersistedProperty<T> implements PersistedBase {
 		}
 	};
 
-	public PersistedProperty(PersistedObject object, Class<T> cls, String name, Object def) {
+	public PersistedProperty(PersistedObject object, Class cls, String name, Object def) {
 		this.cls = cls;
 		this.name = name;
 		this.object = object;

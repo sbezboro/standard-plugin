@@ -9,7 +9,7 @@ public abstract class PersistedObject {
 	protected FileStorage storage;
 	private String identifier;
 	
-	private ArrayList<PersistedBase> persistedPorperties;
+	private ArrayList<PersistedBase> persistedProperties;
 
 	private boolean toCommit;
 
@@ -17,7 +17,7 @@ public abstract class PersistedObject {
 		this.storage = storage;
 		this.identifier = identifier;
 		
-		persistedPorperties = new ArrayList<PersistedBase>();
+		persistedProperties = new ArrayList<PersistedBase>();
 		
 		toCommit = false;
 
@@ -29,24 +29,28 @@ public abstract class PersistedObject {
 	public abstract void createProperties();
 	
 	public void loadProperties() {
-		for (PersistedBase property : persistedPorperties) {
+		for (PersistedBase property : persistedProperties) {
 			property.load();
 		}
 	}
 
-	protected final <T> PersistedProperty<T> createProperty(Class<T> cls, String name, Object def) {
+	protected final <T> PersistedProperty<T> createProperty(Class cls, String name, Object def) {
 		PersistedProperty<T> property = new PersistedProperty<T>(this, cls, name, def);
-		persistedPorperties.add(property);
+		persistedProperties.add(property);
 		return property;
 	}
 
-	protected final <T> PersistedProperty<T> createProperty(Class<T> cls, String name) {
+	protected final <T> PersistedProperty<T> createProperty(Class cls, String name) {
 		return createProperty(cls, name, null);
+	}
+
+	protected final <T> PersistedProperty<T> createProperty(PersistedPropertyDefinition definition) {
+		return createProperty(definition.getCls(), definition.getIdentifier());
 	}
 
 	protected final <T> PersistedListProperty<T> createList(Class<T> cls, String name) {
 		PersistedListProperty<T> property = new PersistedListProperty<T>(this, cls, name);
-		persistedPorperties.add(property);
+		persistedProperties.add(property);
 		return property;
 	}
 
@@ -87,7 +91,7 @@ public abstract class PersistedObject {
 	}
 
 	public final void save() {
-		for (PersistedBase property : persistedPorperties) {
+		for (PersistedBase property : persistedProperties) {
 			saveProperty(property.getName(), property.getValue(), false);
 		}
 
