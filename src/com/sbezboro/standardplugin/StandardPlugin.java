@@ -156,6 +156,7 @@ public class StandardPlugin extends JavaPlugin {
 		commands.add(new SpawnCommand(this));
 		commands.add(new ForumMuteCommand(this));
 		commands.add(new StandardCommand(this));
+		commands.add(new EnablePvpCommand(this));
 		commands.add(new PvpProtectionCommand(this));
 		commands.add(new TitleCommand(this));
 		commands.add(new TitlesCommand(this));
