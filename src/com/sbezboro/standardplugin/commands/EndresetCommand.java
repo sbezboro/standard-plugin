@@ -1,11 +1,12 @@
 package com.sbezboro.standardplugin.commands;
 
+import java.time.*;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.sbezboro.standardplugin.StandardPlugin;
-import com.sbezboro.standardplugin.util.MiscUtil;
 
 public class EndresetCommand extends BaseCommand {
 
@@ -22,7 +23,16 @@ public class EndresetCommand extends BaseCommand {
 		
 		if (plugin.getEndResetManager().isEndResetScheduled()) {
 			long endReset = plugin.getEndResetStorage().getNextReset();
-			sender.sendMessage(ChatColor.BLUE + "The next end reset is on " + ChatColor.AQUA + MiscUtil.friendlyTimestamp(endReset));
+			long daysUntilReset = (endReset - System.currentTimeMillis()) / 86400000;
+			DayOfWeek dayOfWeek = ZonedDateTime.now(ZoneId.of("America/New_York")).getDayOfWeek();			
+			
+			if ((daysUntilReset <= 3 && dayOfWeek.getValue() >= 5) || (daysUntilReset <= 7 && dayOfWeek.getValue() < 5)) {
+				sender.sendMessage(ChatColor.BLUE + "The end will reset this weekend!");
+			} else if (daysUntilReset <= 10 && dayOfWeek.getValue() >= 5) {
+				sender.sendMessage(ChatColor.BLUE + "The end will reset the next weekend.");
+			} else {
+				sender.sendMessage(ChatColor.BLUE + "The end will reset the weekend after the next.");
+			}
 		} else {
 			sender.sendMessage(ChatColor.BLUE + "No end reset scheduled! The ender dragon is still alive!");
 		}
