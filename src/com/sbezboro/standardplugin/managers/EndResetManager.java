@@ -68,7 +68,7 @@ public class EndResetManager extends BaseManager {
 		}
 	}
 	
-	public void setDragonSlayer(StandardPlayer player, boolean broadcast) {
+	public void setDragonSlayer(final StandardPlayer player, boolean broadcast) {
 		StandardPlayer oldDragonSlayer = storage.getDragonSlayer();
 		if (oldDragonSlayer != null) {
 			oldDragonSlayer.removeTitle(Title.DRAGON_SLAYER);
