@@ -53,6 +53,11 @@ public class DeathListener extends EventListener implements Listener {
 					KillEvent killEvent = new KillEvent(killer, entity);
 					killEvent.log();
 				}
+				
+				if (entity.getType() == EntityType.ENDER_DRAGON) {
+					// Possible null value intended
+					plugin.getEndResetManager().setDragonSlayer(killer, true);
+				}
 			}
 
 			if (entity.getType() == EntityType.ENDER_DRAGON) {
