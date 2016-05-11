@@ -80,7 +80,7 @@ public class EndResetManager extends BaseManager {
 					@Override
 					public void run() {
 						StandardPlugin.broadcast(String.format("%s%s%s has received the title %sDragon Slayer%s!", 
-								ChatColor.AQUA, player.getName(), ChatColor.BLUE, ChatColor.GOLD, ChatColor.BLUE));
+								ChatColor.AQUA, player.getDisplayName(true), ChatColor.BLUE, ChatColor.GOLD, ChatColor.BLUE));
 					}
 				}.runTaskLater(plugin, 200);
 			}
@@ -157,7 +157,7 @@ public class EndResetManager extends BaseManager {
 		if (y <= 0.375) {
 			return 1.5*(7.0 - Math.sqrt(49.0-128.0*y));
 		} else {
-			return 0.5*(13.0 + Math.sqrt(695.0+1920.0*y));
+			return 0.5*(13.0 + Math.sqrt(-695.0+1920.0*y));
 		}
 	}
 	
@@ -166,7 +166,7 @@ public class EndResetManager extends BaseManager {
 	}
 	
 	public boolean isEndResetScheduled() {
-		return plugin.isEndResetEnabled() && storage.getNextReset() > System.currentTimeMillis();
+		return plugin.isEndResetEnabled() && storage.getNextReset() + 60000 > System.currentTimeMillis();
 	}
 
 }
