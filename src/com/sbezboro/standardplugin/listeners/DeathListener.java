@@ -73,7 +73,7 @@ public class DeathListener extends EventListener implements Listener {
 					// Nerfed xp and drops for endermen in the end
 					Location location = entity.getLocation();
 					if (location.getWorld().getEnvironment() == Environment.THE_END) {
-						if (Math.max(location.getBlockX(), location.getBlockZ()) > 200) {
+						if (Math.max(Math.abs(location.getBlockX()), Math.abs(location.getBlockZ())) > 200) {
 							event.getDrops().clear();
 							
 							// 5% chance to drop a pearl
