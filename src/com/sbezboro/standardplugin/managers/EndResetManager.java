@@ -105,6 +105,7 @@ public class EndResetManager extends BaseManager {
 		final long nextReset = decideNextEndReset();
 		
 		storage.setNextReset(nextReset);
+		storage.setDragonAlive(false);
 		
 		if (endResetCheckTask == null) {
 			endResetCheckTask = new EndResetCheckTask(plugin);
@@ -201,7 +202,7 @@ public class EndResetManager extends BaseManager {
 	}
 	
 	public boolean isEndResetScheduled() {
-		return plugin.isEndResetEnabled() && storage.getNextReset() + 60000 > System.currentTimeMillis();
+		return plugin.isEndResetEnabled() && storage.getNextReset() + 60000 > System.currentTimeMillis() && !storage.isDragonAlive();
 	}
 
 }
