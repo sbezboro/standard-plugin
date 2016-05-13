@@ -14,6 +14,7 @@ import com.sbezboro.standardplugin.persistence.persistables.PersistableLocation;
 public class EndResetStorage extends ConfigStorage {
 	private int currentEndId;
 	private long nextReset;
+	private boolean isDragonAlive;
 	private String dragonSlayer;
 	private ArrayList<PersistableLocation> activePortals;
 	private ArrayList<PersistableLocation> inactivePortals;
@@ -27,6 +28,7 @@ public class EndResetStorage extends ConfigStorage {
 	public void load() {
 		currentEndId = config.getInt("current-end-id");
 		nextReset = config.getLong("next-reset");
+		isDragonAlive = config.getBoolean("is-dragon-alive");
 		dragonSlayer = config.getString("dragon-slayer");
 		activePortals = new ArrayList<PersistableLocation>();
 		inactivePortals = new ArrayList<PersistableLocation>();
@@ -68,6 +70,14 @@ public class EndResetStorage extends ConfigStorage {
 		currentEndId++;
 		config.set("current-end-id", currentEndId);
 		save();
+	}
+	
+	public boolean isDragonAlive() {
+		return isDragonAlive;
+	}
+	
+	public void setDragonAlive(boolean alive) {
+		isDragonAlive = alive;
 	}
 	
 	public StandardPlayer getDragonSlayer() {
