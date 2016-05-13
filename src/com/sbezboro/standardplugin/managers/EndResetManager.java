@@ -135,9 +135,9 @@ public class EndResetManager extends BaseManager {
 		int daysFromNow;
 		
 		if (dayOfWeek.getValue() >= 5) { // Fri~Sun
-			daysFromNow = 20 - dayOfWeek.getValue() + dayOfWeekend;
+			daysFromNow = 19 - dayOfWeek.getValue() + dayOfWeekend;
 		} else {
-			daysFromNow = 13 - dayOfWeek.getValue() + dayOfWeekend;
+			daysFromNow = 12 - dayOfWeek.getValue() + dayOfWeekend;
 		}
 		
 		long time = System.currentTimeMillis() + daysFromNow * 86400000;
