@@ -9,15 +9,14 @@ public class EndResetCheckTask extends BaseTask {
 
 	@Override
 	public void run() {
+		if (plugin.getEndResetStorage().isDragonAlive() == true) {
+			return;
+		}
+		
 		long curTime = System.currentTimeMillis();
 		long nextEndReset = plugin.getEndResetStorage().getNextReset();
 		
 		int totalSeconds = (int) ((nextEndReset - curTime) / 1000);
-		
-		// No end reset scheduled
-		if (totalSeconds < -60) {
-			return;
-		}
 		
 		if (totalSeconds <= 0) {
 			plugin.getEndResetManager().resetEnd();
