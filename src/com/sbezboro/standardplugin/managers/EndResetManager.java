@@ -124,35 +124,70 @@ public class EndResetManager extends BaseManager {
 	}
 	
 	private long decideNextEndReset() {
-		// This yields a time between Friday evening and Sunday afternoon of USA time
+		// This yields a time between Friday morning and Sunday night of USA time
+		// Fri day: 5 %, Fri night: 25 %, Sat day: 20 %, Sat night: 25 %, Sun day: 15 %, Sun night: 10 %
 		
-		int daysFromNow = decideDaysFromNow();
-		double hourOfDay = decideHourOfDay();
+		int dayOfWeekend = decideDayOfWeekend();
+		double hourOfDay = decideHourOfDay(dayOfWeekend);
+		
+		DayOfWeek dayOfWeek = ZonedDateTime.now(ZoneId.of("America/New_York")).getDayOfWeek();
+		int daysFromNow;
+		
+		if (dayOfWeek.getValue() >= 5) { // Fri~Sun
+			daysFromNow = 20 - dayOfWeek.getValue() + dayOfWeekend;
+		} else {
+			daysFromNow = 13 - dayOfWeek.getValue() + dayOfWeekend;
+		}
 		
 		long time = System.currentTimeMillis() + daysFromNow * 86400000;
-		time = (time / 86400000) * 86400000; // Round down
+		time = (time / 86400000) * 86400000; // Round down to 00:00 GMT
 		time += Math.round(hourOfDay * 3600000);
 		
 		return time;
 	}
 	
-	private int decideDaysFromNow() {
-		// Find a random day of the weekend after the next (Saturday 00:00 GMT or Sunday 00:00 GMT)
+	private int decideDayOfWeekend() {
+		// Find a random day of the weekend after the next (Fri~Mon GMT)
 		
-		DayOfWeek dayOfWeek = ZonedDateTime.now(ZoneId.of("America/New_York")).getDayOfWeek();
-		
-		if (dayOfWeek.getValue() >= 5) { // Fri~Sun
-			return 20 - dayOfWeek.getValue() + (Math.random() < 0.5 ? 1 : 0);
-		} else {
-			return 13 - dayOfWeek.getValue() + (Math.random() < 0.5 ? 1 : 0);
+		double r = Math.random();
+		int d = 0;
+		if (r > 0.9) {
+			d = 3;
+		} else if (r > 0.5) {
+			d = 2;
+		} else if (r > 0.05) {
+			d = 1;
 		}
+		
+		return d;
 	}
 	
-	private double decideHourOfDay() {
+	private double decideHourOfDay(int dayOfWeekend) {
 		// Using inverse transformation, find a random GMT hour with peak times being more likely
-		// Non-normalized density used: Affine (linear) on [0,9] and [9,24], f(0) = 7 = f(24), f(9) = 1
 		
 		double y = Math.random();
+		
+		switch (dayOfWeekend) {
+		case 0: // Fri
+			return 15.0 + Math.sqrt(81.0*y);
+			
+		case 1: // Sat
+			if (y < 5.0/9.0) {
+				return 9.0 - 1.8 * Math.sqrt(-45.0*y+25.0);
+			} else {
+				return 9.0 + 7.5 * Math.sqrt(9.0*y-5.0);
+			}
+			
+		case 2: // Sun
+			if (y < 5.0/8.0) {
+				return 9.0 - 1.8 * Math.sqrt(-40.0*y+25.0);
+			} else {
+				return 9.0 + 5.0 * Math.sqrt(12.0*y-7.5);
+			}
+			
+		case 3: // Mon
+			return 9.0 - 9.0 * Math.sqrt(-y+1.0);
+		}
 		
 		if (y <= 0.375) {
 			return 1.5*(7.0 - Math.sqrt(49.0-128.0*y));
