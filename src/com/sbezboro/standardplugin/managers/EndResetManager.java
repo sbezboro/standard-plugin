@@ -202,7 +202,7 @@ public class EndResetManager extends BaseManager {
 	}
 	
 	public boolean isEndResetScheduled() {
-		return plugin.isEndResetEnabled() && storage.getNextReset() + 60000 > System.currentTimeMillis() && !storage.isDragonAlive();
+		return plugin.isEndResetEnabled() && (storage.getNextReset() + 60000 > System.currentTimeMillis() || !storage.isDragonAlive());
 	}
 
 }
