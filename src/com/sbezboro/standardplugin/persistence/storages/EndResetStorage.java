@@ -78,6 +78,7 @@ public class EndResetStorage extends ConfigStorage {
 	
 	public void setDragonAlive(boolean alive) {
 		isDragonAlive = alive;
+		config.set("is-dragon-alive", alive);
 	}
 	
 	public StandardPlayer getDragonSlayer() {
