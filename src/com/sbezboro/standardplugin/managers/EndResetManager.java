@@ -189,12 +189,6 @@ public class EndResetManager extends BaseManager {
 		case 3: // Mon
 			return 9.0 - 9.0 * Math.sqrt(-y+1.0);
 		}
-		
-		if (y <= 0.375) {
-			return 1.5*(7.0 - Math.sqrt(49.0-128.0*y));
-		} else {
-			return 0.5*(13.0 + Math.sqrt(-695.0+1920.0*y));
-		}
 	}
 	
 	public World getNewEndWorld() {
