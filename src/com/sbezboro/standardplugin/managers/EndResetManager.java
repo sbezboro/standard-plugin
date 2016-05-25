@@ -188,6 +188,9 @@ public class EndResetManager extends BaseManager {
 			
 		case 3: // Mon
 			return 9.0 - 9.0 * Math.sqrt(-y+1.0);
+		
+		default: // Should never happen
+			return 0.0;
 		}
 	}
 	
