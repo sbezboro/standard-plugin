@@ -209,7 +209,7 @@ public class StandardPlugin extends JavaPlugin {
 	}
 	
 	public void registerSubPlugin(SubPlugin subPlugin) {
-		getLogger().info("Regestring sub-plugin '" + subPlugin.getSubPluginName() + "'");
+		getLogger().info("Registering sub-plugin '" + subPlugin.getSubPluginName() + "'");
 		
 		for (ICommand command : subPlugin.getCommands()) {
 			command.register();
