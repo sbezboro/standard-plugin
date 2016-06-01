@@ -39,7 +39,7 @@ public class PlayerInteractListener extends EventListener implements Listener {
 		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock.getType() == Material.CHEST) {
 			StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 			plugin.getHoneypotManager().checkChest(clickedBlock.getLocation(), player);
-		// End crystal handling
+		// End crystal handling (disables manually respawning the dragon)
 		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && itemStack != null && itemStack.getType() == Material.END_CRYSTAL) {
 			event.setCancelled(true);
 		// Eye of Ender handling
