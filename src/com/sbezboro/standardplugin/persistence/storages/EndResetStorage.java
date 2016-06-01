@@ -7,11 +7,14 @@ import java.util.Map;
 import org.bukkit.Location;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.persistence.persistables.PersistableLocation;
 
 public class EndResetStorage extends ConfigStorage {
 	private int currentEndId;
 	private long nextReset;
+	private boolean isDragonAlive;
+	private String dragonSlayer;
 	private ArrayList<PersistableLocation> activePortals;
 	private ArrayList<PersistableLocation> inactivePortals;
 
