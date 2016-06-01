@@ -175,6 +175,8 @@ public class EndResetTask extends BaseTask {
 		
 		// Find a suitable location and generate the portal room
 		createNewEndPortal();
+		
+		endResetStorage.setDragonAlive(true);
 
 		StandardPlugin.broadcast(String.format("%s%sThe end has reset! Use eyes of ender to find the new end portal!", ChatColor.BLUE, ChatColor.BOLD));
 	}
