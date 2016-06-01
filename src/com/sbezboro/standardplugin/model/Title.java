@@ -7,7 +7,6 @@ import com.sbezboro.standardplugin.persistence.storages.TitleStorage;
 public class Title extends PersistedObject {
 	public static final String NEWBIE_STALKER = "newbie-stalker";
 	public static final String PVP_LOGGER = "pvp-logger";
-	public static final String DRAGON_SLAYER = "dragon-slayer";
 
 	private PersistedProperty<String> displayName;
 	private PersistedProperty<Boolean> hidden;
