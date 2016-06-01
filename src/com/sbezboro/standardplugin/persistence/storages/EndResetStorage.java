@@ -24,6 +24,8 @@ public class EndResetStorage extends ConfigStorage {
 	public void load() {
 		currentEndId = config.getInt("current-end-id");
 		nextReset = config.getLong("next-reset");
+		isDragonAlive = config.getBoolean("is-dragon-alive");
+		dragonSlayer = config.getString("dragon-slayer");
 		activePortals = new ArrayList<PersistableLocation>();
 		inactivePortals = new ArrayList<PersistableLocation>();
 		
@@ -56,6 +58,16 @@ public class EndResetStorage extends ConfigStorage {
 		save();
 	}
 	
+	public boolean isDragonAlive() {
+		return isDragonAlive;
+	}
+	
+	public void setDragonAlive(boolean alive) {
+		isDragonAlive = alive;
+		config.set("is-dragon-alive", alive);
+		save();
+	}
+	
 	public int getCurrentEndId() {
 		return currentEndId;
 	}
@@ -63,6 +75,23 @@ public class EndResetStorage extends ConfigStorage {
 	public void incrementEndId() {
 		currentEndId++;
 		config.set("current-end-id", currentEndId);
+		save();
+	}
+	
+	public StandardPlayer getDragonSlayer() {
+		if (dragonSlayer == null || dragonSlayer.equals("0")) {
+			return null;
+		}
+		return plugin.getStandardPlayerByUUID(dragonSlayer);
+	}
+	
+	public void setDragonSlayer(StandardPlayer player) {
+		if (player != null) {
+			dragonSlayer = new String(player.getUuidString());
+		} else {
+			dragonSlayer = "0";
+		}
+		config.set("dragon-slayer", dragonSlayer);
 		save();
 	}
 	
