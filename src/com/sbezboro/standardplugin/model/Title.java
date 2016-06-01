@@ -25,6 +25,14 @@ public class Title extends PersistedObject {
 		this.broadcast.setValue(false, false);
 	}
 
+	public Title(TitleStorage storage, String identifier, String displayName, boolean hidden, boolean broadcast) {
+		super(storage, identifier);
+		
+		this.displayName.setValue(displayName, false);
+		this.hidden.setValue(hidden, false);
+		this.broadcast.setValue(broadcast, false);
+	}
+
 	@Override
 	public void createProperties() {
 		displayName = createProperty(String.class, "displayName");
