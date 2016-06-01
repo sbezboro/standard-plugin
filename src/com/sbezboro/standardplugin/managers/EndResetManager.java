@@ -105,8 +105,6 @@ public class EndResetManager extends BaseManager {
 		final long nextReset = decideNextEndReset();
 		
 		storage.setNextReset(nextReset);
-		
-		storage.setNextReset(nextReset);
 		storage.setDragonAlive(false);
 		
 		if (endResetCheckTask == null) {
