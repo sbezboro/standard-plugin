@@ -190,6 +190,12 @@ public class StandardPlayer extends PlayerDelegate {
 		titles.remove(title);
 		titleNames.remove(title.getIdentifier());
 	}
+
+	public void removeTitle(String name) {
+		Title title = StandardPlugin.getPlugin().getTitleStorage().getTitle(name);
+
+		removeTitle(title);
+	}
 	
 	public int getEndId() {
 		return endId.getValue();
