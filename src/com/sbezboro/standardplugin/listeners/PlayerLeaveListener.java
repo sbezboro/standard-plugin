@@ -41,7 +41,7 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 
 			StandardPlugin.broadcast(String.format("%s%s %sPVP logged to %s%s%s!",
 					ChatColor.AQUA, player.getDisplayName(), ChatColor.RED, ChatColor.AQUA, 
-					player.getLastAttacker().getDisplayName(), ChatColor.RED));
+					plugin.getStandardPlayerByUUID(player.getLastAttackerUuid()).getDisplayName(), ChatColor.RED));
 
 			if (player.hasTitle(Title.PVP_LOGGER)) {
 				player.damage(1000.0);

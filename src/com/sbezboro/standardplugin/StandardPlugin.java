@@ -156,6 +156,7 @@ public class StandardPlugin extends JavaPlugin {
 		commands.add(new SpawnCommand(this));
 		commands.add(new ForumMuteCommand(this));
 		commands.add(new StandardCommand(this));
+		commands.add(new EnablePvpCommand(this));
 		commands.add(new PvpProtectionCommand(this));
 		commands.add(new TitleCommand(this));
 		commands.add(new TitlesCommand(this));
@@ -208,7 +209,7 @@ public class StandardPlugin extends JavaPlugin {
 	}
 	
 	public void registerSubPlugin(SubPlugin subPlugin) {
-		getLogger().info("Regestring sub-plugin '" + subPlugin.getSubPluginName() + "'");
+		getLogger().info("Registering sub-plugin '" + subPlugin.getSubPluginName() + "'");
 		
 		for (ICommand command : subPlugin.getCommands()) {
 			command.register();
