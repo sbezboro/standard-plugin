@@ -2,14 +2,14 @@ package com.sbezboro.standardplugin.listeners;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
-import net.minecraft.server.v1_9_R2.v1_9_R2.BlockPosition;
-import net.minecraft.server.v1_9_R2.v1_9_R2.EntityEnderSignal;
+import net.minecraft.server.v1_9_R2.BlockPosition;
+import net.minecraft.server.v1_9_R2.EntityEnderSignal;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_9_R2.v1_9_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_9_R2.v1_9_R2.entity.CraftEnderSignal;
+import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_9_R2.entity.CraftEnderSignal;
 import org.bukkit.entity.EnderSignal;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
