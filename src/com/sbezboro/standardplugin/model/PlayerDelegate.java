@@ -1252,4 +1252,34 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public boolean isInvulnerable() {
 		return player.isInvulnerable();
 	}
+
+	@Override
+	public boolean isSilent() {
+		return player.isSilent();
+	}
+
+	@Override
+	public void setSilent(boolean b) {
+		player.setSilent(b);
+	}
+
+	@Override
+	public void stopSound(Sound sound) {
+		player.stopSound(sound);
+	}
+
+	@Override
+	public void stopSound(String s) {
+		player.stopSound(s);
+	}
+
+	@Override
+	public boolean hasGravity() {
+		return player.hasGravity();
+	}
+
+	@Override
+	public void setGravity(boolean b) {
+		player.setGravity(b);
+	}
 }
