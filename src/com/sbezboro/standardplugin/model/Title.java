@@ -7,6 +7,7 @@ import com.sbezboro.standardplugin.persistence.storages.TitleStorage;
 public class Title extends PersistedObject {
 	public static final String NEWBIE_STALKER = "newbie-stalker";
 	public static final String PVP_LOGGER = "pvp-logger";
+	public static final String DRAGON_SLAYER = "dragon-slayer";
 
 	private PersistedProperty<String> displayName;
 	private PersistedProperty<Boolean> hidden;
@@ -22,6 +23,14 @@ public class Title extends PersistedObject {
 		this.displayName.setValue(displayName, false);
 		this.hidden.setValue(false, false);
 		this.broadcast.setValue(false, false);
+	}
+
+	public Title(TitleStorage storage, String identifier, String displayName, boolean hidden, boolean broadcast) {
+		super(storage, identifier);
+		
+		this.displayName.setValue(displayName, false);
+		this.hidden.setValue(hidden, false);
+		this.broadcast.setValue(broadcast, false);
 	}
 
 	@Override

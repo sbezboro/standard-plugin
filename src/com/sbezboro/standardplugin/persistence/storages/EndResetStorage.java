@@ -7,11 +7,14 @@ import java.util.Map;
 import org.bukkit.Location;
 
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.persistence.persistables.PersistableLocation;
 
 public class EndResetStorage extends ConfigStorage {
 	private int currentEndId;
 	private long nextReset;
+	private boolean isDragonAlive;
+	private String dragonSlayerUuid;
 	private ArrayList<PersistableLocation> activePortals;
 	private ArrayList<PersistableLocation> inactivePortals;
 
@@ -24,6 +27,8 @@ public class EndResetStorage extends ConfigStorage {
 	public void load() {
 		currentEndId = config.getInt("current-end-id");
 		nextReset = config.getLong("next-reset");
+		isDragonAlive = config.getBoolean("is-dragon-alive");
+		dragonSlayerUuid = config.getString("dragon-slayer-uuid");
 		activePortals = new ArrayList<PersistableLocation>();
 		inactivePortals = new ArrayList<PersistableLocation>();
 		
@@ -56,6 +61,16 @@ public class EndResetStorage extends ConfigStorage {
 		save();
 	}
 	
+	public boolean isDragonAlive() {
+		return isDragonAlive;
+	}
+	
+	public void setDragonAlive(boolean alive) {
+		isDragonAlive = alive;
+		config.set("is-dragon-alive", alive);
+		save();
+	}
+	
 	public int getCurrentEndId() {
 		return currentEndId;
 	}
@@ -63,6 +78,23 @@ public class EndResetStorage extends ConfigStorage {
 	public void incrementEndId() {
 		currentEndId++;
 		config.set("current-end-id", currentEndId);
+		save();
+	}
+	
+	public StandardPlayer getDragonSlayer() {
+		if (dragonSlayerUuid == null) {
+			return null;
+		}
+		return plugin.getStandardPlayerByUUID(dragonSlayerUuid);
+	}
+	
+	public void setDragonSlayer(StandardPlayer player) {
+		if (player != null) {
+			dragonSlayerUuid = player.getUuidString();
+		} else {
+			dragonSlayerUuid = null;
+		}
+		config.set("dragon-slayer-uuid", dragonSlayerUuid);
 		save();
 	}
 	

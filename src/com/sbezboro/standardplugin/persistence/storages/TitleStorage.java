@@ -22,6 +22,7 @@ public class TitleStorage extends SingleFileStorage<Title> {
 		Map<String, Title> defaults = new HashMap<String, Title>();
 		defaults.put(Title.NEWBIE_STALKER, new Title(this, Title.NEWBIE_STALKER, "Newbie Stalker"));
 		defaults.put(Title.PVP_LOGGER, new Title(this, Title.PVP_LOGGER, "PVP Logger"));
+		defaults.put(Title.DRAGON_SLAYER, new Title(this, Title.DRAGON_SLAYER, "Dragon Slayer", false, true));
 		
 		for (Title title : defaults.values()) {
 			if (!keys.contains(title.getIdentifier())) {
