@@ -29,7 +29,7 @@ public class EndresetCommand extends BaseCommand {
 			if (daysUntilReset <= 6) {
 				sender.sendMessage(ChatColor.BLUE + "The end will reset this weekend!");
 			} else if (daysUntilReset <= 13) {
-				sender.sendMessage(ChatColor.BLUE + "The end will reset the next weekend.");
+				sender.sendMessage(ChatColor.BLUE + "The end will reset next weekend.");
 			} else {
 				sender.sendMessage(ChatColor.BLUE + "The end will reset after next weekend.");
 			}
