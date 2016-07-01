@@ -22,16 +22,16 @@ public class EndresetCommand extends BaseCommand {
 		}
 		
 		if (plugin.getEndResetManager().isEndResetScheduled()) {
+			ZoneId timeZone = ZoneId.of("America/New_York");
 			long endReset = plugin.getEndResetStorage().getNextReset();
 			long daysUntilReset = (endReset - System.currentTimeMillis()) / 86400000;
-			DayOfWeek dayOfWeek = ZonedDateTime.now(ZoneId.of("America/New_York")).getDayOfWeek();			
 			
-			if ((daysUntilReset <= 3 && dayOfWeek.getValue() >= 5) || (daysUntilReset <= 7 && dayOfWeek.getValue() < 5)) {
+			if (daysUntilReset <= 6) {
 				sender.sendMessage(ChatColor.BLUE + "The end will reset this weekend!");
-			} else if (daysUntilReset <= 10 && dayOfWeek.getValue() >= 5) {
+			} else if (daysUntilReset <= 13) {
 				sender.sendMessage(ChatColor.BLUE + "The end will reset the next weekend.");
 			} else {
-				sender.sendMessage(ChatColor.BLUE + "The end will reset the weekend after the next.");
+				sender.sendMessage(ChatColor.BLUE + "The end will reset after next weekend.");
 			}
 		} else {
 			sender.sendMessage(ChatColor.BLUE + "No end reset scheduled! The ender dragon is still alive!");

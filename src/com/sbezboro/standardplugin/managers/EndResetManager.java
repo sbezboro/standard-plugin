@@ -117,8 +117,9 @@ public class EndResetManager extends BaseManager {
 				
 				@Override
 				public void run() {
-					StandardPlugin.broadcast(String.format("%s%sThe Ender Dragon has been slain! The next end reset will be on " +
-							"the weekend after the next.", ChatColor.BLUE, ChatColor.BOLD));
+					StandardPlugin.broadcast(
+							String.format("%s%sThe Ender Dragon has been slain!", ChatColor.BLUE, ChatColor.BOLD)
+					);
 				}
 			}.runTaskLater(plugin, 100);
 		}
@@ -127,14 +128,13 @@ public class EndResetManager extends BaseManager {
 	private long decideNextEndReset() {
 		// This yields a time between Friday morning and Sunday night of USA time
 		// Fri day: 5 %, Fri night: 25 %, Sat day: 20 %, Sat night: 25 %, Sun day: 15 %, Sun night: 10 %
-		
 		int dayOfWeekend = decideDayOfWeekend();
 		double hourOfDay = decideHourOfDay(dayOfWeekend);
 		
 		DayOfWeek dayOfWeek = ZonedDateTime.now(ZoneId.of("America/New_York")).getDayOfWeek();
 		int daysFromNow;
 		
-		if (dayOfWeek.getValue() >= 5) { // Fri~Sun
+		if (dayOfWeek.getValue() >= 6) { // Fri~Sun
 			daysFromNow = 19 - dayOfWeek.getValue() + dayOfWeekend;
 		} else {
 			daysFromNow = 12 - dayOfWeek.getValue() + dayOfWeekend;
@@ -149,45 +149,43 @@ public class EndResetManager extends BaseManager {
 	
 	private int decideDayOfWeekend() {
 		// Find a random day of the weekend after the next (Fri~Mon GMT)
-		
-		double r = Math.random();
-		int d = 0;
-		if (r > 0.9) {
-			d = 3;
-		} else if (r > 0.5) {
-			d = 2;
-		} else if (r > 0.05) {
-			d = 1;
+		double value = Math.random();
+
+		if (value > 0.9) {
+			return 3;
+		} else if (value > 0.5) {
+			return 2;
+		} else if (value > 0.05) {
+			return 1;
 		}
-		
-		return d;
+
+		return 0;
 	}
 	
 	private double decideHourOfDay(int dayOfWeekend) {
 		// Using inverse transformation, find a random GMT hour with peak times being more likely
-		
-		double y = Math.random();
+		double value = Math.random();
 		
 		switch (dayOfWeekend) {
-		case 0: // Fri
-			return 15.0 + Math.sqrt(81.0*y);
-			
-		case 1: // Sat
-			if (y < 5.0/9.0) {
-				return 9.0 - 1.8 * Math.sqrt(-45.0*y+25.0);
-			} else {
-				return 9.0 + 7.5 * Math.sqrt(9.0*y-5.0);
-			}
-			
-		case 2: // Sun
-			if (y < 5.0/8.0) {
-				return 9.0 - 1.8 * Math.sqrt(-40.0*y+25.0);
-			} else {
-				return 9.0 + 5.0 * Math.sqrt(12.0*y-7.5);
-			}
-			
-		case 3: // Mon
-			return 9.0 - 9.0 * Math.sqrt(-y+1.0);
+			case 0: // Fri
+				return 15.0 + Math.sqrt(81.0 * value);
+
+			case 1: // Sat
+				if (value < 5.0 / 9.0) {
+					return 9.0 - 1.8 * Math.sqrt(-45.0 * value + 25.0);
+				} else {
+					return 9.0 + 7.5 * Math.sqrt(9.0 * value - 5.0);
+				}
+
+			case 2: // Sun
+				if (value < 5.0 / 8.0) {
+					return 9.0 - 1.8 * Math.sqrt(-40.0 * value + 25.0);
+				} else {
+					return 9.0 + 5.0 * Math.sqrt(12.0 * value - 7.5);
+				}
+
+			case 3: // Mon
+				return 9.0 - 9.0 * Math.sqrt(-value + 1.0);
 
 		default: // Should never happen
 			return 0.0;
@@ -199,7 +197,10 @@ public class EndResetManager extends BaseManager {
 	}
 	
 	public boolean isEndResetScheduled() {
-		return plugin.isEndResetEnabled() && (storage.getNextReset() + 60000 > System.currentTimeMillis() || !storage.isDragonAlive());
+		return plugin.isEndResetEnabled() && (
+				storage.getNextReset() + 60000 > System.currentTimeMillis() ||
+				!storage.isDragonAlive()
+		);
 	}
 
 }
