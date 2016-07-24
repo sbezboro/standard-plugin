@@ -1,7 +1,6 @@
 package com.sbezboro.standardplugin.listeners;
 
-import org.bukkit.Location;
-import org.bukkit.World.Environment;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,13 +17,9 @@ public class PlayerBucketEmptyListener extends EventListener implements Listener
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
 		Block block = event.getBlockClicked().getRelative(event.getBlockFace());
 
-		Location location = block.getLocation();
-
-		if (location.getWorld().getEnvironment() == Environment.THE_END) {
-			if (Math.abs(block.getX()) <= 3 && Math.abs(block.getZ()) <= 3) {
-				// Prevent glitch-destroying the exit portal from the End
-				event.setCancelled(true);
-			}
+		if (block.getType() == Material.ENDER_PORTAL) {
+			// Prevent glitch-destroying end portals
+			event.setCancelled(true);
 		}
 	}
 }
