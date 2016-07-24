@@ -186,6 +186,7 @@ public class StandardPlugin extends JavaPlugin {
 		pluginManager.registerEvents(new PlayerPortalListener(this), this);
 		pluginManager.registerEvents(new BlockBreakListener(this), this);
 		pluginManager.registerEvents(new BlockPlaceListener(this), this);
+		pluginManager.registerEvents(new PlayerBucketEmptyListener(this), this);
 		pluginManager.registerEvents(new PlayerTeleportListener(this), this);
 		pluginManager.registerEvents(new EntityPortalListener(this), this);
 		pluginManager.registerEvents(new PlayerChatListener(this), this);
