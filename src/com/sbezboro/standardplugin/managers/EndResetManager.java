@@ -134,7 +134,7 @@ public class EndResetManager extends BaseManager {
 		DayOfWeek dayOfWeek = ZonedDateTime.now(ZoneId.of("America/New_York")).getDayOfWeek();
 		int daysFromNow;
 		
-		if (dayOfWeek.getValue() >= 6) { // Fri~Sun
+		if (dayOfWeek.getValue() >= 5) { // Fri~Sun
 			daysFromNow = 19 - dayOfWeek.getValue() + dayOfWeekend;
 		} else {
 			daysFromNow = 12 - dayOfWeek.getValue() + dayOfWeekend;
