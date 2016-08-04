@@ -20,9 +20,7 @@ public class DispenseListener extends EventListener implements Listener {
 	public void onBlockDispense(BlockDispenseEvent event) {
 		if (event.getItem().getType() == Material.LAVA_BUCKET) {
 			event.setCancelled(true);
-		}
-		
-		if (event.getItem().getType() == Material.WATER_BUCKET) {
+		} else if (event.getItem().getType() == Material.WATER_BUCKET) {
 			MaterialData facingData = event.getBlock().getState().getData();
 			BlockFace face = ((Dispenser)facingData).getFacing();
 			Block targetBlock = event.getBlock().getRelative(face);
