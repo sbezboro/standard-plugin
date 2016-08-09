@@ -3,9 +3,12 @@ package com.sbezboro.standardplugin.jsonapi;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.sbezboro.standardplugin.SubPlugin;
+import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.json.simple.JSONObject;
 
 import com.sbezboro.standardplugin.StandardPlugin;
@@ -45,6 +48,15 @@ public class ServerStatusAPICallHandler extends APICallHandler {
 		status.put("maxplayers", Bukkit.getMaxPlayers());
 		status.put("tps", EssentialsIntegration.getTPS());
 		status.put("load", load);
+
+		if (!minimal) {
+			List<String> bannedUuids = new ArrayList<>();
+			for (OfflinePlayer offlinePlayer : Bukkit.getBannedPlayers()) {
+				bannedUuids.add(MiscUtil.getUuidString(offlinePlayer.getUniqueId()));
+			}
+
+			status.put("banned_uuids", bannedUuids);
+		}
 
 		for (SubPlugin subPlugin : plugin.getSubPlugins()) {
 			status.putAll(subPlugin.additionalServerStatus(minimal));
