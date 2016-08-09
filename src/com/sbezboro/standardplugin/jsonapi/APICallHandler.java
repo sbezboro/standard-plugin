@@ -134,5 +134,9 @@ public abstract class APICallHandler implements JSONAPICallHandler {
 		return buildResult("not_handled", "args not handled properly");
 	}
 
+	protected JSONObject notHandledResult(String message) {
+		return buildResult("not_handled", message);
+	}
+
 	public abstract JSONObject handle(HashMap<String, Object> payload);
 }
