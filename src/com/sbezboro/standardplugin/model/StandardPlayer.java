@@ -49,6 +49,7 @@ public class StandardPlayer extends PlayerDelegate {
 	private boolean lastDeathBySpawnkill;
 	private boolean spawnKillProtection;
 	private SpawnKillTimeoutTask spawnKillTimeoutTask;
+	private long lastDeathTime;
 
 	public StandardPlayer(final Player player, final PlayerStorage storage) {
 		super(player, storage);
@@ -331,6 +332,14 @@ public class StandardPlayer extends PlayerDelegate {
 
 	public boolean hasSpawnKillTimeout() {
 		return spawnKillTimeoutTask != null;
+	}
+
+	public long getLastDeathTime() {
+		return lastDeathTime;
+	}
+
+	public void setLastDeathTime() {
+		lastDeathTime = System.currentTimeMillis();
 	}
 	
 	public boolean lastDeathInPvp() {

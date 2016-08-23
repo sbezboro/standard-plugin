@@ -114,8 +114,16 @@ public class DeathListener extends EventListener implements Listener {
 		LivingEntity entity = MiscUtil.getLivingEntityFromDamageEvent(damageEvent);
 		StandardPlayer killerPlayer = plugin.getStandardPlayer(entity);
 
+		if (System.currentTimeMillis() - victim.getLastDeathTime() < plugin.getDeathMessageTimeout() * 1000) {
+			victim.sendMessage(deathMessage);
+			deathMessage = null;
+			plugin.getLogger().info("Hiding death message for " + victim.getDisplayName(false));
+		}
+
+		victim.setLastDeathTime();
+
 		// Essentials' /suicide and PVP log deaths seem to be only detectable this way
-		if (deathMessage.equals(ChatColor.DARK_RED + victim.getDisplayName(false) + " died")) {
+		if (deathMessage != null && deathMessage.equals(ChatColor.DARK_RED + victim.getDisplayName(false) + " died")) {
 			victim.setLastDeathInPvp(victim.wasInPvp() || victim.hasPvpLogged());
 			victim.setLastDeathBySpawnkill(false);
 		} else if (killerPlayer != null) {
@@ -133,7 +141,7 @@ public class DeathListener extends EventListener implements Listener {
 
 			victim.enableSpawnKillProtection();
 
-			if (deathMessage.contains(killerPlayer.getName())) {
+			if (deathMessage != null && deathMessage.contains(killerPlayer.getName())) {
 				deathMessage = deathMessage.replaceAll(killerPlayer.getName(), killerPlayer.getDisplayName(false));
 			}
 			
@@ -151,7 +159,9 @@ public class DeathListener extends EventListener implements Listener {
 
 		event.setDeathMessage(deathMessage);
 
-		StandardPlugin.webchatMessage(deathMessage);
+		if (deathMessage != null) {
+			StandardPlugin.webchatMessage(deathMessage);
+		}
 
 		Location location = victim.getLocation();
 		Bukkit.getConsoleSender().sendMessage(

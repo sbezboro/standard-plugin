@@ -23,7 +23,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -429,6 +428,10 @@ public class StandardPlugin extends JavaPlugin {
 
 	public int getAnimalChunkCap() {
 		return config.getAnimalChunkCap();
+	}
+
+	public int getDeathMessageTimeout() {
+		return config.getDeathMessageTimeout();
 	}
 
 	public GateStorage getGateStorage() {
