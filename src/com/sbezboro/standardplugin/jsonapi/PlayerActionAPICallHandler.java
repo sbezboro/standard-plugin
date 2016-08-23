@@ -19,27 +19,33 @@ public class PlayerActionAPICallHandler extends APICallHandler {
 	@SuppressWarnings("unchecked")
 	public JSONObject handle(HashMap<String, Object> payload) {
 		String uuid = (String) payload.get("uuid");
+		String ip = (String) payload.get("ip");
+		boolean withIp = (Boolean) payload.get("with_ip");
 		String action = (String) payload.get("action");
 		String reason = (String) payload.get("reason");
 
-		if (uuid == null || action == null) {
+		if (action == null) {
 			return notHandledResult();
 		}
 
-		StandardPlayer player = plugin.getStandardPlayerByUUID(uuid);
-
-		if (player == null) {
-			return notHandledResult("Player not found by uuid");
+		StandardPlayer player = null;
+		if (uuid != null) {
+			player = plugin.getStandardPlayerByUUID(uuid);
 		}
 
 		if (action.equals("ban")) {
-			return handleBan(player, reason);
+			if (player == null) {
+				return notHandledResult("Player not found by uuid");
+			}
+			return handleBan(player, reason, withIp);
+		} else if (action.equals("ban_ip")) {
+			return handleBanIp(ip);
 		}
 
 		return notHandledResult();
 	}
 
-	private JSONObject handleBan(StandardPlayer player, String reason) {
+	private JSONObject handleBan(StandardPlayer player, String reason, boolean withIp) {
 		plugin.getLogger().warning("Banning player " + player.getDisplayName(false) +
 				" via API: " + (reason != null ? reason : "no reason defined"));
 
@@ -48,11 +54,20 @@ public class PlayerActionAPICallHandler extends APICallHandler {
 			plugin.getLogger().warning("Player " + player.getDisplayName(false) + " is already banned");
 		}
 
-		banList.addBan(player.getName(), reason, null, "API");
+		player.ban(reason, "API", withIp);
 
-		if (player.isOnline()) {
-			player.kickPlayer(reason);
+		return okResult();
+	}
+
+	private JSONObject handleBanIp(String ip) {
+		plugin.getLogger().warning("Banning ip " + ip + " via API");
+
+		BanList banList = Bukkit.getBanList(BanList.Type.IP);
+		if (banList.isBanned(ip)) {
+			plugin.getLogger().warning("IP " + ip + " is already banned");
 		}
+
+		banList.addBan(ip, null, null, "API");
 
 		return okResult();
 	}

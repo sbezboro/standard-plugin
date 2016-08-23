@@ -23,6 +23,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -215,8 +216,8 @@ public class StandardPlugin extends JavaPlugin {
 		for (ICommand command : subPlugin.getCommands()) {
 			command.register();
 		}
-		
-		getConfig().setDefaults(subPlugin.getConfig());
+
+		getConfig().addDefaults(subPlugin.getConfig());
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		

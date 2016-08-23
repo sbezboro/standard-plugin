@@ -61,6 +61,13 @@ public class EssentialsIntegration extends PluginIntegration {
 		return getUser(player).isMuted();
 	}
 
+	public static void setPlayerMuted(StandardPlayer player, boolean muted) {
+		if (!enabled) {
+			return;
+		}
+		getUser(player).setMuted(muted);
+	}
+
 	public static boolean doesPlayerIgnorePlayer(StandardPlayer first, StandardPlayer second) {
 		if (!enabled) {
 			return false;

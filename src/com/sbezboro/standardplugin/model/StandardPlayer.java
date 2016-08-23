@@ -568,9 +568,47 @@ public class StandardPlayer extends PlayerDelegate {
 	public void sendDelayedMessage(String message) {
 		sendDelayedMessages(new String[] {message});
 	}
+
+	public void mute() {
+		EssentialsIntegration.setPlayerMuted(this, true);
+	}
 	
 	public boolean isMuted() {
 		return EssentialsIntegration.isPlayerMuted(this);
+	}
+
+	public void ban() {
+		ban(null);
+	}
+
+	public void ban(String reason) {
+		ban(reason, false);
+	}
+
+	public void ban(String reason, boolean withIp) {
+		ban(reason, null, withIp);
+	}
+
+	public void ban(String reason, String source, boolean withIp) {
+		if (withIp) {
+			banIp();
+		}
+
+		BanList banList = Bukkit.getBanList(BanList.Type.NAME);
+
+		banList.addBan(getName(), reason, null, source);
+
+		if (isOnline()) {
+			kickPlayer(reason);
+		}
+	}
+
+	public void banIp() {
+		if (isOnline()) {
+			BanList banList = Bukkit.getBanList(BanList.Type.IP);
+
+			banList.addBan(getAddress().getAddress().getHostAddress(), null, null, null);
+		}
 	}
 
 	public String getUuidString() {
