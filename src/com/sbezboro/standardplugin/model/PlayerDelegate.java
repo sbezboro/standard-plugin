@@ -301,6 +301,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getInventory();
 	}
 
+	@Deprecated
 	public ItemStack getItemInHand() {
 		return player.getItemInHand();
 	}
@@ -489,6 +490,11 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 
 	public boolean hasPotionEffect(PotionEffectType type) {
 		return player.hasPotionEffect(type);
+	}
+
+	@Override
+	public PotionEffect getPotionEffect(PotionEffectType potionEffectType) {
+		return player.getPotionEffect(potionEffectType);
 	}
 
 	public void hidePlayer(Player player) {
@@ -733,6 +739,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.removePotionEffect(type);
 	}
 
+	@Deprecated
 	public void resetMaxHealth() {
 		player.resetMaxHealth();
 	}
@@ -743,6 +750,11 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 
 	public void resetPlayerWeather() {
 		player.resetPlayerWeather();
+	}
+
+	@Override
+	public boolean isHandRaised() {
+		return player.isHandRaised();
 	}
 
 	public void saveData() {
@@ -853,11 +865,13 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.setHealth(arg0);
 	}
 
+	@Deprecated
 	@Override
 	public double getMaxHealth() {
 		return player.getMaxHealth();
 	}
 
+	@Deprecated
 	public void setItemInHand(ItemStack arg0) {
 		player.setItemInHand(arg0);
 	}
@@ -1024,6 +1038,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.setLastDamage(arg0);
 	}
 
+	@Deprecated
 	public void setMaxHealth(double arg0) {
 		player.setMaxHealth(arg0);
 	}
@@ -1047,6 +1062,16 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	@Deprecated
 	public void playSound(Location arg0, String arg1, float arg2, float arg3) {
 		player.playSound(arg0, arg1, arg2, arg3);
+	}
+
+	@Override
+	public void playSound(Location location, Sound sound, SoundCategory soundCategory, float v, float v1) {
+		player.playSound(location, sound, soundCategory, v, v1);
+	}
+
+	@Override
+	public void playSound(Location location, String s, SoundCategory soundCategory, float v, float v1) {
+		player.playSound(location, s, soundCategory, v, v1);
 	}
 
 	public void setHealthScale(double arg0) throws IllegalArgumentException {
@@ -1079,6 +1104,11 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	}
 
 	@Override
+	public void sendTitle(String s, String s1, int i, int i1, int i2) {
+		player.sendTitle(s, s1, i, i1, i2);
+	}
+
+	@Override
 	public Entity getSpectatorTarget() {
 		return player.getSpectatorTarget();
 	}
@@ -1088,41 +1118,49 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.setSpectatorTarget(entity);
 	}
 
+	@Deprecated
 	@Override
 	public int _INVALID_getLastDamage() {
 		return player._INVALID_getLastDamage();
 	}
 
+	@Deprecated
 	@Override
 	public void _INVALID_setLastDamage(int i) {
 		player._INVALID_setLastDamage(i);
 	}
 
+	@Deprecated
 	@Override
 	public void _INVALID_damage(int i) {
 		player._INVALID_damage(i);
 	}
 
+	@Deprecated
 	@Override
 	public void _INVALID_damage(int i, Entity entity) {
 		player._INVALID_damage(i, entity);
 	}
 
+	@Deprecated
 	@Override
 	public int _INVALID_getHealth() {
 		return player._INVALID_getHealth();
 	}
 
+	@Deprecated
 	@Override
 	public void _INVALID_setHealth(int i) {
 		player._INVALID_setHealth(i);
 	}
 
+	@Deprecated
 	@Override
 	public int _INVALID_getMaxHealth() {
 		return player._INVALID_getMaxHealth();
 	}
 
+	@Deprecated
 	@Override
 	public void _INVALID_setMaxHealth(int i) {
 		player._INVALID_setMaxHealth(i);
@@ -1191,6 +1229,11 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	@Override
 	public InventoryView openMerchant(Villager villager, boolean b) {
 		return player.openMerchant(villager, b);
+	}
+
+	@Override
+	public InventoryView openMerchant(Merchant merchant, boolean b) {
+		return player.openMerchant(merchant, b);
 	}
 
 	@Override
@@ -1274,6 +1317,16 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	}
 
 	@Override
+	public void stopSound(Sound sound, SoundCategory soundCategory) {
+		player.stopSound(sound, soundCategory);
+	}
+
+	@Override
+	public void stopSound(String s, SoundCategory soundCategory) {
+		player.stopSound(s, soundCategory);
+	}
+
+	@Override
 	public boolean hasGravity() {
 		return player.hasGravity();
 	}
@@ -1281,5 +1334,30 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	@Override
 	public void setGravity(boolean b) {
 		player.setGravity(b);
+	}
+
+	@Override
+	public int getPortalCooldown() {
+		return player.getPortalCooldown();
+	}
+
+	@Override
+	public void setPortalCooldown(int i) {
+		player.setPortalCooldown(i);
+	}
+
+	@Override
+	public Set<String> getScoreboardTags() {
+		return player.getScoreboardTags();
+	}
+
+	@Override
+	public boolean addScoreboardTag(String s) {
+		return player.addScoreboardTag(s);
+	}
+
+	@Override
+	public boolean removeScoreboardTag(String s) {
+		return player.removeScoreboardTag(s);
 	}
 }
