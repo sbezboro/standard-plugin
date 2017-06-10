@@ -18,6 +18,7 @@
         <pathelement location="lib/Essentials-2.x-SNAPSHOT.jar" />
         <pathelement location="lib/JSONAPI.jar" />
         <pathelement location="lib/simplyvanish.jar" />
+        <pathelement location="lib/junit-4.12.jar" />
     </path>
 
     <path id="classpath.test">
