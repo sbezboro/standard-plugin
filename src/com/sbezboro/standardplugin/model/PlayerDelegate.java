@@ -4,6 +4,8 @@ import com.sbezboro.standardplugin.persistence.PersistedObject;
 import com.sbezboro.standardplugin.persistence.storages.PlayerStorage;
 import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.*;
+import org.bukkit.advancement.Advancement;
+import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
@@ -107,11 +109,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return offlinePlayer.serialize();
 	}
 
-	@Deprecated
-	public void setBanned(boolean banned) {
-		offlinePlayer.setBanned(banned);
-	}
-
 	public void setOp(boolean value) {
 		offlinePlayer.setOp(value);
 	}
@@ -160,15 +157,18 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.addPotionEffects(effects);
 	}
 
+	@Deprecated
 	public void awardAchievement(Achievement achievement) {
 		player.awardAchievement(achievement);
 	}
 
+	@Deprecated
 	@Override
 	public void removeAchievement(Achievement achievement) {
 		player.removeAchievement(achievement);
 	}
 
+	@Deprecated
 	@Override
 	public boolean hasAchievement(Achievement achievement) {
 		return player.hasAchievement(achievement);
@@ -265,6 +265,30 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getExpToLevel();
 	}
 
+	@Override
+	@Deprecated
+	public Entity getShoulderEntityLeft() {
+		return player.getShoulderEntityLeft();
+	}
+
+	@Override
+	@Deprecated
+	public void setShoulderEntityLeft(Entity entity) {
+		player.setShoulderEntityLeft(entity);
+	}
+
+	@Override
+	@Deprecated
+	public Entity getShoulderEntityRight() {
+		return player.getShoulderEntityRight();
+	}
+
+	@Override
+	@Deprecated
+	public void setShoulderEntityRight(Entity entity) {
+		player.setShoulderEntityRight(entity);
+	}
+
 	public double getEyeHeight() {
 		return player.getEyeHeight();
 	}
@@ -332,11 +356,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getLevel();
 	}
 
-	@Deprecated
-	public List<Block> getLineOfSight(HashSet<Byte> transparent, int maxDistance) {
-		return player.getLineOfSight(transparent, maxDistance);
-	}
-
 	@Override
 	public List<Block> getLineOfSight(Set<Material> set, int i) {
 		return player.getLineOfSight(set, i);
@@ -382,6 +401,7 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getOpenInventory();
 	}
 
+	@Deprecated
 	public Entity getPassenger() {
 		return player.getPassenger();
 	}
@@ -454,6 +474,16 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 
 	public Vector getVelocity() {
 		return player.getVelocity();
+	}
+
+	@Override
+	public double getHeight() {
+		return player.getHeight();
+	}
+
+	@Override
+	public double getWidth() {
+		return player.getWidth();
 	}
 
 	public float getWalkSpeed() {
@@ -880,6 +910,21 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.setItemOnCursor(arg0);
 	}
 
+	@Override
+	public boolean hasCooldown(Material material) {
+		return player.hasCooldown(material);
+	}
+
+	@Override
+	public int getCooldown(Material material) {
+		return player.getCooldown(material);
+	}
+
+	@Override
+	public void setCooldown(Material material, int i) {
+		player.setCooldown(material, i);
+	}
+
 	@Deprecated
 	public void setLastDamage(int damage) {
 		player.setLastDamage(damage);
@@ -919,8 +964,24 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.setNoDamageTicks(ticks);
 	}
 
+	@Deprecated
 	public boolean setPassenger(Entity passenger) {
 		return player.setPassenger(passenger);
+	}
+
+	@Override
+	public List<Entity> getPassengers() {
+		return player.getPassengers();
+	}
+
+	@Override
+	public boolean addPassenger(Entity entity) {
+		return player.addPassenger(entity);
+	}
+
+	@Override
+	public boolean removePassenger(Entity entity) {
+		return player.removePassenger(entity);
 	}
 
 	public void setPlayerListName(String name) {
@@ -967,6 +1028,11 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	@Override
 	public void setResourcePack(String s) {
 		player.setResourcePack(s);
+	}
+
+	@Override
+	public void setResourcePack(String s, byte[] bytes) {
+		player.setResourcePack(s, bytes);
 	}
 
 	public void setTicksLived(int value) {
@@ -1118,54 +1184,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.setSpectatorTarget(entity);
 	}
 
-	@Deprecated
-	@Override
-	public int _INVALID_getLastDamage() {
-		return player._INVALID_getLastDamage();
-	}
-
-	@Deprecated
-	@Override
-	public void _INVALID_setLastDamage(int i) {
-		player._INVALID_setLastDamage(i);
-	}
-
-	@Deprecated
-	@Override
-	public void _INVALID_damage(int i) {
-		player._INVALID_damage(i);
-	}
-
-	@Deprecated
-	@Override
-	public void _INVALID_damage(int i, Entity entity) {
-		player._INVALID_damage(i, entity);
-	}
-
-	@Deprecated
-	@Override
-	public int _INVALID_getHealth() {
-		return player._INVALID_getHealth();
-	}
-
-	@Deprecated
-	@Override
-	public void _INVALID_setHealth(int i) {
-		player._INVALID_setHealth(i);
-	}
-
-	@Deprecated
-	@Override
-	public int _INVALID_getMaxHealth() {
-		return player._INVALID_getMaxHealth();
-	}
-
-	@Deprecated
-	@Override
-	public void _INVALID_setMaxHealth(int i) {
-		player._INVALID_setMaxHealth(i);
-	}
-
 	@Override
 	public void spawnParticle(Particle particle, Location location, int i) {
 		player.spawnParticle(particle, location, i);
@@ -1224,6 +1242,16 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	@Override
 	public <T> void spawnParticle(Particle particle, double v, double v1, double v2, int i, double v3, double v4, double v5, double v6, T t) {
 		player.spawnParticle(particle, v, v1, v2, i, v3, v4, v5, v6, t);
+	}
+
+	@Override
+	public AdvancementProgress getAdvancementProgress(Advancement advancement) {
+		return player.getAdvancementProgress(advancement);
+	}
+
+	@Override
+	public String getLocale() {
+		return player.getLocale();
 	}
 
 	@Override
@@ -1360,4 +1388,5 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public boolean removeScoreboardTag(String s) {
 		return player.removeScoreboardTag(s);
 	}
+
 }
