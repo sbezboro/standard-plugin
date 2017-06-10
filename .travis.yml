@@ -1,5 +1,5 @@
 language: java
 before_install:
-  - cp lib/junit-4.12.jar -/home/travis/.ant/lib/
+  - cp lib/junit-4.12.jar ~/home/travis/.ant/lib/
 jdk:
   - oraclejdk8
