@@ -16,6 +16,7 @@ public class StandardConfig {
 	private int newbieStalkerThreshold;
 	
 	private int endResetPeriod;
+	private boolean generateEndPortals;
 
 	private int pvpLogThreshold;
 	
@@ -53,6 +54,7 @@ public class StandardConfig {
 		newbieStalkerThreshold = config.getInt("newbie-stalker-threshold");
 
 		endResetPeriod = config.getInt("end-reset-period");
+		generateEndPortals = config.getBoolean("generate-end-portals");
 		
 		pvpLogThreshold = config.getInt("pvp-log-threshold");
 		
@@ -104,6 +106,10 @@ public class StandardConfig {
 
 	public int getEndResetPeriod() {
 		return endResetPeriod;
+	}
+
+	public boolean shouldGenerateEndPortals() {
+		return generateEndPortals;
 	}
 
 	public int getPvpLogThreshold() {

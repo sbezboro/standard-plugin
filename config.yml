@@ -7,6 +7,7 @@ death-message-timeout: 60
 hunger-protection-time: 60
 newbie-stalker-threshold: 40
 end-reset-period: 0
+generate-end-portals: false
 pvp-log-threshold: 5
 nerf-endermen-drops: false
 nerf-pigzombie-drops: false

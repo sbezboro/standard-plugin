@@ -413,6 +413,10 @@ public class StandardPlugin extends JavaPlugin {
 	public boolean isEndResetEnabled() {
 		return config.getEndResetPeriod() > 0;
 	}
+
+	public boolean shouldGenerateEndPortals() {
+		return config.shouldGenerateEndPortals();
+	}
 	
 	public int getPvpLogThreshold() {
 		return config.getPvpLogThreshold();
