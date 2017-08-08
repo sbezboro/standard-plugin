@@ -9,6 +9,7 @@ import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
+import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.entity.*;
@@ -342,11 +343,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getLastDamageCause();
 	}
 
-	@Deprecated
-	public List<Block> getLastTwoTargetBlocks(HashSet<Byte> transparent, int maxDistance) {
-		return player.getLastTwoTargetBlocks(transparent, maxDistance);
-	}
-
 	@Override
 	public List<Block> getLastTwoTargetBlocks(Set<Material> set, int i) {
 		return player.getLastTwoTargetBlocks(set, i);
@@ -440,11 +436,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 
 	public int getSleepTicks() {
 		return player.getSleepTicks();
-	}
-
-	@Deprecated
-	public Block getTargetBlock(HashSet<Byte> transparent, int maxDistance) {
-		return player.getTargetBlock(transparent, maxDistance);
 	}
 
 	@Override
@@ -1389,4 +1380,8 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.removeScoreboardTag(s);
 	}
 
+	@Override
+	public PistonMoveReaction getPistonMoveReaction() {
+		return player.getPistonMoveReaction();
+	}
 }
