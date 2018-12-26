@@ -16,14 +16,11 @@ import com.sbezboro.standardplugin.persistence.LogWriter;
 import com.sbezboro.standardplugin.persistence.PersistedPropertyDefinition;
 import com.sbezboro.standardplugin.persistence.storages.*;
 import com.sbezboro.standardplugin.util.MiscUtil;
-import net.minecraft.server.v1_12_R1.IChatBaseComponent;
-import net.minecraft.server.v1_12_R1.PacketPlayOutTitle;
-import net.minecraft.server.v1_12_R1.PlayerConnection;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import net.minecraft.server.v1_13_R2.IChatBaseComponent;
+import net.minecraft.server.v1_13_R2.PacketPlayOutTitle;
+import net.minecraft.server.v1_13_R2.PlayerConnection;
+import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -32,6 +29,26 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.*;
 
 public class StandardPlugin extends JavaPlugin {
+	@SuppressWarnings("serial")
+	public static final HashSet<Material> BED_BLOCKS = new HashSet<Material>() {{
+		add(Material.BLACK_BED);
+		add(Material.BLUE_BED);
+		add(Material.BROWN_BED);
+		add(Material.CYAN_BED);
+		add(Material.GRAY_BED);
+		add(Material.GREEN_BED);
+		add(Material.LIGHT_BLUE_BED);
+		add(Material.LIGHT_GRAY_BED);
+		add(Material.LIME_BED);
+		add(Material.MAGENTA_BED);
+		add(Material.ORANGE_BED);
+		add(Material.PINK_BED);
+		add(Material.PURPLE_BED);
+		add(Material.RED_BED);
+		add(Material.WHITE_BED);
+		add(Material.YELLOW_BED);
+	}};
+
 	private static final String webchatPattern = "[*WC*]";
 	private static final String consoleWebchatPattern = "[*CWC*]";
 	
@@ -55,7 +72,6 @@ public class StandardPlugin extends JavaPlugin {
 
 	private EndResetManager endResetManager;
 	private HoneypotManager honeypotManager;
-	private WeatherManager weatherManager;
 
 	public StandardPlugin() {
 		instance = this;

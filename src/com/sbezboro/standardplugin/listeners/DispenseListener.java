@@ -24,7 +24,7 @@ public class DispenseListener extends EventListener implements Listener {
 			MaterialData facingData = event.getBlock().getState().getData();
 			BlockFace face = ((Dispenser)facingData).getFacing();
 			Block targetBlock = event.getBlock().getRelative(face);
-			if (targetBlock.getType() == Material.ENDER_PORTAL) {
+			if (targetBlock.getType() == Material.END_PORTAL) {
 				event.setCancelled(true);
 			}
 		}

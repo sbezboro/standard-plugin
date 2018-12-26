@@ -17,7 +17,7 @@ public class PlayerBucketEmptyListener extends EventListener implements Listener
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
 		Block block = event.getBlockClicked().getRelative(event.getBlockFace());
 
-		if (block.getType() == Material.ENDER_PORTAL) {
+		if (block.getType() == Material.END_PORTAL) {
 			// Prevent glitch-destroying end portals
 			event.setCancelled(true);
 		}

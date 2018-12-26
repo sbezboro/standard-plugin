@@ -9,7 +9,9 @@ import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.PistonMoveReaction;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.entity.*;
@@ -26,6 +28,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.net.InetSocketAddress;
@@ -267,6 +271,26 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	}
 
 	@Override
+	public boolean discoverRecipe(NamespacedKey namespacedKey) {
+		return player.discoverRecipe(namespacedKey);
+	}
+
+	@Override
+	public int discoverRecipes(Collection<NamespacedKey> collection) {
+		return player.discoverRecipes(collection);
+	}
+
+	@Override
+	public boolean undiscoverRecipe(NamespacedKey namespacedKey) {
+		return player.undiscoverRecipe(namespacedKey);
+	}
+
+	@Override
+	public int undiscoverRecipes(Collection<NamespacedKey> collection) {
+		return player.undiscoverRecipes(collection);
+	}
+
+	@Override
 	@Deprecated
 	public Entity getShoulderEntityLeft() {
 		return player.getShoulderEntityLeft();
@@ -346,6 +370,26 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	@Override
 	public List<Block> getLastTwoTargetBlocks(Set<Material> set, int i) {
 		return player.getLastTwoTargetBlocks(set, i);
+	}
+
+	@Override
+	public Block getTargetBlockExact(int i) {
+		return player.getTargetBlockExact(i);
+	}
+
+	@Override
+	public Block getTargetBlockExact(int i, FluidCollisionMode fluidCollisionMode) {
+		return player.getTargetBlockExact(i, fluidCollisionMode);
+	}
+
+	@Override
+	public RayTraceResult rayTraceBlocks(double v) {
+		return player.rayTraceBlocks(v);
+	}
+
+	@Override
+	public RayTraceResult rayTraceBlocks(double v, FluidCollisionMode fluidCollisionMode) {
+		return player.rayTraceBlocks(v, fluidCollisionMode);
 	}
 
 	public int getLevel() {
@@ -434,6 +478,18 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getServer();
 	}
 
+	@Override
+	@Deprecated
+	public boolean isPersistent() {
+		return player.isPersistent();
+	}
+
+	@Override
+	@Deprecated
+	public void setPersistent(boolean b) {
+		player.setPersistent(b);
+	}
+
 	public int getSleepTicks() {
 		return player.getSleepTicks();
 	}
@@ -477,6 +533,11 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getWidth();
 	}
 
+	@Override
+	public BoundingBox getBoundingBox() {
+		return player.getBoundingBox();
+	}
+
 	public float getWalkSpeed() {
 		return player.getWalkSpeed();
 	}
@@ -518,8 +579,14 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.getPotionEffect(potionEffectType);
 	}
 
+	@Deprecated
 	public void hidePlayer(Player player) {
 		this.player.hidePlayer(player);
+	}
+
+	@Override
+	public void hidePlayer(Plugin plugin, Player player) {
+		this.player.hidePlayer(plugin, player);
 	}
 
 	public void incrementStatistic(Statistic statistic, int amount) {
@@ -783,13 +850,13 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	}
 
 	@Deprecated
-	public void sendBlockChange(Location loc, int material, byte data) {
+	public void sendBlockChange(Location loc, Material material, byte data) {
 		player.sendBlockChange(loc, material, data);
 	}
 
-	@Deprecated
-	public void sendBlockChange(Location loc, Material material, byte data) {
-		player.sendBlockChange(loc, material, data);
+	@Override
+	public void sendBlockChange(Location location, BlockData blockData) {
+		player.sendBlockChange(location, blockData);
 	}
 
 	@Deprecated
@@ -979,6 +1046,31 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.setPlayerListName(name);
 	}
 
+	@Override
+	public String getPlayerListHeader() {
+		return player.getPlayerListHeader();
+	}
+
+	@Override
+	public String getPlayerListFooter() {
+		return player.getPlayerListFooter();
+	}
+
+	@Override
+	public void setPlayerListHeader(String s) {
+		player.setPlayerListHeader(s);
+	}
+
+	@Override
+	public void setPlayerListFooter(String s) {
+		player.setPlayerListFooter(s);
+	}
+
+	@Override
+	public void setPlayerListHeaderFooter(String s, String s1) {
+		player.setPlayerListHeaderFooter(s, s1);
+	}
+
 	public void setPlayerTime(long time, boolean relative) {
 		player.setPlayerTime(time, relative);
 	}
@@ -1046,8 +1138,14 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.setWindowProperty(arg0, arg1);
 	}
 
+	@Deprecated
 	public void showPlayer(Player player) {
 		this.player.showPlayer(player);
+	}
+
+	@Override
+	public void showPlayer(Plugin plugin, Player player) {
+		this.player.showPlayer(plugin, player);
 	}
 
 	public boolean teleport(Entity destination, TeleportCause cause) {
@@ -1241,8 +1339,18 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	}
 
 	@Override
+	public int getClientViewDistance() {
+		return player.getClientViewDistance();
+	}
+
+	@Override
 	public String getLocale() {
 		return player.getLocale();
+	}
+
+	@Override
+	public void updateCommands() {
+		player.updateCommands();
 	}
 
 	@Override
@@ -1268,6 +1376,21 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	@Override
 	public void setGliding(boolean b) {
 		player.setGliding(b);
+	}
+
+	@Override
+	public boolean isSwimming() {
+		return player.isSwimming();
+	}
+
+	@Override
+	public void setSwimming(boolean b) {
+		player.setSwimming(b);
+	}
+
+	@Override
+	public boolean isRiptiding() {
+		return player.isRiptiding();
 	}
 
 	@Override
@@ -1383,5 +1506,10 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	@Override
 	public PistonMoveReaction getPistonMoveReaction() {
 		return player.getPistonMoveReaction();
+	}
+
+	@Override
+	public BlockFace getFacing() {
+		return player.getFacing();
 	}
 }

@@ -6,6 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.EndPortalFrame;
 import org.bukkit.entity.Player;
 
 import com.sbezboro.standardplugin.StandardPlugin;
@@ -59,7 +61,7 @@ public class EndResetTask extends BaseTask {
 					Block block = world.getBlockAt(x, y, z);
 					
 					if (y <= newY + 2 || y == newY + 7 || x == newX || x == newX + 8 || z == newZ || z == newZ + 8) {
-						block.setType(Material.SMOOTH_BRICK);
+						block.setType(Material.BRICKS);
 					} else {
 						block.setType(Material.AIR);
 					}
@@ -75,19 +77,31 @@ public class EndResetTask extends BaseTask {
 					if (y == newY + 3) {
 						if (z >= newZ + 3 && z <= newZ + 5) {
 							if (x == newX + 2) {
-								block.setType(Material.ENDER_PORTAL_FRAME);
-								block.setData((byte) 3); // East
+								block.setType(Material.END_PORTAL_FRAME);
+
+								EndPortalFrame frame = (EndPortalFrame) block.getBlockData();
+								frame.setFacing(BlockFace.EAST);
+								block.setBlockData(frame);
 							} else if (x == newX + 6) {
-								block.setType(Material.ENDER_PORTAL_FRAME);
-								block.setData((byte) 1); // West
+								block.setType(Material.END_PORTAL_FRAME);
+
+								EndPortalFrame frame = (EndPortalFrame) block.getBlockData();
+								frame.setFacing(BlockFace.WEST);
+								block.setBlockData(frame);
 							}
 						} else if (x >= newX + 3 && x <= newX + 5) {
 							if (z == newZ + 2) {
-								block.setType(Material.ENDER_PORTAL_FRAME);
-								block.setData((byte) 0); // South
+								block.setType(Material.END_PORTAL_FRAME);
+
+								EndPortalFrame frame = (EndPortalFrame) block.getBlockData();
+								frame.setFacing(BlockFace.SOUTH);
+								block.setBlockData(frame);
 							} else if ( z == newZ + 6) {
-								block.setType(Material.ENDER_PORTAL_FRAME);
-								block.setData((byte) 2); // North
+								block.setType(Material.END_PORTAL_FRAME);
+
+								EndPortalFrame frame = (EndPortalFrame) block.getBlockData();
+								frame.setFacing(BlockFace.NORTH);
+								block.setBlockData(frame);
 							}
 						}
 					}
@@ -105,8 +119,8 @@ public class EndResetTask extends BaseTask {
 			for (int z2 = z - 4; z2 < z + 4; ++z2) {
 				Block block = location.getWorld().getBlockAt(x2, y, z2);
 				
-				if (block.getType() == Material.ENDER_PORTAL_FRAME
-						|| block.getType() == Material.ENDER_PORTAL) {
+				if (block.getType() == Material.END_PORTAL_FRAME
+						|| block.getType() == Material.END_PORTAL) {
 					block.setType(Material.AIR);
 				}
 			}

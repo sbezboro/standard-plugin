@@ -2,6 +2,7 @@ package com.sbezboro.standardplugin.model;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
+import com.sbezboro.standardplugin.listeners.PlayerInteractListener;
 import com.sbezboro.standardplugin.persistence.PersistedListProperty;
 import com.sbezboro.standardplugin.persistence.PersistedProperty;
 import com.sbezboro.standardplugin.persistence.PersistedPropertyDefinition;
@@ -166,7 +167,7 @@ public class StandardPlayer extends PlayerDelegate {
 		if (location != null) {
 			Block bedBlock = location.getBlock();
 			
-			if (bedBlock.getType() == Material.BED_BLOCK) {
+			if (StandardPlugin.BED_BLOCKS.contains(bedBlock.getType())) {
 				return location;
 			}
 		}

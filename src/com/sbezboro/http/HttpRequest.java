@@ -8,10 +8,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.xml.bind.DatatypeConverter;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -86,7 +85,7 @@ public abstract class HttpRequest implements Runnable {
 	
 	public void setAuth(String username, String password) {
 		String data = username + ":" + password;
-		authorization = "Basic " + DatatypeConverter.printBase64Binary(data.getBytes());
+		authorization = "Basic " + Base64.getEncoder().encodeToString(data.getBytes());
 	}
 
 	private String getPropertyData() {

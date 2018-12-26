@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PlayerInteractListener extends EventListener implements Listener {
-
 	public PlayerInteractListener(StandardPlugin plugin) {
 		super(plugin);
 	}
@@ -23,7 +22,7 @@ public class PlayerInteractListener extends EventListener implements Listener {
 		ItemStack itemStack = event.getItem();
 		
 		// Setting bed locations
-		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock.getType() == Material.BED_BLOCK) {
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && StandardPlugin.BED_BLOCKS.contains(clickedBlock.getType())) {
 			StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 			Location location = clickedBlock.getLocation();
 			player.saveBedLocation(location);
