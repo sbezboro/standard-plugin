@@ -2,7 +2,6 @@ package com.sbezboro.standardplugin.model;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
-import com.sbezboro.standardplugin.listeners.PlayerInteractListener;
 import com.sbezboro.standardplugin.persistence.PersistedListProperty;
 import com.sbezboro.standardplugin.persistence.PersistedProperty;
 import com.sbezboro.standardplugin.persistence.PersistedPropertyDefinition;
@@ -11,11 +10,9 @@ import com.sbezboro.standardplugin.persistence.storages.PlayerStorage;
 import com.sbezboro.standardplugin.persistence.storages.TitleStorage;
 import com.sbezboro.standardplugin.tasks.PvpTimerTask;
 import com.sbezboro.standardplugin.tasks.SpawnKillTimeoutTask;
-import com.sbezboro.standardplugin.util.AnsiConverter;
 import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 
@@ -485,7 +482,7 @@ public class StandardPlayer extends PlayerDelegate {
 		info.put("address", getAddress().getAddress().getHostAddress());
 
 		if (hasNickname()) {
-			String nicknameAnsi = AnsiConverter.toAnsi(player.getDisplayName());
+			String nicknameAnsi = player.getDisplayName();
 			String nickname = getDisplayName(false);
 
 			info.put("nickname_ansi", nicknameAnsi);

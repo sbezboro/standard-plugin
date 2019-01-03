@@ -9,3 +9,4 @@ dist/
 servers.txt
 *.iml
 .idea/
+build/
