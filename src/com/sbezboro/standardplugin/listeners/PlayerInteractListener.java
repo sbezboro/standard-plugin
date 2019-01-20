@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 public class PlayerInteractListener extends EventListener implements Listener {
@@ -18,21 +19,24 @@ public class PlayerInteractListener extends EventListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(final PlayerInteractEvent event) {
+		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 		Block clickedBlock = event.getClickedBlock();
 		ItemStack itemStack = event.getItem();
 		
 		// Setting bed locations
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && StandardPlugin.BED_BLOCKS.contains(clickedBlock.getType())) {
-			StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 			Location location = clickedBlock.getLocation();
 			player.saveBedLocation(location);
 		// Honeypot handling
 		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock.getType() == Material.CHEST) {
-			StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 			plugin.getHoneypotManager().checkChest(clickedBlock.getLocation(), player);
 		// End crystal handling (disables manually respawning the dragon)
 		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && itemStack != null && itemStack.getType() == Material.END_CRYSTAL) {
 			event.setCancelled(true);
+		// Block ender pearl glitching
+		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock.getType().isSolid() && !(clickedBlock.getState() instanceof InventoryHolder)) {
+			event.setCancelled(true);
+			player.setItemOnCursor(event.getItem());
 		}
 	}
 }
