@@ -42,7 +42,7 @@ public class PlayerPortalListener extends EventListener implements Listener {
 				World newEnd = plugin.getEndResetManager().getNewEndWorld();
 				StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
-				if (newEnd != null && !plugin.getEndResetStorage().getActivePortals().isEmpty()) {
+				if (newEnd != null) {
 					event.setTo(new Location(newEnd, 100, 50, 0));
 				}
 				
