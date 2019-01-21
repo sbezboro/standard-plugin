@@ -24,12 +24,11 @@ public class PlayerInteractListener extends EventListener implements Listener {
 		ItemStack itemStack = event.getItem();
 
 		// Block ender pearl glitching
-		if (itemStack != null && itemStack.getType() == Material.ENDER_PEARL && clickedBlock.getType().isSolid() && !(clickedBlock.getState() instanceof InventoryHolder)) {
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && itemStack != null && itemStack.getType() == Material.ENDER_PEARL &&
+				clickedBlock.getType().isSolid() && !(clickedBlock.getState() instanceof InventoryHolder)) {
 			event.setCancelled(true);
-		}
-		
 		// Setting bed locations
-		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && StandardPlugin.BED_BLOCKS.contains(clickedBlock.getType())) {
+		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && StandardPlugin.BED_BLOCKS.contains(clickedBlock.getType())) {
 			Location location = clickedBlock.getLocation();
 			player.saveBedLocation(location);
 		// Honeypot handling
