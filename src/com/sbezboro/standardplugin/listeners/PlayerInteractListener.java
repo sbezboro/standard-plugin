@@ -22,6 +22,11 @@ public class PlayerInteractListener extends EventListener implements Listener {
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 		Block clickedBlock = event.getClickedBlock();
 		ItemStack itemStack = event.getItem();
+
+		// Block ender pearl glitching
+		if (itemStack != null && itemStack.getType() == Material.ENDER_PEARL && clickedBlock.getType().isSolid() && !(clickedBlock.getState() instanceof InventoryHolder)) {
+			event.setCancelled(true);
+		}
 		
 		// Setting bed locations
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && StandardPlugin.BED_BLOCKS.contains(clickedBlock.getType())) {
@@ -33,10 +38,6 @@ public class PlayerInteractListener extends EventListener implements Listener {
 		// End crystal handling (disables manually respawning the dragon)
 		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && itemStack != null && itemStack.getType() == Material.END_CRYSTAL) {
 			event.setCancelled(true);
-		// Block ender pearl glitching
-		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock.getType().isSolid() && !(clickedBlock.getState() instanceof InventoryHolder)) {
-			event.setCancelled(true);
-			player.setItemOnCursor(event.getItem());
 		}
 	}
 }
