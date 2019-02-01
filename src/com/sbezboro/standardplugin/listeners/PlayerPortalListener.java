@@ -1,6 +1,6 @@
 package com.sbezboro.standardplugin.listeners;
 
-import org.bukkit.Bukkit;
+import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
@@ -26,17 +26,24 @@ public class PlayerPortalListener extends EventListener implements Listener {
 			// Going from the end
 			if (fromWorld.getEnvironment() == Environment.THE_END) {
 				StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
+
+				plugin.getLogger().info(player.getDisplayName(false) + " leaving the end.");
 				
 				// Set event location to the player's bed if one exists
 				Location to = player.getBedLocationIfValid();
 				
 				if (to == null) {
+					plugin.getLogger().info("Can't find bed for " + player.getDisplayName(false) + ", sending to spawn.");
 					to = plugin.getServer().getWorld(StandardPlugin.OVERWORLD_NAME).getSpawnLocation();
+
+					if (player.getBedLocation() != null) {
+						plugin.getLogger().info("Bed location points to (" +
+								MiscUtil.locationFormat(player.getBedLocation()) + ") which is of type " +
+								player.getBedLocation().getBlock().getType());
+					}
 				}
-				
+
 				event.setTo(to);
-				
-				plugin.getLogger().info(player.getDisplayName(false) + " leaving the end.");
 			// Going to the end
 			} else {
 				World newEnd = plugin.getEndResetManager().getNewEndWorld();

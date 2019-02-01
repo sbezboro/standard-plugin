@@ -159,8 +159,12 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 	
 	public Location getBedLocationIfValid() {
-		Location location = bedLocation.getValue().getLocation();
+		Location location = getBedLocation();
 		
+		if (location == null) {
+			location = getBedSpawnLocation();
+		}
+
 		if (location != null) {
 			Block bedBlock = location.getBlock();
 			
