@@ -1,6 +1,6 @@
 package com.sbezboro.standardplugin.listeners;
 
-import org.bukkit.Bukkit;
+import com.sbezboro.standardplugin.StandardPlugin;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Levelled;
@@ -9,12 +9,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFormEvent;
 
 public class BlockFormListener extends EventListener implements Listener {
-	
-	public BlockFormListener(StandardPlugin plugin) {
-		super(plugin);
-	}
-  
-     @EventHandler
+
+    public BlockFormListener(StandardPlugin plugin) {
+        super(plugin);
+    }
+
+    @EventHandler
     public void onCobbleMonster(BlockFormEvent event) {
         Block block = event.getNewState().getBlock();
         Material m = block.getType();
