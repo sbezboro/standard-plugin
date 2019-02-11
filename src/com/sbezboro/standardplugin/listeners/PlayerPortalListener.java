@@ -52,8 +52,9 @@ public class PlayerPortalListener extends EventListener implements Listener {
 				if (newEnd != null) {
 					event.setTo(new Location(newEnd, 100, 50, 0));
 				}
-				
-				plugin.getLogger().info(player.getDisplayName(false) + " going to the end.");
+				if (!(player.isPvpProtected())) {
+					plugin.getLogger().info(player.getDisplayName(false) + " going to the end.");
+				}
 			}
 		}
 	}

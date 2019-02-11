@@ -12,5 +12,16 @@ pvp-log-threshold: 5
 nerf-endermen-drops: false
 nerf-pigzombie-drops: false
 animal-chunk-cap: 30
+nickname-cooldown: 30
 endpoint: http://standardsurvival.com/api/v1/
 rts-address: http://rts.standardsurvival.com
+
+muted-words:
+- 'nigger'
+- 'beaner'
+- 'nigg3r'
+- 'n1gg3r'
+- 'n1gger'
+- 'jew'
+- 'kys'
+- 'coon'
