@@ -1,12 +1,13 @@
 package com.sbezboro.standardplugin.listeners;
 
-import com.sbezboro.standardplugin.StandardPlugin;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Levelled;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFormEvent;
+
+import com.sbezboro.standardplugin.StandardPlugin;
 
 public class BlockFormListener extends EventListener implements Listener {
 
