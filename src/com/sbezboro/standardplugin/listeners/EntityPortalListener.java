@@ -2,7 +2,6 @@ package com.sbezboro.standardplugin.listeners;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import org.bukkit.Location;
-import org.bukkit.PortalType;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -10,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPortalEvent;
 
 public class EntityPortalListener extends EventListener implements Listener {
+
     public EntityPortalListener(StandardPlugin plugin) {
         super(plugin);
     }

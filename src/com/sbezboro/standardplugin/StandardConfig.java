@@ -2,6 +2,8 @@ package com.sbezboro.standardplugin;
 
 import org.bukkit.configuration.Configuration;
 
+import java.util.List;
+
 public class StandardConfig {
 	private StandardPlugin plugin;
 
@@ -11,6 +13,7 @@ public class StandardConfig {
 
 	private String endpoint;
 	private String rtsAddress;
+	private List<String> mutedWords;
 	private int pvpProtectionTime;
 	private int hungerProtectionTime;
 	private int newbieStalkerThreshold;
@@ -62,6 +65,8 @@ public class StandardConfig {
 		nerfPigzombieDrops = config.getBoolean("nerf-pigzombie-drops");
 
 		animalChunkCap = config.getInt("animal-chunk-cap");
+
+		mutedWords = config.getStringList("muted-words");
 	}
 
 	public int getServerId() {
@@ -127,4 +132,6 @@ public class StandardConfig {
 	public int getAnimalChunkCap() {
 		return animalChunkCap;
 	}
+
+	public List<String> getMutedWords() {return mutedWords; }
 }

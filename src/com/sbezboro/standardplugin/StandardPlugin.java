@@ -207,6 +207,7 @@ public class StandardPlugin extends JavaPlugin {
 		pluginManager.registerEvents(new PlayerTeleportListener(this), this);
 		pluginManager.registerEvents(new EntityPortalListener(this), this);
 		pluginManager.registerEvents(new PlayerChatListener(this), this);
+		pluginManager.registerEvents(new PlayerEndEnterListener(this), this);
 		// Figure this out later
 		//pluginManager.registerEvents(new FurnaceExtractListener(this), this);
 	}
@@ -446,6 +447,8 @@ public class StandardPlugin extends JavaPlugin {
 	public boolean getNerfPigzombieDrops() {
 		return config.getNerfPigzombieDrops();
 	}
+
+	public List<String> getMutedWords() {return config.getMutedWords();}
 
 	public int getAnimalChunkCap() {
 		return config.getAnimalChunkCap();

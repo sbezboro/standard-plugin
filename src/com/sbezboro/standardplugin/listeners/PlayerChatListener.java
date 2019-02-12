@@ -108,8 +108,8 @@ public class PlayerChatListener extends EventListener implements Listener {
             }
         }
         boolean sendWarning = false;
-        char star = ("*").charAt(0);
-        for (String str : plugin.getConfig().getStringList("muted-words")) {
+        char star = '*';
+        for (String str : plugin.getMutedWords()) {
             if (event.getMessage().toLowerCase().equalsIgnoreCase(str)) {
                 message = message.replace(str, new String(new char[str.length()]).replace('\0', star));
                 if (sendWarning) {

@@ -16,11 +16,4 @@ endpoint: http://standardsurvival.com/api/v1/
 rts-address: http://rts.standardsurvival.com
 
 muted-words:
-- 'nigger'
-- 'beaner'
-- 'nigg3r'
-- 'n1gg3r'
-- 'n1gger'
-- 'jew'
-- 'kys'
-- 'coon'
+- ''
