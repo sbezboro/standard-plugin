@@ -3,6 +3,7 @@ package com.sbezboro.standardplugin.listeners;
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -107,22 +108,12 @@ public class PlayerChatListener extends EventListener implements Listener {
                 }
             }
         }
-        boolean sendWarning = false;
-        char star = '*';
+
         for (String str : plugin.getMutedWords()) {
-            if (event.getMessage().toLowerCase().equalsIgnoreCase(str)) {
-                message = message.replace(str, new String(new char[str.length()]).replace('\0', star));
-                if (sendWarning) {
-                    continue;
-                }
-                sendWarning = true;
+            if (message.toLowerCase().contains(str.toLowerCase())) {
+                player.sendMessage(ChatColor.RED + "You used a word that is blocked!");
+                event.setCancelled(true);
             }
-        }
-        if (sendWarning) {
-            if (!(player.isOp())) {
-                player.sendMessage(ChatColor.RED + "You cannot use that word!");
-            }
-            event.setMessage(message);
         }
     }
 }
