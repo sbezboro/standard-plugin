@@ -58,10 +58,5 @@ public class PlayerTeleportListener extends EventListener implements Listener {
                 event.setCancelled(true);
             }
         }
-        if (player.isPvpProtected() && event.getCause() == END_PORTAL) {
-            event.setCancelled(true);
-            player.sendMessage(ChatColor.DARK_PURPLE + "You cannot enter the end while PvP Protected! Use " +
-                    ChatColor.AQUA + "/enablepvp" + ChatColor.DARK_PURPLE + " to remove your PvP Protection!");
-        }
     }
 }
