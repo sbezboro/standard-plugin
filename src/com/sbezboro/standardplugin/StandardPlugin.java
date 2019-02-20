@@ -9,7 +9,6 @@ import com.sbezboro.standardplugin.jsonapi.*;
 import com.sbezboro.standardplugin.listeners.*;
 import com.sbezboro.standardplugin.managers.EndResetManager;
 import com.sbezboro.standardplugin.managers.HoneypotManager;
-import com.sbezboro.standardplugin.managers.WeatherManager;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.net.AuditLogHttpRequest;
 import com.sbezboro.standardplugin.persistence.LogWriter;
@@ -51,15 +50,15 @@ public class StandardPlugin extends JavaPlugin {
 
 	private static final String webchatPattern = "[*WC*]";
 	private static final String consoleWebchatPattern = "[*CWC*]";
-	
+
 	public static final String OVERWORLD_NAME = "world";
 	public static final String NEW_END_WORLD_NAME = "new_the_end";
-	
+
 	private static StandardPlugin instance;
 
 	private List<IStorage> storages;
 	private List<LogWriter> logs;
-	
+
 	private List<SubPlugin> subPlugins;
 
 	private StandardConfig config;
@@ -108,7 +107,7 @@ public class StandardPlugin extends JavaPlugin {
 		storages.add(honeypotStorage);
 
 		logs = new ArrayList<LogWriter>();
-		
+
 		subPlugins = new ArrayList<SubPlugin>();
 
 		config = new StandardConfig(this);
@@ -119,7 +118,7 @@ public class StandardPlugin extends JavaPlugin {
 		registerEvents();
 
 		World overworld = getServer().getWorld(OVERWORLD_NAME);
-		
+
 		endResetManager = new EndResetManager(this, endResetStorage);
 		honeypotManager = new HoneypotManager(this, honeypotStorage);
 
@@ -155,7 +154,7 @@ public class StandardPlugin extends JavaPlugin {
 		for (IStorage storage : storages) {
 			storage.reload();
 		}
-		
+
 		for (SubPlugin subPlugin : subPlugins) {
 			subPlugin.reloadPlugin();
 		}
@@ -202,7 +201,7 @@ public class StandardPlugin extends JavaPlugin {
 		pluginManager.registerEvents(new PlayerPortalListener(this), this);
 		pluginManager.registerEvents(new BlockBreakListener(this), this);
 		pluginManager.registerEvents(new BlockPlaceListener(this), this);
-		pluginManager.registerEvents(new BlockFormListener(this), this);
+		//pluginManager.registerEvents(new BlockFormListener(this), this);
 		pluginManager.registerEvents(new PlayerBucketEmptyListener(this), this);
 		pluginManager.registerEvents(new PlayerTeleportListener(this), this);
 		pluginManager.registerEvents(new EntityPortalListener(this), this);
@@ -225,10 +224,10 @@ public class StandardPlugin extends JavaPlugin {
 			jsonapi.registerAPICallHandler(new WebChatAPICallHandler(this));
 		}
 	}
-	
+
 	public void registerSubPlugin(SubPlugin subPlugin) {
 		getLogger().info("Registering sub-plugin '" + subPlugin.getSubPluginName() + "'");
-		
+
 		for (ICommand command : subPlugin.getCommands()) {
 			command.register();
 		}
@@ -236,7 +235,7 @@ public class StandardPlugin extends JavaPlugin {
 		getConfig().addDefaults(subPlugin.getConfig());
 		getConfig().options().copyDefaults(true);
 		saveConfig();
-		
+
 		subPlugins.add(subPlugin);
 	}
 
@@ -253,7 +252,7 @@ public class StandardPlugin extends JavaPlugin {
 	public boolean isNearActiveEndPortal(Location location, int blocks) {
 		return endResetStorage.isNearActivePortal(location, blocks);
 	}
-	
+
 	private static String webchatConsoleGate(String message, boolean webchat, boolean console) {
 		if (webchat) {
 			if (console) {
@@ -262,7 +261,7 @@ public class StandardPlugin extends JavaPlugin {
 				message = webchatPattern + message;
 			}
 		}
-		
+
 		return message;
 	}
 
@@ -285,23 +284,23 @@ public class StandardPlugin extends JavaPlugin {
 
 		Bukkit.getConsoleSender().sendMessage(webchatConsoleGate(message, webchat, console));
 	}
-	
+
 	public static void playerBroadcast(Player sender, final String message) {
 		playerBroadcast(sender, message, true, true);
 	}
-	
+
 	public static void broadcast(String message, boolean webchat, boolean console) {
 		playerBroadcast(null, message, webchat, console);
 	}
-	
+
 	public static void broadcast(String message) {
 		broadcast(message, true, true);
 	}
-	
+
 	public static void consoleWebchatMessage(String message) {
 		Bukkit.getConsoleSender().sendMessage(consoleWebchatPattern + message);
 	}
-	
+
 	public static void webchatMessage(String message) {
 		Bukkit.getConsoleSender().sendMessage(webchatPattern + message);
 	}
@@ -339,11 +338,10 @@ public class StandardPlugin extends JavaPlugin {
 	/**
 	 * Matches the given username to a currently online player's display name or
 	 * an offline player's username that has played before
-	 * 
-	 * @param username
-	 *            The username to query
+	 *
+	 * @param username The username to query
 	 * @return StandardPlayer instance if online or has played before, null
-	 *         otherwise
+	 * otherwise
 	 */
 	public StandardPlayer matchPlayer(String username) {
 		StandardPlayer player = null;
@@ -434,11 +432,11 @@ public class StandardPlugin extends JavaPlugin {
 	public boolean shouldGenerateEndPortals() {
 		return config.shouldGenerateEndPortals();
 	}
-	
+
 	public int getPvpLogThreshold() {
 		return config.getPvpLogThreshold();
 	}
-	
+
 	public boolean getNerfEndermenDrops() {
 		return config.getNerfEndermenDrops();
 	}
@@ -447,7 +445,9 @@ public class StandardPlugin extends JavaPlugin {
 		return config.getNerfPigzombieDrops();
 	}
 
-	public List<String> getMutedWords() {return config.getMutedWords();}
+	public List<String> getMutedWords() {
+		return config.getMutedWords();
+	}
 
 	public int getAnimalChunkCap() {
 		return config.getAnimalChunkCap();
@@ -468,11 +468,11 @@ public class StandardPlugin extends JavaPlugin {
 	public EndResetStorage getEndResetStorage() {
 		return endResetStorage;
 	}
-	
+
 	public HoneypotManager getHoneypotManager() {
 		return honeypotManager;
 	}
-	
+
 	public EndResetManager getEndResetManager() {
 		return endResetManager;
 	}
