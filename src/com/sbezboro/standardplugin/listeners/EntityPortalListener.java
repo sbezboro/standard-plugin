@@ -9,18 +9,19 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPortalEvent;
 
 public class EntityPortalListener extends EventListener implements Listener {
-	public EntityPortalListener(StandardPlugin plugin) {
-		super(plugin);
-	}
 
-	@EventHandler(ignoreCancelled = true)
-	public void onEntityPortalEnter(EntityPortalEvent event) {
-		EntityType entityType = event.getEntityType();
-		Location location = event.getFrom();
+    public EntityPortalListener(StandardPlugin plugin) {
+        super(plugin);
+    }
 
-		if (location.getWorld().getEnvironment() == World.Environment.NORMAL &&
-				entityType == EntityType.PIG_ZOMBIE) {
-			event.setCancelled(true);
-		}
-	}
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityPortalEnter(EntityPortalEvent event) {
+        EntityType entityType = event.getEntityType();
+        Location location = event.getFrom();
+
+        if (location.getWorld().getEnvironment() == World.Environment.NORMAL &&
+                entityType == EntityType.PIG_ZOMBIE || entityType == EntityType.MINECART_TNT || entityType == EntityType.PRIMED_TNT) {
+            event.setCancelled(true);
+        }
+    }
 }
