@@ -2,6 +2,8 @@ package com.sbezboro.standardplugin;
 
 import org.bukkit.configuration.Configuration;
 
+import java.util.List;
+
 public class StandardConfig {
 	private StandardPlugin plugin;
 
@@ -11,15 +13,16 @@ public class StandardConfig {
 
 	private String endpoint;
 	private String rtsAddress;
+	private List<String> mutedWords;
 	private int pvpProtectionTime;
 	private int hungerProtectionTime;
 	private int newbieStalkerThreshold;
-	
+
 	private int endResetPeriod;
 	private boolean generateEndPortals;
 
 	private int pvpLogThreshold;
-	
+
 	private boolean nerfEndermenDrops;
 	private boolean nerfPigzombieDrops;
 
@@ -34,7 +37,7 @@ public class StandardConfig {
 
 	public void reload() {
 		Configuration config = plugin.getConfig();
-		
+
 		serverId = config.getInt("server-id");
 		plugin.getLogger().info("Plugin starting with server id " + serverId);
 
@@ -55,13 +58,15 @@ public class StandardConfig {
 
 		endResetPeriod = config.getInt("end-reset-period");
 		generateEndPortals = config.getBoolean("generate-end-portals");
-		
+
 		pvpLogThreshold = config.getInt("pvp-log-threshold");
-		
+
 		nerfEndermenDrops = config.getBoolean("nerf-endermen-drops");
 		nerfPigzombieDrops = config.getBoolean("nerf-pigzombie-drops");
 
 		animalChunkCap = config.getInt("animal-chunk-cap");
+
+		mutedWords = config.getStringList("muted-words");
 	}
 
 	public int getServerId() {
@@ -115,7 +120,7 @@ public class StandardConfig {
 	public int getPvpLogThreshold() {
 		return pvpLogThreshold;
 	}
-	
+
 	public boolean getNerfEndermenDrops() {
 		return nerfEndermenDrops;
 	}
@@ -126,5 +131,9 @@ public class StandardConfig {
 
 	public int getAnimalChunkCap() {
 		return animalChunkCap;
+	}
+
+	public List<String> getMutedWords() {
+		return mutedWords;
 	}
 }

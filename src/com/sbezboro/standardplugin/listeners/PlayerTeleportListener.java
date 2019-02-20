@@ -38,7 +38,7 @@ public class PlayerTeleportListener extends EventListener implements Listener {
 	public PlayerTeleportListener(StandardPlugin plugin) {
 		super(plugin);
 	}
-	
+
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		Location to = event.getTo();
@@ -55,5 +55,4 @@ public class PlayerTeleportListener extends EventListener implements Listener {
 			}
 		}
 	}
-
 }

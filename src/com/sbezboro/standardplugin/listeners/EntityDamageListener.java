@@ -29,7 +29,7 @@ public class EntityDamageListener extends EventListener implements Listener {
 		// Player attacking
 		if (damager != null) {
 			StandardPlayer victim = plugin.getStandardPlayer(event.getEntity());
-			
+
 			if (damager == victim) {
 				return;
 			}
@@ -58,7 +58,7 @@ public class EntityDamageListener extends EventListener implements Listener {
 					if (damager.isPvpProtected()) {
 						damager.sendMessage(ChatColor.DARK_PURPLE + "You are still protected from PVP! Use " +
 								ChatColor.AQUA + "/enablepvp" + ChatColor.DARK_PURPLE + " if you want to start fighting.");
-						
+
 						event.setCancelled(true);
 						return;
 					}
@@ -69,7 +69,7 @@ public class EntityDamageListener extends EventListener implements Listener {
 					damager.sendMessage(ChatColor.RED + "This player is protected from PVP!");
 					victim.sendMessage(ChatColor.RED + "You are spawn kill protected until you move. If you want, type " +
 							ChatColor.AQUA + "/clearbed" + ChatColor.RED + " to reset your spawn point.");
-							event.setCancelled(true);
+					event.setCancelled(true);
 					return;
 				}
 
