@@ -485,6 +485,19 @@ public class StandardPlugin extends JavaPlugin {
 		return playerStorage.getPlayerByUUID(uuid);
 	}
 
+	public boolean shouldBlockMessage(String message) {
+		String decodedMessage = unidecodeString(message).toLowerCase();
+
+		for (String str : getMutedWords()) {
+			// TODO: use regex patterns
+			if (decodedMessage.contains(str.toLowerCase())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public void logAlert(String type, StandardPlayer player, Location location) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("x", location.getX());

@@ -63,6 +63,15 @@ public class WebChatAPICallHandler extends APICallHandler {
 						"has been blocked from web chat because they never joined.");
 				return buildResult("never_joined");
 			}
+
+			if (plugin.shouldBlockMessage(message)) {
+				plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "[Blocked] " + ChatColor.BLUE + "[Web Chat] " + ChatColor.AQUA +
+						sender.getDisplayName() + ChatColor.RESET + ": " + message);
+
+				return okResult(new HashMap<String, Object>() {{
+					put("message", "You used a blocked word");
+				}});
+			}
 		}
 
 		String fullMessage = ChatColor.BLUE + "[Web Chat] " + ChatColor.AQUA + name +

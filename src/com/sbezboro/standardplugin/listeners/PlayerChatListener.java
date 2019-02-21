@@ -97,7 +97,7 @@ public class PlayerChatListener extends EventListener implements Listener {
 	public void onPlayerChat(AsyncPlayerChatEvent event) {
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
-		String message = plugin.unidecodeString(event.getMessage()).toLowerCase();
+		String message = event.getMessage();
 
 		if (player.getTimeSpent() < 600) {
 			for (int i = 0; i < helpTopics.length; i++) {
@@ -108,17 +108,12 @@ public class PlayerChatListener extends EventListener implements Listener {
 			}
 		}
 
-		for (String str : plugin.getMutedWords()) {
-			// TODO: use regex patterns
-			if (message.contains(str.toLowerCase())) {
-				player.sendMessage(ChatColor.RED + "You used a blocked word");
-				event.setCancelled(true);
+		if (plugin.shouldBlockMessage(message)) {
+			player.sendMessage(ChatColor.RED + "You used a blocked word");
+			event.setCancelled(true);
 
-				plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "[Blocked] " + ChatColor.AQUA +
-						player.getDisplayName() + ChatColor.RESET + ": " + event.getMessage());
-
-				return;
-			}
+			plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "[Blocked] " + ChatColor.AQUA +
+					player.getDisplayName() + ChatColor.RESET + ": " + event.getMessage());
 		}
 	}
 }
