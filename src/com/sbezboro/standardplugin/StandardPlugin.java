@@ -15,6 +15,7 @@ import com.sbezboro.standardplugin.persistence.LogWriter;
 import com.sbezboro.standardplugin.persistence.PersistedPropertyDefinition;
 import com.sbezboro.standardplugin.persistence.storages.*;
 import com.sbezboro.standardplugin.util.MiscUtil;
+import cz.jirutka.unidecode.Unidecode;
 import net.minecraft.server.v1_13_R2.IChatBaseComponent;
 import net.minecraft.server.v1_13_R2.PacketPlayOutTitle;
 import net.minecraft.server.v1_13_R2.PlayerConnection;
@@ -72,6 +73,8 @@ public class StandardPlugin extends JavaPlugin {
 	private EndResetManager endResetManager;
 	private HoneypotManager honeypotManager;
 
+	private Unidecode unidecode;
+
 	public StandardPlugin() {
 		instance = this;
 	}
@@ -117,18 +120,15 @@ public class StandardPlugin extends JavaPlugin {
 		registerCommands();
 		registerEvents();
 
-		World overworld = getServer().getWorld(OVERWORLD_NAME);
-
 		endResetManager = new EndResetManager(this, endResetStorage);
 		honeypotManager = new HoneypotManager(this, honeypotStorage);
-
-		//Disable for now
-		//weatherManager = new WeatherManager(this, overworld);
 
 		EssentialsIntegration.init(this);
 		SimplyVanishIntegration.init(this);
 
 		registerJSONAPIHandlers();
+
+		unidecode = Unidecode.toAscii();
 	}
 
 	@Override
@@ -509,6 +509,10 @@ public class StandardPlugin extends JavaPlugin {
 		}
 
 		HttpRequestManager.getInstance().startRequest(new AuditLogHttpRequest(type, uuidString, data, null));
+	}
+
+	public String unidecodeString(String string) {
+		return unidecode.decode(string);
 	}
 
 	@Deprecated
