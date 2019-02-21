@@ -1,5 +1,4 @@
-#standard-plugin
-[![Build Status](https://travis-ci.org/sbezboro/standard-plugin.svg?branch=master)](https://travis-ci.org/sbezboro/standard-plugin)
+# standard-plugin
 
 Bukkit plugin containing website integrations and miscellaneous tools for the [Standard Survival Minecraft server](http://standardsurvival.com)
 

@@ -17,21 +17,21 @@ public class PlayerPortalListener extends EventListener implements Listener {
 	public PlayerPortalListener(StandardPlugin plugin) {
 		super(plugin);
 	}
-	
+
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerPortal(PlayerPortalEvent event) {
 		World fromWorld = event.getFrom().getWorld();
-		
+
 		if (event.getCause() == TeleportCause.END_PORTAL) {
 			// Going from the end
 			if (fromWorld.getEnvironment() == Environment.THE_END) {
 				StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
 				plugin.getLogger().info(player.getDisplayName(false) + " leaving the end.");
-				
+
 				// Set event location to the player's bed if one exists
 				Location to = player.getBedLocationIfValid();
-				
+
 				if (to == null) {
 					plugin.getLogger().info("Can't find bed for " + player.getDisplayName(false) + ", sending to spawn.");
 					to = plugin.getServer().getWorld(StandardPlugin.OVERWORLD_NAME).getSpawnLocation();
@@ -44,15 +44,14 @@ public class PlayerPortalListener extends EventListener implements Listener {
 				}
 
 				event.setTo(to);
-			// Going to the end
-			} else {
+			} else { // Going to the end
 				World newEnd = plugin.getEndResetManager().getNewEndWorld();
 				StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
 				if (newEnd != null) {
 					event.setTo(new Location(newEnd, 100, 50, 0));
 				}
-					plugin.getLogger().info(player.getDisplayName(false) + " going to the end.");
+				plugin.getLogger().info(player.getDisplayName(false) + " going to the end.");
 			}
 		}
 	}

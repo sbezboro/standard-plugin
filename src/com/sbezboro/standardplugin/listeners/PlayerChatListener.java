@@ -2,8 +2,8 @@ package com.sbezboro.standardplugin.listeners;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
+import cz.jirutka.unidecode.Unidecode;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -15,105 +15,108 @@ import java.util.regex.Pattern;
 
 public class PlayerChatListener extends EventListener implements Listener {
 
-    private final String PLAYER_NAME_REPLACE = "PLAYER_NAME";
+	private Unidecode unidecoder = Unidecode.toAscii();
 
-    private class AutoHelpTopic {
-        private String topicName;
-        private List<Pattern> helpPatterns;
-        private String[] helpMessages;
+	private final String PLAYER_NAME_REPLACE = "PLAYER_NAME";
 
-        public AutoHelpTopic(String topicName, String[] helpRegexes, String[] helpMessages) {
-            this.topicName = topicName;
+	private class AutoHelpTopic {
+		private String topicName;
+		private List<Pattern> helpPatterns;
+		private String[] helpMessages;
 
-            this.helpPatterns = new ArrayList<Pattern>();
-            for (String regex : helpRegexes) {
-                this.helpPatterns.add(Pattern.compile(regex, Pattern.CASE_INSENSITIVE));
-            }
+		public AutoHelpTopic(String topicName, String[] helpRegexes, String[] helpMessages) {
+			this.topicName = topicName;
 
-            this.helpMessages = helpMessages;
-        }
+			this.helpPatterns = new ArrayList<Pattern>();
+			for (String regex : helpRegexes) {
+				this.helpPatterns.add(Pattern.compile(regex, Pattern.CASE_INSENSITIVE));
+			}
 
-        public boolean matches(String message) {
-            for (Pattern pattern : helpPatterns) {
-                if (pattern.matcher(message).matches()) {
-                    return true;
-                }
-            }
+			this.helpMessages = helpMessages;
+		}
 
-            return false;
-        }
+		public boolean matches(String message) {
+			for (Pattern pattern : helpPatterns) {
+				if (pattern.matcher(message).matches()) {
+					return true;
+				}
+			}
 
-        public void sendHelpMessage(StandardPlayer player) {
-            plugin.getLogger().info("Sending " + topicName + " help message to " + player.getDisplayName(false));
+			return false;
+		}
 
-            String[] messages = this.helpMessages.clone();
-            for (int i = 0; i < messages.length; ++i) {
-                messages[i] = this.helpMessages[i].replaceAll(PLAYER_NAME_REPLACE, player.getDisplayName(false));
-            }
-            player.sendDelayedMessages(messages);
-        }
-    }
+		public void sendHelpMessage(StandardPlayer player) {
+			plugin.getLogger().info("Sending " + topicName + " help message to " + player.getDisplayName(false));
 
-    private final AutoHelpTopic[] helpTopics = new AutoHelpTopic[]{
-            new AutoHelpTopic("Groups",
-                    new String[]{".*(how|can you|can we|can i).* claim.*",
-                            ".*(how|can you|can we|can i).* own land.*",
-                            ".*(how|can you|can we|can i).* protect.*",
-                            ".*(how|can you|can we|can i).* lock.*",
-                            ".* faction.*"},
-                    new String[]{
-                            ChatColor.DARK_AQUA + "Hey " + ChatColor.BOLD + PLAYER_NAME_REPLACE +
-                                    ChatColor.DARK_AQUA + ", need help with our custom plugin " +
-                                    ChatColor.ITALIC + "Groups" + ChatColor.DARK_AQUA + "?",
-                            ChatColor.DARK_AQUA + "Try clicking on this link: " + ChatColor.UNDERLINE +
-                                    "standardsurvival.com/help"
-                    }),
+			String[] messages = this.helpMessages.clone();
+			for (int i = 0; i < messages.length; ++i) {
+				messages[i] = this.helpMessages[i].replaceAll(PLAYER_NAME_REPLACE, player.getDisplayName(false));
+			}
+			player.sendDelayedMessages(messages);
+		}
+	}
 
-            new AutoHelpTopic("PVP protection",
-                    new String[]{".*on peaceful.*",
-                            ".*los(e|ing) hunger.*"},
-                    new String[]{
-                            String.valueOf(ChatColor.DARK_AQUA) + ChatColor.BOLD + PLAYER_NAME_REPLACE +
-                                    ChatColor.DARK_AQUA + ", you start off with one hour of" +
-                                    " PVP and hunger protection.",
-                            ChatColor.DARK_AQUA + "Don't worry, you will receive several warnings" +
-                                    " before it expires."
-                    }),
+	private final AutoHelpTopic[] helpTopics = new AutoHelpTopic[]{
+			new AutoHelpTopic("Groups",
+					new String[]{".*(how|can you|can we|can i).* claim.*",
+							".*(how|can you|can we|can i).* own land.*",
+							".*(how|can you|can we|can i).* protect.*",
+							".*(how|can you|can we|can i).* lock.*",
+							".* faction.*"},
+					new String[]{
+							ChatColor.DARK_AQUA + "Hey " + ChatColor.BOLD + PLAYER_NAME_REPLACE +
+									ChatColor.DARK_AQUA + ", need help with our custom plugin " +
+									ChatColor.ITALIC + "Groups" + ChatColor.DARK_AQUA + "?",
+							ChatColor.DARK_AQUA + "Try clicking on this link: " + ChatColor.UNDERLINE +
+									"standardsurvival.com/help"
+					}),
 
-            new AutoHelpTopic("Generic",
-                    new String[]{".*help.*",
-                            ".*how (do|can) (you|we|i).*",
-                            ".*i(['`\"]?m| am) new.*"},
-                    new String[]{
-                            ChatColor.DARK_AQUA + "Hey " + ChatColor.BOLD + PLAYER_NAME_REPLACE +
-                                    ChatColor.DARK_AQUA + ", need help? Try clicking on this link:",
-                            String.valueOf(ChatColor.DARK_AQUA) + ChatColor.UNDERLINE + "standardsurvival.com/help"
-                    })};
+			new AutoHelpTopic("PVP protection",
+					new String[]{".*on peaceful.*",
+							".*los(e|ing) hunger.*"},
+					new String[]{
+							String.valueOf(ChatColor.DARK_AQUA) + ChatColor.BOLD + PLAYER_NAME_REPLACE +
+									ChatColor.DARK_AQUA + ", you start off with one hour of" +
+									" PVP and hunger protection.",
+							ChatColor.DARK_AQUA + "Don't worry, you will receive several warnings" +
+									" before it expires."
+					}),
 
-    public PlayerChatListener(StandardPlugin plugin) {
-        super(plugin);
-    }
+			new AutoHelpTopic("Generic",
+					new String[]{".*help.*",
+							".*how (do|can) (you|we|i).*",
+							".*i(['`\"]?m| am) new.*"},
+					new String[]{
+							ChatColor.DARK_AQUA + "Hey " + ChatColor.BOLD + PLAYER_NAME_REPLACE +
+									ChatColor.DARK_AQUA + ", need help? Try clicking on this link:",
+							String.valueOf(ChatColor.DARK_AQUA) + ChatColor.UNDERLINE + "standardsurvival.com/help"
+					})};
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
-        StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
+	public PlayerChatListener(StandardPlugin plugin) {
+		super(plugin);
+	}
 
-        String message = event.getMessage();
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	public void onPlayerChat(AsyncPlayerChatEvent event) {
+		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
-        if (player.getTimeSpent() < 600) {
-            for (int i = 0; i < helpTopics.length; i++) {
-                if (helpTopics[i].matches(message)) {
-                    helpTopics[i].sendHelpMessage(player);
-                    return;
-                }
-            }
-        }
+		String message = unidecoder.decode(event.getMessage()).toLowerCase();
 
-        for (String str : plugin.getMutedWords()) {
-            if (message.toLowerCase().contains(str.toLowerCase())) {
-                player.sendMessage(ChatColor.RED + "You used a word that is blocked!");
-                event.setCancelled(true);
-            }
-        }
-    }
+		if (player.getTimeSpent() < 600) {
+			for (int i = 0; i < helpTopics.length; i++) {
+				if (helpTopics[i].matches(message)) {
+					helpTopics[i].sendHelpMessage(player);
+					return;
+				}
+			}
+		}
+
+		for (String str : plugin.getMutedWords()) {
+			// TODO: use regex patterns
+			if (message.contains(str.toLowerCase())) {
+				player.sendMessage(ChatColor.RED + "You used a blocked word");
+				event.setCancelled(true);
+			}
+		}
+	}
 }
