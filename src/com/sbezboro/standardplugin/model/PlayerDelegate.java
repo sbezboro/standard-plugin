@@ -15,6 +15,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.entity.*;
+import org.bukkit.entity.memory.MemoryKey;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.*;
@@ -24,6 +25,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -69,7 +71,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public void setOfflinePlayer(OfflinePlayer offlinePlayer) {
 		this.offlinePlayer = offlinePlayer;
 	}
-
 	public Location getBedSpawnLocation() {
 		return offlinePlayer.getBedSpawnLocation();
 	}
@@ -81,11 +82,9 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public long getLastPlayed() {
 		return offlinePlayer.getLastPlayed();
 	}
-
 	public String getName() {
 		return offlinePlayer.getName();
 	}
-
 	public Player getPlayer() {
 		return offlinePlayer.getPlayer();
 	}
@@ -109,7 +108,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public boolean isWhitelisted() {
 		return offlinePlayer.isWhitelisted();
 	}
-
 	public Map<String, Object> serialize() {
 		return offlinePlayer.serialize();
 	}
@@ -133,19 +131,15 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public void acceptConversationInput(String input) {
 		player.acceptConversationInput(input);
 	}
-
 	public PermissionAttachment addAttachment(Plugin arg0, int arg1) {
 		return player.addAttachment(arg0, arg1);
 	}
-
 	public PermissionAttachment addAttachment(Plugin arg0, String arg1, boolean arg2, int arg3) {
 		return player.addAttachment(arg0, arg1, arg2, arg3);
 	}
-
 	public PermissionAttachment addAttachment(Plugin arg0, String arg1, boolean arg2) {
 		return player.addAttachment(arg0, arg1, arg2);
 	}
-
 	public PermissionAttachment addAttachment(Plugin arg0) {
 		return player.addAttachment(arg0);
 	}
@@ -213,11 +207,9 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public boolean eject() {
 		return player.eject();
 	}
-
 	public Collection<PotionEffect> getActivePotionEffects() {
 		return player.getActivePotionEffects();
 	}
-
 	public InetSocketAddress getAddress() {
 		return player.getAddress();
 	}
@@ -229,23 +221,18 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public boolean getCanPickupItems() {
 		return player.getCanPickupItems();
 	}
-
 	public Location getCompassTarget() {
 		return player.getCompassTarget();
 	}
-
 	public String getCustomName() {
 		return player.getCustomName();
 	}
-
 	public String getDisplayName() {
 		return player.getDisplayName();
 	}
-
 	public Set<PermissionAttachmentInfo> getEffectivePermissions() {
 		return player.getEffectivePermissions();
 	}
-
 	public Inventory getEnderChest() {
 		return player.getEnderChest();
 	}
@@ -253,7 +240,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public int getEntityId() {
 		return player.getEntityId();
 	}
-
 	public EntityEquipment getEquipment() {
 		return player.getEquipment();
 	}
@@ -289,7 +275,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public int undiscoverRecipes(Collection<NamespacedKey> collection) {
 		return player.undiscoverRecipes(collection);
 	}
-
 	@Override
 	@Deprecated
 	public Entity getShoulderEntityLeft() {
@@ -301,7 +286,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public void setShoulderEntityLeft(Entity entity) {
 		player.setShoulderEntityLeft(entity);
 	}
-
 	@Override
 	@Deprecated
 	public Entity getShoulderEntityRight() {
@@ -321,7 +305,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public double getEyeHeight(boolean ignoreSneaking) {
 		return player.getEyeHeight(ignoreSneaking);
 	}
-
 	public Location getEyeLocation() {
 		return player.getEyeLocation();
 	}
@@ -341,52 +324,41 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public int getFoodLevel() {
 		return player.getFoodLevel();
 	}
-
 	public GameMode getGameMode() {
 		return player.getGameMode();
 	}
-
 	public PlayerInventory getInventory() {
 		return player.getInventory();
 	}
-
 	@Deprecated
 	public ItemStack getItemInHand() {
 		return player.getItemInHand();
 	}
-
 	public ItemStack getItemOnCursor() {
 		return player.getItemOnCursor();
 	}
-
 	public Player getKiller() {
 		return player.getKiller();
 	}
-
 	public EntityDamageEvent getLastDamageCause() {
 		return player.getLastDamageCause();
 	}
-
 	@Override
 	public List<Block> getLastTwoTargetBlocks(Set<Material> set, int i) {
 		return player.getLastTwoTargetBlocks(set, i);
 	}
-
 	@Override
 	public Block getTargetBlockExact(int i) {
 		return player.getTargetBlockExact(i);
 	}
-
 	@Override
 	public Block getTargetBlockExact(int i, FluidCollisionMode fluidCollisionMode) {
 		return player.getTargetBlockExact(i, fluidCollisionMode);
 	}
-
 	@Override
 	public RayTraceResult rayTraceBlocks(double v) {
 		return player.rayTraceBlocks(v);
 	}
-
 	@Override
 	public RayTraceResult rayTraceBlocks(double v, FluidCollisionMode fluidCollisionMode) {
 		return player.rayTraceBlocks(v, fluidCollisionMode);
@@ -395,20 +367,16 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public int getLevel() {
 		return player.getLevel();
 	}
-
 	@Override
 	public List<Block> getLineOfSight(Set<Material> set, int i) {
 		return player.getLineOfSight(set, i);
 	}
-
 	public Set<String> getListeningPluginChannels() {
 		return player.getListeningPluginChannels();
 	}
-
 	public Location getLocation() {
 		return player.getLocation();
 	}
-
 	public Location getLocation(Location loc) {
 		return player.getLocation(loc);
 	}
@@ -424,11 +392,9 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public int getMaximumNoDamageTicks() {
 		return player.getMaximumNoDamageTicks();
 	}
-
 	public List<MetadataValue> getMetadata(String arg0) {
 		return player.getMetadata(arg0);
 	}
-
 	public List<Entity> getNearbyEntities(double x, double y, double z) {
 		return player.getNearbyEntities(x, y, z);
 	}
@@ -436,16 +402,13 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public int getNoDamageTicks() {
 		return player.getNoDamageTicks();
 	}
-
 	public InventoryView getOpenInventory() {
 		return player.getOpenInventory();
 	}
-
 	@Deprecated
 	public Entity getPassenger() {
 		return player.getPassenger();
 	}
-
 	public String getPlayerListName() {
 		return player.getPlayerListName();
 	}
@@ -457,7 +420,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public long getPlayerTimeOffset() {
 		return player.getPlayerTimeOffset();
 	}
-
 	public WeatherType getPlayerWeather() {
 		return player.getPlayerWeather();
 	}
@@ -473,7 +435,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public float getSaturation() {
 		return player.getSaturation();
 	}
-
 	public Server getServer() {
 		return player.getServer();
 	}
@@ -493,7 +454,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public int getSleepTicks() {
 		return player.getSleepTicks();
 	}
-
 	@Override
 	public Block getTargetBlock(Set<Material> set, int i) {
 		return player.getTargetBlock(set, i);
@@ -506,19 +466,15 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public int getTotalExperience() {
 		return player.getTotalExperience();
 	}
-
 	public EntityType getType() {
 		return player.getType();
 	}
-
 	public UUID getUniqueId() {
 		return offlinePlayer.getUniqueId();
 	}
-
 	public Entity getVehicle() {
 		return player.getVehicle();
 	}
-
 	public Vector getVelocity() {
 		return player.getVelocity();
 	}
@@ -532,7 +488,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public double getWidth() {
 		return player.getWidth();
 	}
-
 	@Override
 	public BoundingBox getBoundingBox() {
 		return player.getBoundingBox();
@@ -541,9 +496,14 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public float getWalkSpeed() {
 		return player.getWalkSpeed();
 	}
-
 	public World getWorld() {
 		return player.getWorld();
+	}
+
+	@Override
+	@Deprecated
+	public void setRotation(float v, float v1) {
+		player.setRotation(v, v1);
 	}
 
 	public void giveExp(int amount) {
@@ -573,7 +533,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public boolean hasPotionEffect(PotionEffectType type) {
 		return player.hasPotionEffect(type);
 	}
-
 	@Override
 	public PotionEffect getPotionEffect(PotionEffectType potionEffectType) {
 		return player.getPotionEffect(potionEffectType);
@@ -743,11 +702,9 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public void kickPlayer(String message) {
 		player.kickPlayer(message);
 	}
-
 	public <T extends Projectile> T launchProjectile(Class<? extends T> projectile) {
 		return player.launchProjectile(projectile);
 	}
-
 	@Override
 	public <T extends Projectile> T launchProjectile(Class<? extends T> aClass, Vector vector) {
 		return player.launchProjectile(aClass, vector);
@@ -760,11 +717,9 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public void loadData() {
 		player.loadData();
 	}
-
 	public InventoryView openEnchanting(Location arg0, boolean arg1) {
 		return player.openEnchanting(arg0, arg1);
 	}
-
 	public InventoryView openInventory(Inventory arg0) {
 		return player.openInventory(arg0);
 	}
@@ -772,7 +727,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public void openInventory(InventoryView arg0) {
 		player.openInventory(arg0);
 	}
-
 	public InventoryView openWorkbench(Location arg0, boolean arg1) {
 		return player.openWorkbench(arg0, arg1);
 	}
@@ -892,6 +846,21 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		player.setBedSpawnLocation(location, force);
 	}
 
+	@Override
+	public boolean sleep(Location location, boolean b) {
+		return player.sleep(location, b);
+	}
+
+	@Override
+	public void wakeup(boolean b) {
+		player.wakeup(b);
+	}
+
+	@Override
+	public Location getBedLocation() {
+		return player.getBedLocation();
+	}
+
 	public void setBedSpawnLocation(Location location) {
 		player.setBedSpawnLocation(location);
 	}
@@ -906,6 +875,11 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 
 	public void setCustomName(String arg0) {
 		player.setCustomName(arg0);
+	}
+
+	@Override
+	public PersistentDataContainer getPersistentDataContainer() {
+		return player.getPersistentDataContainer();
 	}
 
 	public void setCustomNameVisible(boolean arg0) {
@@ -1026,7 +1000,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public boolean setPassenger(Entity passenger) {
 		return player.setPassenger(passenger);
 	}
-
 	@Override
 	public List<Entity> getPassengers() {
 		return player.getPassengers();
@@ -1045,12 +1018,10 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public void setPlayerListName(String name) {
 		player.setPlayerListName(name);
 	}
-
 	@Override
 	public String getPlayerListHeader() {
 		return player.getPlayerListHeader();
 	}
-
 	@Override
 	public String getPlayerListFooter() {
 		return player.getPlayerListFooter();
@@ -1168,7 +1139,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public void updateInventory() {
 		player.updateInventory();
 	}
-
 	public Scoreboard getScoreboard() {
 		return player.getScoreboard();
 	}
@@ -1201,7 +1171,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public double getHealthScale() {
 		return player.getHealthScale();
 	}
-
 	public Entity getLeashHolder() throws IllegalStateException {
 		return player.getLeashHolder();
 	}
@@ -1262,7 +1231,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public void sendTitle(String s, String s1, int i, int i1, int i2) {
 		player.sendTitle(s, s1, i, i1, i2);
 	}
-
 	@Override
 	public Entity getSpectatorTarget() {
 		return player.getSpectatorTarget();
@@ -1332,7 +1300,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public <T> void spawnParticle(Particle particle, double v, double v1, double v2, int i, double v3, double v4, double v5, double v6, T t) {
 		player.spawnParticle(particle, v, v1, v2, i, v3, v4, v5, v6, t);
 	}
-
 	@Override
 	public AdvancementProgress getAdvancementProgress(Advancement advancement) {
 		return player.getAdvancementProgress(advancement);
@@ -1342,7 +1309,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public int getClientViewDistance() {
 		return player.getClientViewDistance();
 	}
-
 	@Override
 	public String getLocale() {
 		return player.getLocale();
@@ -1352,17 +1318,14 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public void updateCommands() {
 		player.updateCommands();
 	}
-
 	@Override
 	public InventoryView openMerchant(Villager villager, boolean b) {
 		return player.openMerchant(villager, b);
 	}
-
 	@Override
 	public InventoryView openMerchant(Merchant merchant, boolean b) {
 		return player.openMerchant(merchant, b);
 	}
-
 	@Override
 	public MainHand getMainHand() {
 		return player.getMainHand();
@@ -1413,6 +1376,15 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.isCollidable();
 	}
 
+	@Override
+	public <T> T getMemory(MemoryKey<T> memoryKey) {
+		return player.getMemory(memoryKey);
+	}
+
+	@Override
+	public <T> void setMemory(MemoryKey<T> memoryKey, T t) {
+		player.setMemory(memoryKey, t);
+	}
 	@Override
 	public AttributeInstance getAttribute(Attribute attribute) {
 		return player.getAttribute(attribute);
@@ -1487,7 +1459,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public void setPortalCooldown(int i) {
 		player.setPortalCooldown(i);
 	}
-
 	@Override
 	public Set<String> getScoreboardTags() {
 		return player.getScoreboardTags();
@@ -1502,14 +1473,17 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public boolean removeScoreboardTag(String s) {
 		return player.removeScoreboardTag(s);
 	}
-
 	@Override
 	public PistonMoveReaction getPistonMoveReaction() {
 		return player.getPistonMoveReaction();
 	}
-
 	@Override
 	public BlockFace getFacing() {
 		return player.getFacing();
+	}
+
+	@Override
+	public Pose getPose() {
+		return player.getPose();
 	}
 }

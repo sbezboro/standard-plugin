@@ -157,22 +157,22 @@ public class StandardPlayer extends PlayerDelegate {
 	public Location getBedLocation() {
 		return bedLocation.getValue().getLocation();
 	}
-	
+
 	public Location getBedLocationIfValid() {
 		Location location = getBedLocation();
-		
+
 		if (location == null) {
 			location = getBedSpawnLocation();
 		}
 
 		if (location != null) {
 			Block bedBlock = location.getBlock();
-			
+
 			if (StandardPlugin.BED_BLOCKS.contains(bedBlock.getType())) {
 				return location;
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -201,27 +201,27 @@ public class StandardPlayer extends PlayerDelegate {
 
 		removeTitle(title);
 	}
-	
+
 	public int getEndId() {
 		return endId.getValue();
 	}
-	
+
 	public void setEndId(int endId) {
 		this.endId.setValue(endId);
 	}
-	
+
 	public int getPvpLogs() {
 		return pvpLogs.getValue();
 	}
-	
+
 	public void incrementPvpLogs() {
 		pvpLogs.setValue(pvpLogs.getValue() + 1);
 	}
-	
+
 	public int getHoneypotsDiscovered() {
 		return honeypotsDiscovered.getValue();
 	}
-	
+
 	public void incrementHoneypotsDiscovered() {
 		honeypotsDiscovered.setValue(honeypotsDiscovered.getValue() + 1);
 	}
@@ -282,7 +282,7 @@ public class StandardPlayer extends PlayerDelegate {
 	public String getLastAttackerUuid() {
 		return lastAttackerUuid;
 	}
-	
+
 	public void setLastAttacker(StandardPlayer player) {
 		if (player == null) {
 			lastAttackerUuid = null;
@@ -290,21 +290,21 @@ public class StandardPlayer extends PlayerDelegate {
 			lastAttackerUuid = new String(player.getUuidString());
 		}
 	}
-	
+
 	public boolean isInPvp() {
 		return pvpTimerTask != null && lastAttackerUuid != null &&
 				StandardPlugin.getPlugin().getStandardPlayerByUUID(lastAttackerUuid).isOnline() && getHealth() > 0;
 	}
-	
+
 	public boolean wasInPvp() {
 		return pvpTimerTask != null;
 	}
-	
+
 	public void setInPvp(StandardPlayer opponent) {
 		if (opponent == null || this == opponent) {
 			return;
 		}
-		
+
 		if (pvpTimerTask == null) {
 			sendMessage("You are now in PVP");
 			if (hasTitle(Title.PVP_LOGGER)) {
@@ -316,10 +316,10 @@ public class StandardPlayer extends PlayerDelegate {
 
 		pvpTimerTask = new PvpTimerTask(StandardPlugin.getPlugin(), this);
 		pvpTimerTask.runTaskLater(StandardPlugin.getPlugin(), PVP_TIMER_TIME);
-		
+
 		lastAttackerUuid = new String(opponent.getUuidString());
 	}
-	
+
 	public void setNotInPvp() {
 		if (pvpTimerTask != null) {
 			sendMessage("You are no longer in PVP");
@@ -343,19 +343,19 @@ public class StandardPlayer extends PlayerDelegate {
 	public void setLastDeathTime() {
 		lastDeathTime = System.currentTimeMillis();
 	}
-	
+
 	public boolean lastDeathInPvp() {
 		return lastDeathInPvp;
 	}
-	
+
 	public boolean lastDeathBySpawnkill() {
 		return lastDeathBySpawnkill;
 	}
-	
+
 	public void setLastDeathInPvp(boolean value) {
 		lastDeathInPvp = value;
 	}
-	
+
 	public void setLastDeathBySpawnkill(boolean value) {
 		lastDeathBySpawnkill = value;
 	}
@@ -395,7 +395,7 @@ public class StandardPlayer extends PlayerDelegate {
 						getDisplayName(false)
 		);
 	}
-	
+
 	public void onLeaveServer() {
 		if (pvpTimerTask != null) {
 			pvpTimerTask.cancel();
@@ -406,15 +406,15 @@ public class StandardPlayer extends PlayerDelegate {
 			spawnKillTimeoutTask.cancel();
 			spawnKillTimeoutTask = null;
 		}
-		
+
 		player = null;
 
 		((PlayerStorage) storage).uncacheObject(getUuidString());
 	}
-	
+
 	public void sendHome(World overworld) {
 		Location location = getBedLocationIfValid();
-		
+
 		if (location == null) {
 			teleport(overworld.getSpawnLocation());
 		} else {
@@ -424,7 +424,7 @@ public class StandardPlayer extends PlayerDelegate {
 
 	public String getRankDescription(boolean self, int rank) {
 		String message = "";
-		
+
 		Title broadcastedTitle = null;
 		for (Title title : getTitles()) {
 			if (title.isBroadcast()) {
@@ -432,7 +432,7 @@ public class StandardPlayer extends PlayerDelegate {
 				break;
 			}
 		}
-		
+
 		if (self) {
 			message = "You ";
 
@@ -445,11 +445,11 @@ public class StandardPlayer extends PlayerDelegate {
 			if (broadcastedTitle != null) {
 				message += ChatColor.GOLD + broadcastedTitle.getDisplayName() + ChatColor.WHITE + " ";
 			}
-			
+
 			message += ChatColor.AQUA + getDisplayName() + ChatColor.WHITE + " is ranked " + ChatColor.AQUA
 					+ MiscUtil.getRankString(rank) + ChatColor.WHITE + " on the server!";
 		}
-		
+
 		return message;
 	}
 
@@ -583,7 +583,7 @@ public class StandardPlayer extends PlayerDelegate {
 	public void mute() {
 		EssentialsIntegration.setPlayerMuted(this, true);
 	}
-	
+
 	public boolean isMuted() {
 		return EssentialsIntegration.isPlayerMuted(this);
 	}
