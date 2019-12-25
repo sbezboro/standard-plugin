@@ -1,8 +1,8 @@
 name: StandardPlugin
 main: com.sbezboro.standardplugin.StandardPlugin
-version: 2.6.8
+version: 2.6.9
 softdepend: [JSONAPI, SimplyVanish, Essentials, Factions]
-api-version: 1.14
+api-version: 1.15
 
 commands:
     standard:
