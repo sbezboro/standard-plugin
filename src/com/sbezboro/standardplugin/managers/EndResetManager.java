@@ -41,6 +41,9 @@ public class EndResetManager extends BaseManager {
 				endResetCheckTask = new EndResetCheckTask(plugin);
 				endResetCheckTask.runTaskTimerAsynchronously(plugin, 1200, 1200);
 				
+				//
+				// hagar note: should also be changed to America/New_York ?
+				//
 				plugin.getLogger().info("End reset scheduled to be on "
 						+ MiscUtil.friendlyTimestamp(storage.getNextReset(), "America/Los_Angeles"));
 			} else {
@@ -126,9 +129,14 @@ public class EndResetManager extends BaseManager {
 	}
 	
 	private long decideNextEndReset() {
-		// This yields a time between Friday morning and Sunday night of USA time
-		// Fri day: 5 %, Fri night: 25 %, Sat day: 20 %, Sat night: 25 %, Sun day: 15 %, Sun night: 10 %
+		//
+		// modified the code originally written by apv1313 (June 2016 (!))
+		// (distribution was modelled here: https://standardsurvival.com/forums/topic/12870)
+		// to limit range of possible end reset time to Saturday, between 2pm and 5pm ET
+		// (decent range for Europe and US)
+		//
 		int dayOfWeekend = decideDayOfWeekend();
+		
 		double hourOfDay = decideHourOfDay(dayOfWeekend);
 		
 		DayOfWeek dayOfWeek = ZonedDateTime.now(ZoneId.of("America/New_York")).getDayOfWeek();
@@ -147,49 +155,27 @@ public class EndResetManager extends BaseManager {
 		return time;
 	}
 	
+	// Used to return a number for Fri/Sat/Sun/Mon (0-3), now just returns 1 (Sat)
 	private int decideDayOfWeekend() {
-		// Find a random day of the weekend after the next (Fri~Mon GMT)
-		double value = Math.random();
 
-		if (value > 0.9) {
-			return 3;
-		} else if (value > 0.5) {
-			return 2;
-		} else if (value > 0.05) {
-			return 1;
-		}
+		return 1;  // always Saturday
 
-		return 0;
 	}
-	
+
+	// returns "fractional" hour, so maybe should be called decideTimeOfDay
 	private double decideHourOfDay(int dayOfWeekend) {
-		// Using inverse transformation, find a random GMT hour with peak times being more likely
+
 		double value = Math.random();
 		
-		switch (dayOfWeekend) {
-			case 0: // Fri
-				return 15.0 + Math.sqrt(81.0 * value);
+		//
+		// now shooting for a random time between 2pm and 5pm ET
+		// no bell curves or anything, just equally distributed in that interval
+		//
+		// from the code it seems the server is still running on PT (?)
+		// (hence the 11 + max 3)
+		//
+		return 11 + 3.0 * value;
 
-			case 1: // Sat
-				if (value < 5.0 / 9.0) {
-					return 9.0 - 1.8 * Math.sqrt(-45.0 * value + 25.0);
-				} else {
-					return 9.0 + 7.5 * Math.sqrt(9.0 * value - 5.0);
-				}
-
-			case 2: // Sun
-				if (value < 5.0 / 8.0) {
-					return 9.0 - 1.8 * Math.sqrt(-40.0 * value + 25.0);
-				} else {
-					return 9.0 + 5.0 * Math.sqrt(12.0 * value - 7.5);
-				}
-
-			case 3: // Mon
-				return 9.0 - 9.0 * Math.sqrt(-value + 1.0);
-
-		default: // Should never happen
-			return 0.0;
-		}
 	}
 	
 	public World getNewEndWorld() {
