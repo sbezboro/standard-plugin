@@ -26,6 +26,7 @@ public class BlockBreakListener extends EventListener implements Listener {
 		add(Material.REDSTONE_ORE);
 		add(Material.LAPIS_ORE);
 		add(Material.NETHER_QUARTZ_ORE);
+		add(Material.ANCIENT_DEBRIS);
 	}};
 	
 	public BlockBreakListener(StandardPlugin plugin) {
