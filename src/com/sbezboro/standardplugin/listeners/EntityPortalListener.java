@@ -20,7 +20,7 @@ public class EntityPortalListener extends EventListener implements Listener {
 		Location location = event.getFrom();
 
 		if (location.getWorld().getEnvironment() == World.Environment.NORMAL &&
-				entityType == EntityType.PIG_ZOMBIE || entityType == EntityType.MINECART_TNT || entityType == EntityType.PRIMED_TNT) {
+				entityType == EntityType.ZOMBIFIED_PIGLIN || entityType == EntityType.MINECART_TNT || entityType == EntityType.PRIMED_TNT) {
 			event.setCancelled(true);
 		}
 	}

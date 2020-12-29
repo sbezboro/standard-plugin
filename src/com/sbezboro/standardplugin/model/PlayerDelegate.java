@@ -1570,4 +1570,99 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public Pose getPose() {
 		return player.getPose();
 	}
+
+	@Override
+	public float getAttackCooldown() {
+		return player.getAttackCooldown();
+	}
+
+	@Override
+	public boolean hasDiscoveredRecipe(NamespacedKey namespacedKey) {
+		return player.hasDiscoveredRecipe(namespacedKey);
+	}
+
+	@Override
+	public Set<NamespacedKey> getDiscoveredRecipes() {
+		return player.getDiscoveredRecipes();
+	}
+
+	@Override
+	public boolean dropItem(boolean b) {
+		return player.dropItem(b);
+	}
+
+	@Override
+	public int getArrowCooldown() {
+		return player.getArrowCooldown();
+	}
+
+	@Override
+	public void setArrowCooldown(int i) {
+		player.setArrowCooldown(i);
+	}
+
+	@Override
+	public int getArrowsInBody() {
+		return player.getArrowsInBody();
+	}
+
+	@Override
+	public void setArrowsInBody(int i) {
+		player.setArrowsInBody(i);
+	}
+
+	@Override
+	public void attack(Entity entity) {
+		player.attack(entity);
+	}
+
+	@Override
+	public void swingMainHand() {
+		player.swingMainHand();
+	}
+
+	@Override
+	public void swingOffHand() {
+		player.swingOffHand();
+	}
+
+	@Override
+	public Set<UUID> getCollidableExemptions() {
+		return player.getCollidableExemptions();
+	}
+
+	@Override
+	public EntityCategory getCategory() {
+		return player.getCategory();
+	}
+
+	@Override
+	public void setInvisible(boolean b) {
+		player.setInvisible(b);
+	}
+
+	@Override
+	public boolean isInvisible() {
+		return player.isInvisible();
+	}
+
+	@Override
+	public boolean isInWater() {
+		return player.isInWater();
+	}
+
+	@Override
+	public void sendMessage(UUID uuid, String s) {
+		player.sendMessage(uuid, s);
+	}
+
+	@Override
+	public void sendMessage(UUID uuid, String[] strings) {
+		player.sendMessage(uuid, strings);
+	}
+
+	@Override
+	public void sendRawMessage(UUID uuid, String s) {
+		player.sendRawMessage(uuid, s);
+	}
 }

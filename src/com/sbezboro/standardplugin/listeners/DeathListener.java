@@ -87,7 +87,7 @@ public class DeathListener extends EventListener implements Listener {
 						}
 					}
 				}
-			} else if (entity.getType() == EntityType.PIG_ZOMBIE) {
+			} else if (entity.getType() == EntityType.ZOMBIFIED_PIGLIN) {
 				if (plugin.getNerfPigzombieDrops()) {
 					// Nerfed xp and drops for zombie pigmen in the overworld
 					if (entity.getLocation().getWorld().getEnvironment() == Environment.NORMAL) {
