@@ -40,12 +40,9 @@ public class EndResetManager extends BaseManager {
 			if (isEndResetScheduled()) {
 				endResetCheckTask = new EndResetCheckTask(plugin);
 				endResetCheckTask.runTaskTimerAsynchronously(plugin, 1200, 1200);
-				
-				//
-				// hagar note: should also be changed to America/New_York ?
-				//
+
 				plugin.getLogger().info("End reset scheduled to be on "
-						+ MiscUtil.friendlyTimestamp(storage.getNextReset(), "America/Los_Angeles"));
+						+ MiscUtil.friendlyTimestamp(storage.getNextReset()));
 			} else {
 				plugin.getLogger().info("No end resets scheduled since the Ender Dragon is still alive");
 			}
@@ -129,24 +126,15 @@ public class EndResetManager extends BaseManager {
 	}
 	
 	private long decideNextEndReset() {
-		//
 		// modified the code originally written by apv1313 (June 2016 (!))
 		// (distribution was modelled here: https://standardsurvival.com/forums/topic/12870)
 		// to limit range of possible end reset time to Saturday, between 2pm and 5pm ET
 		// (decent range for Europe and US)
-		//
 		int dayOfWeekend = decideDayOfWeekend();
-		
 		double hourOfDay = decideHourOfDay(dayOfWeekend);
 		
 		DayOfWeek dayOfWeek = ZonedDateTime.now(ZoneId.of("America/New_York")).getDayOfWeek();
-		int daysFromNow;
-		
-		if (dayOfWeek.getValue() >= 5) { // Fri~Sun
-			daysFromNow = 19 - dayOfWeek.getValue() + dayOfWeekend;
-		} else {
-			daysFromNow = 12 - dayOfWeek.getValue() + dayOfWeekend;
-		}
+		int daysFromNow = 12 - dayOfWeek.getValue() + dayOfWeekend;
 		
 		long time = System.currentTimeMillis() + daysFromNow * 86400000;
 		time = (time / 86400000) * 86400000; // Round down to 00:00 GMT
@@ -157,25 +145,14 @@ public class EndResetManager extends BaseManager {
 	
 	// Used to return a number for Fri/Sat/Sun/Mon (0-3), now just returns 1 (Sat)
 	private int decideDayOfWeekend() {
-
 		return 1;  // always Saturday
-
 	}
 
 	// returns "fractional" hour, so maybe should be called decideTimeOfDay
 	private double decideHourOfDay(int dayOfWeekend) {
-
 		double value = Math.random();
-		
-		//
-		// now shooting for a random time between 2pm and 5pm ET
-		// no bell curves or anything, just equally distributed in that interval
-		//
-		// from the code it seems the server is still running on PT (?)
-		// (hence the 11 + max 3)
-		//
-		return 11 + 3.0 * value;
-
+		// shooting for a random time between 19:00 and 22:00 GMT (2pm and 5pm ET)
+		return 19 + 3.0 * value;
 	}
 	
 	public World getNewEndWorld() {

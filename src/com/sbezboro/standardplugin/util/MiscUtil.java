@@ -108,7 +108,7 @@ public class MiscUtil {
 	
 	public static String friendlyTimestamp(long timestamp, String timezone) {
 		DateFormat format = new SimpleDateFormat("MMMM d h:mm a zz");
-		format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+		format.setTimeZone(TimeZone.getTimeZone(timezone));
 		return format.format(timestamp);
 	}
 
