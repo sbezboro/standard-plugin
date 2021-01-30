@@ -134,7 +134,13 @@ public class EndResetManager extends BaseManager {
 		double hourOfDay = decideHourOfDay(dayOfWeekend);
 		
 		DayOfWeek dayOfWeek = ZonedDateTime.now(ZoneId.of("America/New_York")).getDayOfWeek();
-		int daysFromNow = 12 - dayOfWeek.getValue() + dayOfWeekend;
+		int daysFromNow;
+
+		if (dayOfWeek.getValue() >= 5) { // Fri~Sun
+			daysFromNow = 19 - dayOfWeek.getValue() + dayOfWeekend;
+		} else {
+			daysFromNow = 12 - dayOfWeek.getValue() + dayOfWeekend;
+		}
 		
 		long time = System.currentTimeMillis() + daysFromNow * 86400000;
 		time = (time / 86400000) * 86400000; // Round down to 00:00 GMT
