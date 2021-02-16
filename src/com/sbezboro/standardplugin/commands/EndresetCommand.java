@@ -22,7 +22,6 @@ public class EndresetCommand extends BaseCommand {
 		}
 		
 		if (plugin.getEndResetManager().isEndResetScheduled()) {
-			ZoneId timeZone = ZoneId.of("America/New_York");
 			long endReset = plugin.getEndResetStorage().getNextReset();
 			long daysUntilReset = (endReset - System.currentTimeMillis()) / 86400000;
 			
