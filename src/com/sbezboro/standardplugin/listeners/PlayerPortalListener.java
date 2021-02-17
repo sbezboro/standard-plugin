@@ -14,46 +14,71 @@ import com.sbezboro.standardplugin.model.StandardPlayer;
 
 public class PlayerPortalListener extends EventListener implements Listener {
 
-	public PlayerPortalListener(StandardPlugin plugin) {
-		super(plugin);
-	}
+  public PlayerPortalListener(StandardPlugin plugin) {
+    super(plugin);
+  }
 
-	@EventHandler(ignoreCancelled = true)
-	public void onPlayerPortal(PlayerPortalEvent event) {
-		World fromWorld = event.getFrom().getWorld();
+  @EventHandler(ignoreCancelled = true)
+  public void onPlayerPortal(PlayerPortalEvent event) {
+    World fromWorld = event.getFrom().getWorld();
 
-		if (event.getCause() == TeleportCause.END_PORTAL) {
-			// Going from the end
-			if (fromWorld.getEnvironment() == Environment.THE_END) {
-				StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
+    if (event.getCause() == TeleportCause.END_PORTAL) {
 
-				plugin.getLogger().info(player.getDisplayName(false) + " leaving the end.");
+      StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
+      
+      // Going from the end
+      if (fromWorld.getEnvironment() == Environment.THE_END) {
 
-				// Set event location to the player's bed if one exists
-				Location to = player.getBedLocationIfValid();
+        plugin.getLogger().info(player.getDisplayName(false) + " leaving the End.");
 
-				if (to == null) {
-					plugin.getLogger().info("Can't find bed for " + player.getDisplayName(false) + ", sending to spawn.");
-					to = plugin.getServer().getWorld(StandardPlugin.OVERWORLD_NAME).getSpawnLocation();
+        Location to = get_bed_location(player);
+        event.setTo(to);
+        
+      }
+      else { // Going to the end
+        World newEnd = plugin.getEndResetManager().getNewEndWorld();
 
-					if (player.getBedLocation() != null) {
-						plugin.getLogger().info("Bed location points to (" +
-								MiscUtil.locationFormat(player.getBedLocation()) + ") which is of type " +
-								player.getBedLocation().getBlock().getType());
-					}
-				}
+        if (player.isPvpProtected()) {
+          plugin.getLogger().info(player.getDisplayName(false) + " pvp protected and trying to go to the end, sending to bed/spawn instead.");
 
-				event.setTo(to);
-			} else { // Going to the end
-				World newEnd = plugin.getEndResetManager().getNewEndWorld();
-				StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
+          player.sendMessage("Sorry, PVP protected players cannot enter the End.");
+          
+          Location to = get_bed_location(player);
+          event.setTo(to);
+          
+        }
+        else {
+          if (newEnd != null) {
+            event.setTo(new Location(newEnd, 100, 50, 0));
+          }
+          plugin.getLogger().info(player.getDisplayName(false) + " going to the End.");
+          
+        }  // else, player not pvp protected
+      }  // else, going to the end
+    }  // if, going through end portal
+  }  // onPlayerPortal
 
-				if (newEnd != null) {
-					event.setTo(new Location(newEnd, 100, 50, 0));
-				}
-				plugin.getLogger().info(player.getDisplayName(false) + " going to the end.");
-			}
-		}
-	}
 
-}
+
+  private Location get_bed_location(StandardPlayer player)
+  {
+    // get player's bed location if one exists
+    Location to = player.getBedLocationIfValid();
+
+    if (to == null) {
+      plugin.getLogger().info("Can't find bed for " + player.getDisplayName(false) + ", sending to spawn.");
+      to = plugin.getServer().getWorld(StandardPlugin.OVERWORLD_NAME).getSpawnLocation();
+
+      if (player.getBedLocation() != null) {
+        plugin.getLogger().info("Bed location points to (" +
+                                MiscUtil.locationFormat(player.getBedLocation()) + ") which is of type " +
+                                player.getBedLocation().getBlock().getType());
+      }
+    }
+
+    return to;
+
+  }  // get_bed_location
+  
+
+}  // PlayerPortalListener class

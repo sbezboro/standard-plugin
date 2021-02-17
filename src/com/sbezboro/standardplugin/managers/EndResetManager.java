@@ -40,7 +40,6 @@ public class EndResetManager extends BaseManager {
 			if (isEndResetScheduled()) {
 				endResetCheckTask = new EndResetCheckTask(plugin);
 				endResetCheckTask.runTaskTimerAsynchronously(plugin, 1200, 1200);
-
 				plugin.getLogger().info("End reset scheduled to be on "
 						+ MiscUtil.friendlyTimestamp(storage.getNextReset()));
 			} else {
@@ -131,6 +130,7 @@ public class EndResetManager extends BaseManager {
 		// to limit range of possible end reset time to Saturday, between 2pm and 5pm ET
 		// (decent range for Europe and US)
 		int dayOfWeekend = decideDayOfWeekend();
+		
 		double hourOfDay = decideHourOfDay(dayOfWeekend);
 		
 		DayOfWeek dayOfWeek = ZonedDateTime.now(ZoneId.of("America/New_York")).getDayOfWeek();
