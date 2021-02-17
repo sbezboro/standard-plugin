@@ -16,6 +16,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -154,6 +155,7 @@ public class StandardPlayer extends PlayerDelegate {
 		bedLocation.setValue(new PersistableLocation(location));
 	}
 
+	@Nullable
 	public Location getBedLocation() {
 		return bedLocation.getValue().getLocation();
 	}
