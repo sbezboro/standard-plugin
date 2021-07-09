@@ -16,11 +16,10 @@ import com.sbezboro.standardplugin.persistence.PersistedPropertyDefinition;
 import com.sbezboro.standardplugin.persistence.storages.*;
 import com.sbezboro.standardplugin.util.MiscUtil;
 import cz.jirutka.unidecode.Unidecode;
-import net.minecraft.server.v1_16_R3.IChatBaseComponent;
-import net.minecraft.server.v1_16_R3.PacketPlayOutTitle;
-import net.minecraft.server.v1_16_R3.PlayerConnection;
-import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -306,9 +305,12 @@ public class StandardPlugin extends JavaPlugin {
 	}
 
 	public static void sendTitleMessage(StandardPlayer player, String title, String subtitle, int fadeIn, int time, int fadeOut) {
-		PlayerConnection connection = ((CraftPlayer) player.getPlayer()).getHandle().playerConnection;
+		// TODO: fix with 1.17
+		return;
+		/*
+		PlayerConnection connection = ((CraftPlayer) player.getPlayer()).getHandle().b;
 
-		PacketPlayOutTitle packet = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, fadeIn, time, fadeOut);
+		Packet packet = new Packet(Packet.EnumTitleAction.TIMES, null, fadeIn, time, fadeOut);
 		connection.sendPacket(packet);
 
 		if (title != null) {
@@ -321,7 +323,7 @@ public class StandardPlugin extends JavaPlugin {
 			IChatBaseComponent component = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + subtitle + "\"}");
 			packet = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, component);
 			connection.sendPacket(packet);
-		}
+		}*/
 	}
 
 	public List<StandardPlayer> getOnlinePlayers() {

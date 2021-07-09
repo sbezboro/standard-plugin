@@ -14,6 +14,7 @@ import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 
 import javax.annotation.Nullable;
@@ -631,5 +632,90 @@ public class StandardPlayer extends PlayerDelegate {
 	@Override
 	public String getDisplayName() {
 		return getDisplayName(true);
+	}
+
+	@Override
+	public boolean breakBlock(Block block) {
+		return player.breakBlock(block);
+	}
+
+	@Override
+	public void sendBlockDamage(Location location, float v) {
+		player.sendBlockDamage(location, v);
+	}
+
+	@Override
+	public int getPing() {
+		return player.getPing();
+	}
+
+	@Override
+	public ItemStack getItemInUse() {
+		return player.getItemInUse();
+	}
+
+	@Override
+	public int getSaturatedRegenRate() {
+		return player.getSaturatedRegenRate();
+	}
+
+	@Override
+	public void setSaturatedRegenRate(int i) {
+		player.setSaturatedRegenRate(i);
+	}
+
+	@Override
+	public int getUnsaturatedRegenRate() {
+		return player.getUnsaturatedRegenRate();
+	}
+
+	@Override
+	public void setUnsaturatedRegenRate(int i) {
+		player.setUnsaturatedRegenRate(i);
+	}
+
+	@Override
+	public int getStarvationRate() {
+		return player.getStarvationRate();
+	}
+
+	@Override
+	public void setStarvationRate(int i) {
+		player.setStarvationRate(i);
+	}
+
+	@Override
+	public boolean isClimbing() {
+		return player.isClimbing();
+	}
+
+	@Override
+	public void setVisualFire(boolean b) {
+		player.setVisualFire(b);
+	}
+
+	@Override
+	public boolean isVisualFire() {
+		return player.isVisualFire();
+	}
+
+	@Override
+	public int getFreezeTicks() {
+		return player.getFreezeTicks();
+	}
+
+	@Override
+	public int getMaxFreezeTicks() {
+		return player.getMaxFreezeTicks();
+	}
+
+	@Override
+	public void setFreezeTicks(int i) {
+		player.setFreezeTicks(i);
+	}
+
+	@Override
+	public boolean isFrozen() {
+		return player.isFrozen();
 	}
 }
