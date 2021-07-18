@@ -31,6 +31,10 @@ public class StandardConfig {
 	private int spawnKillTimeout;
 	private int deathMessageTimeout;
 
+	private boolean recordFurnaceSmelting;
+	private boolean recordCrafting;
+	private boolean recordSmithing;
+
 	public StandardConfig(StandardPlugin plugin) {
 		this.plugin = plugin;
 	}
@@ -67,6 +71,10 @@ public class StandardConfig {
 		animalChunkCap = config.getInt("animal-chunk-cap");
 
 		mutedWords = config.getStringList("muted-words");
+
+		recordFurnaceSmelting = config.getBoolean("record-furnace-smelting");
+		recordCrafting = config.getBoolean("record-crafting");
+		recordSmithing = config.getBoolean("record-smithing");
 	}
 
 	public int getServerId() {
@@ -135,5 +143,17 @@ public class StandardConfig {
 
 	public List<String> getMutedWords() {
 		return mutedWords;
+	}
+
+	public boolean getRecordFurnaceSmelting() {
+		return recordFurnaceSmelting;
+	}
+
+	public boolean getRecordCrafting() {
+		return recordCrafting;
+	}
+	
+	public boolean getRecordSmithing() {
+		return recordSmithing;
 	}
 }
