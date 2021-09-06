@@ -1665,4 +1665,94 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public void sendRawMessage(UUID uuid, String s) {
 		player.sendRawMessage(uuid, s);
 	}
+
+	@Override
+	public boolean breakBlock(Block block) {
+		return player.breakBlock(block);
+	}
+
+	@Override
+	public void sendBlockDamage(Location location, float v) {
+		player.sendBlockDamage(location, v);
+	}
+
+	@Override
+	public void sendSignChange(Location location, String[] strings, DyeColor dyeColor, boolean b) throws IllegalArgumentException {
+		player.sendSignChange(location, strings, dyeColor, b);
+	}
+
+	@Override
+	public int getPing() {
+		return player.getPing();
+	}
+
+	@Override
+	public ItemStack getItemInUse() {
+		return player.getItemInUse();
+	}
+
+	@Override
+	public int getSaturatedRegenRate() {
+		return player.getSaturatedRegenRate();
+	}
+
+	@Override
+	public void setSaturatedRegenRate(int i) {
+		player.setSaturatedRegenRate(i);
+	}
+
+	@Override
+	public int getUnsaturatedRegenRate() {
+		return player.getUnsaturatedRegenRate();
+	}
+
+	@Override
+	public void setUnsaturatedRegenRate(int i) {
+		player.setUnsaturatedRegenRate(i);
+	}
+
+	@Override
+	public int getStarvationRate() {
+		return player.getStarvationRate();
+	}
+
+	@Override
+	public void setStarvationRate(int i) {
+		player.setStarvationRate(i);
+	}
+
+	@Override
+	public boolean isClimbing() {
+		return player.isClimbing();
+	}
+
+	@Override
+	public void setVisualFire(boolean b) {
+		player.setVisualFire(b);
+	}
+
+	@Override
+	public boolean isVisualFire() {
+		return player.isVisualFire();
+	}
+
+	@Override
+	public int getFreezeTicks() {
+		return player.getFreezeTicks();
+	}
+
+	@Override
+	public int getMaxFreezeTicks() {
+		return player.getMaxFreezeTicks();
+	}
+
+	@Override
+	public void setFreezeTicks(int i) {
+		player.setFreezeTicks(i);
+	}
+
+	@Override
+	public boolean isFrozen() {
+		return player.isFrozen();
+	}
 }
