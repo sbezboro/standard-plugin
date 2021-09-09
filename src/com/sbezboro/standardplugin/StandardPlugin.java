@@ -205,8 +205,8 @@ public class StandardPlugin extends JavaPlugin {
 		pluginManager.registerEvents(new PlayerTeleportListener(this), this);
 		pluginManager.registerEvents(new EntityPortalListener(this), this);
 		pluginManager.registerEvents(new PlayerChatListener(this), this);
-		// Figure this out later
-		//pluginManager.registerEvents(new FurnaceExtractListener(this), this);
+		pluginManager.registerEvents(new FurnaceExtractListener(this), this);
+		pluginManager.registerEvents(new CraftListener(this), this);
 	}
 
 	private void registerJSONAPIHandlers() {
@@ -457,6 +457,18 @@ public class StandardPlugin extends JavaPlugin {
 
 	public int getDeathMessageTimeout() {
 		return config.getDeathMessageTimeout();
+	}
+
+	public boolean getRecordFurnaceSmelting() {
+		return config.getRecordFurnaceSmelting();
+	}
+
+	public boolean getRecordCrafting() {
+		return config.getRecordCrafting();
+	}
+
+	public boolean getRecordSmithing() {
+		return config.getRecordSmithing();
 	}
 
 	public GateStorage getGateStorage() {
