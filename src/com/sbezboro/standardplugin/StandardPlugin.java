@@ -188,6 +188,7 @@ public class StandardPlugin extends JavaPlugin {
 	private void registerEvents() {
 		PluginManager pluginManager = getServer().getPluginManager();
 		pluginManager.registerEvents(new DeathListener(this), this);
+		pluginManager.registerEvents(new ResurrectListener(this), this);
 		pluginManager.registerEvents(new PlayerJoinListener(this), this);
 		pluginManager.registerEvents(new PlayerLeaveListener(this), this);
 		pluginManager.registerEvents(new PlayerInteractListener(this), this);
