@@ -3,7 +3,7 @@ package com.sbezboro.standardplugin.jsonapi;
 import com.sbezboro.standardplugin.StandardPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.json.simple.JSONObject;
+import org.json.simpleForBukkit.JSONObject;
 
 import java.util.HashMap;
 

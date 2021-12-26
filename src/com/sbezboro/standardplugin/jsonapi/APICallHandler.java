@@ -4,7 +4,7 @@ import com.alecgorge.minecraft.jsonapi.api.APIMethodName;
 import com.alecgorge.minecraft.jsonapi.api.JSONAPICallHandler;
 import com.sbezboro.standardplugin.StandardPlugin;
 import org.apache.commons.lang.StringUtils;
-import org.json.simple.JSONObject;
+import org.json.simpleForBukkit.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,10 +39,10 @@ public abstract class APICallHandler implements JSONAPICallHandler {
 	@SuppressWarnings("unchecked")
 	public Object handle(APIMethodName methodName, final Object[] args) {
 		if (methodName.matches(name)) {
-			Callable<HashMap<String, Object>> callable = new Callable<HashMap<String, Object>>() {
+			Callable<JSONObject> callable = new Callable<JSONObject>() {
 
 				@Override
-				public HashMap<String, Object> call() throws Exception {
+				public JSONObject call() throws Exception {
 					HashMap<String, Object> payload = null;
 
 					if (args.length == 1) {
@@ -71,7 +71,7 @@ public abstract class APICallHandler implements JSONAPICallHandler {
 					return null;
 				}
 			} else {
-				Future<HashMap<String, Object>> future = plugin.getServer().getScheduler().callSyncMethod(plugin, callable);
+				Future<JSONObject> future = plugin.getServer().getScheduler().callSyncMethod(plugin, callable);
 
 				try {
 					return future.get();

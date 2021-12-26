@@ -1,6 +1,6 @@
 package com.sbezboro.http;
 
-import org.json.simple.JSONObject;
+import org.json.simpleForBukkit.JSONObject;
 
 import java.util.List;
 

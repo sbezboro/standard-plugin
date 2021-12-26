@@ -5,7 +5,7 @@ import com.sbezboro.standardplugin.model.StandardPlayer;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.json.simple.JSONObject;
+import org.json.simpleForBukkit.JSONObject;
 
 import java.util.HashMap;
 

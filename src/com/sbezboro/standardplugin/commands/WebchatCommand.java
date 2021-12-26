@@ -3,8 +3,8 @@ package com.sbezboro.standardplugin.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.simpleForBukkit.JSONArray;
+import org.json.simpleForBukkit.JSONObject;
 
 import com.sbezboro.http.HttpRequestManager;
 import com.sbezboro.http.HttpResponse;

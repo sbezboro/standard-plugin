@@ -14,8 +14,8 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
+import org.json.simpleForBukkit.JSONObject;
+import org.json.simpleForBukkit.JSONValue;
 
 import com.sbezboro.http.listeners.HttpRequestListener;
 
