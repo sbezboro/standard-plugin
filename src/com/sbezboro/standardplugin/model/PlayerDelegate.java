@@ -11,6 +11,7 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.PistonMoveReaction;
+import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
@@ -845,11 +846,6 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	@Override
 	public void sendBlockChange(Location location, BlockData blockData) {
 		player.sendBlockChange(location, blockData);
-	}
-
-	@Deprecated
-	public boolean sendChunkChange(Location loc, int sx, int sy, int sz, byte[] data) {
-		return player.sendChunkChange(loc, sx, sy, sz, data);
 	}
 
 	public void sendMap(MapView map) {
@@ -1755,4 +1751,62 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 	public boolean isFrozen() {
 		return player.isFrozen();
 	}
+	@Override
+	public void stopAllSounds() {
+		player.stopAllSounds();
+	}
+
+	@Override
+	public void sendEquipmentChange(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack itemStack) {
+		player.sendEquipmentChange(livingEntity, equipmentSlot, itemStack);
+	}
+
+	@Override
+	@Deprecated
+	public void hideEntity(Plugin plugin, Entity entity) {
+		player.hideEntity(plugin, entity);
+	}
+
+	@Override
+	@Deprecated
+	public void showEntity(Plugin plugin, Entity entity) {
+		player.showEntity(plugin, entity);
+	}
+
+	@Override
+	@Deprecated
+	public boolean canSee(Entity entity) {
+		return player.canSee(entity);
+	}
+
+	@Override
+	public void setResourcePack(String s, byte[] bytes, String s1) {
+		player.setResourcePack(s, bytes, s1);
+	}
+
+	@Override
+	public void setResourcePack(String s, byte[] bytes, boolean b) {
+		player.setResourcePack(s, bytes, b);
+	}
+
+	@Override
+	public void setResourcePack(String s, byte[] bytes, String s1, boolean b) {
+		player.setResourcePack(s, bytes, s1, b);
+	}
+
+	@Override
+	public void openSign(Sign sign) {
+		player.openSign(sign);
+	}
+
+	@Override
+	public void showDemoScreen() {
+		player.showDemoScreen();
+	}
+
+	@Override
+	public boolean isAllowingServerListings() {
+		return player.isAllowingServerListings();
+	}
+
 }

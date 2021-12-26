@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import com.sbezboro.standardplugin.SubPlugin;
 import org.bukkit.ChatColor;
-import org.json.simple.JSONObject;
+import org.json.simpleForBukkit.JSONObject;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;

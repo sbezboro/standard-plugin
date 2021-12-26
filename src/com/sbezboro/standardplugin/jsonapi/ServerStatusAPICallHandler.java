@@ -9,7 +9,7 @@ import com.sbezboro.standardplugin.SubPlugin;
 import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.json.simple.JSONObject;
+import org.json.simpleForBukkit.JSONObject;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.integrations.EssentialsIntegration;

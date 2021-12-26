@@ -7,7 +7,7 @@ import java.util.Map;
 import com.sbezboro.standardplugin.model.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.json.simple.JSONObject;
+import org.json.simpleForBukkit.JSONObject;
 
 import com.sbezboro.standardplugin.StandardPlugin;
 import com.sbezboro.standardplugin.model.StandardPlayer;
