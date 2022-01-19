@@ -21,10 +21,16 @@ public class BlockBreakListener extends EventListener implements Listener {
 	@SuppressWarnings("serial")
 	private static final HashSet<Material> MINABLE_ORES = new HashSet<Material>() {{
 		add(Material.DIAMOND_ORE);
+		add(Material.DEEPSLATE_DIAMOND_ORE);
 		add(Material.EMERALD_ORE);
+		add(Material.DEEPSLATE_EMERALD_ORE);
 		add(Material.COAL_ORE);
+		add(Material.DEEPSLATE_COAL_ORE);
 		add(Material.REDSTONE_ORE);
+		add(Material.DEEPSLATE_REDSTONE_ORE);
 		add(Material.LAPIS_ORE);
+		add(Material.DEEPSLATE_LAPIS_ORE);
+
 		add(Material.NETHER_QUARTZ_ORE);
 	}};
 	
@@ -48,12 +54,15 @@ public class BlockBreakListener extends EventListener implements Listener {
 		
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 		ItemStack tool = player.getItemInHand();
-		
+
 		// Track this ore discovery if breaking this block yields the raw material
+		// Note that COPPER_ORE, IRON_ORE, and GOLD_ORE could be added to the leaderboards,
+		// (+ DEEPSLATE_ versions) because they now also drop the raw material
 		if (!tool.getEnchantments().containsKey(Enchantment.SILK_TOUCH)
 				&& MINABLE_ORES.contains(block.getType())) {
-			String type = block.getType().toString();
-			
+			String type = block.getType().toString().replace("DEEPSLATE_", "");
+			plugin.getLogger().info("Block broken, type: " + block.getType() + " -> " + type);
+
 			OreDiscoveryEvent ev = new OreDiscoveryEvent(player, type, location);
 			ev.log();
 		}
