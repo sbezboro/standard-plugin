@@ -47,7 +47,7 @@ public class CreatureSpawnListener extends EventListener implements Listener {
 			}
 		}
 
-		if (CONTROLLED_ENTITIES.contains(entity.getType())) {
+		if (false && CONTROLLED_ENTITIES.contains(entity.getType())) {
 			Location location = entity.getLocation();
 			Chunk chunk = location.getChunk();
 

@@ -51,19 +51,21 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 				// check if holding a totem, and remove if so
 				PlayerInventory inv = player.getInventory();
 
-				boolean had_totem = false;
+				boolean hadTotem = false;
 
 				// check twice because of main hand / off hand
 				if (inv.getItemInMainHand().getType() == Material.TOTEM_OF_UNDYING) {
 					inv.setItemInMainHand(null);
-					had_totem = true;
+					hadTotem = true;
 				}
 				if (inv.getItemInOffHand().getType() == Material.TOTEM_OF_UNDYING) {
 					inv.setItemInOffHand(null);
-					had_totem = true;
+					hadTotem = true;
 				}
 
-				if (had_totem) StandardPlugin.broadcast(String.format("%s%s%s lost a totem as well", ChatColor.AQUA, player.getDisplayName(), ChatColor.RED));
+				if (hadTotem) {
+					StandardPlugin.broadcast(String.format("%s%s%s lost a totem as well", ChatColor.AQUA, player.getDisplayName(), ChatColor.RED));
+				}
 
 				player.damage(1000.0);
 			}
