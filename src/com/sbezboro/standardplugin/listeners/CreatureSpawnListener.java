@@ -23,7 +23,9 @@ public class CreatureSpawnListener extends EventListener implements Listener {
 		add(EntityType.CHICKEN);
 		add(EntityType.PIG);
 		add(EntityType.SHEEP);
-		add(EntityType.VILLAGER);
+		add(EntityType.TURTLE);  // turtle farms can become very large
+		add(EntityType.COD);
+		add(EntityType.SALMON);
 	}};
 
 	public CreatureSpawnListener(StandardPlugin plugin) {
@@ -45,8 +47,7 @@ public class CreatureSpawnListener extends EventListener implements Listener {
 			}
 		}
 
-		// Temprorarily disable
-		if (false && CONTROLLED_ENTITIES.contains(entity.getType())) {
+		if (CONTROLLED_ENTITIES.contains(entity.getType())) {
 			Location location = entity.getLocation();
 			Chunk chunk = location.getChunk();
 

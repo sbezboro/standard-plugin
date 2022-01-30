@@ -2,6 +2,7 @@ package com.sbezboro.standardplugin.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -14,6 +15,8 @@ import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.model.Title;
 import com.sbezboro.standardplugin.net.LeaveHttpRequest;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 public class PlayerLeaveListener extends EventListener implements Listener {
 
@@ -44,6 +47,24 @@ public class PlayerLeaveListener extends EventListener implements Listener {
 					plugin.getStandardPlayerByUUID(player.getLastAttackerUuid()).getDisplayName(), ChatColor.RED));
 
 			if (player.hasTitle(Title.PVP_LOGGER)) {
+
+				// check if holding a totem, and remove if so
+				PlayerInventory inv = player.getInventory();
+
+				boolean had_totem = false;
+
+				// check twice because of main hand / off hand
+				if (inv.getItemInMainHand().getType() == Material.TOTEM_OF_UNDYING) {
+					inv.setItemInMainHand(null);
+					had_totem = true;
+				}
+				if (inv.getItemInOffHand().getType() == Material.TOTEM_OF_UNDYING) {
+					inv.setItemInOffHand(null);
+					had_totem = true;
+				}
+
+				if (had_totem) StandardPlugin.broadcast(String.format("%s%s%s lost a totem as well", ChatColor.AQUA, player.getDisplayName(), ChatColor.RED));
+
 				player.damage(1000.0);
 			}
 		}

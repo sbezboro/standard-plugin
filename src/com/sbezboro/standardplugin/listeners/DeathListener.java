@@ -1,6 +1,8 @@
 package com.sbezboro.standardplugin.listeners;
 
+import com.sbezboro.http.HttpRequestManager;
 import com.sbezboro.standardplugin.model.StandardPlayer;
+import com.sbezboro.standardplugin.net.DeathHttpRequest;
 import com.sbezboro.standardplugin.util.MiscUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -122,6 +124,9 @@ public class DeathListener extends EventListener implements Listener {
 
 		victim.setLastDeathTime();
 
+		// some more info about death while in pvp + logging the kill (below)
+		StandardPlayer indirect_killer = null;
+
 		// Essentials' /suicide and PVP log deaths seem to be only detectable this way
 		if (deathMessage != null && deathMessage.equals(ChatColor.DARK_RED + victim.getDisplayName(false) + " died")) {
 			victim.setLastDeathInPvp(victim.wasInPvp() || victim.hasPvpLogged());
@@ -148,12 +153,21 @@ public class DeathListener extends EventListener implements Listener {
 			victim.setLastDeathInPvp(true);
 			victim.setLastDeathBySpawnkill(false);
 		} else {
+			if (victim.wasInPvp()) {
+				indirect_killer = plugin.getStandardPlayerByUUID(victim.getLastAttackerUuid());
+				deathMessage += ", while in PVP with " + indirect_killer.getDisplayName();
+			}
 			victim.setLastDeathInPvp(victim.wasInPvp());
 			victim.setLastDeathBySpawnkill(false);
 		}
-
 		DeathEvent deathEvent = new DeathEvent(victim);
 		deathEvent.log();
+
+		if (indirect_killer != null) {
+			// code copied from private DeathEvent::log
+			HttpRequestManager.getInstance().startRequest(
+					new DeathHttpRequest(victim.getUuidString(), "player", indirect_killer.getUuidString()));
+		}
 
 		victim.setNotInPvp();
 
