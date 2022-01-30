@@ -23,9 +23,11 @@ public class DeathEvent {
 	private StandardPlayer player;
 	private EntityDamageEvent damageEvent;
 	private DamageCause cause;
+	private StandardPlayer indirectKiller;
 
-	public DeathEvent(StandardPlayer player) {
+	public DeathEvent(StandardPlayer player, StandardPlayer indirectKiller) {
 		this.player = player;
+		this.indirectKiller = indirectKiller;
 
 		if (player.getLastDamageCause() != null) {
 			damageEvent = player.getLastDamageCause();
@@ -95,7 +97,9 @@ public class DeathEvent {
 	}
 
 	public void log() {
-		if (cause == null) {
+		if (indirectKiller != null) {
+			log(indirectKiller);
+		} else if (cause == null) {
 			if (player.hasPvpLogged()) {
 				log(DeathType.PVP_LOG);
 			} else {
