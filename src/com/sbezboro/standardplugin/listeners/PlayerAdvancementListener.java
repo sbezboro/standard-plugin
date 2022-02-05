@@ -29,7 +29,7 @@ public class PlayerAdvancementListener extends EventListener implements Listener
 		String advancement_key = event.getAdvancement().getKey().getKey();
 		if (!advancement_key.startsWith("recipes")) {
 			String advancement_text = advancement_key.substring(advancement_key.indexOf('/') + 1).replaceAll("_", " ");
-			StandardPlugin.webchatMessage(String.format("%s%s%s got the advancement [%s%s]", ChatColor.AQUA, player.getDisplayName(), ChatColor.WHITE, ChatColor.GREEN, advancement_text));
+			StandardPlugin.webchatMessage(String.format("%s%s%s got the advancement %s[%s]", ChatColor.AQUA, player.getDisplayName(), ChatColor.WHITE, ChatColor.GREEN, advancement_text));
 		}
 	}
 }
