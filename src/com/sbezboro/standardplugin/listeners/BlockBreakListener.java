@@ -30,7 +30,6 @@ public class BlockBreakListener extends EventListener implements Listener {
 		add(Material.DEEPSLATE_REDSTONE_ORE);
 		add(Material.LAPIS_ORE);
 		add(Material.DEEPSLATE_LAPIS_ORE);
-
 		add(Material.NETHER_QUARTZ_ORE);
 	}};
 	
@@ -61,8 +60,6 @@ public class BlockBreakListener extends EventListener implements Listener {
 		if (!tool.getEnchantments().containsKey(Enchantment.SILK_TOUCH)
 				&& MINABLE_ORES.contains(block.getType())) {
 			String type = block.getType().toString().replace("DEEPSLATE_", "");
-			plugin.getLogger().info("Block broken, type: " + block.getType() + " -> " + type);
-
 			OreDiscoveryEvent ev = new OreDiscoveryEvent(player, type, location);
 			ev.log();
 		}

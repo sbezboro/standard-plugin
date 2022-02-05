@@ -124,8 +124,7 @@ public class DeathListener extends EventListener implements Listener {
 
 		victim.setLastDeathTime();
 
-		// some more info about death while in pvp + logging the kill (below)
-		StandardPlayer indirect_killer = null;
+		StandardPlayer indirectKiller = null;
 
 		// Essentials' /suicide and PVP log deaths seem to be only detectable this way
 		if (deathMessage != null && deathMessage.equals(ChatColor.DARK_RED + victim.getDisplayName(false) + " died")) {
@@ -154,21 +153,18 @@ public class DeathListener extends EventListener implements Listener {
 			victim.setLastDeathBySpawnkill(false);
 		} else {
 			if (victim.wasInPvp()) {
-				indirect_killer = plugin.getStandardPlayerByUUID(victim.getLastAttackerUuid());
-				deathMessage += ", while in PVP with " + indirect_killer.getDisplayName();
+				indirectKiller = plugin.getStandardPlayerByUUID(victim.getLastAttackerUuid());
+				if (indirectKiller != null) {
+					deathMessage += " (while in PVP with " + indirectKiller.getDisplayName(false) + ")";
+				}
 			}
+
 			victim.setLastDeathInPvp(victim.wasInPvp());
 			victim.setLastDeathBySpawnkill(false);
 		}
-		DeathEvent deathEvent = new DeathEvent(victim);
+
+		DeathEvent deathEvent = new DeathEvent(victim, indirectKiller);
 		deathEvent.log();
-
-		if (indirect_killer != null) {
-			// code copied from private DeathEvent::log
-			HttpRequestManager.getInstance().startRequest(
-					new DeathHttpRequest(victim.getUuidString(), "player", indirect_killer.getUuidString()));
-		}
-
 		victim.setNotInPvp();
 
 		event.setDeathMessage(deathMessage);

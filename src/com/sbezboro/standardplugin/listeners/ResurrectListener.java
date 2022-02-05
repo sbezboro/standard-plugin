@@ -26,13 +26,9 @@ public class ResurrectListener extends EventListener implements Listener {
 		if (player.wasInPvp()) {
 			StandardPlayer attacker = plugin.getStandardPlayerByUUID(player.getLastAttackerUuid());
 
-			StandardPlugin.broadcast(String.format("%sA totem of " + player.getDisplayName() + " was popped by " + attacker.getDisplayName(), ChatColor.RED), true, true);
-
-			// also log this as a kill, code copied from private DeathEvent::log
-			HttpRequestManager.getInstance().startRequest(
-					new DeathHttpRequest(player.getUuidString(), "player", attacker.getUuidString()));
-
-		}  // if totem was popped while in PVP
+			if (attacker != null) {
+				StandardPlugin.broadcast(String.format("%sA totem of " + player.getDisplayName(false) + " was popped by " + attacker.getDisplayName(false), ChatColor.RED), true, true);
+			}
+		}
 	}
-
 }
