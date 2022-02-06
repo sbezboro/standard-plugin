@@ -23,8 +23,9 @@ public class PlayerAdvancementListener extends EventListener implements Listener
 	public void onAdvancementDone(PlayerAdvancementDoneEvent event){
 		StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
-		// : [StandardPlugin] advancement: recipes/brewing/cauldron for player hagar
-		//[16:26:36 INFO]: [StandardPlugin] advancement: husbandry/tactical_fishing for player hagar
+		// example keys:
+		// recipes/brewing/cauldron (are ignored)
+		// husbandry/tactical_fishing
 
 		String advancement_key = event.getAdvancement().getKey().getKey();
 		if (!advancement_key.startsWith("recipes")) {
