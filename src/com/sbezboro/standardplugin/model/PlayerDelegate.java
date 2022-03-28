@@ -30,6 +30,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.profile.PlayerProfile;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.RayTraceResult;
@@ -1809,4 +1810,28 @@ public abstract class PlayerDelegate extends PersistedObject implements Player {
 		return player.isAllowingServerListings();
 	}
 
+	@Override
+	public void playSound(Entity entity, Sound sound, float v, float v1) {
+		player.playSound(entity, sound, v, v1);
+	}
+
+	@Override
+	public void playSound(Entity entity, Sound sound, SoundCategory soundCategory, float v, float v1) {
+		player.playSound(entity, sound, soundCategory, v, v1);
+	}
+
+	@Override
+	public GameMode getPreviousGameMode() {
+		return player.getPreviousGameMode();
+	}
+
+	@Override
+	public SpawnCategory getSpawnCategory() {
+		return player.getSpawnCategory();
+	}
+
+	@Override
+	public PlayerProfile getPlayerProfile() {
+		return player.getPlayerProfile();
+	}
 }
