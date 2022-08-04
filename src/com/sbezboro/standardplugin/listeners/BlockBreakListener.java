@@ -34,6 +34,8 @@ public class BlockBreakListener extends EventListener implements Listener {
 		add(Material.DEEPSLATE_IRON_ORE);
 		add(Material.GOLD_ORE);
 		add(Material.DEEPSLATE_GOLD_ORE);
+		add(Material.COPPER_ORE);
+		add(Material.DEEPSLATE_COPPER_ORE);
 		add(Material.NETHER_QUARTZ_ORE);
 	}};
 	

@@ -24,19 +24,26 @@ public class PlayerInteractListener extends EventListener implements Listener {
 		ItemStack itemStack = event.getItem();
 
 		// Block ender pearl glitching
-		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && itemStack != null && itemStack.getType() == Material.ENDER_PEARL &&
-				clickedBlock.getType().isSolid() && !(clickedBlock.getState() instanceof InventoryHolder)) {
-			event.setCancelled(true);
-		// Setting bed locations
-		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && StandardPlugin.BED_BLOCKS.contains(clickedBlock.getType())) {
-			Location location = clickedBlock.getLocation();
-			player.saveBedLocation(location);
-		// Honeypot handling
-		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && clickedBlock.getType() == Material.CHEST) {
-			plugin.getHoneypotManager().checkChest(clickedBlock.getLocation(), player);
-		// End crystal handling (disables manually respawning the dragon)
-		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && itemStack != null && itemStack.getType() == Material.END_CRYSTAL) {
-			event.setCancelled(true);
-		}
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+
+			if (itemStack != null && itemStack.getType() == Material.ENDER_PEARL &&
+					clickedBlock.getType().isSolid() && !(clickedBlock.getState() instanceof InventoryHolder)) {
+				event.setCancelled(true);
+				// Setting bed locations
+			}
+			else if (StandardPlugin.BED_BLOCKS.contains(clickedBlock.getType())) {
+				Location location = clickedBlock.getLocation();
+				player.saveBedLocation(location);
+				// Honeypot handling
+			}
+			else if (clickedBlock.getType() == Material.CHEST) {
+				plugin.getHoneypotManager().checkChest(clickedBlock.getLocation(), player);
+				// End crystal handling (disables manually respawning the dragon)
+			}
+			else if (itemStack != null && itemStack.getType() == Material.END_CRYSTAL) {
+				event.setCancelled(true);
+			}
+
+		}  // if right click block
 	}
 }

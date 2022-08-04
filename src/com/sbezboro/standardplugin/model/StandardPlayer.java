@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class StandardPlayer extends PlayerDelegate {
 	private static final int PVP_TIMER_TIME = 600;  // 30 seconds
-	
+
 	private PersistedProperty<Boolean> forumMuted;
 	private PersistedProperty<Boolean> pvpProtection;
 	private PersistedProperty<PersistableLocation> bedLocation;
@@ -41,7 +41,7 @@ public class StandardPlayer extends PlayerDelegate {
 	private int rank;
 
 	private int newbieAttacks;
-	
+
 	private PvpTimerTask pvpTimerTask;
 	private String lastAttackerUuid;
 
@@ -78,7 +78,7 @@ public class StandardPlayer extends PlayerDelegate {
 	@Override
 	public void loadProperties() {
 		super.loadProperties();
-		
+
 		titles = new ArrayList<Title>();
 
 		TitleStorage titleStorage = StandardPlugin.getPlugin().getTitleStorage();
@@ -528,7 +528,10 @@ public class StandardPlayer extends PlayerDelegate {
 	}
 
 	public boolean hasNickname() {
-		return EssentialsIntegration.hasNickname(this);
+
+		boolean essentials_has_nickname = EssentialsIntegration.hasNickname(this);
+		// StandardPlugin.getPlugin().getLogger().info("essentials has nickname:" + essentials_has_nickname);
+		return essentials_has_nickname;
 	}
 
 	public String getDisplayName(boolean colored) {
@@ -718,4 +721,5 @@ public class StandardPlayer extends PlayerDelegate {
 	public boolean isFrozen() {
 		return player.isFrozen();
 	}
+
 }

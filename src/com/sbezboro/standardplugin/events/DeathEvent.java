@@ -17,7 +17,7 @@ import org.bukkit.projectiles.ProjectileSource;
 
 public class DeathEvent {
 	public enum DeathType {
-		SUICIDE, FALL, FIRE, LAVA, EXPLOSION, CACTUS, VOID, SUFFOCATION, DROWNING, STARVATION, MAGIC, PVP_LOG, OTHER
+		SUICIDE, FALL, FIRE, LAVA, EXPLOSION, CACTUS, VOID, SUFFOCATION, DROWNING, STARVATION, MAGIC, PVP_LOG, STALAGMITE, MAGMA, OTHER
 	}
 
 	private StandardPlayer player;
@@ -32,6 +32,8 @@ public class DeathEvent {
 		if (player.getLastDamageCause() != null) {
 			damageEvent = player.getLastDamageCause();
 			cause = damageEvent.getCause();
+
+			StandardPlugin.getPlugin().getLogger().info("DeathEvent constructor, event: " + damageEvent + ", cause: " + cause);
 		}
 	}
 
@@ -39,46 +41,52 @@ public class DeathEvent {
 		String typeString;
 
 		switch (type) {
-		case SUICIDE:
-			typeString = "suicide";
-			break;
-		case FALL:
-			typeString = "fall";
-			break;
-		case FIRE:
-			typeString = "fire";
-			break;
-		case LAVA:
-			typeString = "lava";
-			break;
-		case EXPLOSION:
-			typeString = "explosion";
-			break;
-		case CACTUS:
-			typeString = "cactus";
-			break;
-		case SUFFOCATION:
-			typeString = "suffocation";
-			break;
-		case DROWNING:
-			typeString = "drowning";
-			break;
-		case STARVATION:
-			typeString = "starvation";
-			break;
-		case MAGIC:
-			typeString = "magic";
-			break;
-		case PVP_LOG:
-			typeString = "pvp_log";
-			break;
-		case OTHER:
-			typeString = "other";
-			break;
-		default:
-			typeString = "other";
-			break;
-		}
+			case SUICIDE:
+				typeString = "suicide";
+				break;
+			case FALL:
+				typeString = "fall";
+				break;
+			case FIRE:
+				typeString = "fire";
+				break;
+			case LAVA:
+				typeString = "lava";
+				break;
+			case EXPLOSION:
+				typeString = "explosion";
+				break;
+			case CACTUS:
+				typeString = "cactus";
+				break;
+			case SUFFOCATION:
+				typeString = "suffocation";
+				break;
+			case DROWNING:
+				typeString = "drowning";
+				break;
+			case STARVATION:
+				typeString = "starvation";
+				break;
+			case MAGIC:
+				typeString = "magic";
+				break;
+			case PVP_LOG:
+				typeString = "pvp_log";
+				break;
+			case STALAGMITE:
+				typeString = "stalagmite";
+				break;
+			case MAGMA:
+				typeString = "magma";
+				break;
+			case OTHER:
+				typeString = "other";
+				break;
+			default:
+				typeString = "other";
+				break;
+		}  // switch
 
 		HttpRequestManager.getInstance().startRequest(
 				new DeathHttpRequest(player.getUuidString(), typeString));
@@ -119,14 +127,21 @@ public class DeathEvent {
 			EntityDamageByBlockEvent lastDamageByBlockEvent = (EntityDamageByBlockEvent) damageEvent;
 			Block damager = lastDamageByBlockEvent.getDamager();
 
-			if (cause.equals(DamageCause.CONTACT)) {
+			if (cause.equals(DamageCause.BLOCK_EXPLOSION)) {
+				log(DeathType.EXPLOSION);
+			} else if (cause.equals(DamageCause.CONTACT)) {
 				if (damager.getType() == Material.CACTUS) {
 					log(DeathType.CACTUS);
-				} else {
+				} else if (damager.getType() == Material.POINTED_DRIPSTONE) {
+					log(DeathType.STALAGMITE);
+				}
+				else {
 					log(DeathType.OTHER);
 				}
 			} else if (cause.equals(DamageCause.LAVA)) {
 				log(DeathType.LAVA);
+			} else if (cause.equals(DamageCause.HOT_FLOOR)) {
+				log(DeathType.MAGMA);
 			} else if (cause.equals(DamageCause.VOID)) {
 				log(DeathType.VOID);
 			} else {

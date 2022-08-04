@@ -61,7 +61,7 @@ public class StatsAPICallHandler extends APICallHandler {
 			if (plugin.isPvpProtectionEnabled()) {
 				// Various new player messages
 				if (timeSpent == 1) {
-					player.sendMessage(ChatColor.DARK_AQUA + "Welcome to " + ChatColor.BOLD + "Standard Survival" + ChatColor.DARK_AQUA
+					player.sendMessage(ChatColor.DARK_AQUA + "Welcome to " + ChatColor.BOLD + "Plain Survival" + ChatColor.DARK_AQUA
 							+ "! To make it easier for you to settle in, you start off with:");
 					player.sendMessage("" + ChatColor.GOLD + plugin.getPvpProtectionTime() + " minutes of PVP protection");
 					player.sendMessage("" + ChatColor.GOLD + plugin.getHungerProtectionTime() + " minutes of hunger protection.");
@@ -91,16 +91,19 @@ public class StatsAPICallHandler extends APICallHandler {
 				}
 			}
 		}
-		
-		boolean session = (Boolean) payload.get("session");
-		
-		if (!session) {
-			StandardPlugin.broadcast(ChatColor.DARK_AQUA + "Session servers are down! If you leave the server now, you probably won't be able to get back on!", false, true);
-		} else if (!lastSession) {
-			StandardPlugin.broadcast(ChatColor.DARK_AQUA + "Session servers appear to have come back up.", false, true);
+
+		if (false) {
+			boolean session = (Boolean) payload.get("session");
+
+			if (!session) {
+				StandardPlugin.broadcast(ChatColor.DARK_AQUA + "Session servers are down! If you leave the server now, you probably won't be able to get back on!", false, true);
+			} else if (!lastSession) {
+				StandardPlugin.broadcast(ChatColor.DARK_AQUA + "Session servers appear to have come back up.", false, true);
+			}
 		}
 		
-		lastSession = session;
+		// lastSession = session;
+		lastSession = true;
 
 		return okResult();
 	}

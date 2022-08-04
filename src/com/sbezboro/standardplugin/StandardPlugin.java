@@ -3,8 +3,7 @@ package com.sbezboro.standardplugin;
 import com.alecgorge.minecraft.jsonapi.JSONAPI;
 import com.sbezboro.http.HttpRequestManager;
 import com.sbezboro.standardplugin.commands.*;
-import com.sbezboro.standardplugin.integrations.EssentialsIntegration;
-import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
+import com.sbezboro.standardplugin.integrations.*;
 import com.sbezboro.standardplugin.jsonapi.*;
 import com.sbezboro.standardplugin.listeners.*;
 import com.sbezboro.standardplugin.managers.EndResetManager;
@@ -122,8 +121,9 @@ public class StandardPlugin extends JavaPlugin {
 		endResetManager = new EndResetManager(this, endResetStorage);
 		honeypotManager = new HoneypotManager(this, honeypotStorage);
 
-		EssentialsIntegration.init(this);
 		SimplyVanishIntegration.init(this);
+		EssentialsIntegration.init(this);
+		PlainTablistIntegration.init(this);
 
 		registerJSONAPIHandlers();
 
@@ -212,6 +212,8 @@ public class StandardPlugin extends JavaPlugin {
 	}
 
 	private void registerJSONAPIHandlers() {
+		getLogger().info("registerJSONAPIHandlers");
+
 		Plugin plugin = this.getServer().getPluginManager().getPlugin("JSONAPI");
 		if (plugin != null) {
 			JSONAPI jsonapi = (JSONAPI) plugin;
@@ -223,6 +225,9 @@ public class StandardPlugin extends JavaPlugin {
 			jsonapi.registerAPICallHandler(new ServerStatusAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new StatsAPICallHandler(this));
 			jsonapi.registerAPICallHandler(new WebChatAPICallHandler(this));
+		}
+		else {
+			getLogger().info("could not get pointer to JSONAPI plugin");
 		}
 	}
 
