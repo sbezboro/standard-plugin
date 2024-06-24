@@ -26,6 +26,7 @@ public class EssentialsIntegration extends PluginIntegration {
 
 	public static boolean hasNickname(StandardPlayer player) {
 		if (!enabled) {
+			// StandardPlugin.getPlugin().getLogger().info("EssentialsIntegration not enabled");
 			return false;
 		}
 		return getNickname(player) != null;
@@ -34,7 +35,12 @@ public class EssentialsIntegration extends PluginIntegration {
 	public static String getNickname(StandardPlayer player) {
 		User user = getUser(player);
 		if (user != null) {
-			return user.getNickname();
+			String nickname = user.getNickname();
+			// StandardPlugin.getPlugin().getLogger().info("EssentialsIntegration::getNickname, returning [" + nickname + "]");
+			return nickname;
+		}
+		else {
+			// StandardPlugin.getPlugin().getLogger().info("EssentialsIntegration::getNickname, user is null");
 		}
 
 		return null;

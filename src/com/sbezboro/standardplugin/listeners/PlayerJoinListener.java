@@ -4,6 +4,7 @@ import com.sbezboro.http.HttpRequestManager;
 import com.sbezboro.http.HttpResponse;
 import com.sbezboro.http.listeners.HttpRequestListener;
 import com.sbezboro.standardplugin.StandardPlugin;
+import com.sbezboro.standardplugin.integrations.PlainTablistIntegration;
 import com.sbezboro.standardplugin.integrations.SimplyVanishIntegration;
 import com.sbezboro.standardplugin.model.StandardPlayer;
 import com.sbezboro.standardplugin.model.Title;
@@ -38,7 +39,9 @@ public class PlayerJoinListener extends EventListener implements Listener {
 		final StandardPlayer player = plugin.getStandardPlayer(event.getPlayer());
 
 		int currentEndId = plugin.getEndResetStorage().getCurrentEndId();
-		
+
+		PlainTablistIntegration.set_extra_message("Most recently joined: " + player.getDisplayName());
+
 		if (player.hasPlayedBefore()) {
 			if (!SimplyVanishIntegration.isVanished(player)) {
 				broadcastRank(player);
@@ -194,12 +197,14 @@ public class PlayerJoinListener extends EventListener implements Listener {
 					return;
 				}
 
-				JSONObject data = response.getJsonResponse();
-				Map<String, Object> playerMessages = (Map<String, Object>) data.get("player_messages");
-				Map<String, Object> playerNotifications = (Map<String, Object>) data.get("player_notifications");
-				Boolean noUser = (Boolean) data.get("no_user");
+				return;
 
-				notifyNewEvents(player, playerMessages, playerNotifications, noUser);
+				//JSONObject data = response.getJsonResponse();
+				//Map<String, Object> playerMessages = (Map<String, Object>) data.get("player_messages");
+				//Map<String, Object> playerNotifications = (Map<String, Object>) data.get("player_notifications");
+				//Boolean noUser = (Boolean) data.get("no_user");
+
+				//notifyNewEvents(player, playerMessages, playerNotifications, noUser);
 			}
 
 			@Override

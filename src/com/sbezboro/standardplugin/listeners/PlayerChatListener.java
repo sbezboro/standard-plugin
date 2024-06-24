@@ -65,7 +65,7 @@ public class PlayerChatListener extends EventListener implements Listener {
 									ChatColor.DARK_AQUA + ", need help with our custom plugin " +
 									ChatColor.ITALIC + "Groups" + ChatColor.DARK_AQUA + "?",
 							ChatColor.DARK_AQUA + "Try clicking on this link: " + ChatColor.UNDERLINE +
-									"standardsurvival.com/help"
+									"plainsurvival.com/help"
 					}),
 
 			new AutoHelpTopic("PVP protection",
@@ -86,7 +86,7 @@ public class PlayerChatListener extends EventListener implements Listener {
 					new String[]{
 							ChatColor.DARK_AQUA + "Hey " + ChatColor.BOLD + PLAYER_NAME_REPLACE +
 									ChatColor.DARK_AQUA + ", need help? Try clicking on this link:",
-							String.valueOf(ChatColor.DARK_AQUA) + ChatColor.UNDERLINE + "standardsurvival.com/help"
+							String.valueOf(ChatColor.DARK_AQUA) + ChatColor.UNDERLINE + "plainsurvival.com/help"
 					})};
 
 	public PlayerChatListener(StandardPlugin plugin) {

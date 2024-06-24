@@ -119,6 +119,9 @@ public abstract class HttpRequest implements Runnable {
 	public void run() {
 		try {
 			String urlString = getUrl();
+
+			// plugin.getLogger().info("HTTPRequest '" + getUrl());
+
 			if (method == HTTPMethod.GET && !properties.isEmpty()) {
 				urlString += "?" + getPropertyData();
 			}

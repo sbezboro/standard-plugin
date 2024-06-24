@@ -17,6 +17,8 @@ public class ServerSayAPICallHandler extends APICallHandler {
 	public JSONObject handle(HashMap<String, Object> payload) {
 		String message = (String) payload.get("message");
 
+		StandardPlugin.getPlugin().getLogger().info("ServerSayAPICallHandler::handle [" + message + "]");
+
 		Bukkit.getServer().broadcastMessage("" + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "[Server] " + message);
 
 		return okResult();
